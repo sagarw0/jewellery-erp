@@ -6,24 +6,22 @@ import { FieldHelpModal } from '../common/FieldHelpModal';
 interface ItemCreationViewProps {
   onAddItem: (item: StockItem) => void;
   onClose: () => void;
-  goldRate: number;
+  goldRate?: number;
 }
 
-export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, onClose, goldRate }) => {
+export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, onClose }) => {
   const [itemName, setItemName] = useState('');
   const [category, setCategory] = useState('Gold');
   const [purity, setPurity] = useState(91.6);
   const [qty, setQty] = useState(1);
   const [grossWt, setGrossWt] = useState(10.0);
   const [stoneWt, setStoneWt] = useState(0);
-  const [ratePerGm, setRatePerGm] = useState(goldRate);
   const [tagNo, setTagNo] = useState(`TAG-${Date.now().toString().slice(-6)}`);
   const [isUrd, setIsUrd] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
 
   const netWt = Math.max(0, grossWt - stoneWt);
   const fineWt = (netWt * purity) / 100;
-  const totalValue = netWt * ratePerGm;
 
   const handleSave = () => {
     if (!itemName.trim()) {
@@ -41,8 +39,8 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
       category,
       tag_no: tagNo,
       is_urd: isUrd,
-      rate_per_gm: ratePerGm,
-      total_value: totalValue,
+      rate_per_gm: 0,
+      total_value: 0,
     };
     onAddItem(item);
     alert(`Item ${itemName} (${tagNo}) created and added to stock ledger!`);
@@ -51,6 +49,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
 
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
+      {/* Top Action Header */}
       <div className="bg-white border border-sky-200/80 rounded-xl p-4 flex items-center justify-between shadow-sm">
         <div className="flex items-center space-x-3">
           <div className="p-2 rounded-lg bg-blue-50 text-blue-600 border border-blue-200">
@@ -64,7 +63,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
               </span>
             </h1>
             <p className="text-xs text-slate-500">
-              Define tagged items, loose bullion bars, purity categories, and default making rates.
+              Define tagged items, loose bullion, purity categories, gross weight, and stone weight.
             </p>
           </div>
         </div>
@@ -89,6 +88,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
         </div>
       </div>
 
+      {/* Main Creation Form - Simplified without Rate/Valuation */}
       <div className="bg-white border border-sky-200/80 rounded-xl p-5 shadow-sm space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
           <div className="md:col-span-2">
@@ -119,7 +119,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 text-xs"
+              className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 text-xs font-medium"
             >
               <option value="Gold">Gold</option>
               <option value="Silver">Silver</option>
@@ -135,7 +135,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
               step={0.1}
               value={purity}
               onChange={(e) => setPurity(parseFloat(e.target.value) || 0)}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono text-right"
+              className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono text-right font-bold"
             />
           </div>
 
@@ -143,6 +143,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
             <label className="block text-[11px] font-bold text-slate-600 mb-1">Quantity</label>
             <input
               type="number"
+              min={1}
               value={qty}
               onChange={(e) => setQty(parseInt(e.target.value) || 1)}
               className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 text-center font-bold"
@@ -171,30 +172,32 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
             />
           </div>
 
-          <div>
-            <label className="block text-[11px] font-bold text-slate-600 mb-1">Valuation Rate/Gm (₹)</label>
-            <input
-              type="number"
-              value={ratePerGm}
-              onChange={(e) => setRatePerGm(parseFloat(e.target.value) || 0)}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono text-right font-bold"
-            />
+          <div className="flex items-center pt-5">
+            <label className="flex items-center space-x-2 cursor-pointer text-slate-700 font-medium text-xs">
+              <input
+                type="checkbox"
+                checked={isUrd}
+                onChange={(e) => setIsUrd(e.target.checked)}
+                className="rounded border-slate-300 text-blue-600 w-4 h-4"
+              />
+              <span>Mark as URD Scrap Item</span>
+            </label>
           </div>
         </div>
 
-        <div className="p-3 bg-sky-50/70 border border-sky-200 rounded-lg flex flex-wrap justify-between items-center text-xs font-mono">
-          <div>Net Weight: <strong className="text-blue-800">{netWt.toFixed(3)} g</strong></div>
-          <div>Fine Pure Bullion: <strong className="text-amber-800">{fineWt.toFixed(3)} g</strong></div>
-          <div>Total Stock Valuation: <strong className="text-emerald-700">₹{Math.round(totalValue).toLocaleString('en-IN')}</strong></div>
-          <label className="flex items-center space-x-1.5 cursor-pointer text-slate-700 font-sans text-xs">
-            <input
-              type="checkbox"
-              checked={isUrd}
-              onChange={(e) => setIsUrd(e.target.checked)}
-              className="rounded border-slate-300 text-blue-600 w-3.5 h-3.5"
-            />
-            <span>Mark as URD Scrap Item</span>
-          </label>
+        {/* Calculated Weight Summary */}
+        <div className="p-3.5 bg-sky-50/80 border border-sky-200 rounded-xl flex flex-wrap justify-between items-center text-xs font-mono">
+          <div className="flex items-center space-x-2">
+            <span className="text-slate-600">Net Weight:</span>
+            <strong className="text-blue-800 text-sm font-bold">{netWt.toFixed(3)} g</strong>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="text-slate-600">Fine Pure Bullion:</span>
+            <strong className="text-amber-800 text-sm font-bold">{fineWt.toFixed(3)} g</strong>
+          </div>
+          <div className="text-[11px] text-slate-500 font-sans">
+            Formula: NetWt = GrossWt - StoneWt • FineWt = (NetWt × {purity}%)
+          </div>
         </div>
       </div>
 
