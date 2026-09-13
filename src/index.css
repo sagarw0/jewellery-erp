@@ -4,27 +4,68 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-800 font-sans antialiased selection:bg-sky-200 selection:text-sky-900;
+    @apply font-sans antialiased selection:bg-amber-200 selection:text-amber-950;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Force tabular numbers on all data and weight inputs */
+  .font-mono, input[type="number"], .tabular-nums, table td {
+    font-variant-numeric: tabular-nums;
   }
 }
 
-/* Custom light-blue scrollbars */
+/* UI Density Classes */
+.density-compact .density-pad {
+  padding-top: 0.35rem !important;
+  padding-bottom: 0.35rem !important;
+}
+
+.density-compact table td,
+.density-compact table th {
+  padding-top: 0.35rem !important;
+  padding-bottom: 0.35rem !important;
+  font-size: 0.72rem !important;
+}
+
+.density-comfortable table td,
+.density-comfortable table th {
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+  font-size: 0.75rem;
+}
+
+/* Custom Ergonomic Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: rgba(0, 0, 0, 0.04);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #93c5fd;
-  border-radius: 4px;
+  background: #cbd5e1;
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #60a5fa;
+  background: #94a3b8;
+}
+
+/* Dark mode scrollbars */
+.theme-obsidian-velvet ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+.theme-obsidian-velvet ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Smooth Focus Rings */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
 }
 
 /* Printable Jewellery Voucher styles */
@@ -40,3 +81,4 @@
     display: block !important;
   }
 }
+

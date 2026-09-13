@@ -19,22 +19,40 @@ export type AccountSubView = 'day_book' | 'book_display' | 'account_display';
 export type StockSubView = 'stock_report' | 'audit';
 
 // ----------------------------------------------------
-// Theme Types
+// Theme Types & Customization
 // ----------------------------------------------------
-export type ThemeId = 'light-blue' | 'royal-gold' | 'emerald-luxury' | 'rose-gold' | 'obsidian-velvet';
+export type ThemeId =
+  | 'light-blue'
+  | 'royal-gold'
+  | 'emerald-luxury'
+  | 'rose-gold'
+  | 'velvet-purple'
+  | 'platinum-ice'
+  | 'ruby-regal'
+  | 'obsidian-velvet';
+
+export type UiDensity = 'compact' | 'comfortable';
 
 export interface ThemeConfig {
   id: ThemeId;
   name: string;
+  subtitle: string;
+  swatchPrimary: string;
+  swatchSecondary: string;
   bgGradient: string;
   cardBg: string;
   cardBorder: string;
+  cardHover: string;
   primaryBtn: string;
+  secondaryBtn: string;
   accentText: string;
   badgeBg: string;
   headerBg: string;
   appBg: string;
   textPrimary: string;
+  subnavBg: string;
+  activePill: string;
+  inputBorder: string;
 }
 
 // ----------------------------------------------------
