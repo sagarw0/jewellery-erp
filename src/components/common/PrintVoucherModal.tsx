@@ -5,9 +5,13 @@ import { formatCurrency, formatWeight } from '../../utils/calculations';
 interface PrintVoucherModalProps {
   isOpen: boolean;
   onClose: () => void;
-  voucherType: 'Order' | 'Purchase' | 'Refinery' | 'DayBook';
+  voucherType: 'Order' | 'Purchase' | 'Refinery' | 'DayBook' | 'Sales Invoice' | 'Sales';
   title?: string;
-  data: any;
+  data?: any;
+  voucherNo?: string;
+  date?: string;
+  partyName?: string;
+  amount?: number;
 }
 
 export const PrintVoucherModal: React.FC<PrintVoucherModalProps> = ({
@@ -16,6 +20,10 @@ export const PrintVoucherModal: React.FC<PrintVoucherModalProps> = ({
   voucherType,
   title = 'Tax Invoice & Jewellery Voucher',
   data,
+  voucherNo,
+  date,
+  partyName,
+  amount,
 }) => {
   if (!isOpen) return null;
 

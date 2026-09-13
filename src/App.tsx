@@ -53,6 +53,8 @@ import { FieldDictionaryView } from './components/dictionary/FieldDictionaryView
 import { GoldSchemeView } from './components/common/GoldSchemeView';
 import { MessengerView } from './components/common/MessengerView';
 import { SettingsView } from './components/common/SettingsView';
+import { AnalyticsModal } from './components/dashboard/AnalyticsModal';
+import { useTheme } from './context/ThemeContext';
 
 interface AuthUser {
   code: string;
@@ -62,8 +64,12 @@ interface AuthUser {
 }
 
 export function App() {
+  const { currentTheme } = useTheme();
   // Authentication State (Starts with Login Page)
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+
+  // Executive Analytics Modal State
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   // Navigation State
   const [currentSection, setCurrentSection] = useState<NavSection>('dashboard');
@@ -118,7 +124,10 @@ export function App() {
     if (!currentUser) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'F2') {
+      if (e.key === 'F1') {
+        e.preventDefault();
+        setShowAnalytics((prev) => !prev);
+      } else if (e.key === 'F2') {
         e.preventDefault();
         setCurrentSection('masters');
         setMasterSubView('item_creation');
@@ -297,7 +306,7 @@ export function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-800 flex flex-col font-sans selection:bg-sky-200">
+    <div className={`min-h-screen ${currentTheme.appBg} ${currentTheme.textPrimary} flex flex-col font-sans selection:bg-sky-200`}>
       {/* Top Navbar */}
       <Navbar
         currentSection={currentSection}
@@ -307,6 +316,7 @@ export function App() {
         silverRate={silverRate}
         currentUser={currentUser}
         onLogout={() => setCurrentUser(null)}
+        onOpenAnalytics={() => setShowAnalytics(true)}
       />
 
       {/* Sub-Header Navigation Tabs for Multi-view Sections */}
@@ -607,6 +617,9 @@ export function App() {
           <span className="text-slate-500">Domain: ogaworld.in</span>
         </div>
       </footer>
+
+      {/* Global Executive Analytics Modal */}
+      <AnalyticsModal isOpen={showAnalytics} onClose={() => setShowAnalytics(false)} />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavSection } from '../../types/erp';
+import { NavSection, ThemeId } from '../../types/erp';
 import {
   Gem,
   LayoutDashboard,
@@ -18,8 +18,11 @@ import {
   LogOut,
   Building2,
   UserCheck,
-  Database
+  Database,
+  Palette,
+  Check
 } from 'lucide-react';
+import { useTheme, THEMES } from '../../context/ThemeContext';
 
 interface NavbarProps {
   currentSection: NavSection;
@@ -29,6 +32,7 @@ interface NavbarProps {
   silverRate: number;
   currentUser: { code: string; name: string; role: string; branch: string } | null;
   onLogout: () => void;
+  onOpenAnalytics: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -39,8 +43,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   silverRate,
   currentUser,
   onLogout,
+  onOpenAnalytics,
 }) => {
+  const { currentTheme, setTheme } = useTheme();
   const [showHotkeys, setShowHotkeys] = useState(false);
+  const [showThemePicker, setShowThemePicker] = useState(false);
 
   const navItems: { id: NavSection; label: string; icon: React.FC<{ className?: string }> }[] = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -57,9 +64,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className="bg-white border-b border-sky-200 text-slate-800 sticky top-0 z-40 shadow-sm no-print">
+    <header className="bg-white border-b border-slate-200 text-slate-800 sticky top-0 z-40 shadow-sm no-print">
       {/* Top Utility Bar & Live Bullion Ticker */}
-      <div className="px-4 py-2 bg-gradient-to-r from-sky-50 via-blue-50/70 to-slate-50 border-b border-sky-100 flex items-center justify-between text-xs">
+      <div className={`px-4 py-2 ${currentTheme.headerBg} border-b border-slate-100 flex items-center justify-between text-xs`}>
         {/* Brand & Branch */}
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2">
@@ -96,11 +103,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
         </div>
 
-        {/* Live Bullion Ticker */}
+        {/* Live Bullion Ticker & Utility Controls */}
         <div className="flex items-center space-x-3 text-xs">
           <div className="flex items-center space-x-1 text-slate-500">
             <TrendingUp className="w-3.5 h-3.5 text-amber-600" />
-            <span className="hidden sm:inline text-[11px] font-semibold">Bullion Rates:</span>
+            <span className="hidden sm:inline text-[11px] font-semibold">Rates:</span>
           </div>
 
           <div className="flex items-center space-x-2 font-mono text-[11px]">
@@ -109,18 +116,66 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="text-slate-800 font-extrabold">₹{gold24kRate.toLocaleString('en-IN')}/g</span>
             </div>
             <div className="bg-white border border-amber-300 px-2 py-0.5 rounded-md shadow-2xs flex items-center space-x-1">
-              <span className="text-amber-700 font-bold">22K 916:</span>
+              <span className="text-amber-700 font-bold">22K:</span>
               <span className="text-slate-800 font-extrabold">₹{gold22kRate.toLocaleString('en-IN')}/g</span>
             </div>
-            <div className="bg-white border border-slate-300 px-2 py-0.5 rounded-md shadow-2xs flex items-center space-x-1 hidden lg:flex">
-              <span className="text-slate-500 font-semibold">Silver:</span>
-              <span className="text-slate-800 font-bold">₹{silverRate.toLocaleString('en-IN')}/g</span>
-            </div>
+          </div>
+
+          {/* Analytics Button */}
+          <button
+            onClick={onOpenAnalytics}
+            className="hidden sm:flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-bold text-[11px] shadow-xs cursor-pointer hover:shadow"
+            title="Executive Analytics (F1)"
+          >
+            <BarChart3 className="w-3.5 h-3.5 text-amber-300" />
+            <span>Analytics</span>
+          </button>
+
+          {/* Theme & Color Switcher */}
+          <div className="relative">
+            <button
+              onClick={() => setShowThemePicker(!showThemePicker)}
+              className="p-1.5 text-slate-600 hover:text-blue-600 rounded-lg hover:bg-white border border-slate-200 shadow-2xs flex items-center space-x-1 cursor-pointer"
+              title="Theme & Colors"
+            >
+              <Palette className="w-3.5 h-3.5 text-blue-600" />
+              <span className="hidden md:inline text-[11px] font-semibold">Theme</span>
+            </button>
+
+            {showThemePicker && (
+              <div className="absolute right-0 top-9 bg-white border border-slate-200 rounded-xl shadow-xl p-3 w-56 z-50 text-xs animate-in fade-in zoom-in-95 duration-100">
+                <div className="font-bold text-slate-800 pb-2 mb-2 border-b border-slate-100 flex justify-between items-center">
+                  <span>Theme & Colors</span>
+                  <button onClick={() => setShowThemePicker(false)} className="text-slate-400 hover:text-slate-600">✕</button>
+                </div>
+                <div className="space-y-1.5">
+                  {(Object.keys(THEMES) as ThemeId[]).map((tId) => {
+                    const t = THEMES[tId];
+                    const isSelected = currentTheme.id === tId;
+                    return (
+                      <button
+                        key={tId}
+                        onClick={() => {
+                          setTheme(tId);
+                          setShowThemePicker(false);
+                        }}
+                        className={`w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between transition-all cursor-pointer ${
+                          isSelected ? 'bg-blue-50 text-blue-900 font-bold border border-blue-200' : 'hover:bg-slate-50 text-slate-700'
+                        }`}
+                      >
+                        <span className="text-[11px]">{t.name}</span>
+                        {isSelected && <Check className="w-3.5 h-3.5 text-blue-600" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* User Profile & Logout */}
           {currentUser && (
-            <div className="flex items-center space-x-2 pl-2 border-l border-sky-200">
+            <div className="flex items-center space-x-2 pl-2 border-l border-slate-200">
               <div className="text-right hidden sm:block">
                 <div className="font-bold text-slate-800 text-[11px] leading-tight flex items-center space-x-1">
                   <UserCheck className="w-3 h-3 text-emerald-600 inline" />
@@ -149,7 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Main Navigation Bar */}
+      {/* Main Navigation Bar (Horizontal Top Menus) */}
       <nav className="px-4 py-1.5 flex items-center justify-between overflow-x-auto scrollbar-none bg-white">
         <div className="flex items-center space-x-1">
           {navItems.map((item) => {
@@ -161,7 +216,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => onSelectSection(item.id)}
                 className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-150 cursor-pointer ${
                   isActive
-                    ? 'bg-blue-600 text-white shadow-sm font-bold'
+                    ? `${currentTheme.primaryBtn} shadow-sm font-bold`
                     : 'text-slate-600 hover:text-blue-700 hover:bg-sky-50'
                 }`}
               >
@@ -171,29 +226,22 @@ export const Navbar: React.FC<NavbarProps> = ({
             );
           })}
         </div>
-
-        {/* Simplified Indicator */}
-        <div className="hidden lg:flex items-center space-x-1.5 text-[11px] text-blue-700 bg-sky-50 border border-sky-200 px-2.5 py-0.5 rounded-md font-medium">
-          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span>Field-Preserved & Multi-Device Cloud Sync</span>
-        </div>
       </nav>
 
       {/* Hotkeys Floating Cheat Sheet */}
       {showHotkeys && (
-        <div className="absolute right-4 top-16 bg-white border border-sky-200 rounded-xl shadow-xl p-4 w-72 z-50 text-xs animate-in fade-in duration-150 text-slate-800">
+        <div className="absolute right-4 top-16 bg-white border border-slate-200 rounded-xl shadow-xl p-4 w-72 z-50 text-xs animate-in fade-in duration-150 text-slate-800">
           <div className="flex justify-between items-center pb-2 mb-2 border-b border-slate-100">
             <span className="font-bold text-blue-900 flex items-center space-x-1.5">
               <Keyboard className="w-4 h-4 text-blue-600" />
               <span>Keyboard Hotkeys</span>
             </span>
-            <button onClick={() => setShowHotkeys(false)} className="text-slate-400 hover:text-slate-600">
-              ✕
-            </button>
+            <button onClick={() => setShowHotkeys(false)} className="text-slate-400 hover:text-slate-600">✕</button>
           </div>
           <div className="space-y-1 text-slate-600 font-mono text-[11px]">
-            <div className="flex justify-between"><span>F2</span><span className="text-slate-400">Item Creation</span></div>
-            <div className="flex justify-between"><span>F3</span><span className="text-slate-400">Barcode Tag</span></div>
+            <div className="flex justify-between"><span>F1</span><span className="text-slate-400">Executive Analytics</span></div>
+            <div className="flex justify-between"><span>F2</span><span className="text-slate-400">Item Creation Master</span></div>
+            <div className="flex justify-between"><span>F3</span><span className="text-slate-400">Barcode Studio</span></div>
             <div className="flex justify-between"><span>F4</span><span className="text-slate-400">Sales Invoice</span></div>
             <div className="flex justify-between"><span>F5</span><span className="text-slate-400">Purchase</span></div>
             <div className="flex justify-between"><span>F6</span><span className="text-slate-400">Refinery In</span></div>

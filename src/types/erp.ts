@@ -19,6 +19,25 @@ export type AccountSubView = 'day_book' | 'book_display' | 'account_display';
 export type StockSubView = 'stock_report' | 'audit';
 
 // ----------------------------------------------------
+// Theme Types
+// ----------------------------------------------------
+export type ThemeId = 'light-blue' | 'royal-gold' | 'emerald-luxury' | 'rose-gold' | 'obsidian-velvet';
+
+export interface ThemeConfig {
+  id: ThemeId;
+  name: string;
+  bgGradient: string;
+  cardBg: string;
+  cardBorder: string;
+  primaryBtn: string;
+  accentText: string;
+  badgeBg: string;
+  headerBg: string;
+  appBg: string;
+  textPrimary: string;
+}
+
+// ----------------------------------------------------
 // 1. Account Master & Groups (Spec #3, #4)
 // ----------------------------------------------------
 export interface CardCharges {
@@ -91,43 +110,72 @@ export interface NewOrderHeader {
 }
 
 export interface NewOrderPayment {
-  // Left Payment Section
-  left_payment_type: string;    // "Payment Type"
-  left_amount: number;          // "Amount"
-  left_bank_name: string;       // "Bank Name"
-  left_voucher_no: string;      // "Voucher No"
-  left_cheque_date: string;     // "Cheque Date"
+  left_payment_type?: string;    // "Payment Type"
+  left_amount?: number;          // "Amount"
+  left_bank_name?: string;       // "Bank Name"
+  left_voucher_no?: string;      // "Voucher No"
+  left_cheque_date?: string;     // "Cheque Date"
 
-  // Cash Section
-  cash_received: number;        // "Cash Received"
-  cash_payment_type: string;    // "Payment Type"
-  cash_amount: number;          // "Amount"
-  cash_bank_name: string;       // "Bank Name"
-  cash_cheque_no: string;       // "Cheque No"
-  cash_cheque_date: string;     // "Cheque Date"
+  rate_cut_gold_wt?: number;     // "Rate Cut Gold Wt"
+  rate_cut_gold_rate?: number;   // "Rate Cut Gold Rate"
+  rate_cut_gold_amount?: number; // "Rate Cut Gold Amount"
+  rate_cut_silver_wt?: number;   // "Rate Cut Silver Wt"
+  rate_cut_silver_rate?: number; // "Rate Cut Silver Rate"
+  rate_cut_silver_amount?: number; // "Rate Cut Silver Amount"
 
-  // Tax Section
-  gst_pct: number;              // "GST"
-  hgst_pct: number;             // "HGST" (Half GST / SGST)
-  mgst_pct: number;             // "MGST" (Half GST / CGST)
-  gst_amt: number;              // GST-related amount fields
-  hgst_amt: number;
-  mgst_amt: number;
+  gold_adv_wt?: number;          // "Gold Adv Wt"
+  gold_adv_purity?: number;      // "Purity"
+  gold_adv_fin_wt?: number;      // "Fin Wt"
+  silver_adv_wt?: number;        // "Silver Adv Wt"
+  silver_adv_purity?: number;    // "Purity"
+  silver_adv_fin_wt?: number;    // "Fin Wt"
 
-  // Other Amounts
-  advance_amt: number;          // "Advance Amt"
-  other_amt: number;            // "Other Amt"
-  urd_bill_no: string;          // "URD BillNo"
-  bank_amt: number;             // "Bank Amt"
+  old_gold_gross_wt?: number;    // "Old Gold - GrossWt"
+  old_gold_dust?: number;        // "Dust"
+  old_gold_net_wt?: number;      // "NetWt"
+  old_gold_purity?: number;      // "Purity"
+  old_gold_fin_wt?: number;      // "FinWt"
+  old_gold_rate?: number;        // "Rate"
+  old_gold_amt?: number;         // "Amount"
 
-  // Final Amount Section
-  amount: number;               // "Amount"
-  bill_discount: number;        // "Bill Discount"
-  total_discount: number;       // "Total Discount"
-  purchase_amt: number;         // "Purchase Amt." (Old gold exchange / URD)
-  cash_final_amount: number;    // "Cash Amount"
-  balance_amount: number;       // "Balance Amount"
-  manual_urd_amt: number;       // "Manual URD Amt"
+  old_silver_gross_wt?: number;  // "Old Silver - GrossWt"
+  old_silver_dust?: number;      // "Dust"
+  old_silver_net_wt?: number;    // "NetWt"
+  old_silver_purity?: number;    // "Purity"
+  old_silver_fin_wt?: number;    // "FinWt"
+  old_silver_rate?: number;      // "Rate"
+  old_silver_amt?: number;       // "Amount"
+
+  total_amount?: number;         // "Total Amount"
+  discount?: number;             // "Discount"
+  balance_due?: number;          // "Balance Due"
+
+  cash_received?: number;
+  cash_payment_type?: string;
+  cash_amount?: number;
+  cash_bank_name?: string;
+  cash_cheque_no?: string;
+  cash_cheque_date?: string;
+
+  gst_pct: number;
+  hgst_pct?: number;
+  mgst_pct?: number;
+  gst_amt: number;
+  hgst_amt?: number;
+  mgst_amt?: number;
+
+  advance_amt: number;
+  other_amt: number;
+  urd_bill_no?: string;
+  bank_amt?: number;
+
+  amount: number;
+  bill_discount: number;
+  total_discount?: number;
+  purchase_amt: number;
+  cash_final_amount?: number;
+  balance_amount: number;
+  manual_urd_amt?: number;
 }
 
 export interface NewOrderBookingRecord {
@@ -136,7 +184,7 @@ export interface NewOrderBookingRecord {
   header: NewOrderHeader;
   items: NewOrderItem[];
   payment: NewOrderPayment;
-  status: 'Booked' | 'With Karagir' | 'Received' | 'Delivered' | 'Cancelled';
+  status: string;
   assigned_karagir?: string;
   karagir_issue_date?: string;
   karagir_delivery_date?: string;
@@ -144,7 +192,7 @@ export interface NewOrderBookingRecord {
 }
 
 // ----------------------------------------------------
-// 3. Refinery In (Spec #25, #26, #27, #28, #29, #30, #31, #32)
+// 3. Refinery In (Spec #25 to #32)
 // ----------------------------------------------------
 export type RefineryTab =
   | 'new_refinery'
@@ -281,7 +329,6 @@ export interface PurchasePayment {
   cheque_date: string;          // "Cheque Date"
   details: string;              // "Details"
 
-  // Tax
   gst_pct: number;
   hgst_pct: number;
   mgst_pct: number;
@@ -291,7 +338,6 @@ export interface PurchasePayment {
   mgst_amt: number;
   tds_amt: number;
 
-  // Amounts
   purchase_amt: number;         // "Purchase Amt."
   discount: number;             // "Discount"
   sales_amt: number;            // "Sales Amt."
@@ -374,7 +420,7 @@ export interface ColumnSetting {
 }
 
 // ----------------------------------------------------
-// 7. Stock Report (Spec #14, #15, #16)
+// 7. Stock Report & Inventory
 // ----------------------------------------------------
 export interface StockFilter {
   select_type: string;          // "Select Type" (Gold, Silver, Platinum, Diamond)
@@ -394,46 +440,136 @@ export interface StockItem {
   net_wt: number;               // "Net Wt."
   fine_wt: number;              // "Fine Wt."
   purity: number;
-  category: string;             // Gold, Silver, etc.
+  category: string;             // Gold, Silver, Imitation, URD Gold, URD Silver, etc.
   tag_no?: string;
   is_urd: boolean;
+  is_loose?: boolean;
   rate_per_gm: number;
   total_value: number;
 }
 
 // ----------------------------------------------------
-// 8. Account Display (Spec #17, #18, #19)
+// 8. Item Creation & Opening Stock Masters
+// ----------------------------------------------------
+export interface ItemMasterDefinition {
+  id: string;
+  item_name: string;
+  item_type: string;            // Ring, Chain, Bangle, Necklace, Mangalsutra, Earring, Coin, etc.
+  item_group: string;           // Gold, Silver, 1gm Imitation, URD Gold, URD Silver, Diamond, Platinum
+  design: string;               // Casted, Handmade, Laser Cut, Filigree, Antique, Plain, Studded
+  weight_or_qty: 'Weight' | 'QTY';
+  total_stock_weight: number;   // Total batch weight added by owner
+  remaining_weight: number;     // Remaining weight available to convert into tagged barcodes
+  image_url?: string;
+  created_at: string;
+}
+
+export interface OpeningStockItem {
+  id: string;
+  item_name: string;
+  gross_wt: number;
+  net_wt: number;
+  black_beats: number;
+  stone_wt: number;
+  diamond_cts: number;
+  bag_wt: number;
+  purity: number;
+  final_wt: number;
+  qty: number;
+  size?: string;
+}
+
+// ----------------------------------------------------
+// 9. Barcode Studio & Tagging
+// ----------------------------------------------------
+export interface BarcodeTagItem {
+  id: string;
+  sr_no: number;
+  tag_no: string;
+  item_name: string;
+  item_type: string;
+  category: string;
+  tray?: string;
+  section?: string;
+  attachment?: string;
+  qty: number;
+  gross_wt: number;
+  net_wt: number;
+  purity: number;
+  black_b: number;
+  stone_wt: number;
+  making_per_gm: number;
+  making_pct: number;
+  size: string;
+  hallmark_charges: number;
+  huid: string;
+  manual_tag: string;
+  is_printed: boolean;
+  is_loose: boolean;
+  created_at?: string;
+}
+
+// ----------------------------------------------------
+// 10. Dashboard & Analytics Modules
+// ----------------------------------------------------
+export interface DashboardNoticeItem {
+  id: string;
+  type: 'receivable' | 'birthday' | 'order_due' | 'anniversary' | 'bhishi' | 'debtor';
+  title: string;
+  subtitle: string;
+  amount?: number;
+  date?: string;
+  tag?: string;
+}
+
+export interface BankBalanceItem {
+  bank_name: string;
+  account_no: string;
+  balance: number;
+  type: 'Current' | 'Savings' | 'OD / CC';
+}
+
+export interface AnalyticsData {
+  top_suppliers: { name: string; total_orders: number; total_wt: number; rating: number }[];
+  top_job_workers: { name: string; jobs_completed: number; loss_pct: number; on_time_pct: number }[];
+  most_demanded: { item_name: string; category: string; inquiries: number; stock_status: string }[];
+  total_sold: { period: string; gold_wt: number; silver_wt: number; amount: number }[];
+  ornament_demand: { ornament: string; sold_qty: number; demand_score: number; growth: string }[];
+}
+
+// ----------------------------------------------------
+// 11. Account Display
 // ----------------------------------------------------
 export interface DebitLedgerEntry {
-  date: string;                 // "Date."
-  particulars: string;          // "Particulars"
-  r_no: string;                 // "R.No" (Receipt No)
-  rs: number;                   // "Rs."
+  date: string;
+  particulars: string;
+  r_no: string;
+  rs: number;
 }
 
 export interface CreditLedgerEntry {
-  date: string;                 // "Date"
-  particulars: string;          // "Particulars."
-  v_no: string;                 // "V.No" (Voucher No)
-  rs: number;                   // "Rs.."
+  date: string;
+  particulars: string;
+  v_no: string;
+  rs: number;
 }
 
 // ----------------------------------------------------
-// 9. Backup Media (Spec #5)
+// 12. Backup Media
 // ----------------------------------------------------
 export type BackupMediaOption = 'Default Location' | 'USB Drive' | 'Google Drive' | 'HDD';
 
 export interface BackupStatusInfo {
   media: BackupMediaOption;
-  last_backup: string;          // "Last Backup"
-  backup_status: 'Success' | 'Failed' | 'In Progress' | 'Never Run'; // "Backup Status"
-  backup_size: string;          // "Backup Size"
-  backup_date: string;          // "Backup Date"
+  last_backup: string;
+  backup_status: 'Success' | 'Failed' | 'In Progress' | 'Never Run';
+  backup_size: string;
+  backup_date: string;
   auto_cloud_sync: boolean;
 }
 
 // ----------------------------------------------------
-// 10. Field Dictionary Entry (Spec #40, #41)
+// 13. Field Dictionary Entry
 // ----------------------------------------------------
 export interface FieldDictionaryEntry {
   screen: string;
