@@ -24,7 +24,10 @@ import {
   Sparkles,
   Download,
   FileSpreadsheet,
-  Check
+  Check,
+  Scissors,
+  History,
+  FileText
 } from 'lucide-react';
 import { StockItem, BarcodeTagItem, ColumnSetting, ItemMasterDefinition } from '../../types/erp';
 import { formatWeight, formatCurrency } from '../../utils/calculations';
@@ -111,6 +114,50 @@ const DEFAULT_BARCODE_COLUMNS: ColumnSetting[] = [
   { id: 'status', label: 'Print Status', visible: true, width: 95, order: 15 },
   { id: 'action', label: 'Actions', visible: true, width: 100, order: 16 },
 ];
+
+export interface LooseStockLot {
+  id: string;
+  item_name: string;
+  category: 'Gold' | 'Silver' | 'Diamond' | '1gm Imitation' | 'URD Gold' | 'URD Silver';
+  item_type: string;
+  source: string;
+  voucher_no: string;
+  inward_date: string;
+  gross_wt: number;
+  purity: number;
+  fine_wt: number;
+  rate_per_gm: number;
+  target_tag_no: string;
+  huid: string;
+  making_per_gm: number;
+  stone_wt: number;
+  size: string;
+}
+
+export interface SplitPieceDraft {
+  id: string;
+  tag_no: string;
+  gross_wt: number;
+  net_wt: number;
+  stone_wt: number;
+  purity: number;
+  huid: string;
+  size: string;
+  making_per_gm: number;
+}
+
+export interface StockTransferHistoryRecord {
+  id: string;
+  date: string;
+  from_lot: string;
+  to_tag: string;
+  item_name: string;
+  gross_wt: number;
+  purity: number;
+  category: string;
+  action_type: 'Transfer to Tag' | 'Split to Multi-Tags' | 'Untagged to Loose';
+  operator: string;
+}
 
 export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose }) => {
   const { currentTheme } = useTheme();
@@ -220,18 +267,193 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
   const [newHuid, setNewHuid] = useState('B9M4K1');
   const [newManualTag, setNewManualTag] = useState('');
 
-  // Tab 2: Loose Stock Transfer to Barcode State
-  const [looseInventory, setLooseInventory] = useState(() => [
-    ...stockItems.filter(s => s.is_loose).map(s => ({
-      id: s.id,
-      item_name: s.item_name,
-      gross_wt: s.gross_wt,
-      purity: s.purity,
-      source: s.is_urd ? 'URD Scrap' : 'Opening Stock / Inward'
-    })),
-    { id: 'ls-1', item_name: '24K Raw Bullion Inward Lot (Purchase #PUR-891)', gross_wt: 250.0, purity: 99.5, source: 'Purchase Inward' },
-    { id: 'ls-2', item_name: 'Loose Casted Bangles Lot #442', gross_wt: 85.4, purity: 91.6, source: 'Opening Stock' },
-    { id: 'ls-3', item_name: 'Loose Uncut Diamond Studded Tops', gross_wt: 32.0, purity: 75.0, source: 'Karagir Inward' },
+  // Tab 3: Loose Stock Transfer to Barcode State
+  const [looseInventory, setLooseInventory] = useState<LooseStockLot[]>(() => [
+    {
+      id: 'ls-1',
+      item_name: '24K Raw Bullion Granules (999 Purity)',
+      category: 'Gold',
+      item_type: 'Bullion',
+      source: 'MMTC Bullion Purchase',
+      voucher_no: 'PUR-891',
+      inward_date: '2026-09-12',
+      gross_wt: 250.000,
+      purity: 99.9,
+      fine_wt: 249.750,
+      rate_per_gm: 7420,
+      target_tag_no: 'TAG-BUL-101',
+      huid: 'B9K8L1',
+      making_per_gm: 50,
+      stone_wt: 0,
+      size: 'Standard',
+    },
+    {
+      id: 'ls-2',
+      item_name: '22K Casted Bangles Lot #442',
+      category: 'Gold',
+      item_type: 'Bangle',
+      source: 'Karagir Workshop Return',
+      voucher_no: 'KARA-REC-104',
+      inward_date: '2026-09-13',
+      gross_wt: 85.400,
+      purity: 91.6,
+      fine_wt: 78.226,
+      rate_per_gm: 6850,
+      target_tag_no: 'TAG-BAN-442',
+      huid: 'B2P9Q4',
+      making_per_gm: 480,
+      stone_wt: 0.400,
+      size: '2.6',
+    },
+    {
+      id: 'ls-3',
+      item_name: '22K Traditional Mangalsutra Vati Lot',
+      category: 'Gold',
+      item_type: 'Mangalsutra',
+      source: 'Opening Vault Batch',
+      voucher_no: 'OPN-VLT-02',
+      inward_date: '2026-09-10',
+      gross_wt: 42.600,
+      purity: 91.6,
+      fine_wt: 39.022,
+      rate_per_gm: 6850,
+      target_tag_no: 'TAG-MS-301',
+      huid: 'B5M7K8',
+      making_per_gm: 420,
+      stone_wt: 1.200,
+      size: '22 inch',
+    },
+    {
+      id: 'ls-4',
+      item_name: '92.5 Fine Silver Ankle Payal Lot #88',
+      category: 'Silver',
+      item_type: 'Payal',
+      source: 'Silver Supplier Inward',
+      voucher_no: 'SLV-PUR-301',
+      inward_date: '2026-09-11',
+      gross_wt: 320.000,
+      purity: 92.5,
+      fine_wt: 296.000,
+      rate_per_gm: 94,
+      target_tag_no: 'TAG-SLV-880',
+      huid: 'SL88K9',
+      making_per_gm: 22,
+      stone_wt: 0,
+      size: '10.5 inch',
+    },
+    {
+      id: 'ls-5',
+      item_name: '18K Rose Gold Diamond Mounts',
+      category: 'Diamond',
+      item_type: 'Ring',
+      source: 'Surat Diamond Exchange',
+      voucher_no: 'DIA-INW-09',
+      inward_date: '2026-09-13',
+      gross_wt: 28.500,
+      purity: 75.0,
+      fine_wt: 21.375,
+      rate_per_gm: 5600,
+      target_tag_no: 'TAG-DIA-901',
+      huid: 'D1R8X9',
+      making_per_gm: 950,
+      stone_wt: 1.850,
+      size: '13',
+    },
+    {
+      id: 'ls-6',
+      item_name: 'URD Old Gold Melted Scrap Ingot #12',
+      category: 'URD Gold',
+      item_type: 'Bullion',
+      source: 'Counter Exchange Melting',
+      voucher_no: 'URD-MLT-12',
+      inward_date: '2026-09-13',
+      gross_wt: 64.200,
+      purity: 85.0,
+      fine_wt: 54.570,
+      rate_per_gm: 6350,
+      target_tag_no: 'TAG-URD-12',
+      huid: 'URD85K',
+      making_per_gm: 0,
+      stone_wt: 0,
+      size: 'Bar',
+    },
+    ...stockItems
+      .filter((s) => s.is_loose)
+      .map((s, idx) => ({
+        id: `loose-stk-${s.id}`,
+        item_name: s.item_name,
+        category: (s.category as any) || 'Gold',
+        item_type: 'Ornament',
+        source: s.is_urd ? 'URD Scrap Counter' : 'Opening Vault / Inward',
+        voucher_no: `VCH-${1000 + idx}`,
+        inward_date: '2026-09-13',
+        gross_wt: s.gross_wt,
+        purity: s.purity || 91.6,
+        fine_wt: Number(((s.gross_wt * (s.purity || 91.6)) / 100).toFixed(3)),
+        rate_per_gm: 6800,
+        target_tag_no: `TAG-LS-${Math.floor(10000 + Math.random() * 90000)}`,
+        huid: 'B9K7T1',
+        making_per_gm: 450,
+        stone_wt: 0,
+        size: 'Standard',
+      })),
+  ]);
+
+  const [selectedLooseIds, setSelectedLooseIds] = useState<string[]>([]);
+  const [looseSearchTerm, setLooseSearchTerm] = useState('');
+  const [looseFilterCategory, setLooseFilterCategory] = useState<string>('All');
+  const [looseFilterSource, setLooseFilterSource] = useState<string>('All');
+
+  // Modals for Tab 3
+  const [showInwardModal, setShowInwardModal] = useState(false);
+  const [newInwardItem, setNewInwardItem] = useState<Partial<LooseStockLot>>({
+    item_name: '',
+    category: 'Gold',
+    item_type: 'Ring',
+    source: 'Vendor Purchase Inward',
+    voucher_no: `PUR-${Math.floor(100 + Math.random() * 900)}`,
+    inward_date: new Date().toISOString().slice(0, 10),
+    gross_wt: 10.0,
+    purity: 91.6,
+    rate_per_gm: 6850,
+    target_tag_no: `TAG-${Math.floor(10000 + Math.random() * 90000)}`,
+    huid: 'B7K2P1',
+    making_per_gm: 450,
+    stone_wt: 0,
+    size: 'Standard',
+  });
+
+  // Split Lot Modal
+  const [showSplitModal, setShowSplitModal] = useState(false);
+  const [splitTargetLot, setSplitTargetLot] = useState<LooseStockLot | null>(null);
+  const [splitPieces, setSplitPieces] = useState<SplitPieceDraft[]>([]);
+
+  // Transfer History
+  const [transferHistory, setTransferHistory] = useState<StockTransferHistoryRecord[]>([
+    {
+      id: 'hist-1',
+      date: '2026-09-13 18:24',
+      from_lot: 'Loose Casted Bangles Lot #441 (#KARA-REC-101)',
+      to_tag: 'TAG-88201',
+      item_name: '22K Casted Bangles Lot #441 (Piece 1)',
+      gross_wt: 12.500,
+      purity: 91.6,
+      category: 'Gold',
+      action_type: 'Transfer to Tag',
+      operator: 'Admin / Sagar',
+    },
+    {
+      id: 'hist-2',
+      date: '2026-09-13 18:30',
+      from_lot: 'Loose Casted Bangles Lot #441 (#KARA-REC-101)',
+      to_tag: 'TAG-88202',
+      item_name: '22K Casted Bangles Lot #441 (Piece 2)',
+      gross_wt: 15.000,
+      purity: 91.6,
+      category: 'Gold',
+      action_type: 'Transfer to Tag',
+      operator: 'Admin / Sagar',
+    },
   ]);
 
   // Tab 3: Print Barcode & QR Code Studio State
@@ -436,21 +658,371 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
     setNewGrossWt(Math.max(0, Number((remainingWeightToReconcile - newGrossWt).toFixed(3))));
   };
 
+  // Filtered Loose Inventory for Tab 3
+  const filteredLooseInventory = useMemo(() => {
+    return looseInventory.filter((item) => {
+      if (looseFilterCategory !== 'All' && item.category !== looseFilterCategory) return false;
+      if (looseFilterSource !== 'All' && item.source !== looseFilterSource) return false;
+      if (looseSearchTerm.trim()) {
+        const q = looseSearchTerm.toLowerCase();
+        const matchesName = (item.item_name || '').toLowerCase().includes(q);
+        const matchesVoucher = (item.voucher_no || '').toLowerCase().includes(q);
+        const matchesSource = (item.source || '').toLowerCase().includes(q);
+        const matchesTag = (item.target_tag_no || '').toLowerCase().includes(q);
+        const matchesHuid = (item.huid || '').toLowerCase().includes(q);
+        if (!matchesName && !matchesVoucher && !matchesSource && !matchesTag && !matchesHuid) return false;
+      }
+      return true;
+    });
+  }, [looseInventory, looseFilterCategory, looseFilterSource, looseSearchTerm]);
+
+  const looseStats = useMemo(() => {
+    const totalLots = filteredLooseInventory.length;
+    const totalGross = filteredLooseInventory.reduce((acc, curr) => acc + (curr.gross_wt || 0), 0);
+    const totalFine = filteredLooseInventory.reduce((acc, curr) => acc + ((curr.gross_wt * (curr.purity || 0)) / 100), 0);
+    return { totalLots, totalGross, totalFine };
+  }, [filteredLooseInventory]);
+
   // Convert Barcode to Loose
   const handleBarcodeToLoose = (tag: BarcodeTagItem) => {
     if (confirm(`Untag barcode ${tag.tag_no} for "${tag.item_name}" and return ${tag.gross_wt}g to Loose Stock?`)) {
       setAllBarcodeInventory(allBarcodeInventory.filter((t) => t.id !== tag.id));
-      setLooseInventory([
-        ...looseInventory,
+      const fineWeight = Number(((tag.gross_wt * (tag.purity || 91.6)) / 100).toFixed(3));
+      const newLoose: LooseStockLot = {
+        id: `ls-${Date.now()}`,
+        item_name: `${tag.item_name} (Untagged from ${tag.tag_no})`,
+        category: (tag.category as any) || 'Gold',
+        item_type: tag.item_type || 'Ornament',
+        source: 'Barcode to Loose Untagging',
+        voucher_no: `UNT-${Math.floor(100 + Math.random() * 900)}`,
+        inward_date: new Date().toISOString().slice(0, 10),
+        gross_wt: tag.gross_wt,
+        purity: tag.purity || 91.6,
+        fine_wt: fineWeight,
+        rate_per_gm: 6800,
+        target_tag_no: `TAG-${Math.floor(10000 + Math.random() * 90000)}`,
+        huid: tag.huid || 'B9K8L1',
+        making_per_gm: tag.making_per_gm || 450,
+        stone_wt: tag.stone_wt || 0,
+        size: tag.size || 'Standard',
+      };
+      setLooseInventory([newLoose, ...looseInventory]);
+      setTransferHistory([
         {
-          id: `ls-${Date.now()}`,
-          item_name: `${tag.item_name} (Untagged from ${tag.tag_no})`,
+          id: `hist-${Date.now()}`,
+          date: new Date().toLocaleString(),
+          from_lot: `Tag ${tag.tag_no}`,
+          to_tag: 'Loose Inventory',
+          item_name: tag.item_name,
           gross_wt: tag.gross_wt,
-          purity: tag.purity,
-          source: 'Barcode to Loose Untagging',
+          purity: tag.purity || 91.6,
+          category: tag.category || 'Gold',
+          action_type: 'Untagged to Loose',
+          operator: 'Current User',
         },
+        ...transferHistory,
       ]);
       alert(`Tag ${tag.tag_no} (${tag.item_name}) untagged and moved to loose inventory!`);
+    }
+  };
+
+  // Single Lot Transfer to Tag
+  const handleSingleTransfer = (lot: LooseStockLot) => {
+    const netWeight = Math.max(0, Number((lot.gross_wt - (lot.stone_wt || 0)).toFixed(3)));
+    const newTag: BarcodeTagItem = {
+      id: `tag-${Date.now()}`,
+      sr_no: allBarcodeInventory.length + 1,
+      tag_no: lot.target_tag_no || `TAG-${Math.floor(10000 + Math.random() * 90000)}`,
+      item_name: lot.item_name,
+      item_type: lot.item_type || 'Ornament',
+      category: lot.category || 'Gold',
+      qty: 1,
+      gross_wt: lot.gross_wt,
+      net_wt: netWeight,
+      purity: lot.purity,
+      black_b: 0,
+      stone_wt: lot.stone_wt || 0,
+      making_per_gm: lot.making_per_gm || 450,
+      making_pct: 0,
+      size: lot.size || 'Standard',
+      hallmark_charges: 45,
+      huid: lot.huid || 'B9K8L1',
+      manual_tag: `M-${lot.target_tag_no || 'TAG'}`,
+      is_printed: false,
+      is_loose: false,
+    };
+
+    setAllBarcodeInventory([newTag, ...allBarcodeInventory]);
+    setLooseInventory(looseInventory.filter((x) => x.id !== lot.id));
+    setSelectedLooseIds(selectedLooseIds.filter((id) => id !== lot.id));
+
+    // Add to history
+    setTransferHistory([
+      {
+        id: `hist-${Date.now()}`,
+        date: new Date().toLocaleString(),
+        from_lot: `${lot.item_name} (#${lot.voucher_no})`,
+        to_tag: newTag.tag_no,
+        item_name: lot.item_name,
+        gross_wt: lot.gross_wt,
+        purity: lot.purity,
+        category: lot.category,
+        action_type: 'Transfer to Tag',
+        operator: 'Current User',
+      },
+      ...transferHistory,
+    ]);
+
+    alert(`✓ Successfully transferred "${lot.item_name}" (${lot.gross_wt}g) to Barcode Tag ${newTag.tag_no}! Available in Tab 1 (Barcode List).`);
+  };
+
+  // Batch transfer selected lots
+  const handleBatchTransferSelected = () => {
+    if (selectedLooseIds.length === 0) return;
+    const selectedLots = looseInventory.filter((l) => selectedLooseIds.includes(l.id));
+    const newTags: BarcodeTagItem[] = selectedLots.map((lot, idx) => {
+      const netWeight = Math.max(0, Number((lot.gross_wt - (lot.stone_wt || 0)).toFixed(3)));
+      return {
+        id: `tag-${Date.now()}-${idx}`,
+        sr_no: allBarcodeInventory.length + idx + 1,
+        tag_no: lot.target_tag_no || `TAG-${Math.floor(10000 + Math.random() * 90000)}`,
+        item_name: lot.item_name,
+        item_type: lot.item_type || 'Ornament',
+        category: lot.category || 'Gold',
+        qty: 1,
+        gross_wt: lot.gross_wt,
+        net_wt: netWeight,
+        purity: lot.purity,
+        black_b: 0,
+        stone_wt: lot.stone_wt || 0,
+        making_per_gm: lot.making_per_gm || 450,
+        making_pct: 0,
+        size: lot.size || 'Standard',
+        hallmark_charges: 45,
+        huid: lot.huid || 'B9K8L1',
+        manual_tag: `M-${lot.target_tag_no || 'TAG'}`,
+        is_printed: false,
+        is_loose: false,
+      };
+    });
+
+    const newHistoryRecords: StockTransferHistoryRecord[] = selectedLots.map((lot, idx) => ({
+      id: `hist-${Date.now()}-${idx}`,
+      date: new Date().toLocaleString(),
+      from_lot: `${lot.item_name} (#${lot.voucher_no})`,
+      to_tag: newTags[idx].tag_no,
+      item_name: lot.item_name,
+      gross_wt: lot.gross_wt,
+      purity: lot.purity,
+      category: lot.category,
+      action_type: 'Transfer to Tag',
+      operator: 'Current User',
+    }));
+
+    setAllBarcodeInventory([...newTags, ...allBarcodeInventory]);
+    setLooseInventory(looseInventory.filter((l) => !selectedLooseIds.includes(l.id)));
+    setSelectedLooseIds([]);
+    setTransferHistory([...newHistoryRecords, ...transferHistory]);
+
+    alert(`✓ Batch Transfer Successful! ${selectedLots.length} loose lots converted to Barcodes & registered in Print Studio.`);
+  };
+
+  // Open Split Modal for a Lot
+  const handleOpenSplitModal = (lot: LooseStockLot) => {
+    setSplitTargetLot(lot);
+    // Initialize with 2 equal pieces
+    const halfWt = Number((lot.gross_wt / 2).toFixed(3));
+    const remainder = Number((lot.gross_wt - halfWt).toFixed(3));
+    setSplitPieces([
+      {
+        id: `sp-${Date.now()}-1`,
+        tag_no: `${lot.target_tag_no || 'TAG-SPL'}-1`,
+        gross_wt: halfWt,
+        net_wt: halfWt,
+        stone_wt: 0,
+        purity: lot.purity,
+        huid: lot.huid || 'B9K8L1',
+        size: lot.size || 'Standard',
+        making_per_gm: lot.making_per_gm || 450,
+      },
+      {
+        id: `sp-${Date.now()}-2`,
+        tag_no: `${lot.target_tag_no || 'TAG-SPL'}-2`,
+        gross_wt: remainder,
+        net_wt: remainder,
+        stone_wt: 0,
+        purity: lot.purity,
+        huid: lot.huid || 'B9K8L2',
+        size: lot.size || 'Standard',
+        making_per_gm: lot.making_per_gm || 450,
+      },
+    ]);
+    setShowSplitModal(true);
+  };
+
+  const handleAddSplitPiece = () => {
+    if (!splitTargetLot) return;
+    const currentAllocated = splitPieces.reduce((acc, p) => acc + (p.gross_wt || 0), 0);
+    const unallocated = Math.max(0, Number((splitTargetLot.gross_wt - currentAllocated).toFixed(3)));
+    const newPiece: SplitPieceDraft = {
+      id: `sp-${Date.now()}`,
+      tag_no: `${splitTargetLot.target_tag_no || 'TAG-SPL'}-${splitPieces.length + 1}`,
+      gross_wt: unallocated > 0 ? unallocated : 5.0,
+      net_wt: unallocated > 0 ? unallocated : 5.0,
+      stone_wt: 0,
+      purity: splitTargetLot.purity,
+      huid: `B${Math.floor(10 + Math.random() * 89)}K${Math.floor(10 + Math.random() * 89)}`,
+      size: splitTargetLot.size || 'Standard',
+      making_per_gm: splitTargetLot.making_per_gm || 450,
+    };
+    setSplitPieces([...splitPieces, newPiece]);
+  };
+
+  const handleRemoveSplitPiece = (id: string) => {
+    setSplitPieces(splitPieces.filter((p) => p.id !== id));
+  };
+
+  const handleUpdateSplitPiece = (id: string, field: keyof SplitPieceDraft, value: any) => {
+    setSplitPieces(
+      splitPieces.map((p) => {
+        if (p.id !== id) return p;
+        const updated = { ...p, [field]: value };
+        if (field === 'gross_wt' || field === 'stone_wt') {
+          const gross = field === 'gross_wt' ? Number(value) : p.gross_wt;
+          const stone = field === 'stone_wt' ? Number(value) : p.stone_wt;
+          updated.net_wt = Math.max(0, Number((gross - stone).toFixed(3)));
+        }
+        return updated;
+      })
+    );
+  };
+
+  const handleConfirmSplit = () => {
+    if (!splitTargetLot) return;
+    const totalAllocated = splitPieces.reduce((acc, p) => acc + (p.gross_wt || 0), 0);
+    const diff = Math.abs(totalAllocated - splitTargetLot.gross_wt);
+    if (diff > 0.005) {
+      alert(`Weight mismatch! Total lot weight is ${splitTargetLot.gross_wt}g, but split tags sum to ${totalAllocated.toFixed(3)}g. Difference: ${(totalAllocated - splitTargetLot.gross_wt).toFixed(3)}g. Please adjust before confirming.`);
+      return;
+    }
+
+    const newTags: BarcodeTagItem[] = splitPieces.map((piece, idx) => ({
+      id: `tag-${Date.now()}-${idx}`,
+      sr_no: allBarcodeInventory.length + idx + 1,
+      tag_no: piece.tag_no,
+      item_name: `${splitTargetLot.item_name} (Piece #${idx + 1})`,
+      item_type: splitTargetLot.item_type || 'Ornament',
+      category: splitTargetLot.category || 'Gold',
+      qty: 1,
+      gross_wt: piece.gross_wt,
+      net_wt: piece.net_wt,
+      purity: piece.purity,
+      black_b: 0,
+      stone_wt: piece.stone_wt,
+      making_per_gm: piece.making_per_gm,
+      making_pct: 0,
+      size: piece.size,
+      hallmark_charges: 45,
+      huid: piece.huid,
+      manual_tag: `M-${piece.tag_no}`,
+      is_printed: false,
+      is_loose: false,
+    }));
+
+    const newHistories: StockTransferHistoryRecord[] = splitPieces.map((piece, idx) => ({
+      id: `hist-${Date.now()}-${idx}`,
+      date: new Date().toLocaleString(),
+      from_lot: `${splitTargetLot.item_name} (#${splitTargetLot.voucher_no})`,
+      to_tag: piece.tag_no,
+      item_name: `${splitTargetLot.item_name} (Piece #${idx + 1})`,
+      gross_wt: piece.gross_wt,
+      purity: piece.purity,
+      category: splitTargetLot.category,
+      action_type: 'Split to Multi-Tags',
+      operator: 'Current User',
+    }));
+
+    setAllBarcodeInventory([...newTags, ...allBarcodeInventory]);
+    setLooseInventory(looseInventory.filter((l) => l.id !== splitTargetLot.id));
+    setTransferHistory([...newHistories, ...transferHistory]);
+    setShowSplitModal(false);
+    setSplitTargetLot(null);
+    setSplitPieces([]);
+
+    alert(`✓ Successfully split "${splitTargetLot.item_name}" into ${newTags.length} barcode tags!`);
+  };
+
+  const handleSaveNewInward = () => {
+    if (!newInwardItem.item_name || !newInwardItem.gross_wt) {
+      alert('Please provide Item Name and Gross Weight');
+      return;
+    }
+    const fineWeight = Number((((newInwardItem.gross_wt || 0) * (newInwardItem.purity || 91.6)) / 100).toFixed(3));
+    const newItem: LooseStockLot = {
+      id: `ls-${Date.now()}`,
+      item_name: newInwardItem.item_name,
+      category: (newInwardItem.category as any) || 'Gold',
+      item_type: newInwardItem.item_type || 'Ornament',
+      source: newInwardItem.source || 'Vendor Purchase Inward',
+      voucher_no: newInwardItem.voucher_no || `PUR-${Math.floor(100 + Math.random() * 900)}`,
+      inward_date: newInwardItem.inward_date || new Date().toISOString().slice(0, 10),
+      gross_wt: Number(newInwardItem.gross_wt),
+      purity: Number(newInwardItem.purity || 91.6),
+      fine_wt: fineWeight,
+      rate_per_gm: Number(newInwardItem.rate_per_gm || 6800),
+      target_tag_no: newInwardItem.target_tag_no || `TAG-${Math.floor(10000 + Math.random() * 90000)}`,
+      huid: newInwardItem.huid || 'B9K1P2',
+      making_per_gm: Number(newInwardItem.making_per_gm || 450),
+      stone_wt: Number(newInwardItem.stone_wt || 0),
+      size: newInwardItem.size || 'Standard',
+    };
+
+    setLooseInventory([newItem, ...looseInventory]);
+    setShowInwardModal(false);
+    // Reset form
+    setNewInwardItem({
+      item_name: '',
+      category: 'Gold',
+      item_type: 'Ring',
+      source: 'Vendor Purchase Inward',
+      voucher_no: `PUR-${Math.floor(100 + Math.random() * 900)}`,
+      inward_date: new Date().toISOString().slice(0, 10),
+      gross_wt: 10.0,
+      purity: 91.6,
+      rate_per_gm: 6850,
+      target_tag_no: `TAG-${Math.floor(10000 + Math.random() * 90000)}`,
+      huid: 'B7K2P1',
+      making_per_gm: 450,
+      stone_wt: 0,
+      size: 'Standard',
+    });
+    alert(`✓ Added new loose stock lot "${newItem.item_name}" (${newItem.gross_wt}g) to list!`);
+  };
+
+  const handleUpdateLooseField = (id: string, field: keyof LooseStockLot, value: any) => {
+    setLooseInventory(
+      looseInventory.map((item) => {
+        if (item.id !== id) return item;
+        const updated = { ...item, [field]: value };
+        if (field === 'gross_wt' || field === 'purity') {
+          const gross = field === 'gross_wt' ? Number(value) : item.gross_wt;
+          const pur = field === 'purity' ? Number(value) : item.purity;
+          updated.fine_wt = Number(((gross * pur) / 100).toFixed(3));
+        }
+        return updated;
+      })
+    );
+  };
+
+  const toggleSelectLooseLot = (id: string) => {
+    setSelectedLooseIds((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]));
+  };
+
+  const toggleSelectAllLoose = () => {
+    if (selectedLooseIds.length === filteredLooseInventory.length) {
+      setSelectedLooseIds([]);
+    } else {
+      setSelectedLooseIds(filteredLooseInventory.map((i) => i.id));
     }
   };
 
@@ -1405,70 +1977,930 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
       )}
 
       {/* ========================================================================= */}
-      {/* TAB 3: STOCK TRANSFER LOOSE TO BARCODE                                   */}
+      {/* TAB 3: STOCK TRANSFER LOOSE TO BARCODE (LIST / TABLE FORMAT)             */}
       {/* ========================================================================= */}
       {activeTab === 'loose_to_barcode' && (
         <div className="space-y-4">
-          <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-4 shadow-sm space-y-3`}>
-            <div className="flex justify-between items-center border-b border-slate-100 pb-2">
-              <span className="font-bold text-blue-900 text-xs uppercase tracking-wider flex items-center space-x-1.5">
-                <ArrowRightLeft className="w-4 h-4 text-blue-600" />
-                <span>Loose Inventory & Purchase Inwards (Ready for Tagging)</span>
-              </span>
-              <span className="text-[11px] text-slate-500 font-mono">{looseInventory.length} Loose Lots Available</span>
+          {/* Quick Metrics Bar for Loose Stock */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 text-xs no-print">
+            <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
+              <span className="text-[10px] text-slate-500 font-bold uppercase block">Loose Lots</span>
+              <strong className="text-base text-slate-900 font-extrabold">{looseStats.totalLots}</strong>
+              <span className="text-[10px] text-slate-400 block font-sans">Ready for Tagging</span>
+            </div>
+            <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
+              <span className="text-[10px] text-slate-500 font-bold uppercase block">Total Gross Wt</span>
+              <strong className="text-base text-blue-900 font-extrabold">{formatWeight(looseStats.totalGross)}</strong>
+              <span className="text-[10px] text-slate-400 block font-sans">Untagged Inventory</span>
+            </div>
+            <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
+              <span className="text-[10px] text-slate-500 font-bold uppercase block">Fine Bullion Wt</span>
+              <strong className="text-base text-amber-700 font-extrabold">{formatWeight(looseStats.totalFine)}</strong>
+              <span className="text-[10px] text-slate-400 block font-sans">24K / 99.9% Equivalent</span>
+            </div>
+            <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200 shadow-2xs font-mono">
+              <span className="text-[10px] text-blue-800 font-bold uppercase block">Selected Lots</span>
+              <strong className="text-base text-blue-900 font-extrabold">{selectedLooseIds.length}</strong>
+              <span className="text-[10px] text-blue-700 block font-sans">For Batch Transfer</span>
+            </div>
+            <div className="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 shadow-2xs font-mono">
+              <span className="text-[10px] text-emerald-800 font-bold uppercase block">Transfer History</span>
+              <strong className="text-base text-emerald-900 font-extrabold">{transferHistory.length}</strong>
+              <span className="text-[10px] text-emerald-700 block font-sans">Completed Transfers</span>
+            </div>
+          </div>
+
+          {/* Search, Filters & Inward Actions Toolbar */}
+          <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-4 shadow-sm space-y-3 text-xs no-print`}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-3 items-end">
+              {/* Search Bar */}
+              <div className="sm:col-span-2">
+                <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center space-x-1">
+                  <Search className="w-3.5 h-3.5 text-blue-600" />
+                  <span>Search Loose Stock Lots</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={looseSearchTerm}
+                    onChange={(e) => setLooseSearchTerm(e.target.value)}
+                    placeholder="Search by lot name, voucher #, source, tag no, HUID..."
+                    className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 text-xs font-semibold focus:bg-white focus:border-blue-500 focus:outline-none"
+                  />
+                  <Search className="w-4 h-4 text-slate-400 absolute left-2.5 top-2" />
+                  {looseSearchTerm && (
+                    <button
+                      onClick={() => setLooseSearchTerm('')}
+                      className="absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs cursor-pointer"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Category Filter */}
+              <div>
+                <label className="block text-[10px] font-bold text-slate-600 mb-1">Metal Category</label>
+                <select
+                  value={looseFilterCategory}
+                  onChange={(e) => setLooseFilterCategory(e.target.value)}
+                  className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-slate-800 text-xs font-medium"
+                >
+                  <option value="All">All Categories</option>
+                  <option value="Gold">Gold</option>
+                  <option value="Silver">Silver</option>
+                  <option value="Diamond">Diamond</option>
+                  <option value="1gm Imitation">1gm Imitation</option>
+                  <option value="URD Gold">URD Gold</option>
+                  <option value="URD Silver">URD Silver</option>
+                </select>
+              </div>
+
+              {/* Source Filter */}
+              <div>
+                <label className="block text-[10px] font-bold text-slate-600 mb-1">Stock Inward Source</label>
+                <select
+                  value={looseFilterSource}
+                  onChange={(e) => setLooseFilterSource(e.target.value)}
+                  className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-slate-800 text-xs font-medium"
+                >
+                  <option value="All">All Inward Sources</option>
+                  <option value="MMTC Bullion Purchase">MMTC Bullion</option>
+                  <option value="Karagir Workshop Return">Karagir Return</option>
+                  <option value="Opening Vault Batch">Opening Vault</option>
+                  <option value="Silver Supplier Inward">Silver Supplier</option>
+                  <option value="Surat Diamond Exchange">Diamond Exchange</option>
+                  <option value="Counter Exchange Melting">Melting Scrap</option>
+                  <option value="Barcode to Loose Untagging">Untagged Barcode</option>
+                </select>
+              </div>
+
+              {/* Reset Filters */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLooseSearchTerm('');
+                    setLooseFilterCategory('All');
+                    setLooseFilterSource('All');
+                  }}
+                  className="w-full py-1.5 px-3 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 font-bold rounded-lg text-xs flex items-center justify-center space-x-1 cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Reset</span>
+                </button>
+              </div>
+
+              {/* Inward New Lot Button */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setShowInwardModal(true)}
+                  className="w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs flex items-center justify-center space-x-1.5 shadow-xs cursor-pointer transition-all"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>+ Inward New Lot</span>
+                </button>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {looseInventory.map((ls) => (
-                <div key={ls.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 shadow-2xs">
-                  <div className="flex justify-between items-start">
-                    <span className="font-bold text-slate-900 text-xs">{ls.item_name}</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-amber-100 text-amber-900 font-bold">
-                      {ls.purity}%
-                    </span>
-                  </div>
-                  <div className="text-sm font-mono font-extrabold text-blue-900">
-                    Gross Weight: {formatWeight(ls.gross_wt)}
-                  </div>
-                  <div className="text-[10px] text-slate-500 font-sans">Source: {ls.source}</div>
+            {/* Selection & Batch Transfer Ribbon */}
+            <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center space-x-2">
+                <button
+                  type="button"
+                  onClick={toggleSelectAllLoose}
+                  className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 font-bold rounded-lg text-xs flex items-center space-x-1.5 cursor-pointer"
+                >
+                  {selectedLooseIds.length === filteredLooseInventory.length && filteredLooseInventory.length > 0 ? (
+                    <CheckSquare className="w-3.5 h-3.5 text-blue-600" />
+                  ) : (
+                    <Square className="w-3.5 h-3.5 text-slate-400" />
+                  )}
+                  <span>
+                    {selectedLooseIds.length === filteredLooseInventory.length && filteredLooseInventory.length > 0
+                      ? 'Deselect All'
+                      : `Select All (${filteredLooseInventory.length})`}
+                  </span>
+                </button>
+
+                {selectedLooseIds.length > 0 && (
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 font-bold border border-blue-200 font-mono">
+                    ✓ {selectedLooseIds.length} lot(s) selected
+                  </span>
+                )}
+              </div>
+
+              {selectedLooseIds.length > 0 && (
+                <div className="flex items-center space-x-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      const newTagNo = `TAG-${Math.floor(10000 + Math.random() * 90000)}`;
-                      const newTag: BarcodeTagItem = {
-                        id: `tag-${Date.now()}`,
-                        sr_no: allBarcodeInventory.length + 1,
-                        tag_no: newTagNo,
-                        item_name: ls.item_name,
-                        item_type: 'Ornament',
-                        category: 'Gold',
-                        qty: 1,
-                        gross_wt: ls.gross_wt,
-                        net_wt: ls.gross_wt,
-                        purity: ls.purity,
-                        black_b: 0,
-                        stone_wt: 0,
-                        making_per_gm: 450,
-                        making_pct: 0,
-                        size: 'Standard',
-                        hallmark_charges: 45,
-                        huid: 'B9K8L1',
-                        manual_tag: `M-${newTagNo}`,
-                        is_printed: false,
-                        is_loose: false,
-                      };
-                      setAllBarcodeInventory([newTag, ...allBarcodeInventory]);
-                      setLooseInventory(looseInventory.filter((x) => x.id !== ls.id));
-                      setActiveTab('print_studio');
-                      alert(`✓ Successfully assigned Tag ${newTagNo} to "${ls.item_name}"! Switched to Barcode List.`);
-                    }}
-                    className="w-full py-2 bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white rounded-lg text-xs font-bold shadow flex items-center justify-center space-x-1 cursor-pointer"
+                    onClick={handleBatchTransferSelected}
+                    className="px-3 py-1 bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white font-bold rounded-lg text-xs flex items-center space-x-1.5 shadow-sm cursor-pointer"
                   >
                     <Tag className="w-3.5 h-3.5" />
-                    <span>Assign Barcode & Move to List</span>
+                    <span>Transfer Selected ({selectedLooseIds.length}) Lots to Barcodes</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedLooseIds([])}
+                    className="px-2.5 py-1 text-slate-500 hover:text-slate-700 text-xs font-semibold cursor-pointer"
+                  >
+                    Clear Selection
                   </button>
                 </div>
-              ))}
+              )}
+            </div>
+          </div>
+
+          {/* ========================================================================= */}
+          {/* LOOSE STOCK INVENTORY DATA GRID (LIST FORMAT)                             */}
+          {/* ========================================================================= */}
+          <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-4 shadow-sm space-y-3`}>
+            <div className="flex justify-between items-center border-b border-slate-100 pb-2">
+              <span className="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center space-x-2">
+                <List className="w-4 h-4 text-blue-600" />
+                <span>Loose Inventory & Inward Lots List ({filteredLooseInventory.length} Lots Available)</span>
+              </span>
+              <span className="text-[11px] text-slate-500 font-mono">
+                Showing {filteredLooseInventory.length} of {looseInventory.length} total loose lots
+              </span>
+            </div>
+
+            {filteredLooseInventory.length === 0 ? (
+              <div className="p-8 text-center text-slate-400 bg-slate-50 border border-dashed border-slate-200 rounded-xl text-xs space-y-2">
+                <ArrowRightLeft className="w-8 h-8 text-slate-300 mx-auto" />
+                <p>No loose inventory records match the active search or filters.</p>
+                <button
+                  onClick={() => {
+                    setLooseSearchTerm('');
+                    setLooseFilterCategory('All');
+                    setLooseFilterSource('All');
+                  }}
+                  className="text-blue-600 underline font-bold cursor-pointer"
+                >
+                  Reset all filters
+                </button>
+              </div>
+            ) : (
+              <div className="overflow-x-auto border border-slate-200 rounded-xl">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-300 text-[11px] uppercase tracking-wider">
+                    <tr>
+                      <th className="p-2.5 border-r border-slate-200 text-center w-10">
+                        <input
+                          type="checkbox"
+                          checked={selectedLooseIds.length === filteredLooseInventory.length && filteredLooseInventory.length > 0}
+                          onChange={toggleSelectAllLoose}
+                          className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                        />
+                      </th>
+                      <th className="p-2.5 border-r border-slate-200 text-center w-12">#</th>
+                      <th className="p-2.5 border-r border-slate-200 min-w-[240px]">
+                        Loose Lot Name & Inward Details
+                      </th>
+                      <th className="p-2.5 border-r border-slate-200 text-center w-28">Category & Source</th>
+                      <th className="p-2.5 border-r border-slate-200 text-right w-24">Gross Wt (g)</th>
+                      <th className="p-2.5 border-r border-slate-200 text-center w-20">Purity (%)</th>
+                      <th className="p-2.5 border-r border-slate-200 text-right w-24 font-bold text-amber-800">
+                        Fine Bullion (g)
+                      </th>
+                      <th className="p-2.5 border-r border-slate-200 min-w-[130px]">Target Item Type</th>
+                      <th className="p-2.5 border-r border-slate-200 min-w-[130px] font-mono">Target Tag No</th>
+                      <th className="p-2.5 border-r border-slate-200 min-w-[100px] font-mono">HUID</th>
+                      <th className="p-2.5 border-r border-slate-200 w-24 text-right">Making (₹/g)</th>
+                      <th className="p-2.5 border-r border-slate-200 w-20 text-center">Size</th>
+                      <th className="p-2.5 text-center min-w-[160px]">Transfer Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200 bg-white font-mono text-[11px]">
+                    {filteredLooseInventory.map((lot, idx) => {
+                      const isSelected = selectedLooseIds.includes(lot.id);
+                      return (
+                        <tr
+                          key={lot.id}
+                          className={`transition-colors ${
+                            isSelected
+                              ? 'bg-blue-50/70 hover:bg-blue-50'
+                              : idx % 2 === 0
+                              ? 'bg-white hover:bg-sky-50/30'
+                              : 'bg-slate-50/40 hover:bg-sky-50/30'
+                          }`}
+                        >
+                          {/* Checkbox */}
+                          <td className="p-2.5 border-r border-slate-200 text-center">
+                            <input
+                              type="checkbox"
+                              checked={isSelected}
+                              onChange={() => toggleSelectLooseLot(lot.id)}
+                              className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                            />
+                          </td>
+
+                          {/* Sr No */}
+                          <td className="p-2.5 border-r border-slate-200 text-center text-slate-400 font-sans">
+                            {idx + 1}
+                          </td>
+
+                          {/* Lot Name & Inward Details */}
+                          <td className="p-2.5 border-r border-slate-200 font-sans">
+                            <div className="flex items-start space-x-2">
+                              <div className="p-1.5 rounded-lg bg-amber-50 text-amber-700 border border-amber-200 shrink-0 mt-0.5">
+                                <ArrowRightLeft className="w-3.5 h-3.5" />
+                              </div>
+                              <div>
+                                <span className="font-bold text-slate-900 text-xs block leading-snug">
+                                  {lot.item_name}
+                                </span>
+                                <div className="flex items-center space-x-1.5 mt-0.5 text-[10px] text-slate-500 font-mono">
+                                  <span className="px-1.5 py-0.2 rounded bg-slate-100 text-slate-700 font-medium">
+                                    Vch: {lot.voucher_no}
+                                  </span>
+                                  <span>•</span>
+                                  <span>Inward: {lot.inward_date}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+
+                          {/* Category & Source */}
+                          <td className="p-2.5 border-r border-slate-200 text-center font-sans">
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 block truncate">
+                              {lot.category}
+                            </span>
+                            <span className="text-[9px] text-slate-500 block truncate mt-0.5" title={lot.source}>
+                              {lot.source}
+                            </span>
+                          </td>
+
+                          {/* Gross Wt (Inline Editable) */}
+                          <td className="p-2.5 border-r border-slate-200 text-right font-bold text-slate-900">
+                            <input
+                              type="number"
+                              step="0.001"
+                              value={lot.gross_wt}
+                              onChange={(e) => handleUpdateLooseField(lot.id, 'gross_wt', parseFloat(e.target.value) || 0)}
+                              className="w-20 px-1.5 py-0.5 bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-blue-500 rounded text-right font-bold font-mono text-xs focus:outline-none"
+                            />
+                          </td>
+
+                          {/* Purity (Inline Editable) */}
+                          <td className="p-2.5 border-r border-slate-200 text-center font-semibold text-slate-700">
+                            <input
+                              type="number"
+                              step="0.1"
+                              value={lot.purity}
+                              onChange={(e) => handleUpdateLooseField(lot.id, 'purity', parseFloat(e.target.value) || 0)}
+                              className="w-14 px-1 py-0.5 bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-blue-500 rounded text-center font-semibold font-mono text-xs focus:outline-none"
+                            />
+                          </td>
+
+                          {/* Fine Bullion Wt */}
+                          <td className="p-2.5 border-r border-slate-200 text-right font-bold text-amber-800">
+                            {formatWeight(lot.fine_wt || (lot.gross_wt * lot.purity) / 100)}
+                          </td>
+
+                          {/* Target Item Type (Select Dropdown) */}
+                          <td className="p-2.5 border-r border-slate-200 font-sans">
+                            <select
+                              value={lot.item_type}
+                              onChange={(e) => handleUpdateLooseField(lot.id, 'item_type', e.target.value)}
+                              className="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded text-slate-800 text-[11px] font-medium focus:bg-white focus:border-blue-500 focus:outline-none"
+                            >
+                              <option value="Ring">Ring</option>
+                              <option value="Bangle">Bangle</option>
+                              <option value="Necklace">Necklace</option>
+                              <option value="Chain">Chain</option>
+                              <option value="Earring">Earring</option>
+                              <option value="Mangalsutra">Mangalsutra</option>
+                              <option value="Payal">Payal</option>
+                              <option value="Bullion">Bullion</option>
+                              <option value="Ornament">Ornament</option>
+                            </select>
+                          </td>
+
+                          {/* Target Tag No (Editable Input) */}
+                          <td className="p-2.5 border-r border-slate-200 font-bold text-blue-900 font-mono">
+                            <input
+                              type="text"
+                              value={lot.target_tag_no}
+                              onChange={(e) => handleUpdateLooseField(lot.id, 'target_tag_no', e.target.value)}
+                              className="w-full px-1.5 py-0.5 bg-blue-50/50 hover:bg-white focus:bg-white border border-blue-200 focus:border-blue-500 rounded font-bold font-mono text-xs text-blue-900 focus:outline-none"
+                            />
+                          </td>
+
+                          {/* HUID (Editable Input) */}
+                          <td className="p-2.5 border-r border-slate-200 text-center font-bold text-blue-950 font-mono">
+                            <input
+                              type="text"
+                              value={lot.huid}
+                              onChange={(e) => handleUpdateLooseField(lot.id, 'huid', e.target.value)}
+                              placeholder="HUID"
+                              className="w-full px-1.5 py-0.5 bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-blue-500 rounded text-center font-bold font-mono text-xs focus:outline-none"
+                            />
+                          </td>
+
+                          {/* Making / Gm (Editable Input) */}
+                          <td className="p-2.5 border-r border-slate-200 text-right text-slate-800 font-mono">
+                            <input
+                              type="number"
+                              value={lot.making_per_gm}
+                              onChange={(e) => handleUpdateLooseField(lot.id, 'making_per_gm', parseFloat(e.target.value) || 0)}
+                              className="w-18 px-1.5 py-0.5 bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-blue-500 rounded text-right font-mono text-xs focus:outline-none"
+                            />
+                          </td>
+
+                          {/* Size (Editable Input) */}
+                          <td className="p-2.5 border-r border-slate-200 text-center text-slate-700 font-sans">
+                            <input
+                              type="text"
+                              value={lot.size}
+                              onChange={(e) => handleUpdateLooseField(lot.id, 'size', e.target.value)}
+                              className="w-14 px-1 py-0.5 bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-blue-500 rounded text-center text-xs focus:outline-none"
+                            />
+                          </td>
+
+                          {/* Actions (Single Transfer & Split Lot) */}
+                          <td className="p-2.5 text-center font-sans">
+                            <div className="flex items-center justify-center space-x-1.5">
+                              <button
+                                type="button"
+                                onClick={() => handleSingleTransfer(lot)}
+                                className="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] shadow-2xs flex items-center space-x-1 cursor-pointer transition-all"
+                                title="Transfer 1:1 to Single Barcode Tag"
+                              >
+                                <Tag className="w-3 h-3" />
+                                <span>To Tag</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleOpenSplitModal(lot)}
+                                className="px-2.5 py-1 rounded bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-bold text-[11px] flex items-center space-x-1 cursor-pointer transition-all"
+                                title="Split lot weight across multiple individual barcode tags"
+                              >
+                                <Scissors className="w-3 h-3 text-purple-600" />
+                                <span>Split Lot</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  if (confirm(`Remove loose lot "${lot.item_name}" from active list?`)) {
+                                    setLooseInventory(looseInventory.filter((x) => x.id !== lot.id));
+                                  }
+                                }}
+                                className="p-1 rounded text-slate-400 hover:text-rose-600 hover:bg-rose-50 cursor-pointer"
+                                title="Delete lot"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* ========================================================================= */}
+          {/* TRANSFER AUDIT HISTORY LOG TABLE                                          */}
+          {/* ========================================================================= */}
+          <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-4 shadow-sm space-y-3`}>
+            <div className="flex justify-between items-center border-b border-slate-100 pb-2">
+              <span className="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center space-x-2">
+                <History className="w-4 h-4 text-emerald-600" />
+                <span>Stock Transfer Audit Log ({transferHistory.length} Past Transfers)</span>
+              </span>
+              <span className="text-[11px] text-slate-500 font-mono">
+                Real-time tracking of Loose to Barcode conversions
+              </span>
+            </div>
+
+            {transferHistory.length === 0 ? (
+              <p className="text-xs text-slate-400 italic py-2">No stock transfer history recorded in this session.</p>
+            ) : (
+              <div className="overflow-x-auto border border-slate-200 rounded-lg">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-[10px] uppercase">
+                    <tr>
+                      <th className="p-2 border-r border-slate-200 text-center w-12">#</th>
+                      <th className="p-2 border-r border-slate-200">Date & Time</th>
+                      <th className="p-2 border-r border-slate-200">From (Source Lot)</th>
+                      <th className="p-2 border-r border-slate-200 font-mono">To (Barcode Tag)</th>
+                      <th className="p-2 border-r border-slate-200">Item Specification</th>
+                      <th className="p-2 border-r border-slate-200 text-right">Gross Wt</th>
+                      <th className="p-2 border-r border-slate-200 text-center">Purity</th>
+                      <th className="p-2 border-r border-slate-200 text-center">Action Type</th>
+                      <th className="p-2 text-center">Operator</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200 bg-white font-mono text-[11px]">
+                    {transferHistory.map((h, idx) => (
+                      <tr key={h.id} className="hover:bg-sky-50/20">
+                        <td className="p-2 border-r border-slate-200 text-center text-slate-400 font-sans">{idx + 1}</td>
+                        <td className="p-2 border-r border-slate-200 text-slate-600">{h.date}</td>
+                        <td className="p-2 border-r border-slate-200 font-sans text-slate-900">{h.from_lot}</td>
+                        <td className="p-2 border-r border-slate-200 font-bold text-blue-900">
+                          <span className="px-1.5 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-900">
+                            {h.to_tag}
+                          </span>
+                        </td>
+                        <td className="p-2 border-r border-slate-200 font-sans font-medium text-slate-800">{h.item_name}</td>
+                        <td className="p-2 border-r border-slate-200 text-right font-bold text-slate-900">{formatWeight(h.gross_wt)}</td>
+                        <td className="p-2 border-r border-slate-200 text-center">{h.purity}%</td>
+                        <td className="p-2 border-r border-slate-200 text-center font-sans">
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                              h.action_type === 'Split to Multi-Tags'
+                                ? 'bg-purple-50 text-purple-800 border border-purple-200'
+                                : h.action_type === 'Untagged to Loose'
+                                ? 'bg-rose-50 text-rose-800 border border-rose-200'
+                                : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                            }`}
+                          >
+                            {h.action_type}
+                          </span>
+                        </td>
+                        <td className="p-2 text-center text-slate-600 font-sans">{h.operator}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* SPLIT LOT MODAL (DIVIDE 1 LOOSE LOT INTO N BARCODE TAGS)                   */}
+      {/* ========================================================================= */}
+      {showSplitModal && splitTargetLot && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-150">
+            {/* Modal Header */}
+            <div className="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
+              <div className="flex items-center space-x-2">
+                <div className="p-1.5 rounded-lg bg-purple-100 text-purple-800">
+                  <Scissors className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="text-sm font-bold text-slate-800 flex items-center space-x-2">
+                    <span>Split Loose Lot into Multiple Barcode Tags</span>
+                    <span className="text-xs px-2 py-0.5 rounded bg-purple-100 text-purple-800 font-mono font-bold border border-purple-200">
+                      {splitTargetLot.voucher_no}
+                    </span>
+                  </h2>
+                  <p className="text-[11px] text-slate-500 font-sans">
+                    Lot: <strong>{splitTargetLot.item_name}</strong> • Total Gross Wt: <strong>{formatWeight(splitTargetLot.gross_wt)}</strong> ({splitTargetLot.purity}%)
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => {
+                  setShowSplitModal(false);
+                  setSplitTargetLot(null);
+                  setSplitPieces([]);
+                }}
+                className="p-1.5 text-slate-400 hover:text-slate-600 cursor-pointer"
+              >
+                <XCircle className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-4 overflow-y-auto max-h-[calc(90vh-140px)] space-y-4">
+              {/* Weight Reconciliation Balance Card */}
+              {(() => {
+                const totalAllocated = splitPieces.reduce((acc, p) => acc + (p.gross_wt || 0), 0);
+                const diff = Number((splitTargetLot.gross_wt - totalAllocated).toFixed(3));
+                const isMatched = Math.abs(diff) < 0.005;
+
+                return (
+                  <div
+                    className={`p-3 rounded-xl border flex flex-wrap items-center justify-between gap-3 text-xs font-mono ${
+                      isMatched
+                        ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                        : 'bg-amber-50 border-amber-300 text-amber-900'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2 font-sans font-bold">
+                      {isMatched ? (
+                        <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                      ) : (
+                        <AlertTriangle className="w-5 h-5 text-amber-600" />
+                      )}
+                      <div>
+                        <div>
+                          Total Lot Weight: <strong>{formatWeight(splitTargetLot.gross_wt)}</strong> | Allocated: <strong>{formatWeight(totalAllocated)}</strong>
+                        </div>
+                        <div className="text-[11px] font-normal">
+                          {isMatched
+                            ? '✓ 100% Weight Reconciled! Ready to generate tags.'
+                            : `Difference to reconcile: ${diff > 0 ? `+${formatWeight(diff)} remaining` : `${formatWeight(diff)} excess`}`}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Quick Split Buttons */}
+                    <div className="flex items-center space-x-1.5 font-sans">
+                      <span className="text-[10px] text-slate-500 font-bold mr-1">Quick Auto-Divide:</span>
+                      {[2, 3, 4, 5].map((num) => (
+                        <button
+                          key={num}
+                          type="button"
+                          onClick={() => {
+                            const pieceWt = Number((splitTargetLot.gross_wt / num).toFixed(3));
+                            const pieces: SplitPieceDraft[] = [];
+                            let accumulated = 0;
+                            for (let i = 1; i <= num; i++) {
+                              const wt = i === num ? Number((splitTargetLot.gross_wt - accumulated).toFixed(3)) : pieceWt;
+                              accumulated += wt;
+                              pieces.push({
+                                id: `sp-${Date.now()}-${i}`,
+                                tag_no: `${splitTargetLot.target_tag_no || 'TAG-SPL'}-${i}`,
+                                gross_wt: wt,
+                                net_wt: wt,
+                                stone_wt: 0,
+                                purity: splitTargetLot.purity,
+                                huid: `B${Math.floor(10 + Math.random() * 89)}K${Math.floor(10 + Math.random() * 89)}`,
+                                size: splitTargetLot.size || 'Standard',
+                                making_per_gm: splitTargetLot.making_per_gm || 450,
+                              });
+                            }
+                            setSplitPieces(pieces);
+                          }}
+                          className="px-2 py-0.5 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 text-[10px] font-bold cursor-pointer"
+                        >
+                          {num} Pcs
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Split Pieces Table */}
+              <div className="border border-slate-200 rounded-xl overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-300 text-[10px] uppercase">
+                    <tr>
+                      <th className="p-2 border-r border-slate-200 text-center w-10">#</th>
+                      <th className="p-2 border-r border-slate-200 min-w-[130px] font-mono">Tag No</th>
+                      <th className="p-2 border-r border-slate-200 w-24 text-right">Gross Wt (g)</th>
+                      <th className="p-2 border-r border-slate-200 w-20 text-right">Stone Wt (g)</th>
+                      <th className="p-2 border-r border-slate-200 w-24 text-right font-bold text-blue-900">Net Wt</th>
+                      <th className="p-2 border-r border-slate-200 w-16 text-center">Purity</th>
+                      <th className="p-2 border-r border-slate-200 min-w-[100px] font-mono text-center">HUID</th>
+                      <th className="p-2 border-r border-slate-200 w-20 text-center">Size</th>
+                      <th className="p-2 border-r border-slate-200 w-24 text-right">Making (₹/g)</th>
+                      <th className="p-2 text-center w-12">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200 bg-white font-mono text-[11px]">
+                    {splitPieces.map((p, idx) => (
+                      <tr key={p.id} className="hover:bg-sky-50/20">
+                        <td className="p-2 border-r border-slate-200 text-center text-slate-400 font-sans">{idx + 1}</td>
+                        <td className="p-2 border-r border-slate-200">
+                          <input
+                            type="text"
+                            value={p.tag_no}
+                            onChange={(e) => handleUpdateSplitPiece(p.id, 'tag_no', e.target.value)}
+                            className="w-full px-1.5 py-0.5 bg-blue-50/40 border border-blue-200 rounded font-mono font-bold text-blue-900 text-xs focus:bg-white focus:outline-none"
+                          />
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-right">
+                          <input
+                            type="number"
+                            step="0.001"
+                            value={p.gross_wt}
+                            onChange={(e) => handleUpdateSplitPiece(p.id, 'gross_wt', parseFloat(e.target.value) || 0)}
+                            className="w-20 px-1.5 py-0.5 bg-slate-50 border border-slate-200 rounded text-right font-bold text-xs focus:bg-white focus:outline-none"
+                          />
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-right">
+                          <input
+                            type="number"
+                            step="0.001"
+                            value={p.stone_wt}
+                            onChange={(e) => handleUpdateSplitPiece(p.id, 'stone_wt', parseFloat(e.target.value) || 0)}
+                            className="w-16 px-1.5 py-0.5 bg-slate-50 border border-slate-200 rounded text-right text-xs focus:bg-white focus:outline-none"
+                          />
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-right font-bold text-blue-900">
+                          {formatWeight(p.net_wt)}
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-center text-slate-700">
+                          {p.purity}%
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-center">
+                          <input
+                            type="text"
+                            value={p.huid}
+                            onChange={(e) => handleUpdateSplitPiece(p.id, 'huid', e.target.value)}
+                            className="w-full px-1.5 py-0.5 bg-slate-50 border border-slate-200 rounded text-center font-bold text-blue-950 text-xs focus:bg-white focus:outline-none"
+                          />
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-center">
+                          <input
+                            type="text"
+                            value={p.size}
+                            onChange={(e) => handleUpdateSplitPiece(p.id, 'size', e.target.value)}
+                            className="w-14 px-1 py-0.5 bg-slate-50 border border-slate-200 rounded text-center text-xs focus:bg-white focus:outline-none"
+                          />
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-right">
+                          <input
+                            type="number"
+                            value={p.making_per_gm}
+                            onChange={(e) => handleUpdateSplitPiece(p.id, 'making_per_gm', parseFloat(e.target.value) || 0)}
+                            className="w-18 px-1.5 py-0.5 bg-slate-50 border border-slate-200 rounded text-right text-xs focus:bg-white focus:outline-none"
+                          />
+                        </td>
+                        <td className="p-2 text-center">
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveSplitPiece(p.id)}
+                            disabled={splitPieces.length <= 1}
+                            className="text-slate-400 hover:text-rose-600 disabled:opacity-30 cursor-pointer p-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Add Split Piece Button */}
+              <div className="flex justify-start">
+                <button
+                  type="button"
+                  onClick={handleAddSplitPiece}
+                  className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 font-bold rounded-lg text-xs flex items-center space-x-1 cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5 text-blue-600" />
+                  <span>+ Add Another Split Piece</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-3 border-t border-slate-200 bg-slate-50 flex justify-between items-center text-xs font-sans">
+              <span className="text-slate-500 font-mono">
+                {splitPieces.length} tags configured • Total: {formatWeight(splitPieces.reduce((s, p) => s + (p.gross_wt || 0), 0))}
+              </span>
+              <div className="flex space-x-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowSplitModal(false);
+                    setSplitTargetLot(null);
+                    setSplitPieces([]);
+                  }}
+                  className="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmSplit}
+                  className="px-5 py-1.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg shadow flex items-center space-x-1.5 cursor-pointer transition-all"
+                >
+                  <Scissors className="w-3.5 h-3.5" />
+                  <span>Confirm Split & Create {splitPieces.length} Barcode Tags</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* INWARD NEW LOOSE LOT MODAL                                                */}
+      {/* ========================================================================= */}
+      {showInwardModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-150">
+            {/* Modal Header */}
+            <div className="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
+              <div className="flex items-center space-x-2">
+                <div className="p-1.5 rounded-lg bg-blue-100 text-blue-800">
+                  <Plus className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="text-sm font-bold text-slate-800">Inward New Loose Stock / Purchase Lot</h2>
+                  <p className="text-[11px] text-slate-500">
+                    Register loose gold/silver lots or workshop inwards ready for barcode tagging
+                  </p>
+                </div>
+              </div>
+
+              <button onClick={() => setShowInwardModal(false)} className="p-1.5 text-slate-400 hover:text-slate-600 cursor-pointer">
+                <XCircle className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Form */}
+            <div className="p-5 overflow-y-auto max-h-[calc(90vh-130px)] space-y-4 text-xs font-sans">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="sm:col-span-2">
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                    Lot / Item Name <span className="text-rose-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={newInwardItem.item_name}
+                    onChange={(e) => setNewInwardItem({ ...newInwardItem, item_name: e.target.value })}
+                    placeholder="e.g. 22K Plain Casted Ladies Rings Lot #88"
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 font-semibold focus:bg-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Metal Category</label>
+                  <select
+                    value={newInwardItem.category}
+                    onChange={(e) => setNewInwardItem({ ...newInwardItem, category: e.target.value as any })}
+                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-slate-800 font-medium"
+                  >
+                    <option value="Gold">Gold</option>
+                    <option value="Silver">Silver</option>
+                    <option value="Diamond">Diamond</option>
+                    <option value="1gm Imitation">1gm Imitation</option>
+                    <option value="URD Gold">URD Gold</option>
+                    <option value="URD Silver">URD Silver</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Target Item Type</label>
+                  <select
+                    value={newInwardItem.item_type}
+                    onChange={(e) => setNewInwardItem({ ...newInwardItem, item_type: e.target.value })}
+                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-slate-800 font-medium"
+                  >
+                    <option value="Ring">Ring</option>
+                    <option value="Bangle">Bangle</option>
+                    <option value="Necklace">Necklace</option>
+                    <option value="Chain">Chain</option>
+                    <option value="Earring">Earring</option>
+                    <option value="Mangalsutra">Mangalsutra</option>
+                    <option value="Payal">Payal</option>
+                    <option value="Bullion">Bullion</option>
+                    <option value="Ornament">Ornament</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Gross Weight (g) *</label>
+                  <input
+                    type="number"
+                    step="0.001"
+                    value={newInwardItem.gross_wt}
+                    onChange={(e) => setNewInwardItem({ ...newInwardItem, gross_wt: parseFloat(e.target.value) || 0 })}
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono font-bold focus:bg-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Purity (%) *</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={newInwardItem.purity}
+                    onChange={(e) => setNewInwardItem({ ...newInwardItem, purity: parseFloat(e.target.value) || 0 })}
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono font-bold focus:bg-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Source / Supplier</label>
+                  <input
+                    type="text"
+                    value={newInwardItem.source}
+                    onChange={(e) => setNewInwardItem({ ...newInwardItem, source: e.target.value })}
+                    placeholder="e.g. Vendor Inward, Karagir Return..."
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:bg-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Voucher / Bill No</label>
+                  <input
+                    type="text"
+                    value={newInwardItem.voucher_no}
+                    onChange={(e) => setNewInwardItem({ ...newInwardItem, voucher_no: e.target.value })}
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 font-mono focus:bg-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Target Tag No (Default)</label>
+                  <input
+                    type="text"
+                    value={newInwardItem.target_tag_no}
+                    onChange={(e) => setNewInwardItem({ ...newInwardItem, target_tag_no: e.target.value })}
+                    className="w-full px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-lg text-blue-900 font-mono font-bold focus:bg-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">HUID Code</label>
+                  <input
+                    type="text"
+                    value={newInwardItem.huid}
+                    onChange={(e) => setNewInwardItem({ ...newInwardItem, huid: e.target.value })}
+                    placeholder="e.g. B8K9L2"
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 font-mono font-bold focus:bg-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Making Charges (₹/g)</label>
+                  <input
+                    type="number"
+                    value={newInwardItem.making_per_gm}
+                    onChange={(e) => setNewInwardItem({ ...newInwardItem, making_per_gm: parseFloat(e.target.value) || 0 })}
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 font-mono focus:bg-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Size / Dimension</label>
+                  <input
+                    type="text"
+                    value={newInwardItem.size}
+                    onChange={(e) => setNewInwardItem({ ...newInwardItem, size: e.target.value })}
+                    placeholder="e.g. 14, 2.4, Standard"
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:bg-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-3 border-t border-slate-200 bg-slate-50 flex justify-end space-x-2 text-xs font-sans">
+              <button
+                type="button"
+                onClick={() => setShowInwardModal(false)}
+                className="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSaveNewInward}
+                className="px-5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow flex items-center space-x-1.5 cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Save to Loose Inventory List</span>
+              </button>
             </div>
           </div>
         </div>
