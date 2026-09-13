@@ -130,7 +130,8 @@ export const INITIAL_ORDERS: NewOrderBookingRecord[] = [
       state: 'Maharashtra (27)',
       salesman: 'Sanjay Verma',
       gst_not_required: false,
-      close_order: false
+      close_order: false,
+      design_photo: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80'
     },
     items: [
       {
@@ -149,7 +150,8 @@ export const INITIAL_ORDERS: NewOrderBookingRecord[] = [
         mkg_amt: 11025,
         hallm_charges: 45,
         making_pct: 0,
-        item_amt: 184545
+        item_amt: 184545,
+        image_url: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80'
       }
     ],
     payment: {
@@ -186,10 +188,29 @@ export const INITIAL_ORDERS: NewOrderBookingRecord[] = [
       balance_amount: 114000,
       manual_urd_amt: 25000
     },
-    status: 'With Karagir',
+    status: 'In Workshop',
     assigned_karagir: 'Soni Govindbhai & Sons',
     karagir_issue_date: '2026-08-22',
     karagir_delivery_date: '2026-09-02',
+    design_photo: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80',
+    karagir_assignment: {
+      karagir_id: 'KARA-01',
+      karagir_name: 'Soni Govindbhai & Sons',
+      karagir_phone: '9892044556',
+      assigned_date: '2026-08-22',
+      promised_date: '2026-09-02',
+      issued_metal_type: '24K Pure Gold Granules (999)',
+      issued_gross_wt: 25.700,
+      issued_purity: 99.9,
+      issued_fine_wt: 25.674,
+      karagir_rate_per_gm: 380,
+      agreed_making_charges: 9310,
+      wastage_pct: 1.5,
+      special_instructions: 'Strict 916 BIS Hallmark stamping. Handcrafted traditional filigree finish. Clean joint soldering.',
+      voucher_no: 'ISS-KARA-2026-084',
+      status: 'Assigned',
+      design_photo: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80'
+    },
     created_at: '2026-08-20T11:30:00Z'
   },
   {
@@ -211,7 +232,8 @@ export const INITIAL_ORDERS: NewOrderBookingRecord[] = [
       state: 'Maharashtra (27)',
       salesman: 'Ramesh Kulkarni',
       gst_not_required: false,
-      close_order: false
+      close_order: false,
+      design_photo: 'https://images.unsplash.com/photo-1611591475155-4286fa7c2e7f?w=600&auto=format&fit=crop&q=80'
     },
     items: [
       {
@@ -230,7 +252,8 @@ export const INITIAL_ORDERS: NewOrderBookingRecord[] = [
         mkg_amt: 17176,
         hallm_charges: 45,
         making_pct: 0,
-        item_amt: 333576
+        item_amt: 333576,
+        image_url: 'https://images.unsplash.com/photo-1611591475155-4286fa7c2e7f?w=600&auto=format&fit=crop&q=80'
       }
     ],
     payment: {
@@ -268,6 +291,7 @@ export const INITIAL_ORDERS: NewOrderBookingRecord[] = [
       manual_urd_amt: 0
     },
     status: 'Booked',
+    design_photo: 'https://images.unsplash.com/photo-1611591475155-4286fa7c2e7f?w=600&auto=format&fit=crop&q=80',
     created_at: '2026-08-25T14:45:00Z'
   }
 ];

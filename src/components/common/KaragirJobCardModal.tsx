@@ -1,5 +1,17 @@
 import React from 'react';
-import { Printer, X, Hammer, ShieldCheck, QrCode, Calendar, Scale, Scissors, AlertCircle } from 'lucide-react';
+import {
+  Printer,
+  X,
+  Hammer,
+  ShieldCheck,
+  QrCode,
+  Calendar,
+  Scale,
+  Scissors,
+  AlertCircle,
+  MessageCircle,
+  Image
+} from 'lucide-react';
 import { formatCurrency, formatWeight } from '../../utils/calculations';
 import { NewOrderBookingRecord, KaragirAssignment } from '../../types/erp';
 
@@ -35,10 +47,55 @@ export const KaragirJobCardModal: React.FC<KaragirJobCardModalProps> = ({
     special_instructions: 'Strict 916 BIS Hallmark stamping. Handcrafted traditional filigree finish. Clean joint soldering.',
     voucher_no: `ISS-KARA-${order.order_no.replace('ORD-', '')}`,
     status: 'Assigned' as const,
+    design_photo: order.design_photo || order.header?.design_photo || order.items[0]?.image_url,
   };
+
+  const designPhoto =
+    currentAssignment.design_photo ||
+    order.design_photo ||
+    order.header?.design_photo ||
+    order.items[0]?.image_url;
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleSendWhatsApp = () => {
+    const itemsSummary = order.items
+      .map((it, idx) => `${idx + 1}. *${it.item_name}* (Qty: ${it.qty}, Net Wt: ${formatWeight(it.net_wt)}, Purity: ${it.purity}%)`)
+      .join('\n');
+
+    const cleanPhone = (currentAssignment.karagir_phone || '9892044556').replace(/\D/g, '');
+    const phoneWithCountry = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
+
+    const message = `*SWARNA JEWELLERS - WORKSHOP JOB CARD & DISPATCH SLIP* 🔨\n` +
+      `----------------------------------------\n` +
+      `*Job Voucher:* ${currentAssignment.voucher_no}\n` +
+      `*Order Ref:* ${order.order_no}\n` +
+      `*Artisan:* ${currentAssignment.karagir_name}\n` +
+      `*Customer Ref:* ${order.header.customer_n || 'Showroom Custom'}\n` +
+      `----------------------------------------\n` +
+      `*ORNAMENTS SPECIFICATIONS:*\n${itemsSummary}\n` +
+      `*Total Net Wt:* ${formatWeight(order.items.reduce((s, it) => s + (it.net_wt || 0), 0))}\n` +
+      `----------------------------------------\n` +
+      `*RAW BULLION METAL ISSUED:*\n` +
+      `• Metal: ${currentAssignment.issued_metal_type}\n` +
+      `• Gross Wt: ${formatWeight(currentAssignment.issued_gross_wt)}\n` +
+      `• Purity: ${currentAssignment.issued_purity}%\n` +
+      `• Fine Gold: ${formatWeight(currentAssignment.issued_fine_wt)}\n` +
+      `----------------------------------------\n` +
+      `*MAKING TERMS:*\n` +
+      `• Labour Rate: ₹${currentAssignment.karagir_rate_per_gm}/gm\n` +
+      `• Total Labour: ${formatCurrency(currentAssignment.agreed_making_charges)}\n` +
+      `• Wastage Tolerance: ${currentAssignment.wastage_pct}%\n` +
+      `• *Delivery Date:* ${currentAssignment.promised_date}\n` +
+      `----------------------------------------\n` +
+      `*INSTRUCTIONS:* "${currentAssignment.special_instructions || 'Strict 916 BIS Hallmark stamping mandatory.'}"\n\n` +
+      (designPhoto ? `*Design Reference Photo:* Attached with Job Card.` : '') +
+      `\n\n_Please confirm delivery schedule._`;
+
+    const whatsappUrl = `https://wa.me/${phoneWithCountry}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   const totalRequiredNetWt = order.items.reduce((s, it) => s + (it.net_wt || 0), 0);
@@ -46,9 +103,9 @@ export const KaragirJobCardModal: React.FC<KaragirJobCardModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-      <div className="bg-white border border-amber-300 rounded-2xl w-full max-w-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800 flex flex-col max-h-[90vh]">
+      <div className="bg-white border border-amber-300 rounded-2xl w-full max-w-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800 flex flex-col max-h-[92vh]">
         {/* Modal Top Bar */}
-        <div className="px-5 py-3.5 bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 text-white flex items-center justify-between no-print">
+        <div className="px-5 py-3.5 bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 text-white flex items-center justify-between no-print shadow-xs">
           <div className="flex items-center space-x-2">
             <Hammer className="w-5 h-5 text-amber-200" />
             <h3 className="text-sm font-bold tracking-wide">
@@ -56,6 +113,14 @@ export const KaragirJobCardModal: React.FC<KaragirJobCardModalProps> = ({
             </h3>
           </div>
           <div className="flex items-center space-x-2">
+            <button
+              onClick={handleSendWhatsApp}
+              className="px-3.5 py-1.5 bg-emerald-600 text-white font-bold rounded-lg text-xs hover:bg-emerald-700 flex items-center space-x-1.5 shadow-sm cursor-pointer transition-colors"
+            >
+              <MessageCircle className="w-3.5 h-3.5 text-emerald-200" />
+              <span>WhatsApp to Karagir</span>
+            </button>
+
             <button
               onClick={handlePrint}
               className="px-3.5 py-1.5 bg-white text-amber-950 font-bold rounded-lg text-xs hover:bg-amber-50 flex items-center space-x-1.5 shadow-sm cursor-pointer transition-colors"
@@ -116,7 +181,7 @@ export const KaragirJobCardModal: React.FC<KaragirJobCardModalProps> = ({
               </div>
               {currentAssignment.karagir_phone && (
                 <div className="text-[11px] text-slate-600 font-mono mt-0.5">
-                  Phone: {currentAssignment.karagir_phone}
+                  WhatsApp: <strong>{currentAssignment.karagir_phone}</strong>
                 </div>
               )}
               <div className="text-[10px] text-slate-500">
@@ -140,58 +205,80 @@ export const KaragirJobCardModal: React.FC<KaragirJobCardModalProps> = ({
             </div>
           </div>
 
-          {/* Job Specifications & Line Items */}
-          <div className="space-y-1.5">
-            <div className="font-bold text-xs text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
-              <Scissors className="w-3.5 h-3.5 text-amber-700" />
-              <span>Ornaments to be Manufactured</span>
-            </div>
+          {/* Design Photo & Ornament Specs Side-by-Side */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
+            {/* Left: Design Reference Image */}
+            {designPhoto && (
+              <div className="md:col-span-4 p-2.5 bg-slate-50 border border-slate-300 rounded-xl space-y-1.5 text-center">
+                <span className="text-[10px] font-bold text-slate-700 uppercase block">
+                  Design Reference Photo
+                </span>
+                <div className="w-full h-32 rounded-lg bg-white border border-slate-200 overflow-hidden flex items-center justify-center">
+                  <img
+                    src={designPhoto}
+                    alt="Design Spec"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span className="text-[9px] text-slate-500 italic block">
+                  Manufacture exactly per sample design
+                </span>
+              </div>
+            )}
 
-            <div className="border border-slate-300 rounded-lg overflow-hidden">
-              <table className="w-full text-left border-collapse text-[11px]">
-                <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-300">
-                  <tr>
-                    <th className="p-2 border-r border-slate-300 w-10 text-center">#</th>
-                    <th className="p-2 border-r border-slate-300">Item Description & Style</th>
-                    <th className="p-2 border-r border-slate-300 w-16 text-center">QTY</th>
-                    <th className="p-2 border-r border-slate-300 w-24 text-right">Target Net Wt</th>
-                    <th className="p-2 border-r border-slate-300 w-20 text-center">Purity</th>
-                    <th className="p-2 text-right w-28">Agreed Making</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200">
-                  {order.items.map((it, idx) => (
-                    <tr key={it.id || idx}>
-                      <td className="p-2 border-r border-slate-300 text-center font-mono">{idx + 1}</td>
-                      <td className="p-2 border-r border-slate-300 font-medium">
-                        <div className="font-bold text-slate-900">{it.item_name}</div>
-                        {it.description && <div className="text-[10px] text-slate-500 italic">{it.description}</div>}
-                        {it.black_beats > 0 && <span className="text-[9.5px] text-amber-800">Black Beads: {it.black_beats}g • </span>}
-                        {it.stone_wt > 0 && <span className="text-[9.5px] text-slate-600">Stone Wt: {it.stone_wt}g</span>}
-                      </td>
-                      <td className="p-2 border-r border-slate-300 text-center font-mono font-bold">{it.qty}</td>
-                      <td className="p-2 border-r border-slate-300 text-right font-mono font-bold text-blue-900">
-                        {formatWeight(it.net_wt)}
-                      </td>
-                      <td className="p-2 border-r border-slate-300 text-center font-mono font-semibold">
-                        {it.purity}% (22K)
-                      </td>
-                      <td className="p-2 text-right font-mono font-bold text-slate-800">
-                        {formatCurrency(it.mkg_amt || (it.net_wt * (currentAssignment.karagir_rate_per_gm || 380)))}
-                      </td>
+            {/* Right: Job Specifications & Line Items */}
+            <div className={`${designPhoto ? 'md:col-span-8' : 'md:col-span-12'} space-y-1.5`}>
+              <div className="font-bold text-xs text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
+                <Scissors className="w-3.5 h-3.5 text-amber-700" />
+                <span>Ornaments to be Manufactured</span>
+              </div>
+
+              <div className="border border-slate-300 rounded-lg overflow-hidden">
+                <table className="w-full text-left border-collapse text-[11px]">
+                  <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-300">
+                    <tr>
+                      <th className="p-2 border-r border-slate-300 w-8 text-center">#</th>
+                      <th className="p-2 border-r border-slate-300">Item Description</th>
+                      <th className="p-2 border-r border-slate-300 w-12 text-center">QTY</th>
+                      <th className="p-2 border-r border-slate-300 w-20 text-right">Net Wt</th>
+                      <th className="p-2 border-r border-slate-300 w-16 text-center">Purity</th>
+                      <th className="p-2 text-right w-24">Making</th>
                     </tr>
-                  ))}
-                </tbody>
-                <tfoot className="bg-slate-50 font-mono font-bold border-t border-slate-300 text-[11px]">
-                  <tr>
-                    <td colSpan={2} className="p-2 text-right border-r border-slate-300">Total Required:</td>
-                    <td className="p-2 text-center border-r border-slate-300">{totalQty} Pcs</td>
-                    <td className="p-2 text-right border-r border-slate-300 text-blue-900">{formatWeight(totalRequiredNetWt)}</td>
-                    <td className="p-2 border-r border-slate-300"></td>
-                    <td className="p-2 text-right text-emerald-800">{formatCurrency(currentAssignment.agreed_making_charges)}</td>
-                  </tr>
-                </tfoot>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200">
+                    {order.items.map((it, idx) => (
+                      <tr key={it.id || idx}>
+                        <td className="p-2 border-r border-slate-300 text-center font-mono">{idx + 1}</td>
+                        <td className="p-2 border-r border-slate-300 font-medium">
+                          <div className="font-bold text-slate-900">{it.item_name}</div>
+                          {it.description && <div className="text-[10px] text-slate-500 italic">{it.description}</div>}
+                          {it.black_beats > 0 && <span className="text-[9.5px] text-amber-800">Black Beads: {it.black_beats}g • </span>}
+                          {it.stone_wt > 0 && <span className="text-[9.5px] text-slate-600">Stone Wt: {it.stone_wt}g</span>}
+                        </td>
+                        <td className="p-2 border-r border-slate-300 text-center font-mono font-bold">{it.qty}</td>
+                        <td className="p-2 border-r border-slate-300 text-right font-mono font-bold text-blue-900">
+                          {formatWeight(it.net_wt)}
+                        </td>
+                        <td className="p-2 border-r border-slate-300 text-center font-mono font-semibold">
+                          {it.purity}% (22K)
+                        </td>
+                        <td className="p-2 text-right font-mono font-bold text-slate-800">
+                          {formatCurrency(it.mkg_amt || (it.net_wt * (currentAssignment.karagir_rate_per_gm || 380)))}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot className="bg-slate-50 font-mono font-bold border-t border-slate-300 text-[11px]">
+                    <tr>
+                      <td colSpan={2} className="p-2 text-right border-r border-slate-300">Total:</td>
+                      <td className="p-2 text-center border-r border-slate-300">{totalQty}</td>
+                      <td className="p-2 text-right border-r border-slate-300 text-blue-900">{formatWeight(totalRequiredNetWt)}</td>
+                      <td className="p-2 border-r border-slate-300"></td>
+                      <td className="p-2 text-right text-emerald-800">{formatCurrency(currentAssignment.agreed_making_charges)}</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
             </div>
           </div>
 

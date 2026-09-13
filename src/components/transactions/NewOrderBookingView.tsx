@@ -36,7 +36,12 @@ import {
   Calendar,
   Scale,
   Download,
-  AlertCircle
+  AlertCircle,
+  Image,
+  Upload,
+  Eye,
+  X,
+  Send
 } from 'lucide-react';
 import {
   calculateNetWeight,
@@ -52,7 +57,7 @@ import { ColumnSettingsModal } from '../common/ColumnSettingsModal';
 import { FieldHelpModal } from '../common/FieldHelpModal';
 import { PrintVoucherModal } from '../common/PrintVoucherModal';
 import { WhatsAppShareModal } from '../common/WhatsAppShareModal';
-import { AssignKaragirModal, DEFAULT_KARAGIRS } from '../common/AssignKaragirModal';
+import { AssignKaragirModal, DEFAULT_KARAGIRS, JEWELLERY_SAMPLE_PRESETS } from '../common/AssignKaragirModal';
 import { KaragirJobCardModal } from '../common/KaragirJobCardModal';
 import { ReceiveKaragirModal } from '../common/ReceiveKaragirModal';
 
@@ -104,6 +109,15 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
   const [modalTargetOrder, setModalTargetOrder] = useState<NewOrderBookingRecord | null>(null);
   const [activeJobAssignment, setActiveJobAssignment] = useState<KaragirAssignment | undefined>(undefined);
 
+  // Design Photo State & Enlarged Preview
+  const [designPhoto, setDesignPhoto] = useState<string>(
+    orders[0]?.design_photo ||
+    orders[0]?.header?.design_photo ||
+    orders[0]?.items[0]?.image_url ||
+    JEWELLERY_SAMPLE_PRESETS[0].url
+  );
+  const [enlargedPhotoUrl, setEnlargedPhotoUrl] = useState<string | null>(null);
+
   // Sub-tabs Filter & Search
   const [filterKaragir, setFilterKaragir] = useState<string>('all');
   const [searchOrderQuery, setSearchOrderQuery] = useState<string>('');
@@ -134,6 +148,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
     salesman: 'Sanjay Verma',
     gst_not_required: false,
     close_order: false,
+    design_photo: orders[0]?.design_photo || JEWELLERY_SAMPLE_PRESETS[0].url,
   });
 
   // Items State (Spec #22)
@@ -155,6 +170,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
       hallm_charges: 45,
       making_pct: 0,
       item_amt: 184545,
+      image_url: orders[0]?.design_photo || JEWELLERY_SAMPLE_PRESETS[0].url,
     },
   ]);
 
@@ -202,9 +218,37 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
         setHeader({ ...ord.header });
         setItems([...ord.items]);
         setPayment({ ...ord.payment });
+        setDesignPhoto(
+          ord.design_photo ||
+          ord.header?.design_photo ||
+          ord.karagir_assignment?.design_photo ||
+          ord.items[0]?.image_url ||
+          ''
+        );
       }
     }
-  }, [selectedOrderId]);
+  }, [selectedOrderId, orders]);
+
+  // Photo upload handler
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          const photoUrl = reader.result;
+          setDesignPhoto(photoUrl);
+          setHeader((prev) => ({ ...prev, design_photo: photoUrl }));
+          if (items.length > 0) {
+            const updatedItems = [...items];
+            updatedItems[0] = { ...updatedItems[0], image_url: photoUrl };
+            setItems(updatedItems);
+          }
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // Recalculate line items
   const updateItem = (index: number, field: keyof NewOrderItem, value: any) => {
@@ -250,6 +294,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
       hallm_charges: 45,
       making_pct: 0,
       item_amt: calculateOrderItemTotal(10.0, goldRate, 0, 4000, 45),
+      image_url: designPhoto,
     };
     setItems([...items, newItem]);
   };
@@ -285,16 +330,35 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
       alert('Please enter Customer Name');
       return;
     }
+    const updatedItems = items.map((it, idx) =>
+      idx === 0 && !it.image_url && designPhoto ? { ...it, image_url: designPhoto } : it
+    );
+    const updatedHeader = {
+      ...header,
+      design_photo: designPhoto || header.design_photo,
+    };
+
+    const existingOrd = selectedOrderId ? orders.find((o) => o.id === selectedOrderId) : null;
     const orderRecord: NewOrderBookingRecord = {
       id: selectedOrderId || `ord-${Date.now()}`,
       order_no: selectedOrderId
-        ? orders.find((o) => o.id === selectedOrderId)?.order_no || `ORD-${Date.now()}`
+        ? existingOrd?.order_no || `ORD-${Date.now()}`
         : `ORD-2026-${String(orders.length + 1).padStart(3, '0')}`,
-      header,
-      items,
+      header: updatedHeader,
+      items: updatedItems,
       payment,
-      status: 'Booked',
-      created_at: new Date().toISOString(),
+      status: existingOrd?.status || 'Booked',
+      assigned_karagir: existingOrd?.assigned_karagir,
+      karagir_issue_date: existingOrd?.karagir_issue_date,
+      karagir_delivery_date: existingOrd?.karagir_delivery_date,
+      karagir_assignment: existingOrd?.karagir_assignment
+        ? {
+            ...existingOrd.karagir_assignment,
+            design_photo: designPhoto || existingOrd.karagir_assignment.design_photo,
+          }
+        : undefined,
+      design_photo: designPhoto || undefined,
+      created_at: existingOrd?.created_at || new Date().toISOString(),
     };
     onSaveOrder(orderRecord);
     setSelectedOrderId(orderRecord.id);
@@ -303,6 +367,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
   const handleNewOrder = () => {
     setSelectedOrderId(null);
+    setDesignPhoto('');
     setHeader({
       customer_n: '',
       address: '',
@@ -320,6 +385,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
       salesman: 'Sanjay Verma',
       gst_not_required: false,
       close_order: false,
+      design_photo: '',
     });
     setItems([
       {
@@ -339,6 +405,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
         hallm_charges: 45,
         making_pct: 0,
         item_amt: 0,
+        image_url: '',
       },
     ]);
   };
@@ -347,7 +414,11 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
   const handleOpenAssign = (order?: NewOrderBookingRecord | null) => {
     if (order) {
-      setModalTargetOrder(order);
+      const enrichedOrder = {
+        ...order,
+        design_photo: order.design_photo || order.header?.design_photo || designPhoto,
+      };
+      setModalTargetOrder(enrichedOrder);
       setShowAssignModal(true);
     } else {
       const activeRecord: NewOrderBookingRecord = {
@@ -355,9 +426,10 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
         order_no: selectedOrderId
           ? orders.find((o) => o.id === selectedOrderId)?.order_no || `ORD-${Date.now()}`
           : `ORD-2026-${String(orders.length + 1).padStart(3, '0')}`,
-        header,
+        header: { ...header, design_photo: designPhoto || header.design_photo },
         items,
         payment,
+        design_photo: designPhoto,
         status: 'Booked',
         created_at: new Date().toISOString(),
       };
@@ -368,6 +440,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
   const handleAssignKaragir = (orderId: string, assignment: KaragirAssignment) => {
     const existingOrder = orders.find((o) => o.id === orderId);
+    const photo = assignment.design_photo || designPhoto || existingOrder?.design_photo;
     const updatedOrder: NewOrderBookingRecord = existingOrder
       ? {
           ...existingOrder,
@@ -375,24 +448,27 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
           karagir_issue_date: assignment.assigned_date,
           karagir_delivery_date: assignment.promised_date,
           karagir_assignment: assignment,
+          design_photo: photo,
           status: 'In Workshop',
         }
       : {
           id: orderId,
           order_no: `ORD-2026-${String(orders.length + 1).padStart(3, '0')}`,
-          header,
+          header: { ...header, design_photo: photo },
           items,
           payment,
           assigned_karagir: assignment.karagir_name,
           karagir_issue_date: assignment.assigned_date,
           karagir_delivery_date: assignment.promised_date,
           karagir_assignment: assignment,
+          design_photo: photo,
           status: 'In Workshop',
           created_at: new Date().toISOString(),
         };
 
     onSaveOrder(updatedOrder);
     setSelectedOrderId(updatedOrder.id);
+    if (photo) setDesignPhoto(photo);
   };
 
   const handleOpenJobCard = (order: NewOrderBookingRecord, assignment?: KaragirAssignment) => {
@@ -437,6 +513,56 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
     };
     onSaveOrder(updated);
     alert(`Order ${target.order_no} received from Karagir and marked ready for hallmark/delivery!`);
+  };
+
+  // Direct 1-Click WhatsApp Dispatch to Karagir from Tab 2 Table
+  const handleSendWhatsAppToKaragirFromTable = (ord: NewOrderBookingRecord) => {
+    const asg = ord.karagir_assignment;
+    const targetKaragirName = ord.assigned_karagir || asg?.karagir_name;
+    const matchedProfile = DEFAULT_KARAGIRS.find((k) => k.name === targetKaragirName);
+    const phone = asg?.karagir_phone || matchedProfile?.phone || '9892044556';
+
+    const cleanPhone = phone.replace(/\D/g, '');
+    const phoneWithCountry = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
+    const photo = ord.design_photo || ord.header.design_photo || asg?.design_photo || ord.items[0]?.image_url;
+    const totalNet = ord.items.reduce((s, i) => s + (i.net_wt || 0), 0);
+    const itemsSummary = ord.items
+      .map(
+        (it, idx) =>
+          `${idx + 1}. *${it.item_name}* (Qty: ${it.qty}, Net Wt: ${formatWeight(it.net_wt)}, Purity: ${it.purity}%)`
+      )
+      .join('\n');
+
+    const message =
+      `*SWARNA JEWELLERS & WORKSHOP - ARTISAN WORK ORDER* 🔨\n` +
+      `----------------------------------------\n` +
+      `*Job Voucher:* ${asg?.voucher_no || `ISS-KARA-${ord.order_no.replace('ORD-', '')}`}\n` +
+      `*Order Ref:* ${ord.order_no}\n` +
+      `*Karagir Name:* ${targetKaragirName || 'Artisan Workshop'}\n` +
+      `*Customer Ref:* ${ord.header.customer_n || 'Showroom Custom'}\n` +
+      `----------------------------------------\n` +
+      `*ORNAMENTS TO MAKE:*\n${itemsSummary}\n` +
+      `*Total Net Wt:* ${formatWeight(totalNet)}\n` +
+      `----------------------------------------\n` +
+      `*RAW BULLION METAL ISSUED:*\n` +
+      `• Metal: ${asg?.issued_metal_type || '24K Pure Gold Granules (999)'}\n` +
+      `• Issued Gross Wt: ${formatWeight(asg?.issued_gross_wt || totalNet + 1.2)}\n` +
+      `• Purity: ${asg?.issued_purity || 99.9}%\n` +
+      `• Fine Metal Wt: ${formatWeight(asg?.issued_fine_wt || (totalNet + 1.2) * 0.999)}\n` +
+      `----------------------------------------\n` +
+      `*MAKING & LABOUR TERMS:*\n` +
+      `• Labour Rate: ₹${asg?.karagir_rate_per_gm || 380}/gm\n` +
+      `• Agreed Labour: ${formatCurrency(asg?.agreed_making_charges || totalNet * 380)}\n` +
+      `• Wastage Tolerance: ${asg?.wastage_pct || 1.5}%\n` +
+      `• *Delivery Deadline:* ${ord.karagir_delivery_date || ord.header.delivery_date}\n` +
+      `----------------------------------------\n` +
+      `*ARTISAN INSTRUCTIONS:*\n` +
+      `"${asg?.special_instructions || 'Strict 916 BIS Hallmark stamping mandatory. Clean joint soldering.'}"\n\n` +
+      (photo ? `*Design Reference Photo:* Attached with this dispatch order.` : '') +
+      `\n\n_Please confirm receipt of metal and delivery schedule._`;
+
+    const whatsappUrl = `https://wa.me/${phoneWithCountry}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   const tabs: { id: NewOrderTab; label: string }[] = [
@@ -779,6 +905,117 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
             </div>
           </div>
 
+          {/* SECTION 1.5: ORNAMENT DESIGN SAMPLE & PHOTO UPLOAD */}
+          <div className="bg-white border border-amber-300/90 rounded-xl p-4 shadow-sm space-y-3">
+            <div className="flex items-center justify-between border-b border-amber-100 pb-2">
+              <span className="text-xs font-bold text-amber-950 uppercase tracking-wider flex items-center space-x-1.5">
+                <Image className="w-4 h-4 text-amber-600" />
+                <span>Customer Design Sample & Photo Upload (Auto-Sent to Karagir WhatsApp)</span>
+              </span>
+              <span className="text-[11px] text-amber-800 font-medium">
+                Embedded on Job Card Slip & Dispatched directly to Karagir WhatsApp
+              </span>
+            </div>
+
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-4">
+              {/* Photo Thumbnail with Enlarge capability */}
+              <div className="relative group w-24 h-24 sm:w-28 sm:h-28 rounded-xl border-2 border-amber-300 bg-amber-50/50 overflow-hidden shadow-2xs shrink-0 flex items-center justify-center">
+                {designPhoto ? (
+                  <>
+                    <img
+                      src={designPhoto}
+                      alt="Customer Ornament Sample"
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setEnlargedPhotoUrl(designPhoto)}
+                      className="absolute inset-0 bg-slate-900/40 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer"
+                      title="Enlarge Photo"
+                    >
+                      <Eye className="w-5 h-5" />
+                    </button>
+                  </>
+                ) : (
+                  <div className="text-center p-2 text-slate-400">
+                    <Image className="w-7 h-7 mx-auto mb-1 text-amber-400" />
+                    <span className="text-[10px] font-bold block leading-tight text-amber-800/70">No Picture Attached</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Actions: Upload, Presets, Clear */}
+              <div className="space-y-2.5 flex-1 min-w-[240px]">
+                <div className="flex items-center space-x-2 flex-wrap gap-y-1.5">
+                  <label className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-bold text-xs flex items-center space-x-1.5 cursor-pointer shadow-2xs transition-all">
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>Upload Customer Photo / Sketch</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                  </label>
+
+                  {designPhoto && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => setEnlargedPhotoUrl(designPhoto)}
+                        className="px-2.5 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 text-xs font-semibold flex items-center space-x-1 cursor-pointer"
+                      >
+                        <Eye className="w-3.5 h-3.5 text-sky-600" />
+                        <span>Preview</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDesignPhoto('');
+                          setHeader((prev) => ({ ...prev, design_photo: '' }));
+                        }}
+                        className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer"
+                      >
+                        Remove
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {/* Preset Catalogue Samples */}
+                <div className="space-y-1">
+                  <span className="text-[10.5px] text-slate-500 font-bold block">
+                    Or pick from Design Catalogue Presets:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {JEWELLERY_SAMPLE_PRESETS.map((p, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          setDesignPhoto(p.url);
+                          setHeader((prev) => ({ ...prev, design_photo: p.url }));
+                          if (items.length > 0) {
+                            const updatedItems = [...items];
+                            updatedItems[0] = { ...updatedItems[0], image_url: p.url };
+                            setItems(updatedItems);
+                          }
+                        }}
+                        className={`text-[10px] px-2.5 py-1 rounded-md border font-medium transition-all cursor-pointer ${
+                          designPhoto === p.url
+                            ? 'bg-amber-100 border-amber-400 text-amber-950 font-bold shadow-2xs'
+                            : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-white hover:border-slate-300'
+                        }`}
+                      >
+                        {p.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* SECTION 2: SORTED ORDER ITEM GRID (Spec #22) */}
           <div className="bg-white border border-sky-200/80 rounded-xl p-4 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
@@ -1112,6 +1349,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
               <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-[11px]">
                 <tr>
                   <th className="p-2.5 border-r border-slate-200 w-10 text-center">#</th>
+                  <th className="p-2.5 border-r border-slate-200 w-14 text-center">Design</th>
                   <th className="p-2.5 border-r border-slate-200 w-28">Order No</th>
                   <th className="p-2.5 border-r border-slate-200">Customer & Ornament</th>
                   <th className="p-2.5 border-r border-slate-200 text-right w-24">Target Wt</th>
@@ -1119,7 +1357,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                   <th className="p-2.5 border-r border-slate-200 text-right w-24">Issued Metal</th>
                   <th className="p-2.5 border-r border-slate-200 w-28">Workshop Due</th>
                   <th className="p-2.5 border-r border-slate-200 text-center w-28">Status</th>
-                  <th className="p-2.5 text-center w-40">Actions</th>
+                  <th className="p-2.5 text-center min-w-[220px]">Workshop Actions & Dispatch</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 bg-white font-sans text-xs">
@@ -1142,11 +1380,32 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                     const issuedWt = ord.karagir_assignment?.issued_gross_wt || (isAssigned ? totalNet + 1.2 : 0);
                     const karagirName = ord.assigned_karagir || ord.karagir_assignment?.karagir_name;
                     const isReceived = ord.status === 'Received (Ready for Delivery)' || ord.karagir_assignment?.status === 'Received';
+                    const itemPhoto = ord.design_photo || ord.header.design_photo || ord.karagir_assignment?.design_photo || ord.items[0]?.image_url;
 
                     return (
                       <tr key={ord.id} className="hover:bg-amber-50/30 transition-colors">
                         <td className="p-2.5 border-r border-slate-200 text-center font-mono text-slate-400">
                           {idx + 1}
+                        </td>
+                        <td className="p-1.5 border-r border-slate-200 text-center">
+                          {itemPhoto ? (
+                            <button
+                              type="button"
+                              onClick={() => setEnlargedPhotoUrl(itemPhoto)}
+                              className="w-10 h-10 rounded-lg overflow-hidden border border-amber-300 mx-auto hover:opacity-80 transition-opacity flex items-center justify-center bg-white shadow-2xs group cursor-pointer"
+                              title="Click to Enlarge Photo"
+                            >
+                              <img
+                                src={itemPhoto}
+                                alt="Design Thumbnail"
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                              />
+                            </button>
+                          ) : (
+                            <div className="w-10 h-10 rounded-lg border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center mx-auto text-slate-400">
+                              <Image className="w-4 h-4" />
+                            </div>
+                          )}
                         </td>
                         <td className="p-2.5 border-r border-slate-200 font-mono font-bold text-blue-900">
                           {ord.order_no}
@@ -1194,29 +1453,49 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                           </span>
                         </td>
                         <td className="p-2.5 text-center">
-                          <div className="flex items-center justify-center space-x-1.5">
+                          <div className="flex items-center justify-center space-x-1.5 flex-wrap gap-y-1">
                             {!isAssigned ? (
                               <button
                                 onClick={() => handleOpenAssign(ord)}
-                                className="px-2.5 py-1 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px] flex items-center space-x-1 shadow-2xs"
+                                className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-bold text-xs flex items-center space-x-1 shadow-2xs cursor-pointer"
                               >
-                                <Hammer className="w-3 h-3" />
-                                <span>Assign</span>
+                                <Hammer className="w-3.5 h-3.5 text-amber-200" />
+                                <span>Assign Karagir</span>
                               </button>
                             ) : (
                               <>
+                                {/* WhatsApp to Karagir Button */}
+                                <button
+                                  onClick={() => handleSendWhatsAppToKaragirFromTable(ord)}
+                                  className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] flex items-center space-x-1 shadow-2xs cursor-pointer transition-colors"
+                                  title="Send Specs & Photo directly to Karagir WhatsApp"
+                                >
+                                  <MessageCircle className="w-3.5 h-3.5 text-emerald-200" />
+                                  <span>WhatsApp Karagir</span>
+                                </button>
+
                                 <button
                                   onClick={() => handleOpenJobCard(ord)}
-                                  className="px-2 py-1 rounded-lg bg-sky-50 text-sky-800 border border-sky-300 hover:bg-sky-100 font-bold text-[10px] flex items-center space-x-1"
+                                  className="px-2 py-1 rounded-lg bg-sky-50 text-sky-800 border border-sky-300 hover:bg-sky-100 font-bold text-[10px] flex items-center space-x-1 cursor-pointer"
                                   title="Print Workshop Job Card"
                                 >
                                   <Printer className="w-3 h-3 text-sky-600" />
                                   <span>Job Card</span>
                                 </button>
+
+                                <button
+                                  onClick={() => handleOpenAssign(ord)}
+                                  className="px-2 py-1 rounded-lg bg-amber-50 text-amber-800 border border-amber-300 hover:bg-amber-100 font-bold text-[10px] flex items-center space-x-1 cursor-pointer"
+                                  title="Edit Assignment / Issue More Metal"
+                                >
+                                  <Hammer className="w-3 h-3 text-amber-600" />
+                                  <span>Edit</span>
+                                </button>
+
                                 {!isReceived && (
                                   <button
                                     onClick={() => handleOpenReceive(ord)}
-                                    className="px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] flex items-center space-x-1 shadow-2xs"
+                                    className="px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] flex items-center space-x-1 shadow-2xs cursor-pointer"
                                     title="Receive Finished Ornament"
                                   >
                                     <CheckCircle2 className="w-3 h-3" />
@@ -1758,6 +2037,33 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
             onReceive={handleReceiveFromKaragir}
           />
         </>
+      )}
+
+      {/* Enlarged Photo Preview Modal */}
+      {enlargedPhotoUrl && (
+        <div className="fixed inset-0 bg-slate-900/80 z-60 flex items-center justify-center p-4">
+          <div className="bg-white p-4 rounded-2xl max-w-lg w-full space-y-3 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-2">
+              <span className="font-bold text-slate-900 text-xs flex items-center space-x-1.5">
+                <Image className="w-4 h-4 text-amber-600" />
+                <span>Ornament Design Sample Preview</span>
+              </span>
+              <button
+                onClick={() => setEnlargedPhotoUrl(null)}
+                className="p-1 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="w-full max-h-[70vh] rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center border border-slate-200">
+              <img
+                src={enlargedPhotoUrl}
+                alt="Enlarged Ornament Sample"
+                className="w-full h-full max-h-[68vh] object-contain"
+              />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

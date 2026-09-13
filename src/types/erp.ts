@@ -106,6 +106,7 @@ export interface NewOrderItem {
   hallm_charges: number;        // "HallM.Charges"
   making_pct: number;           // "Making%"
   item_amt: number;             // Calculated total for line
+  image_url?: string;           // Design / Ornament sample picture
 }
 
 export interface NewOrderHeader {
@@ -125,6 +126,7 @@ export interface NewOrderHeader {
   salesman: string;             // "Salesman"
   gst_not_required: boolean;    // "GST Not Required"
   close_order: boolean;         // "Close Order"
+  design_photo?: string;        // Master design / customer reference sample image
 }
 
 export interface NewOrderPayment {
@@ -217,6 +219,7 @@ export interface KaragirAssignment {
   received_net_wt?: number;
   received_date?: string;
   return_scrap_wt?: number;
+  design_photo?: string;        // Reference photo sent to karagir
 }
 
 export interface NewOrderBookingRecord {
@@ -230,6 +233,7 @@ export interface NewOrderBookingRecord {
   karagir_issue_date?: string;
   karagir_delivery_date?: string;
   karagir_assignment?: KaragirAssignment;
+  design_photo?: string;
   created_at: string;
 }
 

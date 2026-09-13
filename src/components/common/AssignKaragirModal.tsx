@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Hammer,
   X,
@@ -10,7 +10,13 @@ import {
   Sparkles,
   Phone,
   User,
-  AlertCircle
+  AlertCircle,
+  MessageCircle,
+  Image,
+  Upload,
+  Camera,
+  ExternalLink,
+  Eye
 } from 'lucide-react';
 import { NewOrderBookingRecord, KaragirAssignment } from '../../types/erp';
 import { formatCurrency, formatWeight, roundTo } from '../../utils/calculations';
@@ -79,6 +85,25 @@ export const DEFAULT_KARAGIRS: KaragirMasterProfile[] = [
   },
 ];
 
+export const JEWELLERY_SAMPLE_PRESETS = [
+  {
+    name: '22K Traditional Mangalsutra',
+    url: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80',
+  },
+  {
+    name: 'Temple Nakas Choker Necklace',
+    url: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=600&auto=format&fit=crop&q=80',
+  },
+  {
+    name: 'Diamond Solitaire Ring',
+    url: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&auto=format&fit=crop&q=80',
+  },
+  {
+    name: 'Royal Filigree Kada Bangle',
+    url: 'https://images.unsplash.com/photo-1611591475155-4286fa7c2e7f?w=600&auto=format&fit=crop&q=80',
+  },
+];
+
 interface AssignKaragirModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -130,8 +155,19 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
   );
   const [specialInstructions, setSpecialInstructions] = useState<string>(
     order.karagir_assignment?.special_instructions ||
-      'Ensure strict 916 hallmarking. Handcrafted traditional filigree finish. Clean joint soldering.'
+      'Strict 916 BIS Hallmark stamping. Handcrafted traditional filigree finish. Clean joint soldering.'
   );
+
+  // Design Picture state
+  const existingPhoto =
+    order.karagir_assignment?.design_photo ||
+    order.design_photo ||
+    order.header?.design_photo ||
+    order.items[0]?.image_url ||
+    JEWELLERY_SAMPLE_PRESETS[0].url;
+
+  const [designPhoto, setDesignPhoto] = useState<string>(existingPhoto);
+  const [showPhotoPreview, setShowPhotoPreview] = useState(false);
 
   // Auto-calculated fields
   const issuedFineWt = roundTo((issuedGrossWt * issuedPurity) / 100, 3);
@@ -148,14 +184,27 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
     }
   };
 
-  const handleSave = (shouldPrint = false) => {
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setDesignPhoto(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const buildAssignmentData = (): KaragirAssignment => {
     const karagirProfile = DEFAULT_KARAGIRS.find((k) => k.id === selectedKaragirId);
     const karagirName =
       selectedKaragirId === 'CUSTOM'
         ? customKaragirName || 'Custom Goldsmith'
         : karagirProfile?.name || 'Soni Govindbhai & Sons';
 
-    const assignmentData: KaragirAssignment = {
+    return {
       karagir_id: selectedKaragirId,
       karagir_name: karagirName,
       karagir_phone: karagirPhone,
@@ -171,8 +220,12 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
       special_instructions: specialInstructions,
       voucher_no: `ISS-KARA-${order.order_no.replace('ORD-', '')}`,
       status: 'Assigned',
+      design_photo: designPhoto,
     };
+  };
 
+  const handleSave = (shouldPrint = false) => {
+    const assignmentData = buildAssignmentData();
     onAssign(order.id, assignmentData);
     if (shouldPrint && onPrintJobCard) {
       onPrintJobCard(order, assignmentData);
@@ -180,11 +233,55 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
     onClose();
   };
 
+  const handleSendWhatsAppToKaragir = () => {
+    const assignmentData = buildAssignmentData();
+    onAssign(order.id, assignmentData);
+
+    const itemsSummary = order.items
+      .map((it, idx) => `${idx + 1}. *${it.item_name}* (Qty: ${it.qty}, Net Wt: ${formatWeight(it.net_wt)}, Purity: ${it.purity}%)`)
+      .join('\n');
+
+    const cleanPhone = karagirPhone.replace(/\D/g, '');
+    const phoneWithCountry = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
+
+    const message = `*SWARNA JEWELLERS & WORKSHOP - ARTISAN WORK ORDER* 🔨\n` +
+      `----------------------------------------\n` +
+      `*Job Voucher:* ${assignmentData.voucher_no}\n` +
+      `*Order Ref:* ${order.order_no}\n` +
+      `*Karagir Name:* ${assignmentData.karagir_name}\n` +
+      `*Customer Ref:* ${order.header.customer_n || 'Showroom Custom'}\n` +
+      `----------------------------------------\n` +
+      `*ORNAMENTS TO MAKE:*\n${itemsSummary}\n` +
+      `*Total Net Wt:* ${formatWeight(totalRequiredNetWt)}\n` +
+      `----------------------------------------\n` +
+      `*RAW BULLION METAL ISSUED:*\n` +
+      `• Metal Type: ${assignmentData.issued_metal_type}\n` +
+      `• Issued Gross Wt: ${formatWeight(assignmentData.issued_gross_wt)}\n` +
+      `• Purity: ${assignmentData.issued_purity}%\n` +
+      `• Fine Metal Wt: ${formatWeight(assignmentData.issued_fine_wt)}\n` +
+      `----------------------------------------\n` +
+      `*MAKING & LABOUR TERMS:*\n` +
+      `• Rate: ₹${assignmentData.karagir_rate_per_gm}/gm\n` +
+      `• Agreed Labour: ${formatCurrency(assignmentData.agreed_making_charges)}\n` +
+      `• Wastage Tolerance: ${assignmentData.wastage_pct}%\n` +
+      `• *Delivery Deadline:* ${assignmentData.promised_date}\n` +
+      `----------------------------------------\n` +
+      `*ARTISAN INSTRUCTIONS:*\n` +
+      `"${assignmentData.special_instructions || 'Strict 916 BIS Hallmark stamping mandatory.'}"\n\n` +
+      (designPhoto ? `*Design Reference Photo:* Attached with this dispatch order.` : '') +
+      `\n\n_Please confirm receipt of metal and delivery date schedule._`;
+
+    const whatsappUrl = `https://wa.me/${phoneWithCountry}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+
+    onClose();
+  };
+
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-      <div className="bg-white border border-amber-300 rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800 flex flex-col max-h-[92vh]">
+      <div className="bg-white border border-amber-300 rounded-2xl w-full max-w-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800 flex flex-col max-h-[94vh]">
         {/* Header */}
-        <div className="px-5 py-4 bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 text-white flex items-center justify-between shadow-xs">
+        <div className="px-5 py-3.5 bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 text-white flex items-center justify-between shadow-xs">
           <div className="flex items-center space-x-2.5">
             <div className="p-2 rounded-xl bg-white/20 text-white shadow-2xs">
               <Hammer className="w-5 h-5" />
@@ -194,7 +291,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
                 Assign Order to Karagir / Goldsmith
               </h3>
               <p className="text-[11px] text-amber-100 mt-0.5">
-                Allocate workshop artisan, issue raw metal & generate Job Card.
+                Allocate workshop artisan, issue raw metal & dispatch photo/specs to Karagir WhatsApp.
               </p>
             </div>
           </div>
@@ -230,16 +327,106 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
                 {formatWeight(totalRequiredNetWt)} (22K)
               </div>
               <div className="text-[10px] text-slate-500 font-mono">
-                Due: {order.header.delivery_date}
+                Customer Promised: {order.header.delivery_date}
               </div>
             </div>
           </div>
 
-          {/* Section 1: Karagir Selection */}
+          {/* Section 0: Ornament Design Photo & Reference */}
+          <div className="p-3.5 bg-amber-50/60 border border-amber-200 rounded-xl space-y-2.5">
+            <div className="flex justify-between items-center">
+              <label className="text-[11px] font-extrabold text-amber-950 uppercase tracking-wider flex items-center space-x-1.5">
+                <Image className="w-3.5 h-3.5 text-amber-700" />
+                <span>Ornament Design Sample Picture for Karagir</span>
+              </label>
+              <span className="text-[10px] text-amber-800 font-medium">
+                Sent to Karagir WhatsApp & printed on Job Card
+              </span>
+            </div>
+
+            <div className="flex flex-wrap sm:flex-nowrap gap-3 items-center">
+              {/* Photo Thumbnail */}
+              <div className="relative group w-24 h-24 rounded-xl border-2 border-amber-300 bg-white overflow-hidden shadow-2xs shrink-0 flex items-center justify-center">
+                {designPhoto ? (
+                  <>
+                    <img
+                      src={designPhoto}
+                      alt="Ornament Design Sample"
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPhotoPreview(true)}
+                      className="absolute inset-0 bg-slate-900/40 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
+                      title="Enlarge Photo"
+                    >
+                      <Eye className="w-5 h-5" />
+                    </button>
+                  </>
+                ) : (
+                  <div className="text-center p-2 text-slate-400">
+                    <Image className="w-6 h-6 mx-auto mb-1 text-amber-400" />
+                    <span className="text-[9px] font-bold block leading-none">No Picture</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Upload Controls & Presets */}
+              <div className="space-y-2 flex-1 min-w-[200px]">
+                <div className="flex items-center space-x-2 flex-wrap gap-y-1.5">
+                  <label className="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center space-x-1.5 cursor-pointer shadow-2xs transition-colors">
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>Upload Design Photo</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                  </label>
+
+                  {designPhoto && (
+                    <button
+                      type="button"
+                      onClick={() => setDesignPhoto('')}
+                      className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+
+                {/* Preset suggestions */}
+                <div className="space-y-1">
+                  <span className="text-[10px] text-slate-500 font-bold block">
+                    Or select from design catalogue samples:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {JEWELLERY_SAMPLE_PRESETS.map((p, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setDesignPhoto(p.url)}
+                        className={`text-[10px] px-2 py-0.5 rounded-md border font-medium transition-all ${
+                          designPhoto === p.url
+                            ? 'bg-amber-100 border-amber-400 text-amber-950 font-bold'
+                            : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                        }`}
+                      >
+                        {p.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 1: Karagir Selection & WhatsApp Phone */}
           <div className="space-y-2 border-b border-slate-100 pb-3">
             <label className="text-[11px] font-extrabold text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
               <User className="w-3.5 h-3.5 text-amber-700" />
-              <span>Select Artisan / Karagir Master</span>
+              <span>Select Artisan / Karagir Master & WhatsApp Contact</span>
             </label>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -282,12 +469,16 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
 
             <div className="grid grid-cols-2 gap-2.5">
               <div>
-                <label className="text-[10px] text-slate-500 font-bold">Karagir Phone / WhatsApp</label>
+                <label className="text-[10px] text-slate-500 font-bold flex items-center space-x-1">
+                  <Phone className="w-3 h-3 text-emerald-600" />
+                  <span>Karagir WhatsApp No (for Direct Dispatch)</span>
+                </label>
                 <input
                   type="text"
                   value={karagirPhone}
                   onChange={(e) => setKaragirPhone(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-slate-800 font-mono text-xs"
+                  placeholder="e.g. 9892044556"
+                  className="w-full bg-emerald-50/60 border border-emerald-300 rounded-lg px-2.5 py-1.5 text-emerald-950 font-mono font-bold text-xs"
                 />
               </div>
 
@@ -307,7 +498,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
           <div className="space-y-2 border-b border-slate-100 pb-3">
             <label className="text-[11px] font-extrabold text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
               <Scale className="w-3.5 h-3.5 text-amber-700" />
-              <span>Raw Metal & Alloy Allocation</span>
+              <span>Raw Metal & Bullion Allocation</span>
             </label>
 
             <div className="grid grid-cols-3 gap-2.5">
@@ -412,7 +603,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+        <div className="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between flex-wrap gap-2">
           <button
             onClick={onClose}
             className="px-3.5 py-2 rounded-xl text-slate-600 hover:bg-slate-200 font-bold text-xs"
@@ -420,7 +611,16 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
             Cancel
           </button>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+            <button
+              onClick={handleSendWhatsAppToKaragir}
+              className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs hover:shadow transition-all cursor-pointer"
+              title="Send full specs, metal issue & picture to Karagir WhatsApp"
+            >
+              <MessageCircle className="w-4 h-4 text-emerald-200" />
+              <span>Send to Karagir WhatsApp</span>
+            </button>
+
             <button
               onClick={() => handleSave(true)}
               className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-sky-50 text-sky-800 border border-sky-300 hover:bg-sky-100 font-bold text-xs shadow-2xs transition-colors cursor-pointer"
@@ -431,13 +631,35 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
 
             <button
               onClick={() => handleSave(false)}
-              className="flex items-center space-x-1.5 px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow transition-all cursor-pointer"
+              className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow transition-all cursor-pointer"
             >
               <CheckCircle2 className="w-4 h-4" />
-              <span>Confirm Karagir Assignment</span>
+              <span>Confirm Assignment</span>
             </button>
           </div>
         </div>
+
+        {/* Enlarged Photo Modal */}
+        {showPhotoPreview && (
+          <div className="fixed inset-0 bg-slate-900/80 z-60 flex items-center justify-center p-4">
+            <div className="bg-white p-3 rounded-2xl max-w-lg w-full space-y-3 shadow-2xl">
+              <div className="flex justify-between items-center">
+                <span className="font-bold text-slate-900 text-xs">Design Reference Preview</span>
+                <button
+                  onClick={() => setShowPhotoPreview(false)}
+                  className="p-1 text-slate-500 hover:text-slate-800"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <img
+                src={designPhoto}
+                alt="Enlarged Design Sample"
+                className="w-full max-h-[70vh] object-contain rounded-xl"
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
