@@ -69,59 +69,89 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const totalBankBalance = bankAccounts.reduce((s, b) => s + b.balance, 0);
   const cashInHand = 142600;
 
-  // Stock Category Breakdown: Imitation (1gm), URD Silver, URD Gold, Silver, Gold
+  // Stock Category Breakdown with live market valuations
+  const goldGramRate = gold24kRate || 7250;
+  const silverGramRate = silverRate || 86;
+
   const stockCategories = [
     {
       name: 'Pure Gold (916 / 999)',
       category: 'Gold',
+      purity_label: '91.6% - 99.9%',
+      purity_pct: 99.5,
       gross_wt: 1450.8,
       net_wt: 1420.2,
       fine_wt: 1300.9,
       pcs: 148,
+      valuation: 1300.9 * goldGramRate,
       color: 'from-amber-500 to-yellow-600',
+      bgGlow: 'bg-amber-50/70 border-amber-200/90 hover:border-amber-400',
       badge: 'bg-amber-100 text-amber-900 border-amber-300',
+      barColor: 'bg-gradient-to-r from-amber-400 to-yellow-500',
     },
     {
       name: 'Pure Silver (925 / 999)',
       category: 'Silver',
+      purity_label: '92.5% - 99.9%',
+      purity_pct: 92.5,
       gross_wt: 14200.0,
       net_wt: 14150.0,
       fine_wt: 13088.7,
       pcs: 84,
+      valuation: 13088.7 * silverGramRate,
       color: 'from-slate-400 to-slate-600',
+      bgGlow: 'bg-slate-50/70 border-slate-200/90 hover:border-slate-400',
       badge: 'bg-slate-100 text-slate-800 border-slate-300',
+      barColor: 'bg-gradient-to-r from-slate-300 to-slate-500',
     },
     {
       name: 'URD Gold (Old Scrap)',
       category: 'URD Gold',
+      purity_label: '83.0% Melt Touch',
+      purity_pct: 82.6,
       gross_wt: 184.5,
       net_wt: 178.0,
       fine_wt: 152.4,
       pcs: 22,
+      valuation: 152.4 * goldGramRate * 0.98,
       color: 'from-yellow-600 to-amber-700',
+      bgGlow: 'bg-yellow-50/60 border-yellow-200/90 hover:border-yellow-400',
       badge: 'bg-yellow-100 text-yellow-900 border-yellow-300',
+      barColor: 'bg-gradient-to-r from-yellow-500 to-amber-600',
     },
     {
       name: 'URD Silver (Old Scrap)',
       category: 'URD Silver',
+      purity_label: '77.7% Melt Touch',
+      purity_pct: 77.7,
       gross_wt: 2450.0,
       net_wt: 2380.0,
       fine_wt: 1904.0,
       pcs: 16,
+      valuation: 1904.0 * silverGramRate * 0.95,
       color: 'from-zinc-500 to-zinc-700',
+      bgGlow: 'bg-zinc-50/60 border-zinc-200/90 hover:border-zinc-400',
       badge: 'bg-zinc-100 text-zinc-800 border-zinc-300',
+      barColor: 'bg-gradient-to-r from-zinc-400 to-zinc-600',
     },
     {
       name: 'Imitation (1gm Jewellery)',
       category: 'Imitation (1 gm)',
+      purity_label: '1gm Gold Micro-Plate',
+      purity_pct: 100,
       gross_wt: 3200.0,
       net_wt: 3200.0,
       fine_wt: 0,
       pcs: 420,
+      valuation: 420 * 450,
       color: 'from-rose-500 to-pink-600',
+      bgGlow: 'bg-rose-50/50 border-rose-200/90 hover:border-rose-400',
       badge: 'bg-rose-100 text-rose-900 border-rose-300',
+      barColor: 'bg-gradient-to-r from-rose-400 to-pink-500',
     },
   ];
+
+  const totalVaultValuation = stockCategories.reduce((s, c) => s + c.valuation, 0);
 
   // Notice Panel Items (Spec requirement)
   const noticeItems = [
@@ -215,271 +245,315 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </div>
 
-      {/* 1. TOP METRICS STRIP (7 Perfectly Aligned Luxury Metric Cards) */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-3.5 items-stretch">
+      {/* 1. TOP METRICS STRIP (7 Compact, Perfectly Aligned Luxury Metric Cards) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2 sm:gap-2.5 items-stretch">
         {/* Card 1: Today's Cash */}
         <div
           onClick={() => onQuickAction('day_book')}
-          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 sm:p-4 rounded-2xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[135px] group`}
+          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3 rounded-xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between h-[125px] group`}
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors shadow-2xs">
-                <Wallet className="w-4 h-4" />
+            <div className="flex items-center space-x-1.5 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors shrink-0 shadow-2xs">
+                <Wallet className="w-3.5 h-3.5" />
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 font-sans">
+              <span className="text-[10.5px] font-bold uppercase tracking-tight text-slate-600 font-sans truncate">
                 Today's Cash
               </span>
             </div>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" />
+            <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all shrink-0" />
           </div>
 
-          <div className="my-1.5">
-            <div className="text-lg sm:text-xl font-black font-mono text-emerald-700 tracking-tight">
+          <div className="my-auto">
+            <div className="text-base sm:text-lg font-black font-mono text-emerald-700 tracking-tight leading-tight">
               ₹1,42,600
             </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold">
+          <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9.5px]">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[9px]">
               ↑ 8.5%
             </span>
-            <span className="text-slate-400 font-medium">vs yesterday</span>
+            <span className="text-slate-400 font-medium truncate">vs yesterday</span>
           </div>
         </div>
 
         {/* Card 2: Today's Bank */}
         <div
           onClick={() => onQuickAction('day_book')}
-          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 sm:p-4 rounded-2xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[135px] group`}
+          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3 rounded-xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between h-[125px] group`}
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-2xs">
-                <Building className="w-4 h-4" />
+            <div className="flex items-center space-x-1.5 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0 shadow-2xs">
+                <Building className="w-3.5 h-3.5" />
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 font-sans">
+              <span className="text-[10.5px] font-bold uppercase tracking-tight text-slate-600 font-sans truncate">
                 Today's Bank
               </span>
             </div>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all" />
+            <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all shrink-0" />
           </div>
 
-          <div className="my-1.5">
-            <div className="text-lg sm:text-xl font-black font-mono text-blue-900 tracking-tight">
+          <div className="my-auto">
+            <div className="text-base sm:text-lg font-black font-mono text-blue-900 tracking-tight leading-tight">
               {formatCurrency(totalBankBalance)}
             </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-extrabold">
+          <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9.5px]">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-extrabold text-[9px]">
               ↑ 4.2%
             </span>
-            <span className="text-slate-400 font-medium">4 Active A/cs</span>
+            <span className="text-slate-400 font-medium truncate">4 Active A/cs</span>
           </div>
         </div>
 
         {/* Card 3: Today's Sales */}
         <div
           onClick={() => onQuickAction('sales_invoice')}
-          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 sm:p-4 rounded-2xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[135px] group`}
+          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3 rounded-xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between h-[125px] group`}
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:bg-amber-600 group-hover:text-white transition-colors shadow-2xs">
-                <TrendingUp className="w-4 h-4" />
+            <div className="flex items-center space-x-1.5 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center group-hover:bg-amber-600 group-hover:text-white transition-colors shrink-0 shadow-2xs">
+                <TrendingUp className="w-3.5 h-3.5" />
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 font-sans">
+              <span className="text-[10.5px] font-bold uppercase tracking-tight text-slate-600 font-sans truncate">
                 Today's Sales
               </span>
             </div>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 group-hover:translate-x-0.5 transition-all" />
+            <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-amber-600 group-hover:translate-x-0.5 transition-all shrink-0" />
           </div>
 
-          <div className="my-1.5">
-            <div className="text-lg sm:text-xl font-black font-mono text-amber-900 tracking-tight">
+          <div className="my-auto">
+            <div className="text-base sm:text-lg font-black font-mono text-amber-900 tracking-tight leading-tight">
               ₹2,84,500
             </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold">
+          <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9.5px]">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[9px]">
               ↑ 12.4%
             </span>
-            <span className="text-slate-400 font-medium">vs yesterday</span>
+            <span className="text-slate-400 font-medium truncate">vs yesterday</span>
           </div>
         </div>
 
         {/* Card 4: Today's Purchase */}
         <div
           onClick={() => onQuickAction('purchase')}
-          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 sm:p-4 rounded-2xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[135px] group`}
+          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3 rounded-xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between h-[125px] group`}
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors shadow-2xs">
-                <ShoppingBag className="w-4 h-4" />
+            <div className="flex items-center space-x-1.5 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors shrink-0 shadow-2xs">
+                <ShoppingBag className="w-3.5 h-3.5" />
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 font-sans">
+              <span className="text-[10.5px] font-bold uppercase tracking-tight text-slate-600 font-sans truncate">
                 Today's Purchase
               </span>
             </div>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-orange-600 group-hover:translate-x-0.5 transition-all" />
+            <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-orange-600 group-hover:translate-x-0.5 transition-all shrink-0" />
           </div>
 
-          <div className="my-1.5">
-            <div className="text-lg sm:text-xl font-black font-mono text-orange-950 tracking-tight">
+          <div className="my-auto">
+            <div className="text-base sm:text-lg font-black font-mono text-orange-950 tracking-tight leading-tight">
               ₹1,95,000
             </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-800 font-extrabold">
+          <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9.5px]">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-800 font-extrabold text-[9px]">
               ↓ 6.3%
             </span>
-            <span className="text-slate-400 font-medium">Bullion Inward</span>
+            <span className="text-slate-400 font-medium truncate">Bullion Inward</span>
           </div>
         </div>
 
         {/* Card 5: Orders Pending */}
         <div
           onClick={() => onQuickAction('new_order')}
-          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 sm:p-4 rounded-2xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[135px] group`}
+          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3 rounded-xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between h-[125px] group`}
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-colors shadow-2xs">
-                <Clock className="w-4 h-4" />
+            <div className="flex items-center space-x-1.5 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-colors shrink-0 shadow-2xs">
+                <Clock className="w-3.5 h-3.5" />
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 font-sans">
+              <span className="text-[10.5px] font-bold uppercase tracking-tight text-slate-600 font-sans truncate">
                 Orders Pending
               </span>
             </div>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-rose-600 group-hover:translate-x-0.5 transition-all" />
+            <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-rose-600 group-hover:translate-x-0.5 transition-all shrink-0" />
           </div>
 
-          <div className="my-1.5">
-            <div className="text-lg sm:text-xl font-black font-mono text-rose-700 tracking-tight">
+          <div className="my-auto">
+            <div className="text-base sm:text-lg font-black font-mono text-rose-700 tracking-tight leading-tight">
               {pendingOrdersCount} Orders
             </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-800 font-extrabold">
+          <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9.5px]">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-800 font-extrabold text-[9px]">
               2 Due
             </span>
-            <span className="text-slate-400 font-medium">Delivery Today</span>
+            <span className="text-slate-400 font-medium truncate">Delivery Today</span>
           </div>
         </div>
 
         {/* Card 6: New Walk-Ins */}
         <div
-          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 sm:p-4 rounded-2xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between min-h-[135px] group`}
+          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3 rounded-xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between h-[125px] group`}
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center group-hover:bg-sky-600 group-hover:text-white transition-colors shadow-2xs">
-                <UserPlus className="w-4 h-4" />
+            <div className="flex items-center space-x-1.5 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center group-hover:bg-sky-600 group-hover:text-white transition-colors shrink-0 shadow-2xs">
+                <UserPlus className="w-3.5 h-3.5" />
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 font-sans">
+              <span className="text-[10.5px] font-bold uppercase tracking-tight text-slate-600 font-sans truncate">
                 New Walk-ins
               </span>
             </div>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-600 group-hover:translate-x-0.5 transition-all" />
+            <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-sky-600 group-hover:translate-x-0.5 transition-all shrink-0" />
           </div>
 
-          <div className="my-1.5">
-            <div className="text-lg sm:text-xl font-black font-mono text-sky-950 tracking-tight">
+          <div className="my-auto">
+            <div className="text-base sm:text-lg font-black font-mono text-sky-950 tracking-tight leading-tight">
               14 Visitors
             </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold">
+          <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9.5px]">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[9px]">
               ↑ 27%
             </span>
-            <span className="text-slate-400 font-medium">New KYC Profiles</span>
+            <span className="text-slate-400 font-medium truncate">New Profiles</span>
           </div>
         </div>
 
         {/* Card 7: Total Footfall */}
         <div
-          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 sm:p-4 rounded-2xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between min-h-[135px] group`}
+          className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3 rounded-xl shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between h-[125px] group`}
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-colors shadow-2xs">
-                <Users className="w-4 h-4" />
+            <div className="flex items-center space-x-1.5 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-colors shrink-0 shadow-2xs">
+                <Users className="w-3.5 h-3.5" />
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 font-sans">
+              <span className="text-[10.5px] font-bold uppercase tracking-tight text-slate-600 font-sans truncate">
                 Total Footfall
               </span>
             </div>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-purple-600 group-hover:translate-x-0.5 transition-all" />
+            <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-purple-600 group-hover:translate-x-0.5 transition-all shrink-0" />
           </div>
 
-          <div className="my-1.5">
-            <div className="text-lg sm:text-xl font-black font-mono text-purple-950 tracking-tight">
+          <div className="my-auto">
+            <div className="text-base sm:text-lg font-black font-mono text-purple-950 tracking-tight leading-tight">
               38 Guests
             </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold">
+          <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9.5px]">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[9px]">
               ↑ 16%
             </span>
-            <span className="text-slate-400 font-medium">Showroom Total</span>
+            <span className="text-slate-400 font-medium truncate">Showroom Total</span>
           </div>
         </div>
       </div>
 
-      {/* 2. CURRENT STOCK BREAKDOWN (5 Categories: Imitation 1gm, URD Silver, URD Gold, Silver, Gold) */}
+      {/* 2. CURRENT STOCK VAULT BREAKDOWN (Executive-Grade Bullion Dashboard with Live Market Valuation) */}
       <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-2xl p-4 sm:p-5 shadow-xs space-y-4`}>
-        <div className="flex flex-wrap justify-between items-center border-b border-slate-100 pb-3 gap-2">
-          <div className="flex items-center space-x-2">
-            <div className="p-1.5 rounded-lg bg-amber-100 text-amber-800">
+        <div className="flex flex-wrap justify-between items-center border-b border-slate-100 pb-3 gap-3">
+          <div className="flex items-center space-x-2.5">
+            <div className="p-2 rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 text-white shadow-2xs">
               <Coins className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">
-                Current Stock Vault Breakdown
-              </h2>
-              <span className="text-[10px] text-slate-400">Pure Gold, Silver, URD Scraps, and Imitation</span>
+              <div className="flex items-center space-x-2">
+                <h2 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">
+                  Current Stock Vault Breakdown
+                </h2>
+                <span className="text-[9.5px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold border border-amber-300">
+                  Live Market Rates
+                </span>
+              </div>
+              <span className="text-[10px] text-slate-400">
+                Pure Gold 24K: ₹{goldGramRate}/g • Pure Silver: ₹{silverGramRate}/g • Real-time Fine Metal Accounting
+              </span>
             </div>
           </div>
-          <div className="px-3 py-1 rounded-xl bg-blue-50 border border-blue-200 text-[11px] font-mono font-bold text-blue-950 flex items-center space-x-1.5">
-            <span className="text-slate-500 font-sans font-normal text-[10px]">Total Fine Bullion:</span>
-            <strong className="text-blue-900 font-extrabold">{formatWeight(totalStockFineWt)}</strong>
+
+          <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+            <div className="px-3 py-1 rounded-xl bg-blue-50 border border-blue-200 text-[11px] font-mono font-bold text-blue-950 flex items-center space-x-1.5 shadow-2xs">
+              <span className="text-slate-500 font-sans font-medium text-[10px]">Total Fine Bullion:</span>
+              <strong className="text-blue-900 font-extrabold">{formatWeight(totalStockFineWt)}</strong>
+            </div>
+
+            <div className="px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-300 text-[11px] font-mono font-bold text-emerald-950 flex items-center space-x-1.5 shadow-2xs">
+              <span className="text-emerald-700 font-sans font-medium text-[10px]">Vault Valuation:</span>
+              <strong className="text-emerald-900 font-extrabold">{formatCurrency(totalVaultValuation)}</strong>
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           {stockCategories.map((stk, idx) => (
             <div
               key={idx}
-              className="p-4 rounded-2xl bg-slate-50/70 border border-slate-200/90 hover:border-blue-400 hover:bg-white hover:shadow-md transition-all duration-150 space-y-2.5"
+              className={`p-3.5 rounded-2xl border transition-all duration-200 space-y-2.5 shadow-2xs hover:shadow-md ${stk.bgGlow}`}
             >
-              <div className="flex justify-between items-center">
-                <span className="font-extrabold text-slate-900 text-xs truncate font-sans" title={stk.name}>
-                  {stk.name}
-                </span>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold border shadow-2xs ${stk.badge}`}>
+              {/* Card Header: Category & Pcs */}
+              <div className="flex justify-between items-start">
+                <div className="min-w-0 pr-1">
+                  <div className="font-extrabold text-slate-900 text-xs truncate font-sans" title={stk.name}>
+                    {stk.name}
+                  </div>
+                  <div className="text-[9.5px] font-medium text-slate-500 flex items-center space-x-1">
+                    <span>{stk.purity_label}</span>
+                  </div>
+                </div>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold border shadow-2xs shrink-0 ${stk.badge}`}>
                   {stk.pcs} Pcs
                 </span>
               </div>
 
-              <div className="space-y-1.5 font-mono text-[11px]">
-                <div className="flex justify-between text-slate-600">
+              {/* Valuation Banner */}
+              <div className="p-1.5 rounded-lg bg-white/80 border border-slate-200/80 flex items-center justify-between text-[10px] shadow-2xs">
+                <span className="text-slate-500 font-sans">Live Est. Value:</span>
+                <span className="font-mono font-black text-slate-900">
+                  {formatCurrency(stk.valuation)}
+                </span>
+              </div>
+
+              {/* Weights Monospace Breakdown */}
+              <div className="space-y-1 font-mono text-[11px] bg-white/60 p-2 rounded-xl border border-slate-200/60">
+                <div className="flex justify-between items-center text-slate-600 text-[10.5px]">
                   <span className="font-sans text-[10px] text-slate-400">Gross Wt:</span>
                   <span className="font-bold text-slate-800">{formatWeight(stk.gross_wt)}</span>
                 </div>
-                <div className="flex justify-between text-slate-600">
+                <div className="flex justify-between items-center text-slate-600 text-[10.5px]">
                   <span className="font-sans text-[10px] text-slate-400">Net Wt:</span>
                   <span className="font-bold text-blue-900">{formatWeight(stk.net_wt)}</span>
                 </div>
-                <div className="flex justify-between text-amber-900 pt-1.5 border-t border-slate-200/80 font-bold">
-                  <span className="font-sans text-[10px] text-amber-800 font-semibold">Fine Gold/Sil:</span>
-                  <span className="font-extrabold">{formatWeight(stk.fine_wt)}</span>
+                <div className="flex justify-between items-center text-amber-950 pt-1 border-t border-slate-200/80 font-bold text-[10.5px]">
+                  <span className="font-sans text-[10px] text-amber-800 font-semibold">Fine Metal:</span>
+                  <span className="font-extrabold text-amber-900">{formatWeight(stk.fine_wt)}</span>
+                </div>
+              </div>
+
+              {/* Metallic Purity Bar */}
+              <div className="space-y-1 pt-0.5">
+                <div className="flex justify-between text-[9px] text-slate-400 font-mono">
+                  <span>Purity / Purity Equiv</span>
+                  <span className="font-bold text-slate-700">{stk.purity_pct}%</span>
+                </div>
+                <div className="w-full bg-slate-200/80 h-1.5 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full rounded-full ${stk.barColor}`}
+                    style={{ width: `${stk.purity_pct}%` }}
+                  />
                 </div>
               </div>
             </div>

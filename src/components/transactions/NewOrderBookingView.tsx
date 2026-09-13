@@ -5,7 +5,8 @@ import {
   NewOrderItem,
   NewOrderPayment,
   NewOrderTab,
-  ColumnSetting
+  ColumnSetting,
+  KaragirAssignment
 } from '../../types/erp';
 import {
   Save,
@@ -27,7 +28,15 @@ import {
   ChevronUp,
   User,
   CreditCard,
-  Sparkles
+  Sparkles,
+  Search,
+  Filter,
+  ArrowUpRight,
+  FileText,
+  Calendar,
+  Scale,
+  Download,
+  AlertCircle
 } from 'lucide-react';
 import {
   calculateNetWeight,
@@ -43,6 +52,9 @@ import { ColumnSettingsModal } from '../common/ColumnSettingsModal';
 import { FieldHelpModal } from '../common/FieldHelpModal';
 import { PrintVoucherModal } from '../common/PrintVoucherModal';
 import { WhatsAppShareModal } from '../common/WhatsAppShareModal';
+import { AssignKaragirModal, DEFAULT_KARAGIRS } from '../common/AssignKaragirModal';
+import { KaragirJobCardModal } from '../common/KaragirJobCardModal';
+import { ReceiveKaragirModal } from '../common/ReceiveKaragirModal';
 
 interface NewOrderBookingViewProps {
   orders: NewOrderBookingRecord[];
@@ -84,6 +96,25 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
   const [showHelp, setShowHelp] = useState(false);
   const [showPrint, setShowPrint] = useState(false);
   const [showWhatsApp, setShowWhatsApp] = useState(false);
+
+  // Karagir Modals & State
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [showJobCardModal, setShowJobCardModal] = useState(false);
+  const [showReceiveModal, setShowReceiveModal] = useState(false);
+  const [modalTargetOrder, setModalTargetOrder] = useState<NewOrderBookingRecord | null>(null);
+  const [activeJobAssignment, setActiveJobAssignment] = useState<KaragirAssignment | undefined>(undefined);
+
+  // Sub-tabs Filter & Search
+  const [filterKaragir, setFilterKaragir] = useState<string>('all');
+  const [searchOrderQuery, setSearchOrderQuery] = useState<string>('');
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+
+  // Quick Issue Metal Drawer (Tab 3)
+  const [showQuickIssueModal, setShowQuickIssueModal] = useState(false);
+  const [quickIssueMetalType, setQuickIssueMetalType] = useState('24K Pure Gold Granules (999)');
+  const [quickIssueKaragir, setQuickIssueKaragir] = useState(DEFAULT_KARAGIRS[0].name);
+  const [quickIssueGrossWt, setQuickIssueGrossWt] = useState<number>(50.0);
+  const [quickIssuePurity, setQuickIssuePurity] = useState<number>(99.9);
 
   // Header State (Spec #21)
   const [header, setHeader] = useState<NewOrderHeader>({
@@ -312,6 +343,102 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
     ]);
   };
 
+  const currentSelectedOrder = selectedOrderId ? orders.find((o) => o.id === selectedOrderId) : null;
+
+  const handleOpenAssign = (order?: NewOrderBookingRecord | null) => {
+    if (order) {
+      setModalTargetOrder(order);
+      setShowAssignModal(true);
+    } else {
+      const activeRecord: NewOrderBookingRecord = {
+        id: selectedOrderId || `ord-${Date.now()}`,
+        order_no: selectedOrderId
+          ? orders.find((o) => o.id === selectedOrderId)?.order_no || `ORD-${Date.now()}`
+          : `ORD-2026-${String(orders.length + 1).padStart(3, '0')}`,
+        header,
+        items,
+        payment,
+        status: 'Booked',
+        created_at: new Date().toISOString(),
+      };
+      setModalTargetOrder(activeRecord);
+      setShowAssignModal(true);
+    }
+  };
+
+  const handleAssignKaragir = (orderId: string, assignment: KaragirAssignment) => {
+    const existingOrder = orders.find((o) => o.id === orderId);
+    const updatedOrder: NewOrderBookingRecord = existingOrder
+      ? {
+          ...existingOrder,
+          assigned_karagir: assignment.karagir_name,
+          karagir_issue_date: assignment.assigned_date,
+          karagir_delivery_date: assignment.promised_date,
+          karagir_assignment: assignment,
+          status: 'In Workshop',
+        }
+      : {
+          id: orderId,
+          order_no: `ORD-2026-${String(orders.length + 1).padStart(3, '0')}`,
+          header,
+          items,
+          payment,
+          assigned_karagir: assignment.karagir_name,
+          karagir_issue_date: assignment.assigned_date,
+          karagir_delivery_date: assignment.promised_date,
+          karagir_assignment: assignment,
+          status: 'In Workshop',
+          created_at: new Date().toISOString(),
+        };
+
+    onSaveOrder(updatedOrder);
+    setSelectedOrderId(updatedOrder.id);
+  };
+
+  const handleOpenJobCard = (order: NewOrderBookingRecord, assignment?: KaragirAssignment) => {
+    setModalTargetOrder(order);
+    setActiveJobAssignment(assignment || order.karagir_assignment);
+    setShowJobCardModal(true);
+  };
+
+  const handleOpenReceive = (order: NewOrderBookingRecord) => {
+    setModalTargetOrder(order);
+    setShowReceiveModal(true);
+  };
+
+  const handleReceiveFromKaragir = (
+    orderId: string,
+    receivedData: {
+      received_gross_wt: number;
+      received_net_wt: number;
+      return_scrap_wt: number;
+      actual_wastage_wt: number;
+      making_charges_paid: number;
+      received_date: string;
+      hallmark_verified: boolean;
+    }
+  ) => {
+    const target = orders.find((o) => o.id === orderId);
+    if (!target) return;
+
+    const updated: NewOrderBookingRecord = {
+      ...target,
+      status: 'Received (Ready for Delivery)',
+      karagir_assignment: target.karagir_assignment
+        ? {
+            ...target.karagir_assignment,
+            status: 'Received',
+            received_gross_wt: receivedData.received_gross_wt,
+            received_net_wt: receivedData.received_net_wt,
+            return_scrap_wt: receivedData.return_scrap_wt,
+            received_date: receivedData.received_date,
+          }
+        : undefined,
+    };
+    onSaveOrder(updated);
+    alert(`Order ${target.order_no} received from Karagir and marked ready for hallmark/delivery!`);
+  };
+
   const tabs: { id: NewOrderTab; label: string }[] = [
     { id: 'new_order_booking', label: '1. New Order Booking' },
     { id: 'submit_order_to_karagir', label: '2. Submit to Karagir' },
@@ -343,8 +470,41 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
           </div>
         </div>
 
-        {/* Action Buttons */}
+        {/* Action Buttons & Karagir Status */}
         <div className="flex items-center space-x-1.5 flex-wrap">
+          {/* Karagir Assignment Action */}
+          <button
+            onClick={() => handleOpenAssign(currentSelectedOrder)}
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white text-xs font-bold shadow-xs hover:shadow transition-all cursor-pointer"
+            title="Assign Order to Karagir / Goldsmith (Alt+K)"
+          >
+            <Hammer className="w-3.5 h-3.5 text-amber-200" />
+            <span>Assign Karagir (Alt+K)</span>
+          </button>
+
+          {/* Assigned Karagir Badge */}
+          {currentSelectedOrder?.assigned_karagir && (
+            <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-300 text-amber-900 text-xs font-bold">
+              <span>🔨 {currentSelectedOrder.assigned_karagir}</span>
+              <button
+                onClick={() => handleOpenJobCard(currentSelectedOrder)}
+                className="text-amber-700 underline hover:text-amber-950 text-[10px]"
+                title="Print Karagir Job Card"
+              >
+                (Job Card)
+              </button>
+              {currentSelectedOrder.status !== 'Received (Ready for Delivery)' && (
+                <button
+                  onClick={() => handleOpenReceive(currentSelectedOrder)}
+                  className="px-1.5 py-0.5 bg-emerald-600 text-white rounded text-[10px] hover:bg-emerald-700 ml-1 font-bold"
+                  title="Receive from Karagir"
+                >
+                  Receive
+                </button>
+              )}
+            </div>
+          )}
+
           <button
             onClick={handleNewOrder}
             className="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors"
@@ -865,26 +1025,667 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
         </div>
       )}
 
-      {/* Karagir & Other Sub-Tabs */}
-      {activeTab !== 'new_order_booking' && (
-        <div className="bg-white border border-sky-200/80 rounded-xl p-8 shadow-sm text-center space-y-4 min-h-[300px] flex flex-col justify-center items-center">
-          <div className="p-3 rounded-full bg-blue-50 text-blue-600 border border-blue-200">
-            <Hammer className="w-8 h-8" />
+      {/* TAB 2: SUBMIT ORDER TO KARAGIR */}
+      {activeTab === 'submit_order_to_karagir' && (
+        <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+          {/* Summary KPIs */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+              <span className="text-[10.5px] font-bold text-slate-500 uppercase tracking-tight block">
+                Total Orders Booked
+              </span>
+              <div className="text-xl font-black font-mono text-slate-900 mt-1">{orders.length} Orders</div>
+              <span className="text-[10px] text-slate-400">All customer bookings</span>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200">
+              <span className="text-[10.5px] font-bold text-amber-800 uppercase tracking-tight block">
+                Assigned to Karagirs
+              </span>
+              <div className="text-xl font-black font-mono text-amber-950 mt-1">
+                {orders.filter((o) => o.assigned_karagir || o.karagir_assignment).length} Orders
+              </div>
+              <span className="text-[10px] text-amber-700">Allocated to workshops</span>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200">
+              <span className="text-[10.5px] font-bold text-blue-800 uppercase tracking-tight block">
+                Active in Workshop
+              </span>
+              <div className="text-xl font-black font-mono text-blue-950 mt-1">
+                {orders.filter((o) => o.status === 'In Workshop' || (o.assigned_karagir && o.status !== 'Received (Ready for Delivery)')).length} Orders
+              </div>
+              <span className="text-[10px] text-blue-700">Currently in manufacturing</span>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200">
+              <span className="text-[10.5px] font-bold text-emerald-800 uppercase tracking-tight block">
+                Received / Ready
+              </span>
+              <div className="text-xl font-black font-mono text-emerald-950 mt-1">
+                {orders.filter((o) => o.status === 'Received (Ready for Delivery)' || o.karagir_assignment?.status === 'Received').length} Orders
+              </div>
+              <span className="text-[10px] text-emerald-700">Ready for hallmarking/pickup</span>
+            </div>
           </div>
-          <div>
-            <h3 className="text-base font-bold text-slate-800">
-              {tabs.find((t) => t.id === activeTab)?.label}
-            </h3>
-            <p className="text-xs text-slate-500 max-w-md mx-auto mt-1">
-              Active workshop job tracking. Karagir: <strong>Soni Govindbhai & Sons</strong>. Delivery promised: <strong>{header.delivery_date}</strong>.
+
+          {/* Filters & Actions */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-slate-100">
+            <div className="flex items-center space-x-2 flex-1 min-w-[240px]">
+              <div className="relative flex-1">
+                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                <input
+                  type="text"
+                  placeholder="Search order no, customer name, ornament..."
+                  value={searchOrderQuery}
+                  onChange={(e) => setSearchOrderQuery(e.target.value)}
+                  className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:ring-2 focus:ring-amber-500 focus:outline-hidden"
+                />
+              </div>
+
+              <select
+                value={filterKaragir}
+                onChange={(e) => setFilterKaragir(e.target.value)}
+                className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-700 font-bold"
+              >
+                <option value="all">All Karagirs</option>
+                {DEFAULT_KARAGIRS.map((k) => (
+                  <option key={k.id} value={k.name}>
+                    {k.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <button
+              onClick={() => handleOpenAssign(currentSelectedOrder || orders[0])}
+              className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-bold text-xs shadow-xs hover:shadow transition-all cursor-pointer"
+            >
+              <Hammer className="w-3.5 h-3.5 text-amber-200" />
+              <span>+ Assign Selected Order to Karagir</span>
+            </button>
+          </div>
+
+          {/* Dispatch Register Table */}
+          <div className="overflow-x-auto border border-slate-200 rounded-xl shadow-2xs">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-[11px]">
+                <tr>
+                  <th className="p-2.5 border-r border-slate-200 w-10 text-center">#</th>
+                  <th className="p-2.5 border-r border-slate-200 w-28">Order No</th>
+                  <th className="p-2.5 border-r border-slate-200">Customer & Ornament</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-24">Target Wt</th>
+                  <th className="p-2.5 border-r border-slate-200 w-44">Assigned Karagir</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-24">Issued Metal</th>
+                  <th className="p-2.5 border-r border-slate-200 w-28">Workshop Due</th>
+                  <th className="p-2.5 border-r border-slate-200 text-center w-28">Status</th>
+                  <th className="p-2.5 text-center w-40">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 bg-white font-sans text-xs">
+                {orders
+                  .filter((ord) => {
+                    const matchSearch =
+                      !searchOrderQuery ||
+                      ord.order_no.toLowerCase().includes(searchOrderQuery.toLowerCase()) ||
+                      ord.header.customer_n.toLowerCase().includes(searchOrderQuery.toLowerCase()) ||
+                      ord.items.some((i) => i.item_name.toLowerCase().includes(searchOrderQuery.toLowerCase()));
+                    const matchKaragir =
+                      filterKaragir === 'all' ||
+                      ord.assigned_karagir === filterKaragir ||
+                      ord.karagir_assignment?.karagir_name === filterKaragir;
+                    return matchSearch && matchKaragir;
+                  })
+                  .map((ord, idx) => {
+                    const isAssigned = !!(ord.assigned_karagir || ord.karagir_assignment);
+                    const totalNet = ord.items.reduce((s, i) => s + (i.net_wt || 0), 0);
+                    const issuedWt = ord.karagir_assignment?.issued_gross_wt || (isAssigned ? totalNet + 1.2 : 0);
+                    const karagirName = ord.assigned_karagir || ord.karagir_assignment?.karagir_name;
+                    const isReceived = ord.status === 'Received (Ready for Delivery)' || ord.karagir_assignment?.status === 'Received';
+
+                    return (
+                      <tr key={ord.id} className="hover:bg-amber-50/30 transition-colors">
+                        <td className="p-2.5 border-r border-slate-200 text-center font-mono text-slate-400">
+                          {idx + 1}
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200 font-mono font-bold text-blue-900">
+                          {ord.order_no}
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200">
+                          <div className="font-bold text-slate-900">{ord.header.customer_n || 'Patron Order'}</div>
+                          <div className="text-[11px] text-slate-500 truncate max-w-xs">
+                            {ord.items.map((i) => i.item_name).join(', ')}
+                          </div>
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200 text-right font-mono font-bold text-slate-800">
+                          {formatWeight(totalNet)}
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200">
+                          {isAssigned ? (
+                            <div>
+                              <div className="font-bold text-amber-950 flex items-center space-x-1">
+                                <span>🔨 {karagirName}</span>
+                              </div>
+                              <span className="text-[10px] text-slate-400 font-mono">
+                                Vch: {ord.karagir_assignment?.voucher_no || 'ISS-KARA-01'}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-[11px] text-slate-400 italic">Not Assigned</span>
+                          )}
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200 text-right font-mono font-bold text-amber-900">
+                          {issuedWt > 0 ? formatWeight(issuedWt) : '—'}
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200 font-mono text-[11px] text-slate-700">
+                          {ord.karagir_delivery_date || ord.header.delivery_date}
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200 text-center">
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                              isReceived
+                                ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                                : isAssigned
+                                ? 'bg-amber-100 text-amber-900 border-amber-300'
+                                : 'bg-slate-100 text-slate-700 border-slate-300'
+                            }`}
+                          >
+                            {isReceived ? 'Received' : isAssigned ? 'In Workshop' : 'Pending Assign'}
+                          </span>
+                        </td>
+                        <td className="p-2.5 text-center">
+                          <div className="flex items-center justify-center space-x-1.5">
+                            {!isAssigned ? (
+                              <button
+                                onClick={() => handleOpenAssign(ord)}
+                                className="px-2.5 py-1 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px] flex items-center space-x-1 shadow-2xs"
+                              >
+                                <Hammer className="w-3 h-3" />
+                                <span>Assign</span>
+                              </button>
+                            ) : (
+                              <>
+                                <button
+                                  onClick={() => handleOpenJobCard(ord)}
+                                  className="px-2 py-1 rounded-lg bg-sky-50 text-sky-800 border border-sky-300 hover:bg-sky-100 font-bold text-[10px] flex items-center space-x-1"
+                                  title="Print Workshop Job Card"
+                                >
+                                  <Printer className="w-3 h-3 text-sky-600" />
+                                  <span>Job Card</span>
+                                </button>
+                                {!isReceived && (
+                                  <button
+                                    onClick={() => handleOpenReceive(ord)}
+                                    className="px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] flex items-center space-x-1 shadow-2xs"
+                                    title="Receive Finished Ornament"
+                                  >
+                                    <CheckCircle2 className="w-3 h-3" />
+                                    <span>Receive</span>
+                                  </button>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 3: ISSUE MATERIAL TO KARAGIR */}
+      {activeTab === 'issue_material_to_karagir' && (
+        <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="flex flex-wrap justify-between items-center border-b border-slate-100 pb-3 gap-2">
+            <div>
+              <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center space-x-2">
+                <Scale className="w-4 h-4 text-amber-600" />
+                <span>Workshop Bullion & Raw Material Issue Ledger</span>
+              </h2>
+              <p className="text-xs text-slate-500">
+                Track pure gold granules, 916 wire, silver ingots, and running metal balances with Karagirs.
+              </p>
+            </div>
+
+            <button
+              onClick={() => handleOpenAssign(currentSelectedOrder || orders[0])}
+              className="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs flex items-center space-x-1.5 cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Issue Material for Order</span>
+            </button>
+          </div>
+
+          {/* 3 Bullion Pool Balance Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="p-4 rounded-xl bg-amber-50/80 border border-amber-300 flex justify-between items-center shadow-2xs">
+              <div>
+                <span className="text-[10px] font-bold text-amber-900 uppercase block">
+                  24K Fine Gold Issued to Karagirs
+                </span>
+                <div className="text-xl font-black font-mono text-amber-950 mt-1">185.450 g</div>
+                <span className="text-[10px] text-amber-700 font-medium">99.9% Pure Granules</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-amber-500 text-white">
+                <Coins className="w-5 h-5" />
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-yellow-50/80 border border-yellow-300 flex justify-between items-center shadow-2xs">
+              <div>
+                <span className="text-[10px] font-bold text-yellow-900 uppercase block">
+                  916 Alloyed Wire in Workshop
+                </span>
+                <div className="text-xl font-black font-mono text-yellow-950 mt-1">94.200 g</div>
+                <span className="text-[10px] text-yellow-800 font-medium">22K Standard Wire / Plate</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-yellow-600 text-white">
+                <Sparkles className="w-5 h-5" />
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-300 flex justify-between items-center shadow-2xs">
+              <div>
+                <span className="text-[10px] font-bold text-slate-700 uppercase block">
+                  Fine Silver Issued to Karagirs
+                </span>
+                <div className="text-xl font-black font-mono text-slate-900 mt-1">1,640.000 g</div>
+                <span className="text-[10px] text-slate-500 font-medium">99.9% / 92.5% Silver Stock</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-slate-600 text-white">
+                <Scale className="w-5 h-5" />
+              </div>
+            </div>
+          </div>
+
+          {/* Metal Issue Vouchers Table */}
+          <div className="space-y-2">
+            <span className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
+              Recent Workshop Material Issue Vouchers
+            </span>
+
+            <div className="overflow-x-auto border border-slate-200 rounded-xl shadow-2xs">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-[11px]">
+                  <tr>
+                    <th className="p-2.5 border-r border-slate-200 w-28">Voucher No</th>
+                    <th className="p-2.5 border-r border-slate-200 w-24">Date</th>
+                    <th className="p-2.5 border-r border-slate-200">Karagir Name</th>
+                    <th className="p-2.5 border-r border-slate-200">Metal Type</th>
+                    <th className="p-2.5 border-r border-slate-200 text-right w-28">Gross Wt (g)</th>
+                    <th className="p-2.5 border-r border-slate-200 text-center w-20">Purity</th>
+                    <th className="p-2.5 border-r border-slate-200 text-right w-28">Fine Metal Wt</th>
+                    <th className="p-2.5 border-r border-slate-200 w-28">Order Ref</th>
+                    <th className="p-2.5 text-center w-24">Print</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 bg-white font-mono text-xs">
+                  {orders
+                    .filter((o) => o.assigned_karagir || o.karagir_assignment)
+                    .map((ord) => {
+                      const asg = ord.karagir_assignment;
+                      const gWt = asg?.issued_gross_wt || 29.7;
+                      const pur = asg?.issued_purity || 99.9;
+                      const fWt = asg?.issued_fine_wt || roundTo((gWt * pur) / 100, 3);
+
+                      return (
+                        <tr key={ord.id} className="hover:bg-sky-50/30">
+                          <td className="p-2.5 border-r border-slate-200 font-bold text-amber-950">
+                            {asg?.voucher_no || `ISS-KARA-${ord.order_no.replace('ORD-', '')}`}
+                          </td>
+                          <td className="p-2.5 border-r border-slate-200 text-slate-600 font-sans">
+                            {asg?.assigned_date || ord.header.bill_date}
+                          </td>
+                          <td className="p-2.5 border-r border-slate-200 font-sans font-bold text-slate-900">
+                            {ord.assigned_karagir || asg?.karagir_name}
+                          </td>
+                          <td className="p-2.5 border-r border-slate-200 font-sans text-slate-700">
+                            {asg?.issued_metal_type || '24K Pure Gold Granules (999)'}
+                          </td>
+                          <td className="p-2.5 border-r border-slate-200 text-right font-bold text-slate-900">
+                            {formatWeight(gWt)}
+                          </td>
+                          <td className="p-2.5 border-r border-slate-200 text-center text-slate-700">
+                            {pur}%
+                          </td>
+                          <td className="p-2.5 border-r border-slate-200 text-right font-black text-amber-900">
+                            {formatWeight(fWt)}
+                          </td>
+                          <td className="p-2.5 border-r border-slate-200 font-bold text-blue-900">
+                            {ord.order_no}
+                          </td>
+                          <td className="p-2.5 text-center">
+                            <button
+                              onClick={() => handleOpenJobCard(ord)}
+                              className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700"
+                              title="Print Material Issue Slip"
+                            >
+                              <Printer className="w-3.5 h-3.5" />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 4: RECEIVE ORDER FROM KARAGIR */}
+      {activeTab === 'receive_order_from_karagir' && (
+        <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="border-b border-slate-100 pb-3">
+            <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center space-x-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>Workshop Returns, Finished Ornament Receiving & Wastage Audit</span>
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Reconcile finished weights from Karagir, audit wastage tolerance, and settle artisan labour charges.
             </p>
           </div>
-          <button
-            onClick={() => setActiveTab('new_order_booking')}
-            className="px-4 py-2 bg-blue-600 text-white font-bold text-xs rounded-lg hover:bg-blue-700 shadow transition-colors"
-          >
-            Return to Order Booking
-          </button>
+
+          <div className="overflow-x-auto border border-slate-200 rounded-xl shadow-2xs">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-[11px]">
+                <tr>
+                  <th className="p-2.5 border-r border-slate-200 w-28">Order No</th>
+                  <th className="p-2.5 border-r border-slate-200">Customer & Ornament</th>
+                  <th className="p-2.5 border-r border-slate-200 w-44">Karagir Name</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-28">Issued Metal</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-28">Target Net Wt</th>
+                  <th className="p-2.5 border-r border-slate-200 w-28">Promised Date</th>
+                  <th className="p-2.5 border-r border-slate-200 text-center w-28">Status</th>
+                  <th className="p-2.5 text-center w-36">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 bg-white font-sans text-xs">
+                {orders
+                  .filter((o) => o.assigned_karagir || o.karagir_assignment)
+                  .map((ord) => {
+                    const totalNet = ord.items.reduce((s, i) => s + (i.net_wt || 0), 0);
+                    const isReceived = ord.status === 'Received (Ready for Delivery)' || ord.karagir_assignment?.status === 'Received';
+
+                    return (
+                      <tr key={ord.id} className="hover:bg-emerald-50/20">
+                        <td className="p-2.5 border-r border-slate-200 font-mono font-bold text-blue-900">
+                          {ord.order_no}
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200">
+                          <div className="font-bold text-slate-900">{ord.header.customer_n || 'Patron Order'}</div>
+                          <div className="text-[11px] text-slate-500 truncate max-w-xs">
+                            {ord.items.map((i) => i.item_name).join(', ')}
+                          </div>
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200 font-bold text-slate-800">
+                          🔨 {ord.assigned_karagir || ord.karagir_assignment?.karagir_name}
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200 text-right font-mono font-bold text-amber-900">
+                          {formatWeight(ord.karagir_assignment?.issued_gross_wt || totalNet + 1.2)}
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200 text-right font-mono font-bold text-blue-900">
+                          {formatWeight(totalNet)}
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200 font-mono text-[11px] text-slate-600">
+                          {ord.karagir_delivery_date || ord.header.delivery_date}
+                        </td>
+                        <td className="p-2.5 border-r border-slate-200 text-center">
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                              isReceived
+                                ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                                : 'bg-amber-100 text-amber-900 border-amber-300'
+                            }`}
+                          >
+                            {isReceived ? 'Received & Stamped' : 'In Workshop'}
+                          </span>
+                        </td>
+                        <td className="p-2.5 text-center">
+                          {isReceived ? (
+                            <span className="text-emerald-700 font-bold text-xs flex items-center justify-center space-x-1">
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              <span>Ready</span>
+                            </span>
+                          ) : (
+                            <button
+                              onClick={() => handleOpenReceive(ord)}
+                              className="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shadow-2xs transition-colors flex items-center space-x-1 mx-auto"
+                            >
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              <span>Receive & Settle</span>
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 5: SALES INVOICE CONVERSION */}
+      {activeTab === 'new_order_sales_invoice' && (
+        <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="border-b border-slate-100 pb-3 flex justify-between items-center">
+            <div>
+              <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
+                Generate Sales Tax Invoice for Completed Orders
+              </h2>
+              <p className="text-xs text-slate-500">
+                Convert delivered and hallmarked custom jewellery orders into official GST Tax Invoices.
+              </p>
+            </div>
+            <span className="text-xs font-mono font-bold text-blue-900 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200">
+              {orders.length} Total Bookings
+            </span>
+          </div>
+
+          <div className="overflow-x-auto border border-slate-200 rounded-xl shadow-2xs">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-[11px]">
+                <tr>
+                  <th className="p-2.5 border-r border-slate-200 w-28">Order No</th>
+                  <th className="p-2.5 border-r border-slate-200">Customer Name</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-28">Gross Value (₹)</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-28">Advance Paid</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-28">Balance Due</th>
+                  <th className="p-2.5 border-r border-slate-200 text-center w-28">Workshop Status</th>
+                  <th className="p-2.5 text-center w-36">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 bg-white font-mono text-xs">
+                {orders.map((ord) => (
+                  <tr key={ord.id} className="hover:bg-sky-50/30">
+                    <td className="p-2.5 border-r border-slate-200 font-bold text-blue-900">
+                      {ord.order_no}
+                    </td>
+                    <td className="p-2.5 border-r border-slate-200 font-sans font-bold text-slate-900">
+                      {ord.header.customer_n || 'Patron'}
+                    </td>
+                    <td className="p-2.5 border-r border-slate-200 text-right font-bold text-slate-800">
+                      {formatCurrency(ord.payment.amount)}
+                    </td>
+                    <td className="p-2.5 border-r border-slate-200 text-right font-bold text-emerald-800">
+                      {formatCurrency(ord.payment.advance_amt)}
+                    </td>
+                    <td className="p-2.5 border-r border-slate-200 text-right font-black text-rose-800">
+                      {formatCurrency(ord.payment.balance_amount)}
+                    </td>
+                    <td className="p-2.5 border-r border-slate-200 text-center font-sans">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-800 border border-slate-300">
+                        {ord.status}
+                      </span>
+                    </td>
+                    <td className="p-2.5 text-center font-sans">
+                      <button
+                        onClick={() => {
+                          setSelectedOrderId(ord.id);
+                          setShowPrint(true);
+                        }}
+                        className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] shadow-2xs"
+                      >
+                        Create Invoice
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 6: ORDER REPORT */}
+      {activeTab === 'new_order_report' && (
+        <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="border-b border-slate-100 pb-3 flex flex-wrap justify-between items-center gap-2">
+            <div>
+              <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
+                Comprehensive Order Tracking & Workshop Status Register
+              </h2>
+              <p className="text-xs text-slate-500">
+                Real-time visibility across customer orders, karagir allocations, delivery dates, and balances.
+              </p>
+            </div>
+            <button
+              onClick={() => alert('Order Register exported successfully to CSV!')}
+              className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center space-x-1.5 border border-slate-300 cursor-pointer"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Export CSV</span>
+            </button>
+          </div>
+
+          <div className="overflow-x-auto border border-slate-200 rounded-xl shadow-2xs">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-[11px]">
+                <tr>
+                  <th className="p-2.5 border-r border-slate-200 w-28">Order No</th>
+                  <th className="p-2.5 border-r border-slate-200 w-24">Date</th>
+                  <th className="p-2.5 border-r border-slate-200">Customer Name & Phone</th>
+                  <th className="p-2.5 border-r border-slate-200">Ornaments</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-24">Net Wt</th>
+                  <th className="p-2.5 border-r border-slate-200 w-36">Karagir</th>
+                  <th className="p-2.5 border-r border-slate-200 w-28">Delivery Date</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-28">Balance Due</th>
+                  <th className="p-2.5 text-center w-28">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 bg-white font-sans text-xs">
+                {orders.map((ord) => {
+                  const totalNet = ord.items.reduce((s, i) => s + (i.net_wt || 0), 0);
+                  return (
+                    <tr key={ord.id} className="hover:bg-sky-50/20">
+                      <td className="p-2.5 border-r border-slate-200 font-mono font-bold text-blue-900">
+                        {ord.order_no}
+                      </td>
+                      <td className="p-2.5 border-r border-slate-200 font-mono text-slate-600">
+                        {ord.header.bill_date}
+                      </td>
+                      <td className="p-2.5 border-r border-slate-200">
+                        <div className="font-bold text-slate-900">{ord.header.customer_n || 'Patron'}</div>
+                        <div className="text-[10px] text-slate-500 font-mono">{ord.header.ph_no}</div>
+                      </td>
+                      <td className="p-2.5 border-r border-slate-200 text-[11px] text-slate-700">
+                        {ord.items.map((i) => i.item_name).join(', ')}
+                      </td>
+                      <td className="p-2.5 border-r border-slate-200 text-right font-mono font-bold text-slate-800">
+                        {formatWeight(totalNet)}
+                      </td>
+                      <td className="p-2.5 border-r border-slate-200 text-[11px] font-bold text-amber-950">
+                        {ord.assigned_karagir ? `🔨 ${ord.assigned_karagir}` : '—'}
+                      </td>
+                      <td className="p-2.5 border-r border-slate-200 font-mono text-[11px] text-slate-700">
+                        {ord.header.delivery_date}
+                      </td>
+                      <td className="p-2.5 border-r border-slate-200 text-right font-mono font-bold text-rose-800">
+                        {formatCurrency(ord.payment.balance_amount)}
+                      </td>
+                      <td className="p-2.5 text-center">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-800 border border-slate-300">
+                          {ord.status}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 7: ADVANCE LEDGER */}
+      {activeTab === 'advance' && (
+        <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="border-b border-slate-100 pb-3 flex justify-between items-center">
+            <div>
+              <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
+                Customer Advance Deposits & Old Gold (URD) Ledger
+              </h2>
+              <p className="text-xs text-slate-500">
+                Audit trail of cash advances, bank transfers, and old scrap trade-in receipts.
+              </p>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto border border-slate-200 rounded-xl shadow-2xs">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-[11px]">
+                <tr>
+                  <th className="p-2.5 border-r border-slate-200 w-28">Order No</th>
+                  <th className="p-2.5 border-r border-slate-200">Customer Name</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-32">Cash Advance (₹)</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-32">Bank / UPI Advance</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-32">Old Gold (URD) (₹)</th>
+                  <th className="p-2.5 border-r border-slate-200 text-right w-32 font-bold text-emerald-900">
+                    Total Advance
+                  </th>
+                  <th className="p-2.5 text-right w-32 font-bold text-rose-900">Balance Due</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 bg-white font-mono text-xs">
+                {orders.map((ord) => {
+                  const cashAdv = ord.payment.cash_received || 0;
+                  const bankAdv = ord.payment.advance_amt || 0;
+                  const urdAdv = ord.payment.purchase_amt || 0;
+                  const totAdv = bankAdv + urdAdv;
+
+                  return (
+                    <tr key={ord.id} className="hover:bg-slate-50">
+                      <td className="p-2.5 border-r border-slate-200 font-bold text-blue-900">
+                        {ord.order_no}
+                      </td>
+                      <td className="p-2.5 border-r border-slate-200 font-sans font-bold text-slate-900">
+                        {ord.header.customer_n || 'Patron'}
+                      </td>
+                      <td className="p-2.5 border-r border-slate-200 text-right text-slate-700">
+                        {formatCurrency(cashAdv)}
+                      </td>
+                      <td className="p-2.5 border-r border-slate-200 text-right text-blue-900 font-bold">
+                        {formatCurrency(bankAdv)}
+                      </td>
+                      <td className="p-2.5 border-r border-slate-200 text-right text-amber-900 font-bold">
+                        {formatCurrency(urdAdv)}
+                      </td>
+                      <td className="p-2.5 border-r border-slate-200 text-right font-black text-emerald-900 bg-emerald-50/40">
+                        {formatCurrency(totAdv)}
+                      </td>
+                      <td className="p-2.5 text-right font-black text-rose-900 bg-rose-50/40">
+                        {formatCurrency(ord.payment.balance_amount)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
@@ -921,6 +1722,43 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
         phone={header.ph_no || '9819033445'}
         defaultMessage={`Namaste ${header.customer_n || 'Sir/Madam'}, Order ORD-2026-084 (${items[0]?.item_name}) confirmed at Swarna Jewellers. Advance: ${formatCurrency(payment.advance_amt)}. Balance: ${formatCurrency(payment.balance_amount)}. Delivery: ${header.delivery_date}.`}
       />
+
+      {/* Karagir Modals */}
+      {modalTargetOrder && (
+        <>
+          <AssignKaragirModal
+            isOpen={showAssignModal}
+            onClose={() => {
+              setShowAssignModal(false);
+              setModalTargetOrder(null);
+            }}
+            order={modalTargetOrder}
+            onAssign={handleAssignKaragir}
+            onPrintJobCard={(ord, asg) => handleOpenJobCard(ord, asg)}
+          />
+
+          <KaragirJobCardModal
+            isOpen={showJobCardModal}
+            onClose={() => {
+              setShowJobCardModal(false);
+              setModalTargetOrder(null);
+              setActiveJobAssignment(undefined);
+            }}
+            order={modalTargetOrder}
+            assignment={activeJobAssignment}
+          />
+
+          <ReceiveKaragirModal
+            isOpen={showReceiveModal}
+            onClose={() => {
+              setShowReceiveModal(false);
+              setModalTargetOrder(null);
+            }}
+            order={modalTargetOrder}
+            onReceive={handleReceiveFromKaragir}
+          />
+        </>
+      )}
     </div>
   );
 };

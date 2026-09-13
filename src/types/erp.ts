@@ -196,6 +196,29 @@ export interface NewOrderPayment {
   manual_urd_amt?: number;
 }
 
+export interface KaragirAssignment {
+  karagir_id: string;
+  karagir_name: string;
+  karagir_phone?: string;
+  assigned_date: string;
+  promised_date: string;
+  issued_metal_type: string; // e.g. '24K Gold Bar', '916 Wire', '999 Fine Silver'
+  issued_gross_wt: number;
+  issued_purity: number;
+  issued_fine_wt: number;
+  alloy_added_wt?: number;
+  karagir_rate_per_gm: number;
+  agreed_making_charges: number;
+  wastage_pct: number;
+  special_instructions?: string;
+  voucher_no: string;
+  status: 'Assigned' | 'In Progress' | 'Received' | 'Polished' | 'Cancelled';
+  received_gross_wt?: number;
+  received_net_wt?: number;
+  received_date?: string;
+  return_scrap_wt?: number;
+}
+
 export interface NewOrderBookingRecord {
   id: string;
   order_no: string;
@@ -206,6 +229,7 @@ export interface NewOrderBookingRecord {
   assigned_karagir?: string;
   karagir_issue_date?: string;
   karagir_delivery_date?: string;
+  karagir_assignment?: KaragirAssignment;
   created_at: string;
 }
 
