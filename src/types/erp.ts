@@ -488,6 +488,7 @@ export interface StockItem {
   purity: number;
   category: string;             // Gold, Silver, Imitation, URD Gold, URD Silver, etc.
   tag_no?: string;
+  huid?: string;
   is_urd: boolean;
   is_loose?: boolean;
   rate_per_gm: number;

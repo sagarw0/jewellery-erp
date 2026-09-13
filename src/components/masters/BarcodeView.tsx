@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Barcode,
   Printer,
@@ -398,6 +398,39 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
         size: 'Standard',
       })),
   ]);
+
+  // Sync newly added loose stock items from props (e.g. from Purchase Invoices)
+  useEffect(() => {
+    const looseFromProps = stockItems.filter((s) => s.is_loose);
+    setLooseInventory((prev) => {
+      const existingIds = new Set(prev.map((p) => p.id));
+      const additions: LooseStockLot[] = [];
+      looseFromProps.forEach((s, idx) => {
+        const id = `loose-stk-${s.id}`;
+        if (!existingIds.has(id)) {
+          additions.push({
+            id: id,
+            item_name: s.item_name,
+            category: (s.category as any) || 'Gold',
+            item_type: 'Ornament',
+            source: s.is_urd ? 'URD Scrap Counter' : 'Purchase Inward / Vault',
+            voucher_no: `PUR-${1000 + idx}`,
+            inward_date: new Date().toISOString().slice(0, 10),
+            gross_wt: s.gross_wt,
+            purity: s.purity || 91.6,
+            fine_wt: Number(((s.gross_wt * (s.purity || 91.6)) / 100).toFixed(3)),
+            rate_per_gm: 6800,
+            target_tag_no: `TAG-LS-${Math.floor(10000 + Math.random() * 90000)}`,
+            huid: s.huid || 'B9K7T1',
+            making_per_gm: 450,
+            stone_wt: 0,
+            size: 'Standard',
+          });
+        }
+      });
+      return additions.length > 0 ? [...additions, ...prev] : prev;
+    });
+  }, [stockItems]);
 
   const [selectedLooseIds, setSelectedLooseIds] = useState<string[]>([]);
   const [looseSearchTerm, setLooseSearchTerm] = useState('');

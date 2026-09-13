@@ -271,8 +271,63 @@ export function App() {
 
   const handleSavePurchase = (record: PurchaseRecord) => {
     setPurchases((prev) => [record, ...prev]);
+
+    // Automatically convert purchased items into Loose Stock Inventory
+    const newStockEntries: StockItem[] = record.items.map((it, idx) => {
+      let category = 'Gold';
+      const nameUpper = it.item_name.toUpperCase();
+      if (nameUpper.includes('SILVER') || nameUpper.includes('PAYAL')) category = 'Silver';
+      else if (nameUpper.includes('DIAMOND') || nameUpper.includes('SOLITAIRE')) category = 'Diamond';
+      else if (nameUpper.includes('IMITATION') || nameUpper.includes('1GM') || nameUpper.includes('MICRO')) category = '1gm Imitation';
+      else if (nameUpper.includes('URD') || nameUpper.includes('OLD GOLD') || nameUpper.includes('MELTING')) category = 'URD Gold';
+
+      const fineWeight = Number(((it.net_wt * (it.purity || 91.6)) / 100).toFixed(3));
+      const rate = it.rate || gold22kRate;
+      const val = it.total_amt || (it.net_wt * rate);
+
+      return {
+        id: `stk-pur-${record.id}-${idx}`,
+        item_name: it.item_name,
+        category: category,
+        qty: it.qty || 1,
+        gross_wt: it.gross_wt,
+        net_wt: it.net_wt,
+        purity: it.purity || 91.6,
+        fine_wt: fineWeight,
+        rate_per_gm: rate,
+        total_value: val,
+        is_urd: category.startsWith('URD'),
+        is_loose: true,
+        tag_no: '',
+        huid: it.huid || 'B9K8L1',
+      };
+    });
+
+    setStockItems((prev) => [...newStockEntries, ...prev]);
+
+    // Record DayBook Entry for purchase payment
+    if (record.payment && (record.payment.by_cash > 0 || record.payment.by_cheque > 0 || record.payment.bill_amount > 0)) {
+      const dayBookRecord: DayBookEntry = {
+        id: `db-pur-${record.id}`,
+        invoice_type: 'Purchase Bill',
+        invoice_no: record.header.invoice_no,
+        total_amt: record.payment.bill_amount || record.payment.purchase_amt,
+        urd_amt: 0,
+        net_amt: record.payment.bill_amount || record.payment.purchase_amt,
+        cash_received: 0,
+        cash_payment: record.payment.by_cash || 0,
+        bank_received: 0,
+        bank_payment: record.payment.by_cheque || 0,
+        date: record.header.invoice_date || new Date().toISOString().slice(0, 10),
+        details: `Supplier: ${record.header.supplier_name} (${record.items.length} lots, Gr: ${record.items.reduce((s, i) => s + i.gross_wt, 0).toFixed(3)}g)`,
+        total_amt_without_disc: record.payment.purchase_amt || 0,
+      };
+      setDaybook((prev) => [dayBookRecord, ...prev]);
+    }
+
     // Async push to Supabase
     cloudService.savePurchase(record);
+    newStockEntries.forEach((stk) => cloudService.saveStockItem(stk));
   };
 
   const handleSaveRefinery = (record: RefineryRecord) => {
