@@ -19,7 +19,12 @@ import {
   Scale,
   Sparkles,
   CheckCircle2,
-  Package
+  Package,
+  ChevronRight,
+  ArrowRight,
+  Banknote,
+  ShoppingCart,
+  FileText
 } from 'lucide-react';
 import { formatCurrency, formatWeight } from '../../utils/calculations';
 import { NewOrderBookingRecord, SundryDebtorRow, StockItem } from '../../types/erp';
@@ -35,6 +40,33 @@ interface DashboardViewProps {
   debtors: SundryDebtorRow[];
   stockItems: StockItem[];
 }
+
+// Reusable SVG Sparkline / Wave Graph Component matching reference UI
+const SparklineWave: React.FC<{ color: string; id: string; waveType?: number }> = ({ color, id, waveType = 1 }) => {
+  const pathD =
+    waveType === 1
+      ? 'M0 46 C35 44, 55 52, 85 40 C115 28, 140 44, 165 30 C185 18, 195 24, 200 14'
+      : waveType === 2
+      ? 'M0 50 C40 48, 65 38, 95 42 C125 46, 150 24, 175 22 C190 20, 195 16, 200 10'
+      : 'M0 48 C30 46, 50 36, 80 44 C110 52, 140 32, 165 24 C185 16, 195 20, 200 12';
+
+  return (
+    <svg
+      viewBox="0 0 200 60"
+      className="absolute bottom-0 left-0 right-0 w-full h-11 overflow-hidden pointer-events-none"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <linearGradient id={`sparkline-grad-${id}`} x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor={color} stopOpacity="0.45" />
+          <stop offset="100%" stopColor={color} stopOpacity="0.0" />
+        </linearGradient>
+      </defs>
+      <path d={`${pathD} L200 60 L0 60 Z`} fill={`url(#sparkline-grad-${id})`} />
+      <path d={pathD} fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" opacity="0.85" />
+    </svg>
+  );
+};
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
   onQuickAction,
@@ -210,90 +242,290 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </div>
 
-      {/* 1. TOP METRICS STRIP (7 Aligned Cards) */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
-        {/* Today's Cash */}
-        <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 rounded-2xl shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-150`}>
-          <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1.5">
-            <span className="font-extrabold uppercase tracking-wider text-[10px]">Today's Cash</span>
-            <div className="p-1 rounded-lg bg-emerald-50 text-emerald-600">
-              <Wallet className="w-3.5 h-3.5" />
+      {/* 1. TOP METRICS STRIP (7 Cards Formatted Exactly as Reference Style) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-3.5">
+        {/* Card 1: Today's Cash */}
+        <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-b from-white via-emerald-50/20 to-emerald-50/50 border border-emerald-200/90 p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between min-h-[148px]">
+          <div>
+            {/* Header: Icon + Title + Action Chevron */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 shadow-2xs">
+                  <Banknote className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-bold text-slate-800 tracking-tight font-sans">
+                  Today's Cash
+                </span>
+              </div>
+              <button
+                onClick={() => onQuickAction('day_book')}
+                className="w-6 h-6 rounded-lg border border-emerald-200/80 bg-white/90 text-emerald-600 flex items-center justify-center hover:bg-emerald-100/60 transition-colors shadow-2xs cursor-pointer"
+                title="View Day Book"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Value */}
+            <div className="text-xl sm:text-2xl font-extrabold font-mono text-emerald-800 tracking-tight mt-2 mb-1.5">
+              ₹1,42,600
+            </div>
+
+            {/* Trend Indicator */}
+            <div className="flex items-center space-x-1.5 text-[11px] relative z-10">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[10px]">
+                ↑ 8.5%
+              </span>
+              <span className="text-slate-400 font-medium text-[11px]">vs yesterday</span>
             </div>
           </div>
-          <div className="text-base sm:text-lg font-extrabold font-mono text-emerald-700">₹1,42,600</div>
-          <div className="text-[10px] text-slate-400 mt-1 font-medium">Counter Drawer Till</div>
+
+          {/* Bottom Sparkline Wave */}
+          <SparklineWave color="#10b981" id="cash" waveType={1} />
         </div>
 
-        {/* Today's Bank */}
-        <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 rounded-2xl shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-150`}>
-          <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1.5">
-            <span className="font-extrabold uppercase tracking-wider text-[10px]">Today's Bank</span>
-            <div className="p-1 rounded-lg bg-blue-50 text-blue-600">
-              <Building className="w-3.5 h-3.5" />
+        {/* Card 2: Today's Bank */}
+        <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-b from-white via-sky-50/20 to-sky-50/50 border border-sky-200/90 p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between min-h-[148px]">
+          <div>
+            {/* Header: Icon + Title + Action Chevron */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center shrink-0 shadow-2xs">
+                  <Building className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-bold text-slate-800 tracking-tight font-sans">
+                  Today's Bank
+                </span>
+              </div>
+              <button
+                onClick={() => onQuickAction('day_book')}
+                className="w-6 h-6 rounded-lg border border-sky-200/80 bg-white/90 text-sky-600 flex items-center justify-center hover:bg-sky-100/60 transition-colors shadow-2xs cursor-pointer"
+                title="View Bank Balances"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Value */}
+            <div className="text-xl sm:text-2xl font-extrabold font-mono text-blue-900 tracking-tight mt-2 mb-1.5">
+              {formatCurrency(totalBankBalance)}
+            </div>
+
+            {/* Trend Indicator */}
+            <div className="flex items-center space-x-1.5 text-[11px] relative z-10">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 font-extrabold text-[10px]">
+                ↑ 4.2%
+              </span>
+              <span className="text-slate-400 font-medium text-[11px]">vs yesterday</span>
             </div>
           </div>
-          <div className="text-base sm:text-lg font-extrabold font-mono text-blue-900">{formatCurrency(totalBankBalance)}</div>
-          <div className="text-[10px] text-slate-400 mt-1 font-medium">4 Active Bank A/cs</div>
+
+          {/* Bottom Sparkline Wave */}
+          <SparklineWave color="#0284c7" id="bank" waveType={2} />
         </div>
 
-        {/* Today's Sales */}
-        <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 rounded-2xl shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-150`}>
-          <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1.5">
-            <span className="font-extrabold uppercase tracking-wider text-[10px]">Today's Sales</span>
-            <div className="p-1 rounded-lg bg-indigo-50 text-indigo-600">
-              <TrendingUp className="w-3.5 h-3.5" />
+        {/* Card 3: Today's Sales */}
+        <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-b from-white via-amber-50/20 to-amber-50/50 border border-amber-200/90 p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between min-h-[148px]">
+          <div>
+            {/* Header: Icon + Title + Action Chevron */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 shadow-2xs">
+                  <ShoppingCart className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-bold text-slate-800 tracking-tight font-sans">
+                  Today's Sales
+                </span>
+              </div>
+              <button
+                onClick={() => onQuickAction('sales_invoice')}
+                className="w-6 h-6 rounded-lg border border-amber-200/80 bg-white/90 text-amber-600 flex items-center justify-center hover:bg-amber-100/60 transition-colors shadow-2xs cursor-pointer"
+                title="View Sales Invoices (F4)"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Value */}
+            <div className="text-xl sm:text-2xl font-extrabold font-mono text-amber-900 tracking-tight mt-2 mb-1.5">
+              ₹2,84,500
+            </div>
+
+            {/* Trend Indicator */}
+            <div className="flex items-center space-x-1.5 text-[11px] relative z-10">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[10px]">
+                ↑ 12.4%
+              </span>
+              <span className="text-slate-400 font-medium text-[11px]">vs yesterday</span>
             </div>
           </div>
-          <div className="text-base sm:text-lg font-extrabold font-mono text-slate-900">₹2,84,500</div>
-          <div className="text-[10px] text-emerald-600 font-bold mt-1">+12.4% vs y'day</div>
+
+          {/* Bottom Sparkline Wave */}
+          <SparklineWave color="#f59e0b" id="sales" waveType={3} />
         </div>
 
-        {/* Today's Purchase */}
-        <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 rounded-2xl shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-150`}>
-          <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1.5">
-            <span className="font-extrabold uppercase tracking-wider text-[10px]">Today's Purchase</span>
-            <div className="p-1 rounded-lg bg-amber-50 text-amber-600">
-              <ShoppingBag className="w-3.5 h-3.5" />
+        {/* Card 4: Today's Purchase */}
+        <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-b from-white via-orange-50/20 to-orange-50/50 border border-orange-200/90 p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between min-h-[148px]">
+          <div>
+            {/* Header: Icon + Title + Action Chevron */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center shrink-0 shadow-2xs">
+                  <Package className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-bold text-slate-800 tracking-tight font-sans">
+                  Today's Purchase
+                </span>
+              </div>
+              <button
+                onClick={() => onQuickAction('purchase')}
+                className="w-6 h-6 rounded-lg border border-orange-200/80 bg-white/90 text-orange-600 flex items-center justify-center hover:bg-orange-100/60 transition-colors shadow-2xs cursor-pointer"
+                title="View Purchases (F5)"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Value */}
+            <div className="text-xl sm:text-2xl font-extrabold font-mono text-orange-950 tracking-tight mt-2 mb-1.5">
+              ₹1,95,000
+            </div>
+
+            {/* Trend Indicator */}
+            <div className="flex items-center space-x-1.5 text-[11px] relative z-10">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 font-extrabold text-[10px]">
+                ↓ 6.3%
+              </span>
+              <span className="text-slate-400 font-medium text-[11px]">vs yesterday</span>
             </div>
           </div>
-          <div className="text-base sm:text-lg font-extrabold font-mono text-amber-800">₹1,95,000</div>
-          <div className="text-[10px] text-slate-400 mt-1 font-medium">Bullion & Lots Inward</div>
+
+          {/* Bottom Sparkline Wave */}
+          <SparklineWave color="#ea580c" id="purchase" waveType={1} />
         </div>
 
-        {/* Order Pending */}
-        <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 rounded-2xl shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-150`}>
-          <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1.5">
-            <span className="font-extrabold uppercase tracking-wider text-[10px]">Orders Pending</span>
-            <div className="p-1 rounded-lg bg-rose-50 text-rose-600">
+        {/* Card 5: Orders Pending */}
+        <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-b from-white via-rose-50/20 to-rose-50/50 border border-rose-200/90 p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between min-h-[148px]">
+          <div>
+            {/* Header: Icon + Title + Action Chevron */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 shadow-2xs">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-bold text-slate-800 tracking-tight font-sans">
+                  Orders Pending
+                </span>
+              </div>
+              <button
+                onClick={() => onQuickAction('new_order')}
+                className="w-6 h-6 rounded-lg border border-rose-200/80 bg-white/90 text-rose-600 flex items-center justify-center hover:bg-rose-100/60 transition-colors shadow-2xs cursor-pointer"
+                title="View Orders (F7)"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Value */}
+            <div className="text-xl sm:text-2xl font-extrabold font-mono text-rose-600 tracking-tight mt-2 mb-1.5">
+              {pendingOrdersCount} Orders
+            </div>
+
+            {/* Subtitle / Delivery Alert */}
+            <div className="flex items-center space-x-1 text-rose-600 text-[11px] font-bold relative z-10">
               <Clock className="w-3.5 h-3.5" />
+              <span>2 Due for Delivery</span>
             </div>
           </div>
-          <div className="text-base sm:text-lg font-extrabold font-mono text-rose-700">{pendingOrdersCount} Orders</div>
-          <div className="text-[10px] text-rose-600 font-bold mt-1">2 Due for Delivery</div>
+
+          {/* Bottom Right Arrow Link */}
+          <div className="flex justify-end pt-2">
+            <button
+              onClick={() => onQuickAction('new_order')}
+              className="text-rose-600 hover:text-rose-800 transition-colors p-1"
+              title="Open Orders"
+            >
+              <ArrowRight className="w-4 h-4 text-rose-600" />
+            </button>
+          </div>
         </div>
 
-        {/* New Visitors */}
-        <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 rounded-2xl shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-150`}>
-          <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1.5">
-            <span className="font-extrabold uppercase tracking-wider text-[10px]">New Walk-ins</span>
-            <div className="p-1 rounded-lg bg-sky-50 text-sky-600">
-              <UserPlus className="w-3.5 h-3.5" />
+        {/* Card 6: New Walk-Ins */}
+        <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-b from-white via-teal-50/20 to-teal-50/50 border border-teal-200/90 p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between min-h-[148px]">
+          <div>
+            {/* Header: Icon + Title + Action Chevron */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center shrink-0 shadow-2xs">
+                  <UserPlus className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-bold text-slate-800 tracking-tight font-sans">
+                  New Walk-Ins
+                </span>
+              </div>
+              <button
+                className="w-6 h-6 rounded-lg border border-teal-200/80 bg-white/90 text-teal-600 flex items-center justify-center hover:bg-teal-100/60 transition-colors shadow-2xs cursor-pointer"
+                title="Visitor CRM"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Value */}
+            <div className="text-xl sm:text-2xl font-extrabold font-mono text-teal-950 tracking-tight mt-2 mb-1.5">
+              14 Visitors
+            </div>
+
+            {/* Trend Indicator */}
+            <div className="flex items-center space-x-1.5 text-[11px] relative z-10">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[10px]">
+                ↑ 27%
+              </span>
+              <span className="text-slate-400 font-medium text-[11px]">vs yesterday</span>
             </div>
           </div>
-          <div className="text-base sm:text-lg font-extrabold font-mono text-sky-900">14 Visitors</div>
-          <div className="text-[10px] text-sky-700 font-medium mt-1">New KYC profiles</div>
+
+          {/* Bottom Sparkline Wave */}
+          <SparklineWave color="#0d9488" id="walkins" waveType={2} />
         </div>
 
-        {/* Today Visitors */}
-        <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} p-3.5 rounded-2xl shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-150`}>
-          <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1.5">
-            <span className="font-extrabold uppercase tracking-wider text-[10px]">Total Footfall</span>
-            <div className="p-1 rounded-lg bg-purple-50 text-purple-600">
-              <Users className="w-3.5 h-3.5" />
+        {/* Card 7: Total Footfall */}
+        <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-b from-white via-purple-50/20 to-purple-50/50 border border-purple-200/90 p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between min-h-[148px]">
+          <div>
+            {/* Header: Icon + Title + Action Chevron */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 shadow-2xs">
+                  <Users className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-bold text-slate-800 tracking-tight font-sans">
+                  Total Footfall
+                </span>
+              </div>
+              <button
+                className="w-6 h-6 rounded-lg border border-purple-200/80 bg-white/90 text-purple-600 flex items-center justify-center hover:bg-purple-100/60 transition-colors shadow-2xs cursor-pointer"
+                title="Footfall Counter"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Value */}
+            <div className="text-xl sm:text-2xl font-extrabold font-mono text-purple-950 tracking-tight mt-2 mb-1.5">
+              38 Guests
+            </div>
+
+            {/* Trend Indicator */}
+            <div className="flex items-center space-x-1.5 text-[11px] relative z-10">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[10px]">
+                ↑ 16%
+              </span>
+              <span className="text-slate-400 font-medium text-[11px]">vs yesterday</span>
             </div>
           </div>
-          <div className="text-base sm:text-lg font-extrabold font-mono text-purple-900">38 Guests</div>
-          <div className="text-[10px] text-slate-400 mt-1 font-medium">Counter Traffic Total</div>
+
+          {/* Bottom Sparkline Wave */}
+          <SparklineWave color="#9333ea" id="footfall" waveType={3} />
         </div>
       </div>
 
