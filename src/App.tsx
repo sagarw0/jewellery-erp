@@ -599,6 +599,12 @@ export function App() {
                 onDeletePurchase={() => {}}
                 onClose={() => setCurrentSection('dashboard')}
                 goldRate={gold24kRate}
+                accounts={accounts}
+                stockItems={stockItems}
+                onNavigateToBarcode={() => {
+                  setCurrentSection('masters');
+                  setMasterSubView('barcode');
+                }}
               />
             )}
             {transSubView === 'refinery_in' && (
