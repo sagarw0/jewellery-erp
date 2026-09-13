@@ -150,7 +150,14 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
   const [newManualTag, setNewManualTag] = useState('');
 
   // Tab 2: Loose Stock Transfer to Barcode State
-  const [looseInventory, setLooseInventory] = useState([
+  const [looseInventory, setLooseInventory] = useState(() => [
+    ...stockItems.filter(s => s.is_loose).map(s => ({
+      id: s.id,
+      item_name: s.item_name,
+      gross_wt: s.gross_wt,
+      purity: s.purity,
+      source: s.is_urd ? 'URD Scrap' : 'Opening Stock / Inward'
+    })),
     { id: 'ls-1', item_name: '24K Raw Bullion Inward Lot (Purchase #PUR-891)', gross_wt: 250.0, purity: 99.5, source: 'Purchase Inward' },
     { id: 'ls-2', item_name: 'Loose Casted Bangles Lot #442', gross_wt: 85.4, purity: 91.6, source: 'Opening Stock' },
     { id: 'ls-3', item_name: 'Loose Uncut Diamond Studded Tops', gross_wt: 32.0, purity: 75.0, source: 'Karagir Inward' },
