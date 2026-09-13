@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Barcode,
   Printer,
@@ -16,7 +16,15 @@ import {
   Search,
   RotateCcw,
   CheckSquare,
-  Square
+  Square,
+  List,
+  LayoutGrid,
+  Eye,
+  Copy,
+  Sparkles,
+  Download,
+  FileSpreadsheet,
+  Check
 } from 'lucide-react';
 import { StockItem, BarcodeTagItem, ColumnSetting, ItemMasterDefinition } from '../../types/erp';
 import { formatWeight, formatCurrency } from '../../utils/calculations';
@@ -28,22 +36,85 @@ interface BarcodeViewProps {
   onClose: () => void;
 }
 
+// Crisp SVG Barcode Generator Component (Code 128 / Code 39 Style)
+const BarcodeSvg: React.FC<{ value: string; width?: number; height?: number; showText?: boolean }> = ({
+  value,
+  width = 140,
+  height = 36,
+  showText = false
+}) => {
+  // Generate deterministic bar widths from characters in the tag value
+  const bars = useMemo(() => {
+    const chars = (value || 'TAG916').toUpperCase();
+    const pattern: { x: number; w: number }[] = [];
+    let currentX = 4;
+    for (let i = 0; i < chars.length; i++) {
+      const code = chars.charCodeAt(i) || 65;
+      const w1 = (code % 3) + 1.2;
+      const space1 = ((code * 2) % 3) + 1.2;
+      const w2 = ((code * 3) % 2) + 1.4;
+      const space2 = ((code * 4) % 2) + 1.2;
+      
+      pattern.push({ x: currentX, w: w1 });
+      currentX += w1 + space1;
+      pattern.push({ x: currentX, w: w2 });
+      currentX += w2 + space2;
+    }
+    return { pattern, totalWidth: currentX + 6 };
+  }, [value]);
+
+  return (
+    <div className="inline-flex flex-col items-center">
+      <svg
+        viewBox={`0 0 ${bars.totalWidth} ${height}`}
+        style={{ width: `${width}px`, height: `${height}px` }}
+        className="overflow-visible"
+      >
+        {/* Guard bars start */}
+        <rect x={1} y={0} width={2} height={height} fill="#0f172a" />
+        <rect x={4} y={0} width={1.5} height={height} fill="#0f172a" />
+
+        {/* Data bars */}
+        {bars.pattern.map((bar, idx) => (
+          <rect key={idx} x={bar.x} y={0} width={bar.w} height={height} fill="#0f172a" rx={0.2} />
+        ))}
+
+        {/* Guard bars end */}
+        <rect x={bars.totalWidth - 5} y={0} width={1.5} height={height} fill="#0f172a" />
+        <rect x={bars.totalWidth - 2} y={0} width={2} height={height} fill="#0f172a" />
+      </svg>
+      {showText && (
+        <span className="font-mono text-[10px] tracking-widest text-slate-800 font-bold mt-0.5 select-all">
+          {value}
+        </span>
+      )}
+    </div>
+  );
+};
+
 const DEFAULT_BARCODE_COLUMNS: ColumnSetting[] = [
-  { id: 'sr_no', label: 'Sr No', visible: true, width: 60, order: 0 },
-  { id: 'tag_no', label: 'Tag No', visible: true, width: 110, order: 1 },
-  { id: 'item_name', label: 'Item Name', visible: true, width: 180, order: 2 },
-  { id: 'qty', label: 'Qty', visible: true, width: 60, order: 3 },
-  { id: 'gross_wt', label: 'Gross Wt', visible: true, width: 90, order: 4 },
-  { id: 'net_wt', label: 'Net Wt', visible: true, width: 90, order: 5 },
-  { id: 'purity', label: 'Purity', visible: true, width: 70, order: 6 },
-  { id: 'mkg_gm', label: 'Mkg/Gm', visible: true, width: 80, order: 7 },
-  { id: 'huid', label: 'HUID', visible: true, width: 90, order: 8 },
-  { id: 'size', label: 'Size', visible: true, width: 70, order: 9 },
+  { id: 'select', label: 'Select', visible: true, width: 40, order: 0 },
+  { id: 'sr_no', label: 'Sr No', visible: true, width: 50, order: 1 },
+  { id: 'item_name', label: 'Item Name', visible: true, width: 220, order: 2 },
+  { id: 'tag_no', label: 'Tag / Barcode No', visible: true, width: 120, order: 3 },
+  { id: 'barcode_preview', label: 'Barcode Graphic', visible: true, width: 150, order: 4 },
+  { id: 'category', label: 'Category', visible: true, width: 90, order: 5 },
+  { id: 'item_type', label: 'Type', visible: true, width: 90, order: 6 },
+  { id: 'qty', label: 'Qty', visible: true, width: 50, order: 7 },
+  { id: 'gross_wt', label: 'Gross Wt', visible: true, width: 90, order: 8 },
+  { id: 'net_wt', label: 'Net Wt', visible: true, width: 90, order: 9 },
+  { id: 'purity', label: 'Purity', visible: true, width: 75, order: 10 },
+  { id: 'fine_wt', label: 'Fine Bullion', visible: true, width: 95, order: 11 },
+  { id: 'huid', label: 'HUID', visible: true, width: 85, order: 12 },
+  { id: 'size', label: 'Size', visible: true, width: 70, order: 13 },
+  { id: 'mkg_gm', label: 'Mkg/Gm', visible: true, width: 80, order: 14 },
+  { id: 'status', label: 'Print Status', visible: true, width: 95, order: 15 },
+  { id: 'action', label: 'Actions', visible: true, width: 100, order: 16 },
 ];
 
 export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose }) => {
   const { currentTheme } = useTheme();
-  const [activeTab, setActiveTab] = useState<'multiple_opening' | 'loose_to_barcode' | 'print_studio'>('multiple_opening');
+  const [activeTab, setActiveTab] = useState<'multiple_opening' | 'loose_to_barcode' | 'print_studio'>('print_studio');
 
   // Master batch items available for breaking down into multiple barcodes
   const [masterItems] = useState<ItemMasterDefinition[]>([
@@ -107,7 +178,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
       hallmark_charges: 45,
       huid: 'B8K2M1',
       manual_tag: 'M-101',
-      is_printed: false,
+      is_printed: true,
       is_loose: false,
     },
     {
@@ -164,72 +235,166 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
   ]);
 
   // Tab 3: Print Barcode & QR Code Studio State
-  const [allBarcodeInventory, setAllBarcodeInventory] = useState<BarcodeTagItem[]>([
-    ...openingTags,
-    {
-      id: 'tag-201',
-      sr_no: 3,
-      tag_no: 'TAG-99101',
-      item_name: '22K Antique Temple Lakshmi Bangle',
-      item_type: 'Bangle',
-      category: 'Gold',
-      tray: 'Tray-A1',
-      section: 'Showcase-1',
-      attachment: 'Plain',
-      qty: 1,
-      gross_wt: 28.500,
-      net_wt: 28.000,
-      purity: 91.6,
-      black_b: 0,
-      stone_wt: 0.500,
-      making_per_gm: 520,
-      making_pct: 0,
-      size: '2.4',
-      hallmark_charges: 45,
-      huid: 'B9K7M2',
-      manual_tag: 'M-201',
-      is_printed: true,
-      is_loose: false,
-    },
-    {
-      id: 'tag-202',
-      sr_no: 4,
-      tag_no: 'TAG-99102',
-      item_name: '1 Gram Micro-Plated Bridal Mangalsutra',
-      item_type: 'Mangalsutra',
-      category: '1gm Imitation',
-      tray: 'Tray-M1',
-      section: 'Counter-2',
-      attachment: 'Black Beads',
-      qty: 1,
-      gross_wt: 18.000,
-      net_wt: 16.000,
-      purity: 10.0,
-      black_b: 2.0,
-      stone_wt: 0,
-      making_per_gm: 150,
-      making_pct: 0,
-      size: '24 inch',
-      hallmark_charges: 0,
-      huid: 'N/A',
-      manual_tag: 'M-IM-01',
-      is_printed: false,
-      is_loose: false,
-    },
-  ]);
+  const [allBarcodeInventory, setAllBarcodeInventory] = useState<BarcodeTagItem[]>(() => {
+    // Collect stock items with tag_no
+    const stockTags: BarcodeTagItem[] = stockItems
+      .filter((s) => s.tag_no && s.tag_no.trim() !== '')
+      .map((s, idx) => ({
+        id: `stk-tag-${s.id}`,
+        sr_no: idx + 5,
+        tag_no: s.tag_no!,
+        item_name: s.item_name,
+        item_type: 'Ornament',
+        category: s.category || 'Gold',
+        qty: s.qty || 1,
+        gross_wt: s.gross_wt,
+        net_wt: s.net_wt,
+        purity: s.purity,
+        black_b: 0,
+        stone_wt: 0,
+        making_per_gm: 400,
+        making_pct: 0,
+        size: 'Standard',
+        hallmark_charges: 45,
+        huid: 'B7K9X2',
+        manual_tag: `M-${s.tag_no}`,
+        is_printed: false,
+        is_loose: false,
+      }));
 
-  // Filters for Print Studio
+    return [
+      ...openingTags,
+      {
+        id: 'tag-201',
+        sr_no: 3,
+        tag_no: 'TAG-99101',
+        item_name: '22K Antique Temple Lakshmi Bangle',
+        item_type: 'Bangle',
+        category: 'Gold',
+        tray: 'Tray-A1',
+        section: 'Showcase-1',
+        attachment: 'Plain',
+        qty: 1,
+        gross_wt: 28.500,
+        net_wt: 28.000,
+        purity: 91.6,
+        black_b: 0,
+        stone_wt: 0.500,
+        making_per_gm: 520,
+        making_pct: 0,
+        size: '2.4',
+        hallmark_charges: 45,
+        huid: 'B9K7M2',
+        manual_tag: 'M-201',
+        is_printed: true,
+        is_loose: false,
+      },
+      {
+        id: 'tag-202',
+        sr_no: 4,
+        tag_no: 'TAG-99102',
+        item_name: '1 Gram Micro-Plated Bridal Mangalsutra',
+        item_type: 'Mangalsutra',
+        category: '1gm Imitation',
+        tray: 'Tray-M1',
+        section: 'Counter-2',
+        attachment: 'Black Beads',
+        qty: 1,
+        gross_wt: 18.000,
+        net_wt: 16.000,
+        purity: 10.0,
+        black_b: 2.0,
+        stone_wt: 0,
+        making_per_gm: 150,
+        making_pct: 0,
+        size: '24 inch',
+        hallmark_charges: 0,
+        huid: 'N/A',
+        manual_tag: 'M-IM-01',
+        is_printed: false,
+        is_loose: false,
+      },
+      {
+        id: 'tag-203',
+        sr_no: 5,
+        tag_no: 'TAG-99103',
+        item_name: 'Silver Traditional Payal / Anklet 92.5',
+        item_type: 'Payal',
+        category: 'Silver',
+        tray: 'Tray-S2',
+        section: 'Silver Counter',
+        attachment: 'Bells',
+        qty: 1,
+        gross_wt: 65.200,
+        net_wt: 64.500,
+        purity: 92.5,
+        black_b: 0,
+        stone_wt: 0.700,
+        making_per_gm: 18,
+        making_pct: 0,
+        size: '10.5 inch',
+        hallmark_charges: 25,
+        huid: 'SL89K1',
+        manual_tag: 'M-SL-03',
+        is_printed: false,
+        is_loose: false,
+      },
+      ...stockTags,
+    ];
+  });
+
+  // View Mode: 'list' (Table) vs 'grid' (Label Cards)
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+
+  // Search & Filters for Barcode Studio
+  const [searchTerm, setSearchTerm] = useState('');
   const [printFilterStatus, setPrintFilterStatus] = useState<'all' | 'printed' | 'not_printed'>('all');
   const [filterCategory, setFilterCategory] = useState('All');
   const [filterType, setFilterType] = useState('All');
-  const [filterTray, setFilterTray] = useState('All');
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
-  const [printFormat, setPrintFormat] = useState<'dumbbell' | 'two_up' | 'qr_label'>('dumbbell');
+  const [printFormat, setPrintFormat] = useState<'dumbbell' | 'two_up' | 'qr_label' | 'sheet'>('dumbbell');
   const [printCopies, setPrintCopies] = useState(1);
+
+  // Print Preview Modal State
+  const [showPrintModal, setShowPrintModal] = useState(false);
+  const [singlePrintTag, setSinglePrintTag] = useState<BarcodeTagItem | null>(null);
 
   // Grid Settings Modal
   const [columns, setColumns] = useState<ColumnSetting[]>(DEFAULT_BARCODE_COLUMNS);
   const [showColumnSettings, setShowColumnSettings] = useState(false);
+
+  // Filtered list of barcode tags in studio
+  const filteredPrintTags = useMemo(() => {
+    return allBarcodeInventory.filter((t) => {
+      if (printFilterStatus === 'printed' && !t.is_printed) return false;
+      if (printFilterStatus === 'not_printed' && t.is_printed) return false;
+      if (filterCategory !== 'All' && t.category !== filterCategory) return false;
+      if (filterType !== 'All' && t.item_type !== filterType) return false;
+      if (searchTerm.trim()) {
+        const term = searchTerm.toLowerCase();
+        const matchesName = (t.item_name || '').toLowerCase().includes(term);
+        const matchesTag = (t.tag_no || '').toLowerCase().includes(term);
+        const matchesHuid = (t.huid || '').toLowerCase().includes(term);
+        const matchesCat = (t.category || '').toLowerCase().includes(term);
+        const matchesType = (t.item_type || '').toLowerCase().includes(term);
+        if (!matchesName && !matchesTag && !matchesHuid && !matchesCat && !matchesType) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }, [allBarcodeInventory, printFilterStatus, filterCategory, filterType, searchTerm]);
+
+  // Aggregate stats for filtered list
+  const stats = useMemo(() => {
+    const totalTags = filteredPrintTags.length;
+    const totalGross = filteredPrintTags.reduce((s, t) => s + (t.gross_wt || 0), 0);
+    const totalNet = filteredPrintTags.reduce((s, t) => s + (t.net_wt || 0), 0);
+    const totalFine = filteredPrintTags.reduce((s, t) => s + ((t.net_wt * (t.purity || 0)) / 100), 0);
+    const printedCount = filteredPrintTags.filter((t) => t.is_printed).length;
+    const unprintedCount = totalTags - printedCount;
+    return { totalTags, totalGross, totalNet, totalFine, printedCount, unprintedCount };
+  }, [filteredPrintTags]);
 
   // Add piece to Tab 1
   const handleAddOpeningTag = () => {
@@ -273,7 +438,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
 
   // Convert Barcode to Loose
   const handleBarcodeToLoose = (tag: BarcodeTagItem) => {
-    if (confirm(`Untag barcode ${tag.tag_no} (${tag.item_name}) and return ${tag.gross_wt}g to Loose Stock?`)) {
+    if (confirm(`Untag barcode ${tag.tag_no} for "${tag.item_name}" and return ${tag.gross_wt}g to Loose Stock?`)) {
       setAllBarcodeInventory(allBarcodeInventory.filter((t) => t.id !== tag.id));
       setLooseInventory([
         ...looseInventory,
@@ -285,8 +450,24 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
           source: 'Barcode to Loose Untagging',
         },
       ]);
-      alert(`Tag ${tag.tag_no} untagged and moved to loose stock!`);
+      alert(`Tag ${tag.tag_no} (${tag.item_name}) untagged and moved to loose inventory!`);
     }
+  };
+
+  // Toggle single tag printed status
+  const togglePrintStatus = (id: string) => {
+    setAllBarcodeInventory((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, is_printed: !t.is_printed } : t))
+    );
+  };
+
+  // Mark all selected as printed
+  const handleMarkSelectedPrinted = () => {
+    if (selectedTagIds.length === 0) return;
+    setAllBarcodeInventory((prev) =>
+      prev.map((t) => (selectedTagIds.includes(t.id) ? { ...t, is_printed: true } : t))
+    );
+    alert(`Marked ${selectedTagIds.length} tags as Printed!`);
   };
 
   // Toggle selection for bulk print
@@ -302,22 +483,78 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
     }
   };
 
-  // Filtered list in Print Studio
-  const filteredPrintTags = allBarcodeInventory.filter((t) => {
-    if (printFilterStatus === 'printed' && !t.is_printed) return false;
-    if (printFilterStatus === 'not_printed' && t.is_printed) return false;
-    if (filterCategory !== 'All' && t.category !== filterCategory) return false;
-    if (filterType !== 'All' && t.item_type !== filterType) return false;
-    if (filterTray !== 'All' && t.tray !== filterTray) return false;
-    return true;
-  });
+  // Quick single print handler
+  const handlePrintSingle = (tag: BarcodeTagItem) => {
+    setSinglePrintTag(tag);
+    setShowPrintModal(true);
+  };
+
+  // Bulk print handler
+  const handlePrintSelected = () => {
+    setSinglePrintTag(null);
+    setShowPrintModal(true);
+  };
+
+  // Tags to render inside Print Modal / print output
+  const tagsToPrint = useMemo(() => {
+    if (singlePrintTag) return [singlePrintTag];
+    if (selectedTagIds.length > 0) {
+      return allBarcodeInventory.filter((t) => selectedTagIds.includes(t.id));
+    }
+    return filteredPrintTags;
+  }, [singlePrintTag, selectedTagIds, allBarcodeInventory, filteredPrintTags]);
+
+  // Export Barcode List as CSV
+  const handleExportCSV = () => {
+    const headers = [
+      'Sr No',
+      'Tag No',
+      'Item Name',
+      'Category',
+      'Item Type',
+      'Qty',
+      'Gross Wt',
+      'Net Wt',
+      'Purity',
+      'Fine Bullion',
+      'HUID',
+      'Size',
+      'Making Per Gm',
+      'Printed Status'
+    ];
+    const rows = filteredPrintTags.map((t, idx) => [
+      idx + 1,
+      `"${t.tag_no}"`,
+      `"${t.item_name}"`,
+      `"${t.category}"`,
+      `"${t.item_type}"`,
+      t.qty,
+      t.gross_wt,
+      t.net_wt,
+      t.purity,
+      ((t.net_wt * t.purity) / 100).toFixed(3),
+      `"${t.huid}"`,
+      `"${t.size}"`,
+      t.making_per_gm,
+      t.is_printed ? 'Printed' : 'Not Printed'
+    ]);
+    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `Jewellery_Barcode_List_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
-      {/* Top Toolbar */}
+      {/* Top Studio Toolbar */}
       <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-sm no-print`}>
         <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-lg bg-blue-50 text-blue-600 border border-blue-200">
+          <div className="p-2 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 shadow-2xs">
             <Barcode className="w-5 h-5" />
           </div>
           <div>
@@ -328,27 +565,38 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
               </span>
             </h1>
             <p className="text-xs text-slate-500">
-              Multiple opening stock barcodes, loose-to-tag conversion, and 1D Barcode/2D QR code printing.
+              List format barcode manager showing item names, live stock allocation, batch division, and 1D/2D thermal printing.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 flex-wrap">
+          <button
+            onClick={handleExportCSV}
+            className="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold border border-slate-200 hover:bg-slate-200 cursor-pointer"
+            title="Export Barcode List to CSV"
+          >
+            <Download className="w-3.5 h-3.5 text-blue-600" />
+            <span>Export CSV</span>
+          </button>
+
           <button
             onClick={() => setShowColumnSettings(true)}
             className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-mono font-bold border border-slate-200 hover:bg-slate-200 cursor-pointer"
-            title="Grid Settings"
+            title="Grid Column Settings"
           >
             <Sliders className="w-3.5 h-3.5 text-blue-600" />
             <span>GS</span>
           </button>
 
           <button
-            onClick={() => window.print()}
-            className="flex items-center space-x-1 px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow cursor-pointer"
+            onClick={handlePrintSelected}
+            className="flex items-center space-x-1 px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white text-xs font-bold shadow cursor-pointer transition-all"
           >
             <Printer className="w-3.5 h-3.5" />
-            <span>Print Tags</span>
+            <span>
+              {selectedTagIds.length > 0 ? `Print Selected (${selectedTagIds.length})` : 'Print Barcode Tags'}
+            </span>
           </button>
 
           <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600 cursor-pointer">
@@ -357,42 +605,610 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
         </div>
       </div>
 
-      {/* Navigation Tabs (3 Dedicated Sections) */}
+      {/* Navigation Tabs */}
       <div className="flex border-b border-sky-200 bg-white rounded-t-xl px-2 pt-2 space-x-2 shadow-2xs no-print">
         <button
-          onClick={() => setActiveTab('multiple_opening')}
-          className={`px-3.5 py-2 rounded-t-lg text-xs font-bold transition-all cursor-pointer ${
-            activeTab === 'multiple_opening'
-              ? 'bg-blue-50/80 text-blue-700 border-b-2 border-blue-600'
+          onClick={() => setActiveTab('print_studio')}
+          className={`px-3.5 py-2 rounded-t-lg text-xs font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
+            activeTab === 'print_studio'
+              ? 'bg-blue-50/90 text-blue-700 border-b-2 border-blue-600 shadow-2xs'
               : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
           }`}
         >
-          1. Multiple Opening Stock Barcode (Weight Reconciliation)
+          <List className="w-3.5 h-3.5" />
+          <span>1. Barcode List & Print Studio ({allBarcodeInventory.length} Tags)</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('multiple_opening')}
+          className={`px-3.5 py-2 rounded-t-lg text-xs font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
+            activeTab === 'multiple_opening'
+              ? 'bg-blue-50/90 text-blue-700 border-b-2 border-blue-600 shadow-2xs'
+              : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
+          }`}
+        >
+          <Layers className="w-3.5 h-3.5" />
+          <span>2. Multiple Opening Stock Barcode (Weight Division)</span>
         </button>
         <button
           onClick={() => setActiveTab('loose_to_barcode')}
-          className={`px-3.5 py-2 rounded-t-lg text-xs font-bold transition-all cursor-pointer ${
+          className={`px-3.5 py-2 rounded-t-lg text-xs font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
             activeTab === 'loose_to_barcode'
-              ? 'bg-blue-50/80 text-blue-700 border-b-2 border-blue-600'
+              ? 'bg-blue-50/90 text-blue-700 border-b-2 border-blue-600 shadow-2xs'
               : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
           }`}
         >
-          2. Stock Transfer Loose to Barcode
-        </button>
-        <button
-          onClick={() => setActiveTab('print_studio')}
-          className={`px-3.5 py-2 rounded-t-lg text-xs font-bold transition-all cursor-pointer ${
-            activeTab === 'print_studio'
-              ? 'bg-blue-50/80 text-blue-700 border-b-2 border-blue-600'
-              : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
-          }`}
-        >
-          3. Print Barcode & QR Code Studio
+          <ArrowRightLeft className="w-3.5 h-3.5" />
+          <span>3. Stock Transfer Loose to Barcode</span>
         </button>
       </div>
 
       {/* ========================================================================= */}
-      {/* TAB 1: MULTIPLE OPENING STOCK BARCODE (LIVE WEIGHT DEDUCTION TO 0.000g)  */}
+      {/* TAB 1: BARCODE LIST & PRINT STUDIO (PRIMARY LIST FORMAT AS REQUESTED)     */}
+      {/* ========================================================================= */}
+      {activeTab === 'print_studio' && (
+        <div className="space-y-4">
+          {/* Quick Metrics Bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 text-xs no-print">
+            <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
+              <span className="text-[10px] text-slate-500 font-bold uppercase block">Total Tags in List</span>
+              <strong className="text-base text-slate-900 font-extrabold">{stats.totalTags}</strong>
+              <span className="text-[10px] text-slate-400 block font-sans">Barcodes Registered</span>
+            </div>
+            <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
+              <span className="text-[10px] text-slate-500 font-bold uppercase block">Total Gross Wt</span>
+              <strong className="text-base text-blue-900 font-extrabold">{formatWeight(stats.totalGross)}</strong>
+              <span className="text-[10px] text-slate-400 block font-sans">Across All Tags</span>
+            </div>
+            <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
+              <span className="text-[10px] text-slate-500 font-bold uppercase block">Total Net Wt</span>
+              <strong className="text-base text-sky-800 font-extrabold">{formatWeight(stats.totalNet)}</strong>
+              <span className="text-[10px] text-slate-400 block font-sans">Pure Metal Net</span>
+            </div>
+            <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
+              <span className="text-[10px] text-slate-500 font-bold uppercase block">Fine Bullion Wt</span>
+              <strong className="text-base text-amber-700 font-extrabold">{formatWeight(stats.totalFine)}</strong>
+              <span className="text-[10px] text-slate-400 block font-sans">24K / 99.9% Equivalent</span>
+            </div>
+            <div className="p-3 rounded-xl bg-emerald-50/60 border border-emerald-200 shadow-2xs font-mono">
+              <span className="text-[10px] text-emerald-800 font-bold uppercase block">Printed Tags</span>
+              <strong className="text-base text-emerald-900 font-extrabold">{stats.printedCount}</strong>
+              <span className="text-[10px] text-emerald-700 block font-sans">Labels Generated</span>
+            </div>
+            <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200 shadow-2xs font-mono">
+              <span className="text-[10px] text-amber-800 font-bold uppercase block">Not Printed Yet</span>
+              <strong className="text-base text-amber-900 font-extrabold">{stats.unprintedCount}</strong>
+              <span className="text-[10px] text-amber-700 block font-sans">Ready to Print</span>
+            </div>
+          </div>
+
+          {/* Search, Filter & View Controls */}
+          <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-4 shadow-sm space-y-3 text-xs no-print`}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-3 items-end">
+              {/* Search Bar */}
+              <div className="sm:col-span-2">
+                <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center space-x-1">
+                  <Search className="w-3.5 h-3.5 text-blue-600" />
+                  <span>Search by Item Name, Tag No, or HUID</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="e.g. Royal Floral Ring, om ring, TAG-88201, B8K2M1..."
+                    className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 text-xs font-semibold focus:bg-white focus:border-blue-500 focus:outline-none"
+                  />
+                  <Search className="w-4 h-4 text-slate-400 absolute left-2.5 top-2" />
+                  {searchTerm && (
+                    <button
+                      onClick={() => setSearchTerm('')}
+                      className="absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs cursor-pointer"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Print Status */}
+              <div>
+                <label className="block text-[10px] font-bold text-slate-600 mb-1">Print Status</label>
+                <select
+                  value={printFilterStatus}
+                  onChange={(e) => setPrintFilterStatus(e.target.value as any)}
+                  className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-slate-800 text-xs font-medium"
+                >
+                  <option value="all">All Statuses ({allBarcodeInventory.length})</option>
+                  <option value="not_printed">Not Printed Only ({stats.unprintedCount})</option>
+                  <option value="printed">Printed Only ({stats.printedCount})</option>
+                </select>
+              </div>
+
+              {/* Category */}
+              <div>
+                <label className="block text-[10px] font-bold text-slate-600 mb-1">Category / Group</label>
+                <select
+                  value={filterCategory}
+                  onChange={(e) => setFilterCategory(e.target.value)}
+                  className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-slate-800 text-xs font-medium"
+                >
+                  <option value="All">All Categories</option>
+                  <option value="Gold">Gold</option>
+                  <option value="Silver">Silver</option>
+                  <option value="1gm Imitation">1gm Imitation</option>
+                  <option value="Diamond">Diamond</option>
+                  <option value="URD Gold">URD Gold</option>
+                  <option value="URD Silver">URD Silver</option>
+                </select>
+              </div>
+
+              {/* Item Type */}
+              <div>
+                <label className="block text-[10px] font-bold text-slate-600 mb-1">Item Type</label>
+                <select
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                  className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-slate-800 text-xs font-medium"
+                >
+                  <option value="All">All Types</option>
+                  <option value="Ring">Ring</option>
+                  <option value="Bangle">Bangle</option>
+                  <option value="Necklace">Necklace</option>
+                  <option value="Mangalsutra">Mangalsutra</option>
+                  <option value="Chain">Chain</option>
+                  <option value="Payal">Payal / Anklet</option>
+                  <option value="Ornament">General Ornament</option>
+                </select>
+              </div>
+
+              {/* View Mode Toggle */}
+              <div>
+                <label className="block text-[10px] font-bold text-slate-600 mb-1">View Format</label>
+                <div className="flex rounded-lg border border-slate-300 p-0.5 bg-slate-50">
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('list')}
+                    className={`flex-1 py-1 px-2 rounded-md font-bold text-xs flex items-center justify-center space-x-1 cursor-pointer transition-all ${
+                      viewMode === 'list'
+                        ? 'bg-blue-600 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <List className="w-3.5 h-3.5" />
+                    <span>List</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('grid')}
+                    className={`flex-1 py-1 px-2 rounded-md font-bold text-xs flex items-center justify-center space-x-1 cursor-pointer transition-all ${
+                      viewMode === 'grid'
+                        ? 'bg-blue-600 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <LayoutGrid className="w-3.5 h-3.5" />
+                    <span>Cards</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Selection & Batch Action Ribbon */}
+            <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center space-x-2">
+                <button
+                  type="button"
+                  onClick={toggleSelectAll}
+                  className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 font-bold rounded-lg text-xs flex items-center space-x-1.5 cursor-pointer"
+                >
+                  {selectedTagIds.length === filteredPrintTags.length && filteredPrintTags.length > 0 ? (
+                    <CheckSquare className="w-3.5 h-3.5 text-blue-600" />
+                  ) : (
+                    <Square className="w-3.5 h-3.5 text-slate-400" />
+                  )}
+                  <span>
+                    {selectedTagIds.length === filteredPrintTags.length && filteredPrintTags.length > 0
+                      ? 'Deselect All'
+                      : `Select All (${filteredPrintTags.length})`}
+                  </span>
+                </button>
+
+                {selectedTagIds.length > 0 && (
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 font-bold border border-blue-200 font-mono">
+                    ✓ {selectedTagIds.length} item(s) selected
+                  </span>
+                )}
+              </div>
+
+              {selectedTagIds.length > 0 && (
+                <div className="flex items-center space-x-2">
+                  <button
+                    type="button"
+                    onClick={handleMarkSelectedPrinted}
+                    className="px-3 py-1 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 font-bold rounded-lg text-xs flex items-center space-x-1 cursor-pointer"
+                  >
+                    <Check className="w-3.5 h-3.5" />
+                    <span>Mark as Printed</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedTagIds([])}
+                    className="px-2.5 py-1 text-slate-500 hover:text-slate-700 text-xs font-semibold cursor-pointer"
+                  >
+                    Clear Selection
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ================================================================= */}
+          {/* BARCODE IN LIST / TABULAR FORMAT (SHOWS ITEM NAME PROMINENTLY)    */}
+          {/* ================================================================= */}
+          {viewMode === 'list' && (
+            <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-4 shadow-sm space-y-3`}>
+              <div className="flex justify-between items-center border-b border-slate-100 pb-2">
+                <span className="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center space-x-2">
+                  <List className="w-4 h-4 text-blue-600" />
+                  <span>Jewellery Barcode Inventory List ({filteredPrintTags.length} Records)</span>
+                </span>
+                <span className="text-[11px] text-slate-500 font-mono">
+                  Showing {filteredPrintTags.length} of {allBarcodeInventory.length} total barcodes
+                </span>
+              </div>
+
+              {filteredPrintTags.length === 0 ? (
+                <div className="p-8 text-center text-slate-400 bg-slate-50 border border-dashed border-slate-200 rounded-xl text-xs space-y-2">
+                  <Barcode className="w-8 h-8 text-slate-300 mx-auto" />
+                  <p>No barcode records match the active search or filters.</p>
+                  <button
+                    onClick={() => {
+                      setSearchTerm('');
+                      setPrintFilterStatus('all');
+                      setFilterCategory('All');
+                      setFilterType('All');
+                    }}
+                    className="text-blue-600 underline font-bold cursor-pointer"
+                  >
+                    Reset all filters
+                  </button>
+                </div>
+              ) : (
+                <div className="overflow-x-auto border border-slate-200 rounded-xl">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-300 text-[11px] uppercase tracking-wider">
+                      <tr>
+                        <th className="p-2.5 border-r border-slate-200 text-center w-10">
+                          <input
+                            type="checkbox"
+                            checked={selectedTagIds.length === filteredPrintTags.length && filteredPrintTags.length > 0}
+                            onChange={toggleSelectAll}
+                            className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                          />
+                        </th>
+                        <th className="p-2.5 border-r border-slate-200 text-center w-12">#</th>
+                        <th className="p-2.5 border-r border-slate-200 min-w-[220px]">
+                          Item Name & Specifications
+                        </th>
+                        <th className="p-2.5 border-r border-slate-200 font-mono w-28">Tag No</th>
+                        <th className="p-2.5 border-r border-slate-200 text-center min-w-[130px]">
+                          Barcode Graphic
+                        </th>
+                        <th className="p-2.5 border-r border-slate-200 text-center w-24">Group / Type</th>
+                        <th className="p-2.5 border-r border-slate-200 text-center w-12">Qty</th>
+                        <th className="p-2.5 border-r border-slate-200 text-right w-20">Gross Wt</th>
+                        <th className="p-2.5 border-r border-slate-200 text-right w-20 font-bold text-blue-900">
+                          Net Wt
+                        </th>
+                        <th className="p-2.5 border-r border-slate-200 text-center w-18">Purity</th>
+                        <th className="p-2.5 border-r border-slate-200 text-right w-24 font-bold text-amber-800">
+                          Fine Bullion
+                        </th>
+                        <th className="p-2.5 border-r border-slate-200 text-center font-mono w-20">HUID</th>
+                        <th className="p-2.5 border-r border-slate-200 text-center w-16">Size</th>
+                        <th className="p-2.5 border-r border-slate-200 text-right w-20">Mkg/Gm</th>
+                        <th className="p-2.5 border-r border-slate-200 text-center w-24">Print Status</th>
+                        <th className="p-2.5 text-center min-w-[110px]">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200 bg-white font-mono text-[11px]">
+                      {filteredPrintTags.map((tag, idx) => {
+                        const isSelected = selectedTagIds.includes(tag.id);
+                        const fineWeight = Number(((tag.net_wt * (tag.purity || 0)) / 100).toFixed(3));
+
+                        return (
+                          <tr
+                            key={tag.id}
+                            className={`transition-colors ${
+                              isSelected
+                                ? 'bg-blue-50/70 hover:bg-blue-50'
+                                : idx % 2 === 0
+                                ? 'bg-white hover:bg-sky-50/30'
+                                : 'bg-slate-50/40 hover:bg-sky-50/30'
+                            }`}
+                          >
+                            {/* Checkbox */}
+                            <td className="p-2.5 border-r border-slate-200 text-center">
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onChange={() => toggleSelectTag(tag.id)}
+                                className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                              />
+                            </td>
+
+                            {/* Sr No */}
+                            <td className="p-2.5 border-r border-slate-200 text-center text-slate-400 font-sans">
+                              {idx + 1}
+                            </td>
+
+                            {/* Item Name (Prominently Rendered) */}
+                            <td className="p-2.5 border-r border-slate-200 font-sans">
+                              <div className="flex items-start space-x-2">
+                                <div className="p-1.5 rounded-lg bg-amber-50 text-amber-700 border border-amber-200 shrink-0 mt-0.5">
+                                  <Tag className="w-3.5 h-3.5" />
+                                </div>
+                                <div>
+                                  <span className="font-bold text-slate-900 text-xs block leading-snug">
+                                    {tag.item_name}
+                                  </span>
+                                  <div className="flex items-center space-x-1.5 mt-0.5 text-[10px] text-slate-500">
+                                    <span className="px-1.5 py-0.2 rounded bg-slate-100 font-medium text-slate-700">
+                                      {tag.category}
+                                    </span>
+                                    <span>•</span>
+                                    <span>{tag.item_type || 'Ornament'}</span>
+                                    {tag.manual_tag && (
+                                      <>
+                                        <span>•</span>
+                                        <span className="text-blue-700 font-mono">{tag.manual_tag}</span>
+                                      </>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* Tag / Barcode No */}
+                            <td className="p-2.5 border-r border-slate-200 font-bold text-blue-900 font-mono">
+                              <span className="px-2 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-900 inline-block">
+                                {tag.tag_no}
+                              </span>
+                            </td>
+
+                            {/* Barcode Graphic Preview */}
+                            <td className="p-2.5 border-r border-slate-200 text-center">
+                              <div className="flex flex-col items-center justify-center p-1 bg-white rounded border border-slate-200 shadow-2xs">
+                                <BarcodeSvg value={tag.tag_no} width={100} height={20} />
+                                <span className="text-[9px] text-slate-500 font-mono tracking-tight mt-0.5">
+                                  {tag.tag_no}
+                                </span>
+                              </div>
+                            </td>
+
+                            {/* Category & Type */}
+                            <td className="p-2.5 border-r border-slate-200 text-center font-sans text-slate-700">
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-800">
+                                {tag.item_type || tag.category}
+                              </span>
+                            </td>
+
+                            {/* Qty */}
+                            <td className="p-2.5 border-r border-slate-200 text-center font-bold text-slate-800">
+                              {tag.qty}
+                            </td>
+
+                            {/* Gross Wt */}
+                            <td className="p-2.5 border-r border-slate-200 text-right font-bold text-slate-900">
+                              {formatWeight(tag.gross_wt)}
+                            </td>
+
+                            {/* Net Wt */}
+                            <td className="p-2.5 border-r border-slate-200 text-right font-bold text-blue-800">
+                              {formatWeight(tag.net_wt)}
+                            </td>
+
+                            {/* Purity */}
+                            <td className="p-2.5 border-r border-slate-200 text-center font-semibold text-slate-700">
+                              {tag.purity}%
+                            </td>
+
+                            {/* Fine Bullion Wt */}
+                            <td className="p-2.5 border-r border-slate-200 text-right font-bold text-amber-800">
+                              {formatWeight(fineWeight)}
+                            </td>
+
+                            {/* HUID */}
+                            <td className="p-2.5 border-r border-slate-200 text-center font-bold text-blue-950 font-mono">
+                              {tag.huid || '—'}
+                            </td>
+
+                            {/* Size */}
+                            <td className="p-2.5 border-r border-slate-200 text-center text-slate-700">
+                              {tag.size || '—'}
+                            </td>
+
+                            {/* Mkg/Gm */}
+                            <td className="p-2.5 border-r border-slate-200 text-right text-slate-800">
+                              ₹{tag.making_per_gm}
+                            </td>
+
+                            {/* Print Status */}
+                            <td className="p-2.5 border-r border-slate-200 text-center font-sans">
+                              <button
+                                type="button"
+                                onClick={() => togglePrintStatus(tag.id)}
+                                className={`px-2 py-0.5 rounded-full text-[10px] font-bold cursor-pointer transition-all border ${
+                                  tag.is_printed
+                                    ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100'
+                                    : 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100'
+                                }`}
+                                title="Click to toggle printed status"
+                              >
+                                {tag.is_printed ? '✓ Printed' : '● Not Printed'}
+                              </button>
+                            </td>
+
+                            {/* Actions */}
+                            <td className="p-2.5 text-center font-sans">
+                              <div className="flex items-center justify-center space-x-1.5">
+                                <button
+                                  type="button"
+                                  onClick={() => handlePrintSingle(tag)}
+                                  className="p-1 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 cursor-pointer"
+                                  title="Print this single barcode tag"
+                                >
+                                  <Printer className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleBarcodeToLoose(tag)}
+                                  className="p-1 rounded bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 cursor-pointer"
+                                  title="Untag barcode to loose stock"
+                                >
+                                  <ArrowRightLeft className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                    <tfoot className="bg-slate-100 font-bold font-mono border-t-2 border-slate-300 text-xs">
+                      <tr>
+                        <td colSpan={3} className="p-2.5 font-sans uppercase text-right">
+                          List Totals ({filteredPrintTags.length} Tags):
+                        </td>
+                        <td className="p-2.5"></td>
+                        <td className="p-2.5"></td>
+                        <td className="p-2.5"></td>
+                        <td className="p-2.5 text-center text-slate-900 font-extrabold">
+                          {filteredPrintTags.reduce((s, t) => s + (t.qty || 1), 0)}
+                        </td>
+                        <td className="p-2.5 text-right text-slate-900 font-extrabold">
+                          {formatWeight(stats.totalGross)}
+                        </td>
+                        <td className="p-2.5 text-right text-blue-900 font-extrabold">
+                          {formatWeight(stats.totalNet)}
+                        </td>
+                        <td className="p-2.5"></td>
+                        <td className="p-2.5 text-right text-amber-900 font-extrabold">
+                          {formatWeight(stats.totalFine)}
+                        </td>
+                        <td colSpan={5} className="p-2.5"></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ================================================================= */}
+          {/* BARCODE IN CARD GRID VIEW (SHOWS ITEM NAME AT TOP OF EVERY TAG)   */}
+          {/* ================================================================= */}
+          {viewMode === 'grid' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredPrintTags.map((tag) => (
+                <div
+                  key={tag.id}
+                  className={`p-4 rounded-xl border transition-all ${
+                    selectedTagIds.includes(tag.id)
+                      ? 'bg-blue-50/70 border-blue-400 shadow-md ring-1 ring-blue-300'
+                      : 'bg-white border-slate-200 hover:border-blue-300 shadow-2xs'
+                  }`}
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={() => toggleSelectTag(tag.id)}
+                        className="text-blue-600 cursor-pointer"
+                      >
+                        {selectedTagIds.includes(tag.id) ? (
+                          <CheckSquare className="w-4 h-4" />
+                        ) : (
+                          <Square className="w-4 h-4 text-slate-400" />
+                        )}
+                      </button>
+                      <div>
+                        <span className="font-bold text-slate-900 text-xs block">{tag.tag_no}</span>
+                        <span className="text-[10px] text-slate-500 font-mono">{tag.category} • {tag.item_type}</span>
+                      </div>
+                    </div>
+                    <span className={`text-[10px] px-2 py-0.5 rounded font-bold border ${
+                      tag.is_printed
+                        ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                        : 'bg-amber-50 text-amber-800 border-amber-300'
+                    }`}>
+                      {tag.is_printed ? 'Printed' : 'Not Printed'}
+                    </span>
+                  </div>
+
+                  {/* Physical Tag Label Preview with ITEM NAME PROMINENTLY DISPLAYED */}
+                  <div className="my-3 p-3 bg-slate-50 border border-dashed border-slate-300 rounded-xl space-y-2">
+                    {/* Item Name prominently at the top */}
+                    <div className="text-center pb-1.5 border-b border-slate-200">
+                      <span className="text-xs font-black uppercase text-slate-900 tracking-wide block">
+                        {tag.item_name}
+                      </span>
+                    </div>
+
+                    {printFormat === 'qr_label' ? (
+                      <div className="flex items-center justify-center space-x-3 py-1">
+                        <QrCode className="w-12 h-12 text-slate-900 shrink-0" />
+                        <div className="text-left text-[11px] leading-tight space-y-0.5 font-mono">
+                          <div className="font-bold text-slate-900">{tag.tag_no}</div>
+                          <div className="text-slate-700">Gr: {tag.gross_wt}g | Nt: {tag.net_wt}g</div>
+                          <div className="text-amber-800 font-bold">Purity: {tag.purity}% | Sz: {tag.size}</div>
+                          <div className="text-blue-800 font-bold">HUID: {tag.huid}</div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center space-y-1">
+                        <div className="flex justify-center py-1">
+                          <BarcodeSvg value={tag.tag_no} width={160} height={28} />
+                        </div>
+                        <div className="text-[11px] font-mono text-slate-800 flex justify-between px-1">
+                          <span><strong>{tag.tag_no}</strong></span>
+                          <span>HUID: <strong className="text-blue-900">{tag.huid}</strong></span>
+                        </div>
+                        <div className="text-[10px] font-mono text-slate-600 bg-white p-1 rounded border border-slate-200 flex justify-between">
+                          <span>Gr: <strong>{tag.gross_wt}g</strong></span>
+                          <span>Nt: <strong>{tag.net_wt}g</strong></span>
+                          <span>Pur: <strong>{tag.purity}%</strong></span>
+                          <span>Sz: <strong>{tag.size}</strong></span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex justify-between items-center text-xs pt-1 border-t border-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => handlePrintSingle(tag)}
+                      className="text-xs text-blue-700 hover:text-blue-900 font-bold flex items-center space-x-1 cursor-pointer"
+                    >
+                      <Printer className="w-3.5 h-3.5" />
+                      <span>Print Label</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleBarcodeToLoose(tag)}
+                      className="text-[11px] text-rose-700 hover:text-rose-900 font-semibold underline cursor-pointer"
+                    >
+                      Barcode to Loose
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* TAB 2: MULTIPLE OPENING STOCK BARCODE (WEIGHT RECONCILIATION & DIVISION) */}
       {/* ========================================================================= */}
       {activeTab === 'multiple_opening' && (
         <div className="space-y-4">
@@ -522,7 +1338,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
             </div>
           )}
 
-          {/* Tags Table with all 14 Mandated Fields */}
+          {/* Tags Table with all Mandated Fields showing Item Name */}
           <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-4 shadow-sm space-y-3`}>
             <div className="flex justify-between items-center border-b border-slate-100 pb-2">
               <span className="font-bold text-slate-800 text-xs uppercase tracking-wider">
@@ -538,6 +1354,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                 <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
                   <tr>
                     <th className="p-2 border-r border-slate-200 text-center w-12">Sr No</th>
+                    <th className="p-2 border-r border-slate-200">Item Name</th>
                     <th className="p-2 border-r border-slate-200 font-mono">Tag No</th>
                     <th className="p-2 border-r border-slate-200 text-center w-10">Qty</th>
                     <th className="p-2 border-r border-slate-200 text-right">Gross Wt</th>
@@ -557,6 +1374,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                   {openingTags.map((t, idx) => (
                     <tr key={t.id} className="hover:bg-sky-50/30">
                       <td className="p-2 border-r border-slate-200 text-center text-slate-400">{idx + 1}</td>
+                      <td className="p-2 border-r border-slate-200 font-sans font-bold text-slate-900">{t.item_name}</td>
                       <td className="p-2 border-r border-slate-200 font-bold text-blue-900">{t.tag_no}</td>
                       <td className="p-2 border-r border-slate-200 text-center">{t.qty}</td>
                       <td className="p-2 border-r border-slate-200 text-right">{formatWeight(t.gross_wt)}</td>
@@ -572,7 +1390,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                       <td className="p-2 text-center">
                         <button
                           onClick={() => setOpeningTags(openingTags.filter((x) => x.id !== t.id))}
-                          className="text-rose-600 hover:text-rose-800 p-1"
+                          className="text-rose-600 hover:text-rose-800 p-1 cursor-pointer"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -587,7 +1405,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
       )}
 
       {/* ========================================================================= */}
-      {/* TAB 2: STOCK TRANSFER LOOSE TO BARCODE                                   */}
+      {/* TAB 3: STOCK TRANSFER LOOSE TO BARCODE                                   */}
       {/* ========================================================================= */}
       {activeTab === 'loose_to_barcode' && (
         <div className="space-y-4">
@@ -602,7 +1420,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {looseInventory.map((ls) => (
-                <div key={ls.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                <div key={ls.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 shadow-2xs">
                   <div className="flex justify-between items-start">
                     <span className="font-bold text-slate-900 text-xs">{ls.item_name}</span>
                     <span className="text-[10px] px-2 py-0.5 rounded bg-amber-100 text-amber-900 font-bold">
@@ -612,17 +1430,42 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                   <div className="text-sm font-mono font-extrabold text-blue-900">
                     Gross Weight: {formatWeight(ls.gross_wt)}
                   </div>
-                  <div className="text-[10px] text-slate-500">Source: {ls.source}</div>
+                  <div className="text-[10px] text-slate-500 font-sans">Source: {ls.source}</div>
                   <button
                     type="button"
                     onClick={() => {
-                      alert(`Initiating barcode tag breakdown for ${ls.item_name} (${ls.gross_wt}g)!`);
-                      setActiveTab('multiple_opening');
+                      const newTagNo = `TAG-${Math.floor(10000 + Math.random() * 90000)}`;
+                      const newTag: BarcodeTagItem = {
+                        id: `tag-${Date.now()}`,
+                        sr_no: allBarcodeInventory.length + 1,
+                        tag_no: newTagNo,
+                        item_name: ls.item_name,
+                        item_type: 'Ornament',
+                        category: 'Gold',
+                        qty: 1,
+                        gross_wt: ls.gross_wt,
+                        net_wt: ls.gross_wt,
+                        purity: ls.purity,
+                        black_b: 0,
+                        stone_wt: 0,
+                        making_per_gm: 450,
+                        making_pct: 0,
+                        size: 'Standard',
+                        hallmark_charges: 45,
+                        huid: 'B9K8L1',
+                        manual_tag: `M-${newTagNo}`,
+                        is_printed: false,
+                        is_loose: false,
+                      };
+                      setAllBarcodeInventory([newTag, ...allBarcodeInventory]);
+                      setLooseInventory(looseInventory.filter((x) => x.id !== ls.id));
+                      setActiveTab('print_studio');
+                      alert(`✓ Successfully assigned Tag ${newTagNo} to "${ls.item_name}"! Switched to Barcode List.`);
                     }}
-                    className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow flex items-center justify-center space-x-1 cursor-pointer"
+                    className="w-full py-2 bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white rounded-lg text-xs font-bold shadow flex items-center justify-center space-x-1 cursor-pointer"
                   >
                     <Tag className="w-3.5 h-3.5" />
-                    <span>Convert to Barcode Tags</span>
+                    <span>Assign Barcode & Move to List</span>
                   </button>
                 </div>
               ))}
@@ -632,160 +1475,226 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
       )}
 
       {/* ========================================================================= */}
-      {/* TAB 3: PRINT BARCODE & QR CODE STUDIO                                    */}
+      {/* PRINT PREVIEW MODAL (RENDERED WITH ITEM NAME ON EVERY PRINTABLE TAG)       */}
       {/* ========================================================================= */}
-      {activeTab === 'print_studio' && (
-        <div className="space-y-4">
-          {/* Filters Strip */}
-          <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-4 shadow-sm space-y-3 text-xs no-print`}>
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
-              <div>
-                <label className="block text-[10px] font-bold text-slate-600 mb-1">Print Status</label>
-                <select
-                  value={printFilterStatus}
-                  onChange={(e) => setPrintFilterStatus(e.target.value as any)}
-                  className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-slate-800 text-xs"
-                >
-                  <option value="all">All Tags</option>
-                  <option value="not_printed">Not Printed Only</option>
-                  <option value="printed">Printed Only</option>
-                </select>
+      {showPrintModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-150">
+            {/* Modal Header */}
+            <div className="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center no-print">
+              <div className="flex items-center space-x-2">
+                <div className="p-1.5 rounded-lg bg-blue-100 text-blue-800">
+                  <Printer className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="text-sm font-bold text-slate-800">
+                    Jewellery Barcode Tag Print Preview ({tagsToPrint.length} Tags)
+                  </h2>
+                  <p className="text-[11px] text-slate-500">
+                    Format: {printFormat.toUpperCase()} • All tags display complete Item Name & metal purity
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <label className="block text-[10px] font-bold text-slate-600 mb-1">Category</label>
-                <select
-                  value={filterCategory}
-                  onChange={(e) => setFilterCategory(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-slate-800 text-xs"
-                >
-                  <option value="All">All Categories</option>
-                  <option value="Gold">Gold</option>
-                  <option value="Silver">Silver</option>
-                  <option value="1gm Imitation">1gm Imitation</option>
-                  <option value="Diamond">Diamond</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold text-slate-600 mb-1">Item Type</label>
-                <select
-                  value={filterType}
-                  onChange={(e) => setFilterType(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-slate-800 text-xs"
-                >
-                  <option value="All">All Types</option>
-                  <option value="Ring">Ring</option>
-                  <option value="Bangle">Bangle</option>
-                  <option value="Necklace">Necklace</option>
-                  <option value="Mangalsutra">Mangalsutra</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold text-slate-600 mb-1">Print Format</label>
+              <div className="flex items-center space-x-3">
+                {/* Print Format Selector inside Modal */}
                 <select
                   value={printFormat}
                   onChange={(e) => setPrintFormat(e.target.value as any)}
-                  className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-slate-800 text-xs font-bold"
+                  className="px-2.5 py-1 bg-white border border-slate-300 rounded text-slate-800 text-xs font-bold"
                 >
-                  <option value="dumbbell">Dumbbell Butterfly Tag</option>
-                  <option value="two_up">2-Up Barcode Label</option>
+                  <option value="dumbbell">Dumbbell Butterfly Tag (50x12mm)</option>
+                  <option value="two_up">2-Up Barcode Label (A4 Sheet)</option>
                   <option value="qr_label">2D QR Code + Tag</option>
+                  <option value="sheet">Tabular Barcode Stock Sheet</option>
                 </select>
-              </div>
 
-              <div>
-                <label className="block text-[10px] font-bold text-slate-600 mb-1">Copies / Tag</label>
-                <input
-                  type="number"
-                  min={1}
-                  max={20}
-                  value={printCopies}
-                  onChange={(e) => setPrintCopies(parseInt(e.target.value) || 1)}
-                  className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded font-mono text-center text-xs text-slate-800"
-                />
-              </div>
-
-              <div className="flex items-end space-x-2">
                 <button
                   type="button"
-                  onClick={toggleSelectAll}
-                  className="w-full py-1.5 px-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 font-bold rounded text-xs flex items-center justify-center space-x-1"
+                  onClick={() => window.print()}
+                  className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow flex items-center space-x-1.5 cursor-pointer"
                 >
-                  <span>{selectedTagIds.length === filteredPrintTags.length ? 'Deselect All' : 'Select All'}</span>
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>Send to Printer</span>
+                </button>
+
+                <button
+                  onClick={() => setShowPrintModal(false)}
+                  className="p-1.5 text-slate-400 hover:text-slate-600 cursor-pointer"
+                >
+                  <XCircle className="w-5 h-5" />
                 </button>
               </div>
             </div>
-          </div>
 
-          {/* Barcode / QR Code Tag Grid Preview */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredPrintTags.map((tag) => (
-              <div
-                key={tag.id}
-                className={`p-4 rounded-xl border transition-all ${
-                  selectedTagIds.includes(tag.id)
-                    ? 'bg-blue-50/70 border-blue-400 shadow-sm'
-                    : 'bg-white border-slate-200'
-                }`}
-              >
-                <div className="flex justify-between items-start">
-                  <div className="flex items-center space-x-2">
-                    <button
-                      type="button"
-                      onClick={() => toggleSelectTag(tag.id)}
-                      className="text-blue-600 cursor-pointer"
+            {/* Modal Printable Body */}
+            <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)] bg-slate-100/60 print:p-0 print:bg-white">
+              {/* Dumbbell Tag Format */}
+              {printFormat === 'dumbbell' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {tagsToPrint.map((tag) => (
+                    <div
+                      key={tag.id}
+                      className="p-3 bg-white border-2 border-slate-900 rounded-lg shadow-sm flex items-center justify-between font-mono text-slate-900"
+                      style={{ minHeight: '80px' }}
                     >
-                      {selectedTagIds.includes(tag.id) ? (
-                        <CheckSquare className="w-4 h-4" />
-                      ) : (
-                        <Square className="w-4 h-4 text-slate-400" />
-                      )}
-                    </button>
-                    <span className="font-bold text-slate-900 text-xs">{tag.tag_no}</span>
-                  </div>
-                  <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${
-                    tag.is_printed ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                  }`}>
-                    {tag.is_printed ? 'Printed' : 'Not Printed'}
-                  </span>
-                </div>
+                      {/* Left Flap: Item Name & Barcode */}
+                      <div className="w-[45%] text-left space-y-0.5">
+                        <div className="font-black text-[11px] leading-tight text-slate-950 uppercase line-clamp-1">
+                          {tag.item_name}
+                        </div>
+                        <div className="py-0.5">
+                          <BarcodeSvg value={tag.tag_no} width={110} height={20} />
+                        </div>
+                        <div className="text-[10px] font-bold text-slate-900 tracking-wider">
+                          {tag.tag_no}
+                        </div>
+                      </div>
 
-                <div className="my-2.5 p-2 bg-slate-50 border border-dashed border-slate-300 rounded-lg text-center font-mono">
-                  {printFormat === 'qr_label' ? (
-                    <div className="flex items-center justify-center space-x-3 py-1">
-                      <QrCode className="w-10 h-10 text-slate-900" />
-                      <div className="text-left text-[10px] leading-tight">
-                        <div className="font-bold">{tag.item_name}</div>
+                      {/* Center String Bridge */}
+                      <div className="w-[8%] border-t-2 border-dashed border-slate-400 flex items-center justify-center">
+                        <span className="text-[8px] text-slate-400 font-sans">•••</span>
+                      </div>
+
+                      {/* Right Flap: Gross Wt, Net Wt, Purity, HUID, Size */}
+                      <div className="w-[45%] text-right text-[10px] leading-tight space-y-0.5">
+                        <div className="font-bold text-slate-900">
+                          Gr: <strong>{tag.gross_wt}g</strong> | Nt: <strong>{tag.net_wt}g</strong>
+                        </div>
+                        <div className="font-semibold text-slate-800">
+                          Pur: <strong>{tag.purity}%</strong> • Sz: <strong>{tag.size}</strong>
+                        </div>
+                        <div className="font-black text-blue-900 text-[11px]">
+                          HUID: {tag.huid}
+                        </div>
+                        <div className="text-[9px] text-slate-600">
+                          Mkg: ₹{tag.making_per_gm}/g
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* 2-Up Barcode Label Format */}
+              {printFormat === 'two_up' && (
+                <div className="grid grid-cols-2 gap-3">
+                  {tagsToPrint.map((tag) => (
+                    <div
+                      key={tag.id}
+                      className="p-3 bg-white border-2 border-slate-800 rounded-lg text-center space-y-1 font-mono text-slate-900"
+                    >
+                      {/* Item Name Prominently at Top */}
+                      <div className="font-black text-xs uppercase tracking-wide border-b border-slate-200 pb-1">
+                        {tag.item_name}
+                      </div>
+                      <div className="flex justify-center py-1">
+                        <BarcodeSvg value={tag.tag_no} width={150} height={26} />
+                      </div>
+                      <div className="flex justify-between text-[10px] font-bold px-1">
+                        <span>{tag.tag_no}</span>
+                        <span>HUID: {tag.huid}</span>
+                      </div>
+                      <div className="flex justify-between text-[9px] bg-slate-50 p-1 rounded border border-slate-200">
+                        <span>Gr: {tag.gross_wt}g</span>
+                        <span>Nt: {tag.net_wt}g</span>
+                        <span>{tag.purity}%</span>
+                        <span>Sz: {tag.size}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* QR Label Format */}
+              {printFormat === 'qr_label' && (
+                <div className="grid grid-cols-2 gap-3">
+                  {tagsToPrint.map((tag) => (
+                    <div
+                      key={tag.id}
+                      className="p-3 bg-white border-2 border-slate-800 rounded-lg flex items-center space-x-3 font-mono text-slate-900"
+                    >
+                      <QrCode className="w-14 h-14 text-slate-950 shrink-0" />
+                      <div className="text-left text-[10px] leading-tight space-y-0.5">
+                        <div className="font-black text-[11px] uppercase text-slate-950 line-clamp-1">
+                          {tag.item_name}
+                        </div>
+                        <div className="font-bold text-blue-900">{tag.tag_no}</div>
                         <div>Gr: {tag.gross_wt}g | Nt: {tag.net_wt}g</div>
-                        <div className="text-blue-700 font-bold">HUID: {tag.huid}</div>
+                        <div>Purity: {tag.purity}% | Size: {tag.size}</div>
+                        <div className="font-black text-blue-900">HUID: {tag.huid}</div>
                       </div>
                     </div>
-                  ) : (
-                    <div>
-                      <div className="text-lg font-extrabold tracking-widest text-slate-900 font-mono">
-                        ||||| | |||| | |||||
-                      </div>
-                      <div className="text-[10px] text-slate-600 mt-0.5">
-                        {tag.tag_no} • Gr: {tag.gross_wt}g • {tag.purity}% • HUID: {tag.huid}
-                      </div>
-                    </div>
-                  )}
+                  ))}
                 </div>
+              )}
 
-                <div className="flex justify-between items-center text-xs pt-1">
-                  <span className="text-slate-500 font-mono text-[11px]">Size: {tag.size}</span>
-                  <button
-                    type="button"
-                    onClick={() => handleBarcodeToLoose(tag)}
-                    className="text-[11px] text-rose-700 hover:text-rose-900 font-bold underline cursor-pointer"
-                  >
-                    Barcode to Loose
-                  </button>
+              {/* Tabular Stock Sheet Format */}
+              {printFormat === 'sheet' && (
+                <div className="bg-white p-4 border border-slate-300 rounded-xl">
+                  <div className="text-center pb-3 border-b-2 border-slate-800 mb-3">
+                    <h3 className="text-sm font-black uppercase text-slate-900">
+                      Jewellery Barcode Inventory Sheet
+                    </h3>
+                    <p className="text-[10px] text-slate-500 font-mono">
+                      Generated: {new Date().toLocaleDateString()} • {tagsToPrint.length} Items Listed
+                    </p>
+                  </div>
+                  <table className="w-full text-left text-[10px] border-collapse font-mono">
+                    <thead>
+                      <tr className="border-b border-slate-300 bg-slate-50 text-slate-700 font-bold">
+                        <th className="p-1.5">#</th>
+                        <th className="p-1.5">Item Name</th>
+                        <th className="p-1.5">Tag No</th>
+                        <th className="p-1.5 text-right">Gross Wt</th>
+                        <th className="p-1.5 text-right">Net Wt</th>
+                        <th className="p-1.5 text-center">Purity</th>
+                        <th className="p-1.5 text-center">HUID</th>
+                        <th className="p-1.5 text-center">Size</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200">
+                      {tagsToPrint.map((t, idx) => (
+                        <tr key={t.id}>
+                          <td className="p-1.5 text-slate-400">{idx + 1}</td>
+                          <td className="p-1.5 font-bold font-sans text-slate-900">{t.item_name}</td>
+                          <td className="p-1.5 font-bold text-blue-900">{t.tag_no}</td>
+                          <td className="p-1.5 text-right">{t.gross_wt}g</td>
+                          <td className="p-1.5 text-right font-bold">{t.net_wt}g</td>
+                          <td className="p-1.5 text-center">{t.purity}%</td>
+                          <td className="p-1.5 text-center font-bold">{t.huid}</td>
+                          <td className="p-1.5 text-center">{t.size}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-3 border-t border-slate-200 bg-slate-50 flex justify-between items-center text-xs font-sans no-print">
+              <span className="text-slate-500">
+                Ready to print {tagsToPrint.length} tag labels with thermal barcodes and item names.
+              </span>
+              <div className="flex space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setShowPrintModal(false)}
+                  className="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg cursor-pointer"
+                >
+                  Close Preview
+                </button>
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="px-5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow flex items-center space-x-1 cursor-pointer"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>Print Now</span>
+                </button>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       )}
