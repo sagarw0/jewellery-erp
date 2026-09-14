@@ -372,16 +372,16 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
         <div>
           <div className="flex items-center space-x-2.5">
             <div className="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-700 text-slate-950 font-bold shadow-md">
-              <Building2 className="w-5 h-5" />
+              <Building2 className="w-5 h-5 text-slate-950" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h1 className="text-xl font-bold tracking-tight">Vendor & Supplier Master</h1>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30">
+                <h1 className="text-xl font-extrabold tracking-tight text-slate-950 dark:text-white">Vendor & Supplier Master</h1>
+                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30">
                   व्हेंडर व पुरवठादार व्यवस्थापन
                 </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                 Manage Bullion Dealers, Karigars, Casting Units, Wholesalers & auto-populate Purchase Inwards
               </p>
             </div>
@@ -391,10 +391,10 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
         <div className="flex items-center space-x-2">
           <button
             onClick={handleExportCSV}
-            className="px-3 py-2 rounded-xl border border-slate-200 dark:border-white/15 hover:bg-slate-100 dark:hover:bg-white/10 text-xs font-semibold flex items-center space-x-1.5 transition-all cursor-pointer"
+            className="px-3 py-2 rounded-xl border border-slate-300 dark:border-white/15 bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-900 dark:text-slate-200 text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer shadow-xs"
             title="Download CSV"
           >
-            <Download className="w-4 h-4 text-slate-500" />
+            <Download className="w-4 h-4 text-slate-700 dark:text-slate-300" />
             <span className="hidden sm:inline">Export CSV</span>
           </button>
 
@@ -411,59 +411,61 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
       {/* KPI Cards Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <div className={`p-4 rounded-2xl border transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-200 shadow-sm'
+          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-300 shadow-sm'
         }`}>
-          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
+          <div className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 font-bold mb-1">
             <span>Active Suppliers</span>
-            <Building2 className="w-4 h-4 text-blue-500" />
+            <Building2 className="w-4 h-4 text-blue-600" />
           </div>
-          <div className="text-xl font-bold">{metrics.totalActive} <span className="text-xs font-normal text-slate-400">/ {vendors.length} Total</span></div>
-          <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium mt-1">
+          <div className="text-xl font-black text-slate-950 dark:text-white">
+            {metrics.totalActive} <span className="text-xs font-bold text-slate-600 dark:text-slate-400">/ {vendors.length} Total</span>
+          </div>
+          <div className="text-[11px] text-emerald-800 dark:text-emerald-400 font-bold mt-1">
             ✓ Ready for Purchase & Orders
           </div>
         </div>
 
         <div className={`p-4 rounded-2xl border transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-200 shadow-sm'
+          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-300 shadow-sm'
         }`}>
-          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
+          <div className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 font-bold mb-1">
             <span>Outstanding Payable (₹)</span>
-            <CreditCard className="w-4 h-4 text-amber-500" />
+            <CreditCard className="w-4 h-4 text-amber-600" />
           </div>
-          <div className="text-xl font-bold text-amber-600 dark:text-amber-400 font-mono">
+          <div className="text-xl font-black text-amber-950 dark:text-amber-400 font-mono">
             {formatCurrency(metrics.totalCashPayable)}
           </div>
-          <div className="text-[11px] text-slate-400 font-medium mt-1">
+          <div className="text-[11px] text-slate-600 dark:text-slate-400 font-semibold mt-1">
             Total ledger credit balance
           </div>
         </div>
 
         <div className={`p-4 rounded-2xl border transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-200 shadow-sm'
+          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-300 shadow-sm'
         }`}>
-          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
+          <div className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 font-bold mb-1">
             <span>Fine Gold Due (g)</span>
-            <Coins className="w-4 h-4 text-yellow-500" />
+            <Coins className="w-4 h-4 text-amber-600" />
           </div>
-          <div className="text-xl font-bold font-mono text-yellow-600 dark:text-yellow-400">
+          <div className="text-xl font-black font-mono text-amber-950 dark:text-yellow-400">
             {formatWeight(metrics.totalGoldGrams)}
           </div>
-          <div className="text-[11px] text-slate-400 font-medium mt-1">
+          <div className="text-[11px] text-slate-600 dark:text-slate-400 font-semibold mt-1">
             ~{(metrics.totalGoldGrams / 11.664).toFixed(2)} tolas pure gold
           </div>
         </div>
 
         <div className={`p-4 rounded-2xl border transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-200 shadow-sm'
+          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-300 shadow-sm'
         }`}>
-          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
+          <div className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 font-bold mb-1">
             <span>Fine Silver Due (g)</span>
-            <Scale className="w-4 h-4 text-slate-400" />
+            <Scale className="w-4 h-4 text-slate-600" />
           </div>
-          <div className="text-xl font-bold font-mono text-slate-700 dark:text-slate-300">
+          <div className="text-xl font-black font-mono text-slate-950 dark:text-slate-200">
             {formatWeight(metrics.totalSilverGrams)}
           </div>
-          <div className="text-[11px] text-slate-400 font-medium mt-1">
+          <div className="text-[11px] text-slate-600 dark:text-slate-400 font-semibold mt-1">
             ~{(metrics.totalSilverGrams / 1000).toFixed(2)} kg 999 silver
           </div>
         </div>
@@ -471,19 +473,19 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
 
       {/* Filter and Search Bar */}
       <div className={`p-3 rounded-2xl border flex flex-col md:flex-row items-center justify-between gap-3 ${
-        isDark ? 'bg-[#0f172a]/80 border-white/10' : 'bg-white border-slate-200 shadow-xs'
+        isDark ? 'bg-[#0f172a]/80 border-white/10' : 'bg-white border-slate-300 shadow-xs'
       }`}>
         <div className="relative flex-1 w-full">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by vendor name, code (SUP-101), mobile, GSTIN, city..."
-            className={`w-full pl-9 pr-4 py-2 rounded-xl text-xs outline-hidden border transition-all ${
+            className={`w-full pl-9 pr-4 py-2 rounded-xl text-xs outline-hidden border transition-all font-medium ${
               isDark
                 ? 'bg-white/5 border-white/15 text-white placeholder:text-slate-500 focus:border-amber-400'
-                : 'bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:bg-white'
+                : 'bg-slate-50 border-slate-300 text-slate-950 placeholder:text-slate-500 focus:border-blue-600 focus:bg-white'
             }`}
           />
         </div>
@@ -492,8 +494,8 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
           <select
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
-            className={`text-xs font-medium px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
-              isDark ? 'bg-[#0f172a] text-white border-white/15' : 'bg-slate-50 text-slate-800 border-slate-200'
+            className={`text-xs font-bold px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
+              isDark ? 'bg-[#0f172a] text-white border-white/15' : 'bg-slate-50 text-slate-900 border-slate-300'
             }`}
           >
             <option value="all">All Vendor Categories</option>
@@ -505,8 +507,8 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className={`text-xs font-medium px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
-              isDark ? 'bg-[#0f172a] text-white border-white/15' : 'bg-slate-50 text-slate-800 border-slate-200'
+            className={`text-xs font-bold px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
+              isDark ? 'bg-[#0f172a] text-white border-white/15' : 'bg-slate-50 text-slate-900 border-slate-300'
             }`}
           >
             <option value="all">All Status</option>
@@ -518,8 +520,8 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className={`text-xs font-medium px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
-              isDark ? 'bg-[#0f172a] text-white border-white/15' : 'bg-slate-50 text-slate-800 border-slate-200'
+            className={`text-xs font-bold px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
+              isDark ? 'bg-[#0f172a] text-white border-white/15' : 'bg-slate-50 text-slate-900 border-slate-300'
             }`}
           >
             <option value="name">Sort by Name</option>
@@ -530,14 +532,12 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
       </div>
 
       {/* Vendors Interactive Data Table */}
-      <div className={`rounded-2xl border overflow-hidden transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-200 shadow-sm'
+      <div className={`rounded-2xl border overflow-hidden transition-all shadow-sm ${
+        isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-300'
       }`}>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
-            <thead className={`border-b font-bold ${
-              isDark ? 'bg-white/5 text-slate-300 border-white/10' : 'bg-slate-50 text-slate-700 border-slate-200'
-            }`}>
+            <thead className="bg-slate-800 text-slate-100 font-bold uppercase tracking-wider text-[11px] border-b border-slate-700">
               <tr>
                 <th className="p-3.5 whitespace-nowrap">Vendor Code</th>
                 <th className="p-3.5 whitespace-nowrap">Company & Category</th>
@@ -549,15 +549,15 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 <th className="p-3.5 whitespace-nowrap text-center">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200/50 dark:divide-white/5 font-sans">
+            <tbody className="divide-y divide-slate-200 font-sans">
               {filteredVendors.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="p-8 text-center text-slate-400">
-                    <Building2 className="w-10 h-10 mx-auto mb-2 opacity-40" />
-                    <p className="font-semibold">No vendors found matching your filter</p>
+                  <td colSpan={8} className="p-8 text-center text-slate-600">
+                    <Building2 className="w-10 h-10 mx-auto mb-2 opacity-50 text-slate-500" />
+                    <p className="font-bold text-slate-800 text-sm">No vendors found matching your filter</p>
                     <button
                       onClick={handleOpenAdd}
-                      className="mt-3 px-3 py-1.5 rounded-lg bg-blue-600 text-white font-bold text-xs"
+                      className="mt-3 px-4 py-2 rounded-lg bg-blue-600 text-white font-bold text-xs cursor-pointer shadow-sm hover:bg-blue-700"
                     >
                       + Create First Vendor
                     </button>
@@ -567,29 +567,27 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 filteredVendors.map((v) => (
                   <tr
                     key={v.id}
-                    className={`transition-colors ${
-                      isDark ? 'hover:bg-white/5' : 'hover:bg-sky-50/40'
-                    }`}
+                    className="transition-colors hover:bg-amber-50/50 bg-white"
                   >
                     {/* Code */}
-                    <td className="p-3.5 font-mono font-bold whitespace-nowrap">
-                      <span className="px-2 py-1 rounded-md bg-blue-100 dark:bg-blue-500/20 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30">
+                    <td className="p-3.5 font-mono whitespace-nowrap">
+                      <span className="px-2.5 py-1 rounded-md bg-amber-100 text-amber-950 font-black border border-amber-300 text-xs shadow-2xs">
                         {v.vendor_code}
                       </span>
                     </td>
 
                     {/* Name & Type */}
                     <td className="p-3.5">
-                      <div className="font-bold text-slate-900 dark:text-white">
+                      <div className="font-extrabold text-slate-950 text-xs">
                         {v.vendor_name}
                       </div>
-                      <div className="flex items-center space-x-1.5 mt-0.5">
-                        <span className="text-[10px] px-1.5 py-0.2 rounded font-semibold bg-amber-100 dark:bg-amber-500/20 text-amber-900 dark:text-amber-300">
+                      <div className="flex items-center space-x-1.5 mt-1 flex-wrap gap-y-1">
+                        <span className="text-[10px] px-2 py-0.5 rounded-md font-extrabold bg-indigo-100 text-indigo-950 border border-indigo-300">
                           {v.vendor_type}
                         </span>
                         {Boolean(v.credit_days && v.credit_days > 0) && (
-                          <span className="text-[10px] text-slate-400">
-                            • {v.credit_days}d credit
+                          <span className="text-[10px] text-slate-700 font-bold bg-slate-100 px-1.5 py-0.5 rounded border border-slate-300">
+                            {v.credit_days}d credit
                           </span>
                         )}
                       </div>
@@ -597,12 +595,12 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
 
                     {/* Contact & Location */}
                     <td className="p-3.5">
-                      <div className="font-medium text-slate-700 dark:text-slate-200 flex items-center space-x-1">
-                        <Phone className="w-3 h-3 text-emerald-500" />
+                      <div className="font-extrabold text-emerald-950 flex items-center space-x-1">
+                        <Phone className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                         <span>{v.phone}</span>
                       </div>
-                      <div className="text-[11px] text-slate-400 flex items-center space-x-1 mt-0.5">
-                        <MapPin className="w-3 h-3 text-slate-400" />
+                      <div className="text-[11px] text-slate-700 font-semibold flex items-center space-x-1 mt-0.5">
+                        <MapPin className="w-3 h-3 text-slate-600 shrink-0" />
                         <span>{v.city ? `${v.city}, ${v.state.split(' ')[0]}` : v.state}</span>
                       </div>
                     </td>
@@ -610,25 +608,25 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                     {/* GSTIN & PAN */}
                     <td className="p-3.5 font-mono text-[11px]">
                       {v.gstin ? (
-                        <div className="font-semibold text-slate-800 dark:text-slate-200">
+                        <div className="font-bold text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-300 inline-block">
                           {v.gstin}
                         </div>
                       ) : (
-                        <span className="text-slate-400 italic">Unregistered (URD)</span>
+                        <span className="text-slate-600 font-semibold italic">Unregistered (URD)</span>
                       )}
                       {v.pan_no && (
-                        <div className="text-[10px] text-slate-400">
+                        <div className="text-[11px] text-slate-700 font-bold mt-0.5">
                           PAN: {v.pan_no}
                         </div>
                       )}
                     </td>
 
                     {/* Ledger Cash Balance */}
-                    <td className="p-3.5 text-right font-mono font-bold whitespace-nowrap">
-                      <div className={v.balance_type === 'Cr' ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}>
+                    <td className="p-3.5 text-right font-mono whitespace-nowrap">
+                      <div className={`text-xs font-black ${v.balance_type === 'Cr' ? 'text-amber-950' : 'text-emerald-950'}`}>
                         {formatCurrency(v.opening_balance_cash)}
                       </div>
-                      <span className="text-[10px] text-slate-400 font-sans">
+                      <span className="text-[10px] text-slate-700 font-bold font-sans">
                         {v.balance_type === 'Cr' ? '(Payable / Cr)' : '(Advance / Dr)'}
                       </span>
                     </td>
@@ -636,26 +634,26 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                     {/* Fine Metal Due */}
                     <td className="p-3.5 text-right font-mono whitespace-nowrap">
                       {(v.opening_balance_gold_fine_gm || 0) > 0 && (
-                        <div className="text-yellow-600 dark:text-yellow-400 font-bold text-[11px]">
+                        <div className="text-amber-950 font-black text-xs">
                           Au: {formatWeight(v.opening_balance_gold_fine_gm!)}
                         </div>
                       )}
                       {(v.opening_balance_silver_fine_gm || 0) > 0 && (
-                        <div className="text-slate-500 dark:text-slate-300 font-semibold text-[10px]">
+                        <div className="text-slate-800 font-bold text-[11px]">
                           Ag: {formatWeight(v.opening_balance_silver_fine_gm!)}
                         </div>
                       )}
                       {!(v.opening_balance_gold_fine_gm || 0) && !(v.opening_balance_silver_fine_gm || 0) && (
-                        <span className="text-slate-400 font-sans text-[11px]">—</span>
+                        <span className="text-slate-500 font-bold font-sans text-[11px]">—</span>
                       )}
                     </td>
 
                     {/* Status */}
                     <td className="p-3.5 text-center whitespace-nowrap">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold shadow-2xs ${
                         v.status === 'Active'
-                          ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30'
-                          : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                          ? 'bg-emerald-100 text-emerald-950 border border-emerald-400'
+                          : 'bg-slate-200 text-slate-900 border border-slate-400'
                       }`}>
                         {v.status}
                       </span>
@@ -663,12 +661,12 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
 
                     {/* Actions */}
                     <td className="p-3.5 text-center whitespace-nowrap">
-                      <div className="flex items-center justify-center space-x-1">
+                      <div className="flex items-center justify-center space-x-1.5">
                         {/* Create Purchase Bill Button */}
                         {onNavigateToPurchase && (
                           <button
                             onClick={() => onNavigateToPurchase(v)}
-                            className="p-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-2xs flex items-center space-x-1 cursor-pointer"
+                            className="px-2 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-[11px] shadow-sm flex items-center space-x-1 cursor-pointer"
                             title={`Create Purchase Bill for ${v.vendor_name} (F5)`}
                           >
                             <ShoppingBag className="w-3.5 h-3.5" />
@@ -679,7 +677,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                         {/* Edit */}
                         <button
                           onClick={() => handleOpenEdit(v)}
-                          className="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-900 transition-colors cursor-pointer"
                           title="Edit Vendor Profile"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
@@ -692,7 +690,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                               onDeleteVendor(v.id);
                             }
                           }}
-                          className="p-1.5 rounded-lg hover:bg-rose-100 dark:hover:bg-rose-500/20 text-slate-400 hover:text-rose-600 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-700 hover:text-rose-900 transition-colors cursor-pointer"
                           title="Delete Vendor"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
