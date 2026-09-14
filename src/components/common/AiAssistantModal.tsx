@@ -6,6 +6,8 @@ import {
   Send,
   Mic,
   MicOff,
+  Volume2,
+  VolumeX,
   RotateCcw,
   Maximize2,
   Minimize2,
@@ -26,7 +28,10 @@ import {
   Flame,
   UserPlus,
   BookOpen,
-  CornerDownLeft,
+  Search,
+  Globe,
+  Play,
+  Square,
   Barcode as BarcodeIcon,
 } from 'lucide-react';
 import {
@@ -35,6 +40,8 @@ import {
   WorkflowStep,
   ErpContext,
   ChatMessage,
+  ChatLanguage,
+  ChatTableData,
   AiChatbotEngine,
 } from '../../services/aiChatbotService';
 import {
@@ -78,6 +85,9 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [inputVal, setInputVal] = useState('');
   const [isListening, setIsListening] = useState(false);
+  const [autoSpeakAudio, setAutoSpeakAudio] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<ChatLanguage>('auto');
 
   // Active step-by-step workflow state
   const [activeTask, setActiveTask] = useState<{
@@ -95,24 +105,24 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     {
       id: 'welcome-msg',
       sender: 'bot',
+      language: 'en',
       text: `👋 Welcome to **Swarna AI ERP Copilot**!
+मी मराठी, हिन्दी व इंग्रजी (English) भाषेत तुमच्या दुकानातील सर्व कामे १-१ प्रश्न विचारून पूर्ण करू शकतो.
 
-I can help you **execute showroom tasks step-by-step** or **answer any question** regarding this jewellery ERP system.
-
-### Quick Actions:`,
+### 🌟 Quick Actions & Reports (क्विक ऑप्शन्स):`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       quickChips: [
-        { label: '🛒 New Purchase Inward', action: 'start_task', payload: 'purchase_inward' },
-        { label: '🏷️ Generate Barcode & HUID', action: 'start_task', payload: 'barcode_generate' },
-        { label: '💰 Sales POS Counter', action: 'start_task', payload: 'sales_invoice' },
-        { label: '📋 Book Custom Order', action: 'start_task', payload: 'order_booking' },
-        { label: '🔥 Old Gold Refinery', action: 'start_task', payload: 'refinery_melting' },
-        { label: '👤 Add Account Master', action: 'start_task', payload: 'account_create' },
-        { label: '📖 Day Book Voucher', action: 'start_task', payload: 'daybook_expense' },
-        { label: '📦 Live Stock Valuation', action: 'query', payload: 'stock' },
-        { label: '👥 Debtors Ledger', action: 'query', payload: 'debtors' },
-        { label: '⌨️ Hotkeys (F1–F12)', action: 'query', payload: 'hotkeys' },
-        { label: '🧮 Jewellery Formulas', action: 'query', payload: 'formulas' },
+        { label: '🪙 भिशी ग्राहक (Bhishi)', action: 'query', payload: 'bhishi' },
+        { label: '🏷️ अनप्रिंटेड बारकोड (Unprinted)', action: 'query', payload: 'unprinted' },
+        { label: '📦 एकूण उपलब्ध सोने (Total Gold)', action: 'query', payload: 'total gold' },
+        { label: '💵 आजचा गल्ला व ग्राहक (Till)', action: 'query', payload: 'till' },
+        { label: '📦 लूज स्टॉक (Loose Stock)', action: 'query', payload: 'loose stock' },
+        { label: '👥 उधारी बाकीदार (Debtors)', action: 'query', payload: 'debtors' },
+        { label: '🛒 नवीन खरेदी (New Purchase)', action: 'start_task', payload: 'purchase_inward' },
+        { label: '🏷️ बारकोड बनवा (New Tag)', action: 'start_task', payload: 'barcode_generate' },
+        { label: '💰 विक्री बिल (Sales POS)', action: 'start_task', payload: 'sales_invoice' },
+        { label: '📋 कस्टम ऑर्डर (Book Order)', action: 'start_task', payload: 'order_booking' },
+        { label: '🔥 जुने सोने रिफायनरी', action: 'start_task', payload: 'refinery_melting' },
       ],
     },
   ]);
@@ -125,6 +135,49 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
   useEffect(() => {
     engine.updateContext(context);
   }, [context, engine]);
+
+  // Text-To-Speech (TTS Audio Response)
+  const speakText = (text: string, langHint: 'en' | 'mr' | 'hi' = 'mr') => {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+
+    // Strip markdown characters from speech text
+    const cleanText = text
+      .replace(/[*_#`$]/g, '')
+      .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
+      .replace(/https?:\/\/\S+/g, '')
+      .replace(/\n+/g, '. ')
+      .trim();
+
+    if (!cleanText) return;
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+
+    const targetLang = langHint === 'mr' ? 'mr-IN' : langHint === 'hi' ? 'hi-IN' : 'en-IN';
+    utterance.lang = targetLang;
+
+    // Try to pick an appropriate voice
+    const voices = window.speechSynthesis.getVoices();
+    const matchedVoice = voices.find((v) => v.lang.includes(targetLang) || v.lang.includes('hi') || v.lang.includes('IN'));
+    if (matchedVoice) {
+      utterance.voice = matchedVoice;
+    }
+
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const stopSpeaking = () => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
+  };
 
   // Auto-scroll chat
   useEffect(() => {
@@ -154,9 +207,16 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
         }
         setStepInputValue(activeTask.collectedData[step.field] ?? def);
         setStepError(null);
+
+        // Auto speak question if TTS enabled
+        if (autoSpeakAudio) {
+          const effectiveLang = selectedLanguage === 'mr' ? 'mr' : selectedLanguage === 'hi' ? 'hi' : 'en';
+          const qText = effectiveLang === 'mr' && step.questionMr ? step.questionMr : effectiveLang === 'hi' && step.questionHi ? step.questionHi : step.question;
+          speakText(qText, effectiveLang);
+        }
       }
     }
-  }, [activeTask, context]);
+  }, [activeTask, context, autoSpeakAudio, selectedLanguage]);
 
   // Speech recognition setup
   useEffect(() => {
@@ -166,12 +226,19 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
     const recognition = new SpeechRecognition();
     recognition.continuous = false;
     recognition.interimResults = false;
-    recognition.lang = 'en-IN';
+
+    // Set recognition language
+    const recLang = selectedLanguage === 'mr' ? 'mr-IN' : selectedLanguage === 'hi' ? 'hi-IN' : 'en-IN';
+    recognition.lang = recLang;
 
     recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript;
       setInputVal(transcript);
       setIsListening(false);
+      // Auto-submit voice command
+      setTimeout(() => {
+        handleProcessInput(transcript);
+      }, 100);
     };
 
     recognition.onerror = () => setIsListening(false);
@@ -184,7 +251,7 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
     }
 
     return () => recognition.stop();
-  }, [isListening]);
+  }, [isListening, selectedLanguage]);
 
   // Handle start of a task workflow
   const startWorkflow = (taskType: TaskType) => {
@@ -207,16 +274,28 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
     setStepInputValue(initialDef);
     setStepError(null);
 
-    // Add bot message
+    const isMr = selectedLanguage === 'mr';
+    const isHi = selectedLanguage === 'hi';
+    const startMsg = isMr
+      ? `**${workflow.name}** सुरू करत आहे (${workflow.steps.length} टप्पे).\nमी तुम्हाला १-१ प्रश्न विचारत आहे:`
+      : isHi
+      ? `**${workflow.name}** शुरू कर रहे हैं (${workflow.steps.length} चरण)।\nकृपया १-१ सवाल का जवाब दें:`
+      : `Starting **${workflow.name}** (${workflow.steps.length} steps).\nI will ask you 1 question at a time:`;
+
     setMessages((prev) => [
       ...prev,
       {
         id: `msg-${Date.now()}`,
         sender: 'bot',
-        text: `Starting **${workflow.name}** (${workflow.steps.length} steps).\nI will ask you 1 question at a time. You can change values or accept the defaults:`,
+        language: isMr ? 'mr' : isHi ? 'hi' : 'en',
+        text: startMsg,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       },
     ]);
+
+    if (autoSpeakAudio) {
+      speakText(startMsg, isMr ? 'mr' : isHi ? 'hi' : 'en');
+    }
   };
 
   // Submit current step in active task
@@ -250,7 +329,7 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
       {
         id: `user-step-${Date.now()}`,
         sender: 'user',
-        text: `${currentStep.question}\n**Answer:** ${val}`,
+        text: `${currentStep.question}\n**उत्तर / Answer:** ${val}`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       },
     ]);
@@ -287,13 +366,17 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           cardData: executionResult.cardData,
           quickChips: [
-            { label: '🛒 Another Purchase', action: 'start_task', payload: 'purchase_inward' },
-            { label: '🏷️ Generate Barcode', action: 'start_task', payload: 'barcode_generate' },
-            { label: '💰 Sales POS', action: 'start_task', payload: 'sales_invoice' },
-            { label: '📦 Check Stock', action: 'query', payload: 'stock' },
+            { label: '🛒 नवीन खरेदी (Purchase)', action: 'start_task', payload: 'purchase_inward' },
+            { label: '🏷️ बारकोड टॅग (Barcode)', action: 'start_task', payload: 'barcode_generate' },
+            { label: '💰 विक्री बिल (Sales POS)', action: 'start_task', payload: 'sales_invoice' },
+            { label: '📦 स्टॉक तपासा (Stock)', action: 'query', payload: 'stock' },
           ],
         },
       ]);
+
+      if (autoSpeakAudio) {
+        speakText(executionResult.message, 'mr');
+      }
     }
   };
 
@@ -314,25 +397,21 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
       {
         id: `cancel-${Date.now()}`,
         sender: 'bot',
-        text: 'Workflow cancelled. How else can I assist you?',
+        text: 'कार्य रद्द केले आहे. मी इतर काय मदत करू? (Workflow cancelled)',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         quickChips: [
-          { label: '🛒 New Purchase', action: 'start_task', payload: 'purchase_inward' },
-          { label: '🏷️ Generate Barcode', action: 'start_task', payload: 'barcode_generate' },
-          { label: '💰 Sales POS', action: 'start_task', payload: 'sales_invoice' },
-          { label: '📦 Check Stock', action: 'query', payload: 'stock' },
+          { label: '🪙 भिशी ग्राहक', action: 'query', payload: 'bhishi' },
+          { label: '🏷️ अनप्रिंटेड बारकोड', action: 'query', payload: 'unprinted' },
+          { label: '📦 एकूण सोने', action: 'query', payload: 'total gold' },
+          { label: '💵 आजचा गल्ला', action: 'query', payload: 'till' },
         ],
       },
     ]);
   };
 
-  // General text message send
-  const handleSendMessage = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!inputVal.trim()) return;
-
-    const userText = inputVal.trim();
-    setInputVal('');
+  // Process text or voice input
+  const handleProcessInput = (userText: string) => {
+    if (!userText.trim()) return;
 
     // Add user message
     setMessages((prev) => [
@@ -345,8 +424,8 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
       },
     ]);
 
-    // Process via Engine
-    const result = engine.processUserInput(userText);
+    // Process via Multilingual Engine
+    const result = engine.processUserInput(userText, selectedLanguage);
 
     if (result.taskToStart) {
       startWorkflow(result.taskToStart);
@@ -356,13 +435,27 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
         {
           id: `bot-${Date.now()}`,
           sender: 'bot',
+          language: result.language,
           text: result.response,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          tableData: result.tableData,
           cardData: result.cardData,
           quickChips: result.quickChips,
         },
       ]);
+
+      if (autoSpeakAudio) {
+        speakText(result.response, result.language);
+      }
     }
+  };
+
+  const handleSendMessage = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!inputVal.trim()) return;
+    const textToSend = inputVal.trim();
+    setInputVal('');
+    handleProcessInput(textToSend);
   };
 
   // Quick Action Chip Click
@@ -370,25 +463,7 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
     if (chip.action === 'start_task' && chip.payload) {
       startWorkflow(chip.payload as TaskType);
     } else if (chip.action === 'query' && chip.payload) {
-      setInputVal(chip.payload);
-      const result = engine.processUserInput(chip.payload);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `user-${Date.now()}`,
-          sender: 'user',
-          text: chip.label,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        },
-        {
-          id: `bot-${Date.now()}`,
-          sender: 'bot',
-          text: result.response,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          cardData: result.cardData,
-          quickChips: result.quickChips,
-        },
-      ]);
+      handleProcessInput(chip.payload);
     } else if (chip.action === 'navigate' && chip.payload) {
       onNavigate(chip.payload.section, chip.payload.subView);
     }
@@ -443,6 +518,15 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
   const currentWorkflow = activeTask ? TASK_WORKFLOWS[activeTask.taskType] : null;
   const currentStep = currentWorkflow ? currentWorkflow.steps[activeTask!.stepIndex] : null;
 
+  // Active step prompt in chosen language
+  const stepQuestionText = currentStep
+    ? (selectedLanguage === 'mr' && currentStep.questionMr
+        ? currentStep.questionMr
+        : selectedLanguage === 'hi' && currentStep.questionHi
+        ? currentStep.questionHi
+        : currentStep.question)
+    : '';
+
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-end p-2 sm:p-6 pointer-events-none">
       {/* Backdrop for mobile */}
@@ -455,8 +539,8 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
       <div
         className={`pointer-events-auto flex flex-col rounded-3xl shadow-2xl border transition-all duration-300 overflow-hidden ${
           isExpanded
-            ? 'w-full sm:w-[880px] h-[92vh] sm:h-[85vh]'
-            : 'w-full sm:w-[480px] h-[85vh] sm:h-[680px]'
+            ? 'w-full sm:w-[940px] h-[92vh] sm:h-[88vh]'
+            : 'w-full sm:w-[540px] h-[88vh] sm:h-[720px]'
         } ${
           isDark
             ? 'bg-[#0f172a]/95 backdrop-blur-2xl border-white/20 text-white'
@@ -485,26 +569,68 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
               <span className={`text-[11px] block font-medium ${isDark ? 'text-slate-400' : 'text-blue-100'}`}>
                 {activeTask
                   ? `Task: ${currentWorkflow?.name}`
-                  : 'Instant Jewellery Tasks & ERP Knowledge'}
+                  : 'मराठी • हिन्दी • English • Voice Supported'}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1.5">
+            {/* Language Selector Dropdown */}
+            <div className="relative">
+              <select
+                value={selectedLanguage}
+                onChange={(e) => setSelectedLanguage(e.target.value as ChatLanguage)}
+                className={`text-[11px] font-bold px-2 py-1 rounded-lg border outline-hidden cursor-pointer transition-all ${
+                  isDark
+                    ? 'bg-white/10 text-white border-white/20'
+                    : 'bg-white/20 text-white border-white/30 hover:bg-white/30'
+                }`}
+                title="Select Language / भाषा निवडा"
+              >
+                <option value="auto" className="text-slate-900">🌐 Auto-Detect</option>
+                <option value="mr" className="text-slate-900">मराठी (Marathi)</option>
+                <option value="hi" className="text-slate-900">हिन्दी (Hindi)</option>
+                <option value="en" className="text-slate-900">English</option>
+              </select>
+            </div>
+
+            {/* Audio Voice Output Toggle (TTS) */}
             <button
               onClick={() => {
+                if (isSpeaking) {
+                  stopSpeaking();
+                } else {
+                  setAutoSpeakAudio(!autoSpeakAudio);
+                }
+              }}
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                autoSpeakAudio || isSpeaking
+                  ? 'bg-amber-400 text-slate-950 font-bold'
+                  : isDark
+                  ? 'hover:bg-white/10 text-slate-400'
+                  : 'hover:bg-white/20 text-white/80'
+              }`}
+              title={autoSpeakAudio ? 'Audio Voice: ON (Click to Mute)' : 'Enable Audio Voice (Text-To-Speech)'}
+            >
+              {isSpeaking ? <Volume2 className="w-4 h-4 animate-bounce" /> : autoSpeakAudio ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+            </button>
+
+            {/* Reset / Clear */}
+            <button
+              onClick={() => {
+                stopSpeaking();
                 setActiveTask(null);
                 setMessages([
                   {
                     id: 'reset-msg',
                     sender: 'bot',
-                    text: 'Chat history cleared. How can I help you today?',
+                    text: 'चॅट इतिहास साफ केला आहे. मी तुम्हाला कशी मदत करू शकतो? (Chat cleared)',
                     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                     quickChips: [
-                      { label: '🛒 New Purchase', action: 'start_task', payload: 'purchase_inward' },
-                      { label: '🏷️ Generate Barcode', action: 'start_task', payload: 'barcode_generate' },
-                      { label: '💰 Sales POS', action: 'start_task', payload: 'sales_invoice' },
-                      { label: '📋 Book Order', action: 'start_task', payload: 'order_booking' },
+                      { label: '🪙 भिशी ग्राहक', action: 'query', payload: 'bhishi' },
+                      { label: '🏷️ अनप्रिंटेड बारकोड', action: 'query', payload: 'unprinted' },
+                      { label: '📦 एकूण सोने', action: 'query', payload: 'total gold' },
+                      { label: '💵 आजचा गल्ला', action: 'query', payload: 'till' },
                     ],
                   },
                 ]);
@@ -512,21 +638,28 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
               className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                 isDark ? 'hover:bg-white/10 text-slate-400' : 'hover:bg-white/20 text-white/80'
               }`}
-              title="Reset / Clear Chat"
+              title="Reset Chat"
             >
               <RotateCcw className="w-4 h-4" />
             </button>
+
+            {/* Expand Full Width */}
             <button
               onClick={() => setIsExpanded(!isExpanded)}
               className={`p-1.5 rounded-lg transition-colors cursor-pointer hidden sm:block ${
                 isDark ? 'hover:bg-white/10 text-slate-400' : 'hover:bg-white/20 text-white/80'
               }`}
-              title={isExpanded ? 'Collapse Drawer' : 'Expand Full Width'}
+              title={isExpanded ? 'Collapse' : 'Expand Full Width'}
             >
               {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </button>
+
+            {/* Close */}
             <button
-              onClick={onClose}
+              onClick={() => {
+                stopSpeaking();
+                onClose();
+              }}
               className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                 isDark ? 'hover:bg-white/10 text-slate-400 hover:text-white' : 'hover:bg-white/20 text-white'
               }`}
@@ -546,14 +679,14 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
                 msg.sender === 'user' ? 'items-end' : 'items-start'
               }`}
             >
-              <div className="flex items-end space-x-2 max-w-[90%] sm:max-w-[85%]">
+              <div className="flex items-end space-x-2 max-w-[96%] sm:max-w-[92%]">
                 {msg.sender === 'bot' && (
                   <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs mb-1">
                     <Bot className="w-3.5 h-3.5" />
                   </div>
                 )}
                 <div
-                  className={`p-3.5 rounded-2xl shadow-xs leading-relaxed whitespace-pre-line ${
+                  className={`p-3.5 rounded-2xl shadow-xs leading-relaxed whitespace-pre-line w-full ${
                     msg.sender === 'user'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-br-xs'
                       : isDark
@@ -561,9 +694,100 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
                       : 'bg-slate-100 border border-slate-200 text-slate-900 rounded-bl-xs'
                   }`}
                 >
-                  <div className="space-y-1">
+                  <div className="space-y-1.5">
                     {msg.text}
                   </div>
+
+                  {/* Dynamic Interactive Table Display */}
+                  {msg.tableData && (
+                    <div className={`mt-3 rounded-xl border overflow-hidden ${
+                      isDark ? 'bg-black/40 border-white/15 text-white' : 'bg-white border-sky-200 text-slate-900 shadow-sm'
+                    }`}>
+                      {/* Table Header Strip */}
+                      <div className={`p-2.5 border-b flex items-center justify-between ${
+                        isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'
+                      }`}>
+                        <div>
+                          <span className="font-bold text-xs text-blue-700 dark:text-amber-400 block">
+                            {msg.tableData.title}
+                          </span>
+                          {msg.tableData.subtitle && (
+                            <span className="text-[10px] text-slate-500 font-medium">
+                              {msg.tableData.subtitle}
+                            </span>
+                          )}
+                        </div>
+
+                        {msg.tableData.navigationAction && (
+                          <button
+                            onClick={() => onNavigate(msg.tableData!.navigationAction!.section, msg.tableData!.navigationAction!.subView)}
+                            className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] shadow-2xs flex items-center space-x-1 cursor-pointer"
+                          >
+                            <span>{msg.tableData.navigationAction.label}</span>
+                            <ExternalLink className="w-3 h-3 ml-0.5" />
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Scrollable Data Grid */}
+                      <div className="overflow-x-auto max-h-64 scrollbar-thin">
+                        <table className="w-full text-left text-[11px] border-collapse">
+                          <thead className={`sticky top-0 z-10 border-b font-bold ${
+                            isDark ? 'bg-[#0f172a] text-slate-300 border-white/10' : 'bg-slate-100 text-slate-700 border-slate-200'
+                          }`}>
+                            <tr>
+                              {msg.tableData.columns.map((col) => (
+                                <th
+                                  key={col.key}
+                                  className={`p-2 whitespace-nowrap ${
+                                    col.align === 'right' ? 'text-right' : col.align === 'center' ? 'text-center' : 'text-left'
+                                  }`}
+                                >
+                                  {col.label}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-200/40 dark:divide-white/5 font-mono text-[11px]">
+                            {msg.tableData.rows.map((row, rIdx) => (
+                              <tr
+                                key={rIdx}
+                                className={`transition-colors ${
+                                  isDark ? 'hover:bg-white/5' : 'hover:bg-sky-50/50'
+                                }`}
+                              >
+                                {msg.tableData!.columns.map((col) => {
+                                  const cellVal = row[col.key];
+                                  return (
+                                    <td
+                                      key={col.key}
+                                      className={`p-2 whitespace-nowrap ${
+                                        col.align === 'right' ? 'text-right font-medium' : col.align === 'center' ? 'text-center' : 'text-left'
+                                      }`}
+                                    >
+                                      {col.format === 'badge' ? (
+                                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                                          String(cellVal).includes('Active') || String(cellVal).includes('TAG')
+                                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                                            : String(cellVal).includes('Matured')
+                                            ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                                            : 'bg-sky-100 text-blue-900 border border-sky-200'
+                                        }`}>
+                                          {String(cellVal)}
+                                        </span>
+                                      ) : (
+                                        String(cellVal ?? '—')
+                                      )}
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Summary / Voucher Card */}
                   {msg.cardData && (
@@ -608,24 +832,39 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
                     </div>
                   )}
 
-                  {/* Quick Action Chips inside bubble */}
-                  {msg.quickChips && msg.quickChips.length > 0 && (
-                    <div className="mt-3 pt-2 border-t border-slate-200/30 flex flex-wrap gap-1.5">
-                      {msg.quickChips.map((chip, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => handleChipClick(chip)}
-                          className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer flex items-center space-x-1 ${
-                            isDark
-                              ? 'bg-white/15 hover:bg-white/25 text-amber-300 border border-white/20'
-                              : 'bg-white hover:bg-blue-50 text-blue-900 border border-blue-200 shadow-2xs'
-                          }`}
-                        >
-                          <span>{chip.label}</span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                  {/* Audio Speaker Listen Button & Action Chips */}
+                  <div className="mt-3 pt-2 border-t border-slate-200/30 flex items-center justify-between flex-wrap gap-1.5">
+                    {msg.sender === 'bot' && (
+                      <button
+                        onClick={() => speakText(msg.text, msg.language || 'mr')}
+                        className={`text-[10px] px-2 py-0.5 rounded-md flex items-center space-x-1 font-medium transition-colors cursor-pointer ${
+                          isDark ? 'bg-white/10 hover:bg-white/20 text-amber-300' : 'bg-slate-200/70 hover:bg-slate-300 text-slate-700'
+                        }`}
+                        title="Listen to this message"
+                      >
+                        <Volume2 className="w-3 h-3" />
+                        <span>ऐका (Listen)</span>
+                      </button>
+                    )}
+
+                    {msg.quickChips && msg.quickChips.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {msg.quickChips.map((chip, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleChipClick(chip)}
+                            className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer flex items-center space-x-1 ${
+                              isDark
+                                ? 'bg-white/15 hover:bg-white/25 text-amber-300 border border-white/20'
+                                : 'bg-white hover:bg-blue-50 text-blue-900 border border-blue-200 shadow-2xs'
+                            }`}
+                          >
+                            <span>{chip.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
               <span className="text-[9px] text-slate-400 mt-0.5 px-8 font-mono">
@@ -678,7 +917,7 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
               {/* Step Question Prompt */}
               <div className="space-y-1 mb-3">
                 <h4 className="font-bold text-sm text-slate-900 dark:text-white flex items-center space-x-1.5">
-                  <span>{currentStep.question}</span>
+                  <span>{stepQuestionText}</span>
                 </h4>
                 {currentStep.subtext && (
                   <p className="text-[11px] text-slate-500 dark:text-slate-400">
@@ -766,7 +1005,7 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
                         onClick={() => handleStepSubmit()}
                         className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold text-xs shadow-xs transition-all flex items-center space-x-1 cursor-pointer"
                       >
-                        <span>Next</span>
+                        <span>Next (पुढे)</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
@@ -837,7 +1076,7 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Bottom Input Area */}
+        {/* Bottom Input Area with Speech-to-Text & Multilingual hints */}
         <div
           className={`p-3 border-t shrink-0 ${
             isDark ? 'bg-[#0b1120] border-white/10' : 'bg-white border-slate-200'
@@ -849,12 +1088,12 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
               onClick={() => setIsListening(!isListening)}
               className={`p-2.5 rounded-xl border transition-all cursor-pointer ${
                 isListening
-                  ? 'bg-rose-600 text-white border-rose-700 animate-pulse'
+                  ? 'bg-rose-600 text-white border-rose-700 animate-pulse ring-4 ring-rose-200'
                   : isDark
                   ? 'bg-white/10 text-slate-300 hover:bg-white/20 border-white/15'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200'
               }`}
-              title={isListening ? 'Stop Listening' : 'Voice Dictation'}
+              title={isListening ? 'Listening (बोलणे चालू आहे)...' : 'Voice Speech Input (मराठी/हिन्दी/English बोलून विचारू शकता)'}
             >
               {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
             </button>
@@ -868,7 +1107,11 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
                 placeholder={
                   activeTask
                     ? 'Workflow in progress above...'
-                    : 'Ask any question or command (e.g. "new purchase", "how much gold", "formula for fine gold")...'
+                    : selectedLanguage === 'mr'
+                    ? 'काहीही विचारा (उदा. "भिशी ग्राहक", "एकूण सोने किती", "अनप्रिंटेड बारकोड", "खरेदी करा")...'
+                    : selectedLanguage === 'hi'
+                    ? 'कुछ भी पूछें (उदा. "भिशी ग्राहक", "कुल सोना कितना है", "आज का गल्ला")...'
+                    : 'Ask anything in Marathi / Hindi / English (e.g. "show bhishi", "total gold", "unprinted barcodes")...'
                 }
                 disabled={Boolean(activeTask)}
                 className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium outline-hidden transition-all ${
@@ -889,10 +1132,13 @@ I can help you **execute showroom tasks step-by-step** or **answer any question*
             </button>
           </form>
 
-          {/* Micro Helper Note */}
+          {/* Micro Helper Bar */}
           <div className="flex items-center justify-between text-[10px] text-slate-400 mt-2 px-1">
-            <span>Powered by Swarna AI Assistant Engine</span>
-            <span className="font-mono">Press Ctrl+Space to toggle</span>
+            <span className="flex items-center space-x-1">
+              <Globe className="w-3 h-3 text-amber-500" />
+              <span>मराठी, हिन्दी, English Voice & Text Active</span>
+            </span>
+            <span className="font-mono">Ctrl+Space</span>
           </div>
         </div>
       </div>

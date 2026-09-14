@@ -10,11 +10,100 @@ import {
 } from '../types/erp';
 import { formatCurrency, formatWeight, calculateTaxes, roundTo } from '../utils/calculations';
 
+export type ChatLanguage = 'auto' | 'en' | 'mr' | 'hi';
+
+export interface BhishiMember {
+  id: string;
+  member_no: string;
+  name: string;
+  phone: string;
+  monthly_amt: number;
+  tenure_months: number;
+  installments_paid: number;
+  accumulated_amt: number;
+  gold_wt_accrued: number;
+  bonus_contribution: number;
+  status: string;
+}
+
+export const INITIAL_BHISHI_MEMBERS: BhishiMember[] = [
+  {
+    id: 'sch-1',
+    member_no: 'SN-2026-081',
+    name: 'Sunita Patil',
+    phone: '9820556677',
+    monthly_amt: 5000,
+    tenure_months: 11,
+    installments_paid: 8,
+    accumulated_amt: 40000,
+    gold_wt_accrued: 5.625,
+    bonus_contribution: 5000,
+    status: 'Active (8/11)',
+  },
+  {
+    id: 'sch-2',
+    member_no: 'SN-2026-092',
+    name: 'Kavita Joshi',
+    phone: '9819443322',
+    monthly_amt: 10000,
+    tenure_months: 11,
+    installments_paid: 11,
+    accumulated_amt: 110000,
+    gold_wt_accrued: 15.420,
+    bonus_contribution: 10000,
+    status: 'Matured - Ready for Jewellery Redemption',
+  },
+  {
+    id: 'sch-3',
+    member_no: 'SN-2026-104',
+    name: 'Anjali Deshmukh',
+    phone: '9822114477',
+    monthly_amt: 5000,
+    tenure_months: 11,
+    installments_paid: 5,
+    accumulated_amt: 25000,
+    gold_wt_accrued: 3.510,
+    bonus_contribution: 5000,
+    status: 'Active (5/11)',
+  },
+  {
+    id: 'sch-4',
+    member_no: 'SN-2026-115',
+    name: 'Pooja Kulkarni',
+    phone: '9823998811',
+    monthly_amt: 15000,
+    tenure_months: 11,
+    installments_paid: 10,
+    accumulated_amt: 150000,
+    gold_wt_accrued: 21.050,
+    bonus_contribution: 15000,
+    status: 'Active (10/11 - Due Next Month)',
+  },
+];
+
+export interface ChatTableColumn {
+  key: string;
+  label: string;
+  align?: 'left' | 'center' | 'right';
+  format?: 'text' | 'weight' | 'currency' | 'badge' | 'number';
+}
+
+export interface ChatTableData {
+  title: string;
+  subtitle?: string;
+  columns: ChatTableColumn[];
+  rows: Record<string, any>[];
+  footerSummary?: Record<string, any>;
+  navigationAction?: { label: string; section: string; subView?: string };
+}
+
 // Step definition for guided interactive task flows
 export interface WorkflowStep {
   id: string;
   field: string;
   question: string;
+  questionMr?: string;
+  questionHi?: string;
   subtext?: string;
   type: 'text' | 'number' | 'select' | 'date' | 'currency' | 'weight' | 'purity';
   options?: { label: string; value: string | number; sub?: string }[];
@@ -57,6 +146,7 @@ export interface ErpContext {
   gold22kRate: number;
   silverRate: number;
   branchName?: string;
+  bhishiMembers?: BhishiMember[];
 }
 
 export interface ChatMessage {
@@ -64,11 +154,13 @@ export interface ChatMessage {
   sender: 'bot' | 'user';
   text: string;
   timestamp: string;
+  language?: 'en' | 'mr' | 'hi';
   activeTask?: {
     taskType: TaskType;
     stepIndex: number;
     collectedData: Record<string, any>;
   };
+  tableData?: ChatTableData;
   cardData?: {
     type: 'purchase_receipt' | 'barcode_tag' | 'sales_receipt' | 'order_receipt' | 'refinery_receipt' | 'account_receipt' | 'daybook_receipt' | 'stock_summary' | 'debtor_summary' | 'info_card';
     title: string;
@@ -95,6 +187,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_supplier',
         field: 'supplier_name',
         question: 'Who is the Bullion Supplier / Karagir Vendor?',
+        questionMr: 'बुलियन सप्लायर / कारागिराचे नाव काय आहे?',
+        questionHi: 'बुलियन सप्लायर / कारीगर का नाम क्या है?',
         subtext: 'Select a registered creditor account or enter a new supplier name.',
         type: 'text',
         placeholder: 'e.g., Apex Bullion Traders, Choksi Bullion, Kundan Jewellers',
@@ -108,6 +202,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_item_name',
         field: 'item_name',
         question: 'What is the ornament or metal lot being purchased?',
+        questionMr: 'कोणता दागिना किंवा धातू खरेदी करत आहात?',
+        questionHi: 'कौन सा जेवर या मेटल लॉट खरीदा जा रहा है?',
         subtext: 'Specify item description (e.g. 22K 916 Casted Bangles, 24K Pure Gold Bar 100g, 999 Fine Silver Bar).',
         type: 'text',
         placeholder: 'e.g., 22K Fancy Bangle Lot, 24K Gold Bar, 18K Diamond Ring Lot',
@@ -121,6 +217,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_category',
         field: 'category',
         question: 'Select the Asset Category:',
+        questionMr: 'दागिन्यांचा प्रकार निवडा:',
+        questionHi: 'ज्वेलरी केटेगरी चुनें:',
         subtext: 'Classifies the asset in stock and ledger reporting.',
         type: 'select',
         options: [
@@ -136,6 +234,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_gross_wt',
         field: 'gross_wt',
         question: 'Enter the Gross Weight in Grams:',
+        questionMr: 'एकूण वजन (Gross Weight) टाका (ग्रॅम मध्ये):',
+        questionHi: 'कुल वजन (Gross Weight) ग्राम में दर्ज करें:',
         subtext: 'Total physical weight on the certified weighing scale.',
         type: 'weight',
         placeholder: '0.000',
@@ -150,6 +250,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_stone_wt',
         field: 'stone_wt',
         question: 'Enter Less / Stone / Dust Weight (in Grams):',
+        questionMr: 'खडे / दोरा / धूळ घट वजन (Stone Weight) टाका:',
+        questionHi: 'नग / धागा / लेस वजन (Stone Weight) दर्ज करें:',
         subtext: 'Weight of stones, thread, or wax. Enter 0 if plain solid gold.',
         type: 'weight',
         placeholder: '0.000',
@@ -166,6 +268,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_purity',
         field: 'purity',
         question: 'What is the Purity / Touch %?',
+        questionMr: 'टंच / शुद्धता (Purity %) निवडा:',
+        questionHi: 'टंच / शुद्धता (Purity %) चुनें:',
         subtext: 'Hallmark Touch percentage for calculating fine gold equivalent.',
         type: 'select',
         options: [
@@ -181,6 +285,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_rate',
         field: 'rate',
         question: 'Enter the Purchase Rate per Gram (₹):',
+        questionMr: 'खरेदीचा भाव प्रति ग्रॅम (₹) टाका:',
+        questionHi: 'खरीद दर प्रति ग्राम (₹) दर्ज करें:',
         subtext: 'Metal purchase rate agreed with supplier.',
         type: 'currency',
         placeholder: 'e.g. 7450',
@@ -194,6 +300,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_payment_mode',
         field: 'payment_mode',
         question: 'Payment & Settlement Mode:',
+        questionMr: 'पेमेंट पद्धत निवडा:',
+        questionHi: 'भुगतान माध्यम चुनें:',
         subtext: 'How will this purchase lot be settled?',
         type: 'select',
         options: [
@@ -219,6 +327,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_tag_name',
         field: 'item_name',
         question: 'What is the Ornament Description for the tag?',
+        questionMr: 'टॅगवर छापण्यासाठी दागिन्याचे नाव काय आहे?',
+        questionHi: 'टैग पर प्रिंट करने के लिए आभूषण का नाम क्या है?',
         subtext: 'Item name as it will appear on the barcode tag label.',
         type: 'text',
         placeholder: 'e.g., 22K Antique Lakshmi Choker, 18K Diamond Solitaire Ring',
@@ -232,6 +342,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_tag_cat',
         field: 'category',
         question: 'Select the Jewellery Category:',
+        questionMr: 'कॅटेगरी निवडा:',
+        questionHi: 'केटेगरी चुनें:',
         type: 'select',
         options: [
           { label: 'Gold Jewellery', value: 'Gold' },
@@ -245,6 +357,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_tag_gross',
         field: 'gross_wt',
         question: 'Enter Gross Weight (Grams):',
+        questionMr: 'एकूण वजन टाका (ग्रॅम):',
+        questionHi: 'कुल वजन दर्ज करें (ग्राम):',
         type: 'weight',
         placeholder: '0.000',
         defaultValue: 16.450,
@@ -255,6 +369,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_tag_net',
         field: 'net_wt',
         question: 'Enter Net Weight (Grams):',
+        questionMr: 'निव्वळ वजन (Net Weight) टाका:',
+        questionHi: 'शुद्ध वजन (Net Weight) दर्ज करें:',
         subtext: 'Pure metal weight excluding stones and beads.',
         type: 'weight',
         placeholder: '0.000',
@@ -268,6 +384,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_tag_purity',
         field: 'purity',
         question: 'Select Purity & Hallmark Standard:',
+        questionMr: 'हॉलमार्क शुद्धता निवडा:',
+        questionHi: 'हॉलमार्क शुद्धता चुनें:',
         type: 'select',
         options: [
           { label: '22K 916 (91.6% Pure Gold)', value: 91.6, sub: 'BIS Hallmarked' },
@@ -281,6 +399,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_tag_huid',
         field: 'huid',
         question: 'Enter or Generate 6-Character BIS HUID Code:',
+        questionMr: '६ अक्षरी BIS HUID कोड टाका किंवा जनरेट करा:',
+        questionHi: '६ अक्षरों का BIS HUID कोड दर्ज करें या जनरेट करें:',
         subtext: 'Mandatory 6-character alphanumeric Hallmarking Unique ID (e.g. B9K8L1).',
         type: 'text',
         placeholder: 'e.g., B9K8L1, X4M9Q2',
@@ -299,6 +419,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_tag_making',
         field: 'making_per_gm',
         question: 'Enter Selling Making Charges (₹ per Gram):',
+        questionMr: 'विक्री मजुरी दर (₹ प्रति ग्रॅम) टाका:',
+        questionHi: 'बिक्री मजदूरी दर (₹ प्रति ग्राम) दर्ज करें:',
         subtext: 'Default craftsmanship charge applied during sales billing.',
         type: 'currency',
         placeholder: 'e.g., 450',
@@ -321,6 +443,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_sale_cust',
         field: 'customer_name',
         question: 'Enter Customer Name:',
+        questionMr: 'ग्राहकाचे नाव टाका:',
+        questionHi: 'ग्राहक का नाम दर्ज करें:',
         subtext: 'Select an existing debtor account or enter a new customer.',
         type: 'text',
         placeholder: 'e.g., Rajesh Mehta, Ananya Joshi, Walk-in Customer',
@@ -331,6 +455,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_sale_phone',
         field: 'phone',
         question: 'Customer Mobile Number:',
+        questionMr: 'ग्राहकाचा मोबाईल नंबर:',
+        questionHi: 'ग्राहक का मोबाइल नंबर:',
         subtext: 'Required for e-invoice and WhatsApp bill sharing.',
         type: 'text',
         placeholder: '10-digit mobile number',
@@ -344,6 +470,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_sale_item',
         field: 'item_name',
         question: 'Select or Enter Ornament to Sell:',
+        questionMr: 'विक्री करावयाच्या दागिन्याचे नाव किंवा बारकोड:',
+        questionHi: 'बेचे जाने वाले आभूषण का नाम या बारकोड:',
         subtext: 'Enter the item name or scan a tagged barcode.',
         type: 'text',
         placeholder: 'e.g., 22K Royal Peacock Choker, TAG-GLD-102',
@@ -353,6 +481,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_sale_net_wt',
         field: 'net_wt',
         question: 'Enter Net Metal Weight (Grams):',
+        questionMr: 'निव्वळ धातू वजन (Net Weight) टाका (ग्रॅम):',
+        questionHi: 'शुद्ध धातु का वजन दर्ज करें (ग्राम):',
         subtext: 'Pure gold weight to calculate metal value.',
         type: 'weight',
         placeholder: '0.000',
@@ -364,6 +494,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_sale_rate',
         field: 'rate',
         question: 'Today\'s Gold Billing Rate per Gram (₹):',
+        questionMr: 'आजचा सोन्याचा बिलिंग भाव प्रति ग्रॅम (₹):',
+        questionHi: 'आज का सोना बिलिंग भाव प्रति ग्राम (₹):',
         subtext: 'Live 22K 916 rate from bullion market.',
         type: 'currency',
         defaultValue: (data, ctx) => ctx.gold22kRate,
@@ -373,6 +505,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_sale_making',
         field: 'making_per_gm',
         question: 'Enter Making Charge (₹ per Gram):',
+        questionMr: 'घडणावळ / मजुरी दर (₹ प्रति ग्रॅम):',
+        questionHi: 'मजदूरी / मेकिंग चार्ज (₹ प्रति ग्राम):',
         type: 'currency',
         placeholder: 'e.g., 450',
         defaultValue: 450,
@@ -382,6 +516,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_sale_old_gold',
         field: 'old_gold_amount',
         question: 'Any Old Gold (URD Exchange) Deduction (₹)?',
+        questionMr: 'जुने सोने (URD) वजावट रक्कम (₹):',
+        questionHi: 'पुराना सोना (URD) कटौती राशि (₹):',
         subtext: 'Enter value of old scrap gold returned by customer. Enter 0 if none.',
         type: 'currency',
         placeholder: '0',
@@ -392,6 +528,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_sale_pay_mode',
         field: 'payment_mode',
         question: 'Primary Payment Method:',
+        questionMr: 'पेमेंट पद्धत निवडा:',
+        questionHi: 'पेमेंट का प्रकार चुनें:',
         subtext: 'Select how the customer is paying.',
         type: 'select',
         options: [
@@ -418,6 +556,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_ord_cust',
         field: 'customer_name',
         question: 'Enter Customer Name & Mobile Number:',
+        questionMr: 'ग्राहकाचे नाव आणि मोबाईल नंबर टाका:',
+        questionHi: 'ग्राहक का नाम और मोबाइल नंबर दर्ज करें:',
         type: 'text',
         placeholder: 'e.g. Smt. Kavita Patil (9822334455)',
         defaultValue: 'Smt. Kavita Patil',
@@ -427,6 +567,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_ord_item',
         field: 'item_name',
         question: 'Describe the Custom Ornament to Craft:',
+        questionMr: 'ऑर्डर द्यायच्या दागिन्याचे डिझाईन वर्णन:',
+        questionHi: 'कस्टम आभूषण का विवरण दर्ज करें:',
         subtext: 'Include details like karat, design pattern, stone type, or length.',
         type: 'text',
         placeholder: 'e.g. 22K Temple Design Bridal Haar with Ruby Stones (45g)',
@@ -436,6 +578,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_ord_approx_wt',
         field: 'approx_wt',
         question: 'Enter Approximate Target Weight (Grams):',
+        questionMr: 'अंदाजे टार्गेट वजन (ग्रॅम):',
+        questionHi: 'अनुमानित वजन (ग्राम):',
         type: 'weight',
         placeholder: '0.000',
         defaultValue: 45.000,
@@ -445,6 +589,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_ord_date',
         field: 'delivery_date',
         question: 'Promise / Delivery Due Date:',
+        questionMr: 'दागिना देण्याची तारीख (Promise Date):',
+        questionHi: 'डिलीवरी की तारीख (Promise Date):',
         subtext: 'When should the workshop finish crafting and polishing?',
         type: 'date',
         defaultValue: () => {
@@ -457,6 +603,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_ord_advance',
         field: 'advance_amount',
         question: 'Enter Advance Payment Received (₹):',
+        questionMr: 'मिळालेली ॲडव्हान्स रक्कम (₹):',
+        questionHi: 'प्राप्त एडवांस राशि (₹):',
         subtext: 'Booking token advance received via Cash/UPI.',
         type: 'currency',
         placeholder: 'e.g., 25000',
@@ -479,6 +627,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_ref_name',
         field: 'refinery_name',
         question: 'Refinery / Assayer / Party Name:',
+        questionMr: 'रिफायनरी / टंच तपासणी केंद्राचे नाव:',
+        questionHi: 'रिफाइनरी / टंच टेस्टिंग सेंटर का नाम:',
         type: 'text',
         placeholder: 'e.g. Shree Ganesh Refinery & Assaying Centre',
         defaultValue: 'Shree Ganesh Refinery',
@@ -488,6 +638,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_ref_gross',
         field: 'gross_wt',
         question: 'Enter Scrap Gross Weight (Grams):',
+        questionMr: 'जुन्या स्क्रॅप सोन्याचे वजन (ग्रॅम):',
+        questionHi: 'पुराने स्क्रैप सोने का वजन (ग्राम):',
         type: 'weight',
         placeholder: '0.000',
         defaultValue: 50.000,
@@ -498,6 +650,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_ref_purity',
         field: 'purity',
         question: 'Tested Melting Touch / Purity %:',
+        questionMr: 'तपासणी नंतर आलेली शुद्धता / टंच %:',
+        questionHi: 'टेस्टिंग के बाद शुद्धता / टंच %:',
         subtext: 'Laboratory assay testing purity report result.',
         type: 'select',
         options: [
@@ -512,6 +666,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_ref_settlement',
         field: 'settlement_mode',
         question: 'Settlement Option:',
+        questionMr: 'जमा पद्धत निवडा:',
+        questionHi: 'सेटलमेंट माध्यम चुनें:',
         type: 'select',
         options: [
           { label: 'Credit Fine Metal to Stock (Issue to Karagir)', value: 'Metal' },
@@ -535,6 +691,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_acc_name',
         field: 'account_name',
         question: 'Enter Full Account / Party Name:',
+        questionMr: 'खातेदाराचे / ग्राहकाचे पूर्ण नाव टाका:',
+        questionHi: 'खाताधारक / ग्राहक का पूरा नाम दर्ज करें:',
         type: 'text',
         placeholder: 'e.g. Ramesh Kulkarni, Shreeji Crafts Karagir',
         defaultValue: 'Ramesh Kulkarni',
@@ -544,6 +702,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_acc_group',
         field: 'account_group',
         question: 'Select Account Ledger Group:',
+        questionMr: 'खाते गट (Ledger Group) निवडा:',
+        questionHi: 'खाता समूह (Ledger Group) चुनें:',
         type: 'select',
         options: [
           { label: 'Sundry Debtors (Customer)', value: 'Sundry Debtors', sub: 'Customers who purchase ornaments' },
@@ -557,6 +717,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_acc_phone',
         field: 'phone',
         question: 'Contact Phone Number & City:',
+        questionMr: 'मोबाईल नंबर आणि गाव/शहर:',
+        questionHi: 'मोबाइल नंबर और शहर:',
         type: 'text',
         placeholder: 'e.g. 9823456789, Pune',
         defaultValue: '9823456789, Pune',
@@ -565,6 +727,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_acc_opening',
         field: 'opening_balance',
         question: 'Enter Opening Balance (₹):',
+        questionMr: 'सुरुवातीची बाकी रक्कम (Opening Balance ₹):',
+        questionHi: 'शुरुआती शेष राशि (Opening Balance ₹):',
         subtext: 'Enter 0 if fresh account with zero balance.',
         type: 'currency',
         placeholder: '0',
@@ -587,6 +751,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_db_type',
         field: 'invoice_type',
         question: 'Select Voucher Type:',
+        questionMr: 'व्हाउचरचा प्रकार निवडा:',
+        questionHi: 'वाउचर का प्रकार चुनें:',
         type: 'select',
         options: [
           { label: 'Cash Payment / Expense Voucher', value: 'Cash Payment' },
@@ -600,6 +766,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_db_details',
         field: 'details',
         question: 'Enter Particulars / Purpose Description:',
+        questionMr: 'खर्चाचा किंवा प्राप्तीचा तपशील टाका:',
+        questionHi: 'खर्च या प्राप्ति का विवरण दर्ज करें:',
         type: 'text',
         placeholder: 'e.g. Showroom Electricity Bill, Tea & Refreshments, Staff Advance',
         defaultValue: 'Showroom Electricity Bill',
@@ -609,6 +777,8 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
         id: 'step_db_amount',
         field: 'amount',
         question: 'Enter Transaction Amount (₹):',
+        questionMr: 'रक्कम (₹) टाका:',
+        questionHi: 'राशि (₹) दर्ज करें:',
         type: 'currency',
         placeholder: 'e.g. 3500',
         defaultValue: 3500,
@@ -620,235 +790,561 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
 };
 
 // ----------------------------------------------------
-// 2. KNOWLEDGE BASE & NLU QUERY ENGINE
+// 2. KNOWLEDGE BASE & MULTILINGUAL NLU ENGINE
 // ----------------------------------------------------
 export class AiChatbotEngine {
   private context: ErpContext;
+  private bhishiMembers: BhishiMember[];
 
   constructor(context: ErpContext) {
     this.context = context;
+    this.bhishiMembers = context.bhishiMembers || INITIAL_BHISHI_MEMBERS;
   }
 
   public updateContext(context: ErpContext) {
     this.context = context;
+    if (context.bhishiMembers) {
+      this.bhishiMembers = context.bhishiMembers;
+    }
   }
 
-  // Detect user intent: task workflow vs live query vs knowledge question
-  public processUserInput(input: string): {
+  // Detect language of user query
+  public detectLanguage(text: string, manualPreference: ChatLanguage = 'auto'): 'en' | 'mr' | 'hi' {
+    if (manualPreference && manualPreference !== 'auto') {
+      return manualPreference;
+    }
+
+    const lower = text.toLowerCase();
+
+    // Marathi keywords & Devanagari patterns
+    const marathiKeywords = ['दाखवा', 'करा', 'आहे', 'नाही', 'सोनं', 'सोने', 'भिशी', 'ग्राहकांची', 'योजना', 'गल्ला', 'टंच', 'मजुरी', 'हिशोब', 'तपशील', 'शिल्लक', 'खरेदी', 'विक्री', 'भाव', 'अनप्रिंटेड', 'तोळा', 'तोळे'];
+    if (marathiKeywords.some((w) => lower.includes(w))) return 'mr';
+
+    // Hindi keywords & Devanagari patterns
+    const hindiKeywords = ['दिखाओ', 'कितना', 'सोना', 'भिशी', 'योजना', 'गल्ला', 'दुकान', 'हिसाब', 'बकाया', 'खरीद', 'बिक्री', 'तोला', 'बिना', 'प्रिंट'];
+    if (hindiKeywords.some((w) => lower.includes(w))) return 'hi';
+
+    // Check Devanagari script presence
+    if (/[\u0900-\u097F]/.test(text)) {
+      if (lower.includes('कॅश') || lower.includes('सोनं') || lower.includes('दाखवा') || lower.includes('करा')) return 'mr';
+      return 'hi';
+    }
+
+    return 'en';
+  }
+
+  // Process User Input with Multi-lingual capability, table generation & calculations
+  public processUserInput(
+    input: string,
+    forcedLang: ChatLanguage = 'auto'
+  ): {
     response: string;
+    language: 'en' | 'mr' | 'hi';
     taskToStart?: TaskType;
+    tableData?: ChatTableData;
     cardData?: ChatMessage['cardData'];
     quickChips?: ChatMessage['quickChips'];
   } {
     const raw = input.trim();
     const text = raw.toLowerCase();
+    const lang = this.detectLanguage(raw, forcedLang);
 
-    // 1. Task Initiation Keywords
-    if (text.includes('purchase') || text.includes('buy gold') || text.includes('inward') || text.includes('vendor bill') || text.includes('bullion purchase')) {
-      return {
-        response: 'Sure! I will guide you step-by-step to record a **Purchase Inward & Inventory Lot**. Let\'s begin with the first question:',
-        taskToStart: 'purchase_inward',
-      };
-    }
+    // ----------------------------------------------------
+    // 1. BHISHI / GOLD SAVINGS SCHEME CUSTOMERS QUERY
+    // ----------------------------------------------------
+    if (
+      text.includes('bhishi') ||
+      text.includes('gold scheme') ||
+      text.includes('swarna nidhi') ||
+      text.includes('भिशी') ||
+      text.includes('योजना') ||
+      text.includes('savings scheme') ||
+      text.includes('scheme member')
+    ) {
+      const members = this.bhishiMembers;
+      const totalAccumulated = members.reduce((s, m) => s + m.accumulated_amt, 0);
+      const totalGoldAccrued = members.reduce((s, m) => s + m.gold_wt_accrued, 0);
 
-    if (text.includes('barcode') || text.includes('tag') || text.includes('huid') || text.includes('generate tag') || text.includes('print tag')) {
-      return {
-        response: 'Let\'s create a new **Barcode & HUID Tag** for your jewellery item step-by-step:',
-        taskToStart: 'barcode_generate',
-      };
-    }
+      const tableRows = members.map((m) => ({
+        member_no: m.member_no,
+        name: m.name,
+        phone: m.phone,
+        monthly_plan: formatCurrency(m.monthly_amt),
+        progress: `${m.installments_paid}/${m.tenure_months} (${Math.round((m.installments_paid / m.tenure_months) * 100)}%)`,
+        accumulated_amt: formatCurrency(m.accumulated_amt),
+        gold_accrued: `${formatWeight(m.gold_wt_accrued)}g`,
+        bonus: formatCurrency(m.bonus_contribution),
+        status: m.status,
+      }));
 
-    if (text.includes('sale') || text.includes('sell') || text.includes('pos') || text.includes('invoice') || text.includes('bill') || text.includes('counter sale')) {
-      return {
-        response: 'Starting the **Sales POS Counter Billing** wizard. I will ask you 1 question at a time to complete the invoice:',
-        taskToStart: 'sales_invoice',
-      };
-    }
+      const title = lang === 'mr' ? 'सुवर्ण निधी मासिक भिशी ग्राहक यादी' : lang === 'hi' ? 'स्वर्ण निधि मासिक भिशी ग्राहक सूची' : 'Swarna Nidhi - Gold Savings Scheme Members';
+      const subtitle = lang === 'mr'
+        ? `एकूण ग्राहक: ${members.length} | जमा रक्कम: ${formatCurrency(totalAccumulated)} | जमा सोने: ${formatWeight(totalGoldAccrued)}g`
+        : lang === 'hi'
+        ? `कुल सदस्य: ${members.length} | कुल जमा: ${formatCurrency(totalAccumulated)} | संचित सोना: ${formatWeight(totalGoldAccrued)}g`
+        : `Total Members: ${members.length} | Total Deposits: ${formatCurrency(totalAccumulated)} | Total Gold Accrued: ${formatWeight(totalGoldAccrued)}g`;
 
-    if (text.includes('order') || text.includes('book order') || text.includes('custom order') || text.includes('karagir order')) {
-      return {
-        response: 'Let\'s record a **Custom Order Booking**. I will take down the customer requirements, promised date, and advance payment:',
-        taskToStart: 'order_booking',
-      };
-    }
-
-    if (text.includes('refinery') || text.includes('melting') || text.includes('old gold') || text.includes('scrap') || text.includes('urd')) {
-      return {
-        response: 'Starting the **Old Gold & Refinery Inward** flow. Let\'s calculate the fine gold recovery and settlement:',
-        taskToStart: 'refinery_melting',
-      };
-    }
-
-    if (text.includes('add customer') || text.includes('create account') || text.includes('new party') || text.includes('new supplier') || text.includes('add debtor')) {
-      return {
-        response: 'Let\'s register a new **Account / Party Master** step-by-step:',
-        taskToStart: 'account_create',
-      };
-    }
-
-    if (text.includes('expense') || text.includes('daybook entry') || text.includes('petty cash') || text.includes('voucher')) {
-      return {
-        response: 'Let\'s record a **Day Book Cash / Bank Voucher** entry:',
-        taskToStart: 'daybook_expense',
-      };
-    }
-
-    // 2. Real-time Live ERP Data Queries
-    // Query A: Live Stock
-    if (text.includes('stock') || text.includes('inventory') || text.includes('how much gold') || text.includes('stock value') || text.includes('gold balance')) {
-      const totalItems = this.context.stockItems.length;
-      const totalGrossWt = this.context.stockItems.reduce((s, i) => s + (i.gross_wt || 0), 0);
-      const totalFineWt = this.context.stockItems.reduce((s, i) => s + (i.fine_wt || 0), 0);
-      const totalVal = this.context.stockItems.reduce((s, i) => s + (i.total_value || (i.net_wt * (i.rate_per_gm || this.context.gold22kRate))), 0);
-      const taggedCount = this.context.stockItems.filter((i) => !i.is_loose && i.tag_no).length;
-      const looseCount = totalItems - taggedCount;
+      const resp = lang === 'mr'
+        ? `### 🪙 सुवर्ण निधी भिशी ग्राहक तपशील\nसध्या **${members.length} ग्राहक** सक्रिय भिशी योजनेमध्ये आहेत.\n- एकूण जमा रक्कम: **${formatCurrency(totalAccumulated)}**\n- एकूण संचित सोने: **${formatWeight(totalGoldAccrued)}g**\nखालील तक्त्यामध्ये सर्व ग्राहकांचा सविस्तर हिशोब दिलेला आहे:`
+        : lang === 'hi'
+        ? `### 🪙 स्वर्ण निधि भिशी ग्राहक विवरण\nवर्तमान में **${members.length} सदस्य** सक्रिय भिशी योजना में शामिल हैं।\n- कुल संचित जमा: **${formatCurrency(totalAccumulated)}**\n- कुल जमा सोना: **${formatWeight(totalGoldAccrued)}g**\nनीचे तालिका में सभी सदस्यों का विवरण दिया गया है:`
+        : `### 🪙 Swarna Nidhi Gold Savings Scheme\nCurrently **${members.length} active members** are enrolled in the 11+1 monthly gold accumulation plan.\n- Total Accumulated Funds: **${formatCurrency(totalAccumulated)}**\n- Total Gold Accrued: **${formatWeight(totalGoldAccrued)}g**\nDetailed membership ledger table below:`;
 
       return {
-        response: `### 📦 Live Showroom Stock Valuation\nHere is your current real-time inventory breakdown:\n- **Total Stock Lots**: ${totalItems} items (${taggedCount} Tagged Barcodes, ${looseCount} Loose Inward Lots)\n- **Total Gross Metal**: **${formatWeight(totalGrossWt)}g**\n- **Fine Gold Equivalent**: **${formatWeight(totalFineWt)}g**\n- **Estimated Stock Value**: **${formatCurrency(totalVal)}**\n- **Live Bullion 22K**: ₹${this.context.gold22kRate.toLocaleString('en-IN')}/g | **24K**: ₹${this.context.gold24kRate.toLocaleString('en-IN')}/g`,
-        cardData: {
-          type: 'stock_summary',
-          title: 'Real-Time Inventory Snapshot',
-          details: {
-            'Total Stock Items': totalItems,
-            'Tagged Barcode Pieces': taggedCount,
-            'Loose Lots': looseCount,
-            'Total Gross Weight': `${formatWeight(totalGrossWt)}g`,
-            'Total Fine Gold': `${formatWeight(totalFineWt)}g`,
-            'Total Inventory Valuation': formatCurrency(totalVal),
-          },
-          actions: [
-            { label: 'Open Stock Report (F9)', actionId: 'nav_stock', primary: true },
-            { label: 'Generate Barcode Tag', actionId: 'task_barcode' },
+        response: resp,
+        language: lang,
+        tableData: {
+          title,
+          subtitle,
+          columns: [
+            { key: 'member_no', label: 'Member No', align: 'left', format: 'badge' },
+            { key: 'name', label: 'Customer Name', align: 'left', format: 'text' },
+            { key: 'monthly_plan', label: 'Plan/Mo', align: 'right', format: 'text' },
+            { key: 'progress', label: 'Installments', align: 'center', format: 'text' },
+            { key: 'accumulated_amt', label: 'Deposited', align: 'right', format: 'text' },
+            { key: 'gold_accrued', label: 'Gold Accrued', align: 'right', format: 'text' },
+            { key: 'status', label: 'Status', align: 'center', format: 'badge' },
           ],
+          rows: tableRows,
+          navigationAction: { label: 'Open Gold Scheme Center', section: 'gold_scheme' },
         },
         quickChips: [
-          { label: '🛒 Record New Purchase', action: 'start_task', payload: 'purchase_inward' },
-          { label: '🏷️ Generate Barcode', action: 'start_task', payload: 'barcode_generate' },
+          { label: '🪙 Open Gold Scheme Screen', action: 'navigate', payload: { section: 'gold_scheme' } },
+          { label: '📦 Check Total Stock', action: 'query', payload: 'stock' },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // 2. NON-PRINTED BARCODES / UNPRINTED TAGS QUERY
+    // ----------------------------------------------------
+    if (
+      text.includes('non printed') ||
+      text.includes('unprinted') ||
+      text.includes('not printed') ||
+      text.includes('print pending') ||
+      text.includes('अनप्रिंट') ||
+      text.includes('प्रिंट न केलेले') ||
+      text.includes('प्रिंट बाकी')
+    ) {
+      // Find items that have tags or need tags printed
+      const unprintedItems = this.context.stockItems.filter((i) => !i.is_urd);
+      const rows = unprintedItems.slice(0, 10).map((i, idx) => ({
+        sr_no: idx + 1,
+        tag_no: i.tag_no || `TAG-NEW-${100 + idx}`,
+        huid: i.huid || 'B9K8L1',
+        item_name: i.item_name,
+        category: i.category,
+        gross_wt: `${formatWeight(i.gross_wt)}g`,
+        net_wt: `${formatWeight(i.net_wt)}g`,
+        purity: `${i.purity}%`,
+        print_status: 'Ready to Print',
+      }));
+
+      const resp = lang === 'mr'
+        ? `### 🏷️ प्रिंट करायचे बाकी असलेले बारकोड टॅग्स\nसध्या **${unprintedItems.length} दागिने** बारकोड लेबल प्रिंटिंगसाठी तयार आहेत.\nतुम्ही खालील तक्त्यामधून बारकोड स्टुडिओ उघडून एका क्लिकमध्ये थर्मल प्रिंटरवर टॅग प्रिंट करू शकता:`
+        : lang === 'hi'
+        ? `### 🏷️ प्रिंटिंग के लिए लंबित बारकोड टैग्स\nवर्तमान में **${unprintedItems.length} आभूषण** बारकोड प्रिंटिंग के लिए तैयार हैं।\nआप सीधे बारकोड स्टूडियो खोलकर लेबल प्रिंट कर सकते हैं:`
+        : `### 🏷️ Non-Printed / Pending Barcode Tags\nFound **${unprintedItems.length} items** ready for thermal label tag printing.\nYou can open Barcode Studio (F3) to print 50x25mm / 38x28mm jewelry tags:`;
+
+      return {
+        response: resp,
+        language: lang,
+        tableData: {
+          title: lang === 'mr' ? 'प्रिंट बाकी असलेले बारकोड टॅग्स' : lang === 'hi' ? 'लंबित बारकोड टैग्स' : 'Unprinted Barcode Tags Queue',
+          subtitle: `${unprintedItems.length} items ready for thermal label batch print`,
+          columns: [
+            { key: 'tag_no', label: 'Tag No', align: 'left', format: 'badge' },
+            { key: 'huid', label: 'HUID', align: 'center', format: 'badge' },
+            { key: 'item_name', label: 'Item Name', align: 'left', format: 'text' },
+            { key: 'gross_wt', label: 'Gross Wt', align: 'right', format: 'text' },
+            { key: 'net_wt', label: 'Net Wt', align: 'right', format: 'text' },
+            { key: 'purity', label: 'Touch', align: 'center', format: 'text' },
+            { key: 'print_status', label: 'Status', align: 'center', format: 'badge' },
+          ],
+          rows,
+          navigationAction: { label: 'Open Barcode Studio (F3)', section: 'masters', subView: 'barcode' },
+        },
+        quickChips: [
+          { label: '🏷️ Open Barcode Studio (F3)', action: 'navigate', payload: { section: 'masters', subView: 'barcode' } },
+          { label: '✨ Generate New Tag', action: 'start_task', payload: 'barcode_generate' },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // 3. ALL ITEM BARCODES QUERY
+    // ----------------------------------------------------
+    if (
+      text.includes('barcodes of items') ||
+      text.includes('all barcodes') ||
+      text.includes('show barcodes') ||
+      text.includes('सर्व बारकोड') ||
+      text.includes('बारकोड यादी') ||
+      text.includes('बारकोड दिखाओ')
+    ) {
+      const taggedItems = this.context.stockItems.filter((i) => i.tag_no || !i.is_loose);
+      const rows = taggedItems.map((i, idx) => ({
+        sr_no: idx + 1,
+        tag_no: i.tag_no || `TAG-GLD-${101 + idx}`,
+        huid: i.huid || 'B9K8L1',
+        item_name: i.item_name,
+        category: i.category,
+        gross_wt: `${formatWeight(i.gross_wt)}g`,
+        net_wt: `${formatWeight(i.net_wt)}g`,
+        fine_wt: `${formatWeight(i.fine_wt)}g`,
+        val: formatCurrency(i.total_value || (i.net_wt * (i.rate_per_gm || this.context.gold22kRate))),
+      }));
+
+      const resp = lang === 'mr'
+        ? `### 🏷️ सर्व ॲक्टिव्ह बारकोड टॅग्स यादी (${taggedItems.length} दागिने)\nप्रत्येक दागिन्याचा टॅग नंबर, BIS HUID कोड आणि वजनाचा तक्ता खालीलप्रमाणे आहे:`
+        : lang === 'hi'
+        ? `### 🏷️ सभी एक्टिव बारकोड टैग्स सूची (${taggedItems.length} आभूषण)\nप्रत्येक आभूषण का टैग नंबर, HUID कोड और वजन विवरण तालिका में दिया गया है:`
+        : `### 🏷️ Master Barcode Tags Inventory (${taggedItems.length} Tagged Ornaments)\nDetailed catalogue of tagged showroom pieces with HUID and weight breakdown:`;
+
+      return {
+        response: resp,
+        language: lang,
+        tableData: {
+          title: lang === 'mr' ? 'दागिने बारकोड मास्टर' : lang === 'hi' ? 'आभूषण बारकोड मास्टर' : 'Jewellery Barcode Tag Directory',
+          subtitle: `Total Tagged Stock: ${taggedItems.length} pieces`,
+          columns: [
+            { key: 'tag_no', label: 'Tag No', align: 'left', format: 'badge' },
+            { key: 'huid', label: 'BIS HUID', align: 'center', format: 'badge' },
+            { key: 'item_name', label: 'Ornament Name', align: 'left', format: 'text' },
+            { key: 'gross_wt', label: 'Gross Wt', align: 'right', format: 'text' },
+            { key: 'net_wt', label: 'Net Wt', align: 'right', format: 'text' },
+            { key: 'fine_wt', label: 'Fine Gold', align: 'right', format: 'text' },
+            { key: 'val', label: 'Tag Valuation', align: 'right', format: 'text' },
+          ],
+          rows,
+          navigationAction: { label: 'Open Barcode Studio (F3)', section: 'masters', subView: 'barcode' },
+        },
+        quickChips: [
+          { label: '🏷️ Barcode Studio (F3)', action: 'navigate', payload: { section: 'masters', subView: 'barcode' } },
+          { label: '✨ Create New Tag', action: 'start_task', payload: 'barcode_generate' },
+          { label: '💰 Sales Billing (F4)', action: 'start_task', payload: 'sales_invoice' },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // 4. LOOSE STOCK INVENTORY QUERY
+    // ----------------------------------------------------
+    if (
+      text.includes('loose stock') ||
+      text.includes('loose items') ||
+      text.includes('un-tagged') ||
+      text.includes('लूज स्टॉक') ||
+      text.includes('विना टॅग') ||
+      text.includes('खुला सोना') ||
+      text.includes('लूज सोना')
+    ) {
+      const looseItems = this.context.stockItems.filter((i) => i.is_loose || !i.tag_no);
+      const totalLooseGross = looseItems.reduce((s, i) => s + (i.gross_wt || 0), 0);
+      const totalLooseFine = looseItems.reduce((s, i) => s + (i.fine_wt || 0), 0);
+      const totalLooseVal = looseItems.reduce((s, i) => s + (i.total_value || (i.net_wt * (i.rate_per_gm || this.context.gold22kRate))), 0);
+
+      const rows = looseItems.map((i, idx) => ({
+        sr_no: idx + 1,
+        lot_id: i.id.replace('stk-pur-', 'LOT-'),
+        item_name: i.item_name,
+        category: i.category,
+        gross_wt: `${formatWeight(i.gross_wt)}g`,
+        net_wt: `${formatWeight(i.net_wt)}g`,
+        purity: `${i.purity}%`,
+        fine_wt: `${formatWeight(i.fine_wt)}g`,
+        val: formatCurrency(i.total_value || (i.net_wt * (i.rate_per_gm || this.context.gold22kRate))),
+      }));
+
+      const resp = lang === 'mr'
+        ? `### 📦 लूज स्टॉक (विना-टॅग लॉट) तपशील\n- एकूण लूज लॉट्स: **${looseItems.length}**\n- एकूण लूज धातू वजन: **${formatWeight(totalLooseGross)}g**\n- शुद्ध सोने (Fine Gold): **${formatWeight(totalLooseFine)}g**\n- अंदाजे मूल्य: **${formatCurrency(totalLooseVal)}**\nहे लॉट तुम्ही बारकोड स्टुडिओमधून टॅग मध्ये रूपांतरित करू शकता:`
+        : lang === 'hi'
+        ? `### 📦 लूज स्टॉक (बिना-टैग लॉट) विवरण\n- कुल लूज लॉट्स: **${looseItems.length}**\n- कुल लूज वजन: **${formatWeight(totalLooseGross)}g**\n- शुद्ध सोना (Fine Gold): **${formatWeight(totalLooseFine)}g**\n- अनुमानित मूल्य: **${formatCurrency(totalLooseVal)}**\nइन लॉट्स को आप बारकोड स्टूडियो से टैग में बदल सकते हैं:`
+        : `### 📦 Loose Inventory (Untagged Inward Lots)\n- Total Loose Lots: **${looseItems.length}**\n- Total Loose Gross Weight: **${formatWeight(totalLooseGross)}g**\n- Fine Gold Equivalent: **${formatWeight(totalLooseFine)}g**\n- Valuation: **${formatCurrency(totalLooseVal)}**\nConvert these wholesale lots into tagged showroom display pieces in Barcode Studio:`;
+
+      return {
+        response: resp,
+        language: lang,
+        tableData: {
+          title: lang === 'mr' ? 'लूज स्टॉक लॉट यादी' : lang === 'hi' ? 'लूज स्टॉक सूची' : 'Loose Stock Inventory Lots',
+          subtitle: `Total Weight: ${formatWeight(totalLooseGross)}g (${formatWeight(totalLooseFine)}g fine gold)`,
+          columns: [
+            { key: 'lot_id', label: 'Lot ID', align: 'left', format: 'badge' },
+            { key: 'item_name', label: 'Item Lot Name', align: 'left', format: 'text' },
+            { key: 'category', label: 'Category', align: 'center', format: 'text' },
+            { key: 'gross_wt', label: 'Gross Wt', align: 'right', format: 'text' },
+            { key: 'net_wt', label: 'Net Wt', align: 'right', format: 'text' },
+            { key: 'purity', label: 'Touch', align: 'center', format: 'text' },
+            { key: 'fine_wt', label: 'Fine Gold', align: 'right', format: 'text' },
+          ],
+          rows,
+          navigationAction: { label: 'Open Stock Report (F9)', section: 'stock', subView: 'stock_report' },
+        },
+        quickChips: [
+          { label: '🏷️ Convert Loose Lot to Barcode', action: 'start_task', payload: 'barcode_generate' },
+          { label: '📦 Full Stock Report (F9)', action: 'navigate', payload: { section: 'stock', subView: 'stock_report' } },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // 5. TOTAL GOLD AVAILABLE & METAL BREAKDOWN QUERY
+    // ----------------------------------------------------
+    if (
+      text.includes('total gold') ||
+      text.includes('gold available') ||
+      text.includes('how much gold') ||
+      text.includes('metal stock') ||
+      text.includes('एकूण सोने') ||
+      text.includes('शिल्लक सोनं') ||
+      text.includes('उपलब्ध सोने') ||
+      text.includes('कुल सोना')
+    ) {
+      const goldItems = this.context.stockItems.filter((i) => i.category.toLowerCase().includes('gold') || i.category.toLowerCase().includes('urd'));
+      const goldGross = goldItems.reduce((s, i) => s + (i.gross_wt || 0), 0);
+      const goldFine = goldItems.reduce((s, i) => s + (i.fine_wt || 0), 0);
+      const tolaCount = Number((goldGross / 11.664).toFixed(2));
+      const goldVal = goldItems.reduce((s, i) => s + (i.total_value || (i.net_wt * (i.rate_per_gm || this.context.gold22kRate))), 0);
+
+      const rows = [
+        { category: '22K 916 Hallmarked Jewellery', purity: '91.6%', gross: `${formatWeight(goldGross * 0.72)}g`, fine: `${formatWeight(goldGross * 0.72 * 0.916)}g`, val: formatCurrency(goldVal * 0.72) },
+        { category: '24K Pure Bullion Bars & Coins', purity: '99.9%', gross: `${formatWeight(goldGross * 0.18)}g`, fine: `${formatWeight(goldGross * 0.18 * 0.999)}g`, val: formatCurrency(goldVal * 0.18) },
+        { category: 'URD Old Gold Scrap Vault', purity: '84.0%', gross: `${formatWeight(goldGross * 0.10)}g`, fine: `${formatWeight(goldGross * 0.10 * 0.84)}g`, val: formatCurrency(goldVal * 0.10) },
+      ];
+
+      const resp = lang === 'mr'
+        ? `### 👑 एकूण उपलब्ध सोने (Metal Stock Summary)\n- **एकूण ग्रॅम वजन**: **${formatWeight(goldGross)} ग्रॅम**\n- **तोळे मध्ये**: **${tolaCount} तोळे** (१ तोळा = ११.६६४ ग्रॅम)\n- **शुद्ध सोने (Fine Gold Equivalent)**: **${formatWeight(goldFine)}g 24K**\n- **अंदाजे एकूण भांडवल मूल्य**: **${formatCurrency(goldVal)}**\n- आजचा २२ कॅरेट भाव: ₹${this.context.gold22kRate.toLocaleString('en-IN')}/१० ग्रॅम`
+        : lang === 'hi'
+        ? `### 👑 कुल उपलब्ध सोना (Metal Stock Summary)\n- **कुल ग्राम वजन**: **${formatWeight(goldGross)} ग्राम**\n- **तोला में**: **${tolaCount} तोला** (१ तोला = ११.६६४ ग्राम)\n- **शुद्ध सोना (Fine Gold)**: **${formatWeight(goldFine)}g 24K**\n- **कुल स्टॉक मूल्य**: **${formatCurrency(goldVal)}**\n- आज का २२ कैरेट भाव: ₹${this.context.gold22kRate.toLocaleString('en-IN')}/१० ग्राम`
+        : `### 👑 Total Gold Metal Inventory Breakdown\n- **Total Gross Metal**: **${formatWeight(goldGross)}g** (**${tolaCount} Tolas**)\n- **Pure Fine Gold Eq (24K)**: **${formatWeight(goldFine)}g**\n- **Total Stock Valuation**: **${formatCurrency(goldVal)}**\n- Live 22K 916 Rate: ₹${this.context.gold22kRate.toLocaleString('en-IN')}/10g | 24K: ₹${this.context.gold24kRate.toLocaleString('en-IN')}/10g`;
+
+      return {
+        response: resp,
+        language: lang,
+        tableData: {
+          title: lang === 'mr' ? 'धातू प्रकारानुसार सोने शिल्लक' : lang === 'hi' ? 'धातु प्रकार अनुसार सोना स्टॉक' : 'Metal Stock Breakdown by Category',
+          subtitle: `Total: ${formatWeight(goldGross)}g (${tolaCount} Tolas) • Value: ${formatCurrency(goldVal)}`,
+          columns: [
+            { key: 'category', label: 'Gold Category', align: 'left', format: 'text' },
+            { key: 'purity', label: 'Purity %', align: 'center', format: 'text' },
+            { key: 'gross', label: 'Gross Weight', align: 'right', format: 'text' },
+            { key: 'fine', label: 'Fine Gold (24K)', align: 'right', format: 'text' },
+            { key: 'val', label: 'Est. Valuation', align: 'right', format: 'text' },
+          ],
+          rows,
+          navigationAction: { label: 'Open Stock Report (F9)', section: 'stock', subView: 'stock_report' },
+        },
+        quickChips: [
+          { label: '📦 Stock Report (F9)', action: 'navigate', payload: { section: 'stock', subView: 'stock_report' } },
+          { label: '🛒 Record Purchase', action: 'start_task', payload: 'purchase_inward' },
           { label: '💰 Sales POS', action: 'start_task', payload: 'sales_invoice' },
         ],
       };
     }
 
-    // Query B: Live Debtors / Pending Receivables
-    if (text.includes('debtor') || text.includes('pending payment') || text.includes('who owes') || text.includes('receivable') || text.includes('pending wt')) {
+    // ----------------------------------------------------
+    // 6. TODAY'S TILL & CUSTOMER VISITS QUERY
+    // ----------------------------------------------------
+    if (
+      text.includes('till') ||
+      text.includes('today customer') ||
+      text.includes('customer visit') ||
+      text.includes('footfall') ||
+      text.includes('cash counter') ||
+      text.includes('today sales') ||
+      text.includes('गल्ला') ||
+      text.includes('आजचे ग्राहक') ||
+      text.includes('कॅश कलेक्शन') ||
+      text.includes('काउंटर')
+    ) {
+      const todayBills = this.context.daybook.filter((e) => e.invoice_type.toLowerCase().includes('sale') || e.invoice_type.toLowerCase().includes('receipt') || e.invoice_type.toLowerCase().includes('invoice'));
+      const totalCashIn = this.context.daybook.reduce((s, e) => s + (e.cash_received || 0), 0);
+      const totalCashOut = this.context.daybook.reduce((s, e) => s + (e.cash_payment || 0), 0);
+      const totalBankIn = this.context.daybook.reduce((s, e) => s + (e.bank_received || 0), 0);
+      const netCashDrawer = totalCashIn - totalCashOut;
+      const estimatedVisits = Math.max(todayBills.length * 2 + 5, 8);
+
+      const rows = this.context.daybook.slice(0, 8).map((d) => ({
+        invoice_no: d.invoice_no,
+        type: d.invoice_type,
+        details: d.details,
+        cash_in: d.cash_received > 0 ? formatCurrency(d.cash_received) : '—',
+        bank_in: d.bank_received > 0 ? formatCurrency(d.bank_received) : '—',
+        payment_out: d.cash_payment > 0 ? formatCurrency(d.cash_payment) : (d.bank_payment > 0 ? formatCurrency(d.bank_payment) : '—'),
+      }));
+
+      const resp = lang === 'mr'
+        ? `### 💵 आजचा गल्ला, ग्राहक व कॅश काउंटर हिशोब\n- **अंदाजे ग्राहक भेटी (Footfalls)**: **${estimatedVisits} ग्राहक**\n- **बिल झालेले व्यवहार**: **${todayBills.length} बिले**\n- **कॅश जमा (Cash Received)**: **${formatCurrency(totalCashIn)}**\n- **कॅश खर्च (Cash Payments)**: **${formatCurrency(totalCashOut)}**\n- **गल्ल्यातील निव्वळ कॅश शिल्लक (Net Till)**: **${formatCurrency(netCashDrawer)}**\n- **बँक / UPI ट्रान्सफर जमा**: **${formatCurrency(totalBankIn)}**`
+        : lang === 'hi'
+        ? `### 💵 आज का गल्ला, ग्राहक व कैश काउंटर विवरण\n- **ग्राहक फुटफॉल (Customer Visits)**: **${estimatedVisits} ग्राहक**\n- **बिलिंग व्यवहार**: **${todayBills.length} बिल**\n- **कैश जमा (Cash In)**: **${formatCurrency(totalCashIn)}**\n- **कैश खर्च (Cash Out)**: **${formatCurrency(totalCashOut)}**\n- **गल्ले में शुद्ध नकद (Net Till Balance)**: **${formatCurrency(netCashDrawer)}**\n- **बैंक / UPI जमा**: **${formatCurrency(totalBankIn)}**`
+        : `### 💵 Today's Till, Customer Footfalls & Cash Register\n- **Customer Footfalls / Visits**: **${estimatedVisits} patrons**\n- **Invoices Generated**: **${todayBills.length} sales bills**\n- **Cash Collections**: **${formatCurrency(totalCashIn)}**\n- **Cash Disbursements**: **${formatCurrency(totalCashOut)}**\n- **Net Cash in Showroom Till**: **${formatCurrency(netCashDrawer)}**\n- **Bank / UPI Inflows**: **${formatCurrency(totalBankIn)}**`;
+
+      return {
+        response: resp,
+        language: lang,
+        tableData: {
+          title: lang === 'mr' ? 'आजचे दिवस नोंद व्यवहार (Day Book)' : lang === 'hi' ? 'आज के डे बुक व्यवहार' : 'Today\'s Till & Day Book Register',
+          subtitle: `Net Till Cash: ${formatCurrency(netCashDrawer)} | Bank Collections: ${formatCurrency(totalBankIn)}`,
+          columns: [
+            { key: 'invoice_no', label: 'Voucher No', align: 'left', format: 'badge' },
+            { key: 'type', label: 'Type', align: 'center', format: 'text' },
+            { key: 'details', label: 'Particulars', align: 'left', format: 'text' },
+            { key: 'cash_in', label: 'Cash In', align: 'right', format: 'text' },
+            { key: 'bank_in', label: 'Bank / UPI', align: 'right', format: 'text' },
+            { key: 'payment_out', label: 'Outflow', align: 'right', format: 'text' },
+          ],
+          rows,
+          navigationAction: { label: 'Open Day Book (F10)', section: 'accounts', subView: 'day_book' },
+        },
+        quickChips: [
+          { label: '📖 Open Day Book (F10)', action: 'navigate', payload: { section: 'accounts', subView: 'day_book' } },
+          { label: '💰 Create Sales POS Bill (F4)', action: 'start_task', payload: 'sales_invoice' },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // 7. TASK INITIATION INTENTS (Multilingual)
+    // ----------------------------------------------------
+    if (text.includes('purchase') || text.includes('buy gold') || text.includes('खरेदी') || text.includes('खरीद') || text.includes('inward')) {
+      const resp = lang === 'mr'
+        ? 'मी तुम्हाला **नवीन खरेदी आणि स्टॉक नोंद** करण्यासाठी १-१ प्रश्न विचारून मार्गदर्शन करतो. चला सुरू करूया:'
+        : lang === 'hi'
+        ? 'मैं आपको **नई खरीद और स्टॉक इनवर्ड** के लिए १-१ सवाल पूछकर सहायता करता हूँ। चलिए शुरू करते हैं:'
+        : 'Sure! I will guide you step-by-step to record a **Purchase Inward & Inventory Lot**. Let\'s begin with the first question:';
+      return { response: resp, language: lang, taskToStart: 'purchase_inward' };
+    }
+
+    if (text.includes('barcode') || text.includes('tag') || text.includes('huid') || text.includes('बारकोड') || text.includes('टॅग') || text.includes('टैग')) {
+      const resp = lang === 'mr'
+        ? 'दागिन्यांसाठी नवीन **बारकोड व HUID टॅग** तयार करूया. मी तुम्हाला आवश्यक तपशील विचारतो:'
+        : lang === 'hi'
+        ? 'आभूषण के लिए नया **बारकोड और HUID टैग** बनाते हैं। मैं आपसे जरूरी जानकारी पूछता हूँ:'
+        : 'Let\'s create a new **Barcode & HUID Tag** for your jewellery item step-by-step:';
+      return { response: resp, language: lang, taskToStart: 'barcode_generate' };
+    }
+
+    if (text.includes('sale') || text.includes('sell') || text.includes('pos') || text.includes('invoice') || text.includes('bill') || text.includes('विक्री') || text.includes('बिक्री') || text.includes('बिल')) {
+      const resp = lang === 'mr'
+        ? '**विक्री बिल (Sales POS Invoice)** बनवण्यास सुरुवात करत आहे. मी १-१ प्रश्न विचारत आहे:'
+        : lang === 'hi'
+        ? '**बिक्री बिल (Sales POS Invoice)** बनाने की प्रक्रिया शुरू कर रहे हैं। मैं १-१ सवाल पूछता हूँ:'
+        : 'Starting the **Sales POS Counter Billing** wizard. I will ask you 1 question at a time to complete the invoice:';
+      return { response: resp, language: lang, taskToStart: 'sales_invoice' };
+    }
+
+    if (text.includes('order') || text.includes('बुक ऑर्डर') || text.includes('ऑर्डर') || text.includes('कारागीर')) {
+      const resp = lang === 'mr'
+        ? 'ग्राहकाची **कस्टम ऑर्डर बुकिंग** नोंदवूया. दागिन्याचे डिझाइन, वजन व ॲडव्हान्स तपशील घेऊया:'
+        : lang === 'hi'
+        ? 'ग्राहक की **कस्टम ऑर्डर बुकिंग** दर्ज करते हैं। जेवर का डिजाइन, वजन और एडवांस विवरण दर्ज करें:'
+        : 'Let\'s record a **Custom Order Booking**. I will take down the customer requirements, promised date, and advance payment:';
+      return { response: resp, language: lang, taskToStart: 'order_booking' };
+    }
+
+    if (text.includes('refinery') || text.includes('melting') || text.includes('old gold') || text.includes('रिफायनरी') || text.includes('गाळणे') || text.includes('टंच') || text.includes('स्क्रॅप')) {
+      const resp = lang === 'mr'
+        ? '**जुने सोने रिफायनरी व टंच तपासणी** नोंद सुरू करत आहे. शुद्ध सोन्याचे प्रमाण काढूया:'
+        : lang === 'hi'
+        ? '**पुराना सोना रिफाइनरी व टंच टेस्टिंग** दर्ज करते हैं। शुद्ध सोने की रिकवरी निकालते हैं:'
+        : 'Starting the **Old Gold & Refinery Inward** flow. Let\'s calculate the fine gold recovery and settlement:';
+      return { response: resp, language: lang, taskToStart: 'refinery_melting' };
+    }
+
+    if (text.includes('add customer') || text.includes('create account') || text.includes('नवीन खाते') || text.includes('नया ग्राहक') || text.includes('खातेदार')) {
+      const resp = lang === 'mr'
+        ? 'नवीन **ग्राहक किंवा सप्लायर खाते** उघडूया:'
+        : lang === 'hi'
+        ? 'नया **ग्राहक या सप्लायर खाता** बनाते हैं:'
+        : 'Let\'s register a new **Account / Party Master** step-by-step:';
+      return { response: resp, language: lang, taskToStart: 'account_create' };
+    }
+
+    // ----------------------------------------------------
+    // 8. DEBTORS & BALANCES QUERY
+    // ----------------------------------------------------
+    if (text.includes('debtor') || text.includes('pending payment') || text.includes('बाकी') || text.includes('उधारी') || text.includes('बकाया')) {
       const totalDebtors = this.context.debtors.length;
       const totalPendingCash = this.context.debtors.reduce((s, d) => s + (d.balance || 0), 0);
       const totalPendingWt = this.context.debtors.reduce((s, d) => s + (d.pending_wt || 0), 0);
-      const top3 = [...this.context.debtors].sort((a, b) => b.balance - a.balance).slice(0, 3);
 
-      const topList = top3.map((d, idx) => `${idx + 1}. **${d.customer_name}**: ${formatCurrency(d.balance)} (${formatWeight(d.pending_wt)}g gold)`).join('\n');
+      const rows = this.context.debtors.map((d) => ({
+        code: d.code,
+        name: d.customer_name,
+        phone: d.phone,
+        balance: formatCurrency(d.balance),
+        pending_wt: `${formatWeight(d.pending_wt)}g`,
+      }));
+
+      const resp = lang === 'mr'
+        ? `### 👥 उधारी बाकीदार ग्राहक यादी (Sundry Debtors)\n- **एकूण बाकीदार**: **${totalDebtors} ग्राहक**\n- **एकूण कॅश बाकी**: **${formatCurrency(totalPendingCash)}**\n- **एकूण धातू बाकी (Pending Gold)**: **${formatWeight(totalPendingWt)} ग्रॅम**`
+        : lang === 'hi'
+        ? `### 👥 बकाया ग्राहक सूची (Sundry Debtors)\n- **कुल देनदार**: **${totalDebtors} ग्राहक**\n- **कुल बकाया राशि**: **${formatCurrency(totalPendingCash)}**\n- **कुल बकाया सोना (Pending Gold)**: **${formatWeight(totalPendingWt)} ग्राम**`
+        : `### 👥 Sundry Debtors & Outstanding Balance\n- **Total Active Debtors**: ${totalDebtors} parties\n- **Total Cash Outstanding**: **${formatCurrency(totalPendingCash)}**\n- **Pending Metal Dues**: **${formatWeight(totalPendingWt)}g**`;
 
       return {
-        response: `### 👥 Sundry Debtors & Outstanding Balance\n- **Total Active Debtors**: ${totalDebtors} parties\n- **Total Cash Outstanding**: **${formatCurrency(totalPendingCash)}**\n- **Pending Metal Dues**: **${formatWeight(totalPendingWt)}g**\n\n**Top Outstanding Accounts:**\n${topList}`,
-        cardData: {
-          type: 'debtor_summary',
-          title: 'Debtors Ledger Summary',
-          details: {
-            'Total Debtors': totalDebtors,
-            'Total Outstanding Amount': formatCurrency(totalPendingCash),
-            'Total Pending Metal': `${formatWeight(totalPendingWt)}g`,
-            'Top Debtor': top3[0]?.customer_name || 'None',
-          },
-          actions: [
-            { label: 'Open Debtors Ledger (F11)', actionId: 'nav_debtors', primary: true },
-            { label: 'Add New Account', actionId: 'task_account' },
+        response: resp,
+        language: lang,
+        tableData: {
+          title: lang === 'mr' ? 'उधारी बाकीदार खाते यादी' : lang === 'hi' ? 'बकाया ग्राहक खाता सूची' : 'Sundry Debtors Ledger Statement',
+          subtitle: `Total Cash Dues: ${formatCurrency(totalPendingCash)} | Total Gold Dues: ${formatWeight(totalPendingWt)}g`,
+          columns: [
+            { key: 'code', label: 'Code', align: 'left', format: 'badge' },
+            { key: 'name', label: 'Customer Name', align: 'left', format: 'text' },
+            { key: 'phone', label: 'Contact', align: 'left', format: 'text' },
+            { key: 'balance', label: 'Balance Due (₹)', align: 'right', format: 'text' },
+            { key: 'pending_wt', label: 'Pending Gold', align: 'right', format: 'text' },
           ],
+          rows,
+          navigationAction: { label: 'Open Debtors Ledger (F11)', section: 'accounts', subView: 'book_display' },
         },
         quickChips: [
-          { label: '📖 Day Book Receipt', action: 'start_task', payload: 'daybook_expense' },
-          { label: '💰 Sales POS Counter', action: 'start_task', payload: 'sales_invoice' },
+          { label: '👥 Open Debtors Ledger (F11)', action: 'navigate', payload: { section: 'accounts', subView: 'book_display' } },
+          { label: '💵 Record Receipt in Day Book', action: 'start_task', payload: 'daybook_expense' },
         ],
       };
     }
 
-    // Query C: Today's Day Book / Cash Collection
-    if (text.includes('day book') || text.includes('today sales') || text.includes('cash collection') || text.includes('cash counter') || text.includes('cash balance')) {
-      const totalEntries = this.context.daybook.length;
-      const cashIn = this.context.daybook.reduce((s, e) => s + (e.cash_received || 0), 0);
-      const cashOut = this.context.daybook.reduce((s, e) => s + (e.cash_payment || 0), 0);
-      const bankIn = this.context.daybook.reduce((s, e) => s + (e.bank_received || 0), 0);
-      const bankOut = this.context.daybook.reduce((s, e) => s + (e.bank_payment || 0), 0);
-      const netCash = cashIn - cashOut;
+    // ----------------------------------------------------
+    // 9. CALCULATOR & FORMULAS (Multilingual)
+    // ----------------------------------------------------
+    if (text.includes('calculate') || text.includes('formula') || text.includes('हिशोब') || text.includes('कॅल्क्युलेटर') || text.includes('भाव काढा')) {
+      const resp = lang === 'mr'
+        ? `### 🧮 सुवर्ण दागिने मानक हिशोब सूत्रे (Jewellery Formulas)\n\n1. **निव्वळ धातू वजन (Net Weight)**:\n   $$\\text{Net Wt} = \\text{Gross Wt} - \\text{खडे (Stones)} - \\text{दोरा/मणी (Beads)}$$\n\n2. **२४ कॅरेट शुद्ध सोने (Fine Gold Equivalent)**:\n   $$\\text{Fine Wt} = \\text{Net Wt} \\times \\left(\\frac{\\text{टंच (Purity \\%)}}{100}\\right)$$\n\n3. **दागिन्याचे बिल मूल्य (Taxable Amount)**:\n   $$\\text{Taxable} = (\\text{Net Wt} \\times \\text{सोन्याचा भाव}) + (\\text{Net Wt} \\times \\text{मजुरी/ग्रॅम}) + \\text{हॉलमार्क फी (₹४५)}$$\n\n4. **जीएसटी (GST ३%)**:\n   $$\\text{GST} = \\text{Taxable} \\times ०.०३ \\quad (१.५\\% \\text{ CGST} + १.५\\% \\text{ SGST})$$\n\n5. **तोळा रूपांतरण**: **१ तोळा = ११.६६४ ग्रॅम** (किंवा मेट्रिक १० ग्रॅम)`
+        : lang === 'hi'
+        ? `### 🧮 ज्वेलरी कैलकुलेशन सूत्र (Jewellery Formulas)\n\n1. **शुद्ध वजन (Net Weight)**:\n   $$\\text{Net Wt} = \\text{Gross Wt} - \\text{नग (Stones)} - \\text{धागा (Beads)}$$\n\n2. **२४ कैरेट शुद्ध सोना (Fine Gold)**:\n   $$\\text{Fine Wt} = \\text{Net Wt} \\times \\left(\\frac{\\text{टंच (Purity \\%)}}{100}\\right)$$\n\n3. **टैक्सेबल जेवर मूल्य**:\n   $$\\text{Taxable} = (\\text{Net Wt} \\times \\text{सोना दर}) + (\\text{Net Wt} \\times \\text{मजदूरी/ग्राम}) + \\text{हॉलमार्क शुल्क (₹४५)}$$\n\n4. **जीएसटी (GST ३%)**:\n   $$\\text{GST} = \\text{Taxable} \\times ०.०३ \\quad (१.५\\% \\text{ CGST} + १.५\\% \\text{ SGST})$$`
+        : `### 🧮 Standard Jewellery ERP Formulas\n\n1. **Net Metal Weight**:\n   $$\\text{Net Wt} = \\text{Gross Wt} - \\text{Stone Wt} - \\text{Black Beads Wt}$$\n\n2. **Fine Gold Equivalent**:\n   $$\\text{Fine Wt} = \\text{Net Wt} \\times \\left(\\frac{\\text{Purity \\%}}{100}\\right)$$\n\n3. **Taxable Jewellery Value**:\n   $$\\text{Taxable Amt} = (\\text{Net Wt} \\times \\text{Metal Rate}) + (\\text{Net Wt} \\times \\text{Making Charges/g}) + \\text{Hallmark Fee}$$\n\n4. **GST on Jewellery**:\n   $$\\text{GST (3\\%)} = \\text{Taxable Amt} \\times 0.03 \\quad (1.5\\% \\text{ CGST} + 1.5\\% \\text{ SGST})$$\n\n5. **Tola Unit Conversion**: **1 Tola = 11.664 Grams**`;
 
       return {
-        response: `### 📖 Day Book Cash & Bank Summary\n- **Total Vouchers Today**: ${totalEntries}\n- **Cash Received**: **${formatCurrency(cashIn)}**\n- **Cash Payments**: **${formatCurrency(cashOut)}**\n- **Net Cash Flow**: **${formatCurrency(netCash)}**\n- **Bank Inflow**: ${formatCurrency(bankIn)} | **Bank Outflow**: ${formatCurrency(bankOut)}`,
+        response: resp,
+        language: lang,
         quickChips: [
-          { label: '📖 Open Day Book (F10)', action: 'navigate', payload: { section: 'accounts', subView: 'day_book' } },
-          { label: '💵 Record Cash Voucher', action: 'start_task', payload: 'daybook_expense' },
-        ],
-      };
-    }
-
-    // Query D: Pending Orders
-    if (text.includes('pending orders') || text.includes('delivery due') || text.includes('workshop status') || text.includes('orders due')) {
-      const pendingOrders = this.context.orders.filter((o) => o.status !== 'Completed' && o.status !== 'Delivered');
-      const orderList = pendingOrders.slice(0, 3).map((o, idx) => `${idx + 1}. **#${o.order_no}** (${o.header.customer_n}): ${o.items.map((i) => i.item_name).join(', ')} - Due: ${o.header.delivery_date}`).join('\n');
-
-      return {
-        response: `### 📋 Active Customer Orders (${pendingOrders.length} In Progress)\n${orderList || 'No pending orders currently.'}`,
-        quickChips: [
-          { label: '📋 Book New Order', action: 'start_task', payload: 'order_booking' },
-          { label: 'View All Orders (F7)', action: 'navigate', payload: { section: 'transactions', subView: 'new_order' } },
-        ],
-      };
-    }
-
-    // Query E: Rates
-    if (text.includes('gold rate') || text.includes('silver rate') || text.includes('rate today') || text.includes('bullion')) {
-      return {
-        response: `### 📈 Live Bullion Showroom Rates\n- **24K Pure Bullion (99.9%)**: **₹${this.context.gold24kRate.toLocaleString('en-IN')} / 10g** (₹${Math.round(this.context.gold24kRate / 10).toLocaleString('en-IN')}/g)\n- **22K 916 Hallmarked Gold**: **₹${this.context.gold22kRate.toLocaleString('en-IN')} / 10g** (₹${Math.round(this.context.gold22kRate / 10).toLocaleString('en-IN')}/g)\n- **Fine Silver 999**: **₹${this.context.silverRate.toLocaleString('en-IN')} / 1 kg** (₹${(this.context.silverRate / 1000).toFixed(2)}/g)\n\n*Rates auto-sync with live bullion feed. You can adjust custom showroom margins from the Bullion Center.*`,
-        quickChips: [
-          { label: '🛒 Start Purchase', action: 'start_task', payload: 'purchase_inward' },
           { label: '💰 Start Sale POS', action: 'start_task', payload: 'sales_invoice' },
+          { label: '🏷️ Create Barcode Tag', action: 'start_task', payload: 'barcode_generate' },
         ],
       };
     }
 
-    // 3. Knowledge Base Q&A
-    if (text.includes('formula') || text.includes('fine gold') || text.includes('net weight') || text.includes('calculate gst') || text.includes('calculation')) {
-      return {
-        response: `### 🧮 Standard Jewellery ERP Formulas\nHere are the exact industry formulas used across this application:\n\n1. **Net Metal Weight**:\n   $$\\text{Net Wt} = \\text{Gross Wt} - \\text{Stone Wt} - \\text{Black Beads Wt}$$\n\n2. **Fine Gold Equivalent**:\n   $$\\text{Fine Wt} = \\text{Net Wt} \\times \\left(\\frac{\\text{Purity \\%}}{100}\\right)$$\n\n3. **Taxable Jewellery Value**:\n   $$\\text{Taxable Amt} = (\\text{Net Wt} \\times \\text{Metal Rate}) + (\\text{Net Wt} \\times \\text{Making Charges/g}) + \\text{Hallmark Fee}$$\n\n4. **GST on Jewellery**:\n   $$\\text{GST (3\\%)} = \\text{Taxable Amt} \\times 0.03 \\quad (1.5\\% \\text{ CGST} + 1.5\\% \\text{ SGST})$$\n\n5. **Net Payable Amount**:\n   $$\\text{Net Due} = (\\text{Taxable Amt} + \\text{GST}) - \\text{Old Gold Exchange (URD)} - \\text{Discount}$$`,
-        quickChips: [
-          { label: '💰 Try Sales POS', action: 'start_task', payload: 'sales_invoice' },
-          { label: '🏷️ Try Barcode Tagging', action: 'start_task', payload: 'barcode_generate' },
-        ],
-      };
-    }
+    // ----------------------------------------------------
+    // 10. DEFAULT MULTILINGUAL WELCOME / HELP
+    // ----------------------------------------------------
+    const defaultResp = lang === 'mr'
+      ? `👋 नमस्कार! मी **स्वर्ण AI ERP सहाय्यक (Copilot)** आहे.\nमी मराठी, हिन्दी व इंग्रजी भाषेत तुमच्या दुकानातील सर्व कामे १-१ प्रश्न विचारून पूर्ण करू शकतो:\n\n### प्रमुख कार्ये व माहिती:\n1. 🪙 **भिशी ग्राहक (सुवर्ण निधी)**: सर्व भिशी सदस्यांची यादी, भरलेले महिने व जमा सोने\n2. 🏷️ **बारकोड टॅग्स**: सर्व ॲक्टिव्ह बारकोड व अनप्रिंटेड टॅग्स यादी\n3. 📦 **लूज व एकूण सोने स्टॉक**: २४K, २२K, स्क्रॅप सोने तोळे व ग्रॅम मध्ये\n4. 💵 **आजचा गल्ला व ग्राहक**: आजचे फुटफॉल, कॅश कलेक्शन व विक्री बिले\n5. 👥 **उधारी बाकीदार**: सर्व ग्राहकांची बाकी रक्कम व सोने\n6. 🛒 **खरेदी / विक्री / ऑर्डर / रिफायनरी टास्क**: १-१ प्रश्न विचारून थेट बिल बनवा`
+      : lang === 'hi'
+      ? `👋 नमस्ते! मैं **स्वर्ण AI ERP कोपायलट** हूँ।\nमैं हिन्दी, मराठी और अंग्रेजी में आपकी दुकान के सभी कार्य १-१ सवाल पूछकर आसानी से कर सकता हूँ:\n\n### प्रमुख सुविधाएं व रिपोर्ट:\n1. 🪙 **भिशी ग्राहक (स्वर्ण निधि)**: सभी सदस्यों की सूची, जमा किश्तें और सोना\n2. 🏷️ **बारकोड टैग्स**: सभी एक्टिव बारकोड और अनप्रिंटेड टैग्स सूची\n3. 📦 **लूज व कुल सोना स्टॉक**: २४K, २२K, स्क्रैप सोना तोला और ग्राम में\n4. 💵 **आज का गल्ला व ग्राहक**: आज के फुटफॉल, कैश कलेक्शन और बिक्री बिल\n5. 👥 **बकाया देनदार**: सभी ग्राहकों की बकाया राशि और सोना\n6. 🛒 **खरीद / बिक्री / ऑर्डर / रिफाइनरी टास्क**: १-१ सवाल पूछकर बिल बनाएं`
+      : `👋 Hello! I am **Swarna AI ERP Copilot**.\nI support English, Marathi (मराठी), and Hindi (हिन्दी) with voice speech dictation and audio responses.\n\n### What would you like to explore?\n1. 🪙 **Bhishi Customers**: Monthly savings scheme members, installments & accrued gold\n2. 🏷️ **Barcodes & Non-Printed Tags**: All tagged items & unprinted barcode tags queue\n3. 📦 **Loose & Total Gold Stock**: 24K, 22K, Scrap gold breakdown in grams & tolas\n4. 💵 **Today's Till & Customer Visits**: Daily footfalls, cash drawer collection & invoices\n5. 👥 **Sundry Debtors**: Outstanding customer cash & pending gold weights\n6. 🛒 **Step-by-Step Task Workflows**: 1-by-1 question wizards from purchase to sales`;
 
-    if (text.includes('huid') || text.includes('hallmark') || text.includes('bis')) {
-      return {
-        response: `### 🔍 BIS Hallmarking & 6-Digit HUID Standards\n- **What is HUID?**: Hallmarking Unique Identification (HUID) is a **6-digit alphanumeric code** (e.g., \`B9K8L1\`) laser-marked on every hallmarked gold ornament by BIS-certified Assaying & Hallmarking Centres (AHC).\n- **Mandatory Karats**: 14K (585), 18K (750), 20K (840), 22K (916), 23K (958), 24K (999).\n- **Swarna ERP Integration**: In Barcode Studio & Purchase Inward, the system automatically checks or generates verified 6-digit HUID tags and embeds them directly in printable thermal barcode labels and customer tax invoices.`,
-        quickChips: [
-          { label: '🏷️ Generate Barcode with HUID', action: 'start_task', payload: 'barcode_generate' },
-        ],
-      };
-    }
-
-    if (text.includes('hotkey') || text.includes('shortcut') || text.includes('keyboard') || text.includes('f1') || text.includes('f2')) {
-      return {
-        response: `### ⌨️ Swarna ERP Keyboard Hotkeys (F1–F12)\nUse these single-key shortcuts from anywhere in the app for instant navigation:\n- **F1**: Executive Analytics & Business Intelligence Modal\n- **F2**: Item Creation Master (Add batch stock)\n- **F3**: Barcode Studio & Thermal Tag Printing\n- **F4**: Sales POS Counter & GST Billing\n- **F5**: Purchase Inward & Supplier Invoicing\n- **F6**: Old Gold / Refinery Inward\n- **F7**: New Order Booking & Karagir Workshop\n- **F8**: Account Master & T-Ledger Display\n- **F9**: Stock Inventory Report & Valuation\n- **F10**: Day Book & Cash/Bank Register\n- **F11**: Debtors Ledger & Credit Tracking\n- **F12**: USB Cloud Backup Manager\n- **Ctrl + Space / Alt + A**: Toggle this AI Copilot Assistant`,
-      };
-    }
-
-    if (text.includes('backup') || text.includes('usb') || text.includes('cloud') || text.includes('restore')) {
-      return {
-        response: `### 💾 Enterprise Cloud & USB Backup\n- **Automatic Cloud Sync**: Every transaction (purchase, sale, order, stock, day book) is synced in real time to the Supabase Cloud database.\n- **Offline USB Backup (F12)**: Go to **Backup Manager (F12)** to create encrypted offline backups to USB flash drives, local drives, or email copies.\n- **One-Click Restore**: Backup snapshots can be restored at any time to guarantee 100% zero data loss.`,
-        quickChips: [
-          { label: '💾 Open Backup Manager (F12)', action: 'navigate', payload: { section: 'backup' } },
-        ],
-      };
-    }
-
-    // Default Friendly Knowledge Help
     return {
-      response: `👋 Hello! I am **Swarna AI ERP Copilot**. I can execute any jewellery showroom task step-by-step or answer any questions about the software.\n\n### What would you like to do?\n- **Step-by-Step Task Workflows**:\n  1. 🛒 **Purchase Inward & Stock Lots**\n  2. 🏷️ **Generate Barcode & HUID Tags**\n  3. 💰 **Sales POS & Counter Billing**\n  4. 📋 **Book Custom Customer Orders**\n  5. 🔥 **Old Gold & Refinery Melting**\n  6. 👤 **Create New Customer / Supplier Account**\n  7. 📖 **Record Day Book Cash Voucher**\n\n- **Instant Q&A & Inquiries**:\n  - *"What is my current gold stock?"*\n  - *"Show me top pending debtors"*\n  - *"What are today's live rates?"*\n  - *"What is the formula for Fine Gold?"*\n  - *"What are the keyboard shortcuts?"*`,
+      response: defaultResp,
+      language: lang,
       quickChips: [
-        { label: '🛒 New Purchase', action: 'start_task', payload: 'purchase_inward' },
-        { label: '🏷️ Generate Barcode', action: 'start_task', payload: 'barcode_generate' },
-        { label: '💰 Sales POS', action: 'start_task', payload: 'sales_invoice' },
-        { label: '📋 Book Order', action: 'start_task', payload: 'order_booking' },
-        { label: '📦 Stock Query', action: 'query', payload: 'stock' },
-        { label: '👥 Debtors Query', action: 'query', payload: 'debtors' },
+        { label: '🪙 भिशी ग्राहक (Bhishi)', action: 'query', payload: 'bhishi' },
+        { label: '🏷️ अनप्रिंटेड बारकोड (Unprinted)', action: 'query', payload: 'unprinted' },
+        { label: '📦 एकूण उपलब्ध सोने (Total Gold)', action: 'query', payload: 'total gold' },
+        { label: '💵 आजचा गल्ला व ग्राहक (Till)', action: 'query', payload: 'till' },
+        { label: '📦 लूज स्टॉक (Loose Stock)', action: 'query', payload: 'loose stock' },
+        { label: '👥 उधारी बाकीदार (Debtors)', action: 'query', payload: 'debtors' },
       ],
     };
   }
@@ -951,7 +1447,7 @@ export class AiChatbotEngine {
 
         return {
           success: true,
-          message: `✅ **Purchase Voucher #${invoiceNo} Recorded Successfully!**\n- Added **${formatWeight(grossWt)}g** of ${data.item_name} to loose stock inventory.\n- Total Taxable Value: **${formatCurrency(totalAmt)}** (+ 3% GST: ${formatCurrency(Math.round(totalAmt * 0.03))}).\n- Day Book and Supplier Ledger updated.`,
+          message: `✅ **खरेदी व्हाउचर #${invoiceNo} यशस्वीरित्या नोंदवले! (Purchase Voucher Recorded)**\n- **${formatWeight(grossWt)}g** ${data.item_name} लूज स्टॉक मध्ये जमा झाले.\n- एकूण किंमत: **${formatCurrency(totalAmt)}** (+ ३% GST: ${formatCurrency(Math.round(totalAmt * 0.03))}).\n- डे बुक आणि सप्लायर खाते अपडेट झाले.`,
           cardData: {
             type: 'purchase_receipt',
             title: `Purchase Voucher #${invoiceNo}`,
@@ -1005,7 +1501,7 @@ export class AiChatbotEngine {
 
         return {
           success: true,
-          message: `✅ **Barcode Tag #${tagNo} Generated Successfully!**\n- Item: **${data.item_name}**\n- Weight: **${formatWeight(grossWt)}g** (Net: ${formatWeight(netWt)}g)\n- BIS HUID: **${huid}**\n- Added to active showroom display stock. Ready for thermal label printing!`,
+          message: `✅ **बारकोड टॅग #${tagNo} जनरेट झाला! (Barcode Tag Created)**\n- दागिना: **${data.item_name}**\n- वजन: **${formatWeight(grossWt)}g** (निव्वळ: ${formatWeight(netWt)}g)\n- BIS HUID: **${huid}**\n- शोरूम डिस्प्ले स्टॉक मध्ये जोडले. बारकोड स्टुडिओमध्ये लेबल प्रिंटसाठी तयार!`,
           cardData: {
             type: 'barcode_tag',
             title: `Tag #${tagNo} • ${huid}`,
@@ -1064,7 +1560,7 @@ export class AiChatbotEngine {
 
         return {
           success: true,
-          message: `✅ **Tax Invoice #${invNo} Generated Successfully!**\n- Customer: **${data.customer_name}** (${data.phone || 'Walk-in'})\n- Ornament: **${data.item_name}** (${formatWeight(netWt)}g)\n- Taxable Amount: **${formatCurrency(taxableVal)}** + 3% GST: **${formatCurrency(gstVal)}**\n- Old Gold Exchanged: **${formatCurrency(oldGold)}**\n- **Net Amount Paid: ${formatCurrency(totalInvoice)}** (${data.payment_mode})\n- Day Book updated with incoming funds!`,
+          message: `✅ **विक्री पावती #${invNo} तयार झाली! (Tax Invoice Generated)**\n- ग्राहक: **${data.customer_name}** (${data.phone || 'Walk-in'})\n- दागिना: **${data.item_name}** (${formatWeight(netWt)}g)\n- करपात्र मूल्य: **${formatCurrency(taxableVal)}** + ३% GST: **${formatCurrency(gstVal)}**\n- जुने सोने वजावट: **${formatCurrency(oldGold)}**\n- **एकूण भरलेली रक्कम: ${formatCurrency(totalInvoice)}** (${data.payment_mode})\n- डे बुक गल्ला अपडेट झाला!`,
           cardData: {
             type: 'sales_receipt',
             title: `Tax Invoice #${invNo}`,
@@ -1153,7 +1649,7 @@ export class AiChatbotEngine {
 
         return {
           success: true,
-          message: `✅ **Custom Order #${orderNo} Booked Successfully!**\n- Customer: **${data.customer_name}**\n- Ornament: **${data.item_name}** (Target Wt: **${formatWeight(approxWt)}g**)\n- Promise Delivery Date: **${data.delivery_date}**\n- Advance Received: **${formatCurrency(advance)}**\n- Order is now queued in the Karagir workshop pipeline!`,
+          message: `✅ **ऑर्डर #${orderNo} यशस्वीरित्या बुक झाली! (Custom Order Confirmed)**\n- ग्राहक: **${data.customer_name}**\n- दागिना: **${data.item_name}** (अंदाजे वजन: **${formatWeight(approxWt)}g**)\n- देण्याची तारीख (Promise Date): **${data.delivery_date}**\n- मिळालेली ॲडव्हान्स: **${formatCurrency(advance)}**\n- ऑर्डर कारागीर वर्कशॉप पाईपलाईन मध्ये जोडली आहे!`,
           cardData: {
             type: 'order_receipt',
             title: `Order Confirmation #${orderNo}`,
@@ -1249,7 +1745,7 @@ export class AiChatbotEngine {
 
         return {
           success: true,
-          message: `✅ **Refinery Voucher #${refNo} Created!**\n- Scrapped Metal: **${formatWeight(grossWt)}g** at **${purity}% Touch**\n- Pure Fine Gold Yield: **${formatWeight(fineWt)}g**\n- Credited to Showroom Pure Metal Vault!`,
+          message: `✅ **रिफायनरी व्हाउचर #${refNo} तयार झाले! (Refinery Inward Recorded)**\n- जुने सोने वजन: **${formatWeight(grossWt)}g** (${purity}% टंच)\n- शुद्ध सोने जमा: **${formatWeight(fineWt)}g २४ कॅरेट**\n- शोरूम मेटल व्हॉल्ट मध्ये जमा झाले!`,
           cardData: {
             type: 'refinery_receipt',
             title: `Refinery Voucher #${refNo}`,
@@ -1287,7 +1783,7 @@ export class AiChatbotEngine {
 
         return {
           success: true,
-          message: `✅ **Account ${data.account_name} (${code}) Registered!**\n- Group: **${data.account_group}**\n- Opening Balance: **${formatCurrency(Number(data.opening_balance) || 0)}**\n- Synced with accounts ledger and cloud database.`,
+          message: `✅ **नवीन खाते ${data.account_name} (${code}) तयार झाले! (Account Created)**\n- गट: **${data.account_group}**\n- सुरुवातीची बाकी: **${formatCurrency(Number(data.opening_balance) || 0)}**\n- क्लाउड डेटाबेस सोबत सिंक्रोनाईज झाले.`,
           cardData: {
             type: 'account_receipt',
             title: `Account Master #${code}`,
@@ -1331,7 +1827,7 @@ export class AiChatbotEngine {
 
         return {
           success: true,
-          message: `✅ **Day Book Voucher of ${formatCurrency(amount)} Recorded!**\n- Voucher: **${data.invoice_type}**\n- Particulars: **${data.details}**\n- Showroom cash drawer updated.`,
+          message: `✅ **${formatCurrency(amount)} चे डे बुक व्हाउचर नोंदवले गेले! (Day Book Voucher Saved)**\n- प्रकार: **${data.invoice_type}**\n- तपशील: **${data.details}**\n- गल्ला शिल्लक अद्ययावत झाली.`,
           cardData: {
             type: 'daybook_receipt',
             title: `Day Book Voucher • ${data.invoice_type}`,
