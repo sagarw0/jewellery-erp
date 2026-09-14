@@ -81,6 +81,127 @@ export const INITIAL_BHISHI_MEMBERS: BhishiMember[] = [
   },
 ];
 
+export interface CustomerVisitRecord {
+  id: string;
+  time: string;
+  name: string;
+  phone: string;
+  purpose: string;
+  item_details: string;
+  invoice_or_ref: string;
+  amount: number;
+  payment_mode: string;
+  salesman: string;
+  status: string;
+}
+
+export const INITIAL_TODAY_VISITS: CustomerVisitRecord[] = [
+  {
+    id: 'vis-1',
+    time: '10:30 AM',
+    name: 'Sunita Patil',
+    phone: '9820556677',
+    purpose: '🪙 Bhishi Installment Deposit',
+    item_details: 'Swarna Nidhi Month #8 Installment',
+    invoice_or_ref: 'SN-2026-081',
+    amount: 5000,
+    payment_mode: 'UPI (GPay)',
+    salesman: 'Pooja Sharma (EMP-204)',
+    status: 'Receipt Issued',
+  },
+  {
+    id: 'vis-2',
+    time: '11:15 AM',
+    name: 'Rajesh Sharma',
+    phone: '9820199887',
+    purpose: '🛍️ Counter Sales Purchase',
+    item_details: '22K 916 Royal Peacock Choker (31.3g)',
+    invoice_or_ref: 'INV-2026-104',
+    amount: 241010,
+    payment_mode: 'Split (Cash + UPI)',
+    salesman: 'Sagar Kulkarni (EMP-102)',
+    status: 'Billed & Delivered',
+  },
+  {
+    id: 'vis-3',
+    time: '12:45 PM',
+    name: 'Kavita Joshi',
+    phone: '9819443322',
+    purpose: '🪙 Bhishi Maturity & Redemption',
+    item_details: '22K Gold Bangles Selection',
+    invoice_or_ref: 'SN-2026-092',
+    amount: 110000,
+    payment_mode: 'Scheme Redemption',
+    salesman: 'Pooja Sharma (EMP-204)',
+    status: 'Selecting Ornaments',
+  },
+  {
+    id: 'vis-4',
+    time: '02:20 PM',
+    name: 'Smt. Ananya Joshi',
+    phone: '9820123456',
+    purpose: '📋 Custom Bridal Order Booking',
+    item_details: '22K Temple Haar (45g) with Ruby',
+    invoice_or_ref: 'ORD-2026-108',
+    amount: 25000,
+    payment_mode: 'Cash Advance',
+    salesman: 'Amit Verma (EMP-105)',
+    status: 'In Workshop Queue',
+  },
+  {
+    id: 'vis-5',
+    time: '03:40 PM',
+    name: 'Pooja Mehta',
+    phone: '9819033445',
+    purpose: '🔥 Old Gold Exchange & Scrap Sale',
+    item_details: 'Old 20K Bangles (18.5g Scrap)',
+    invoice_or_ref: 'REF-2026-074',
+    amount: 115200,
+    payment_mode: 'Metal Adjusted in Bill',
+    salesman: 'Sagar Kulkarni (EMP-102)',
+    status: 'Assay Completed',
+  },
+  {
+    id: 'vis-6',
+    time: '04:30 PM',
+    name: 'Amit Deshmukh',
+    phone: '9822114488',
+    purpose: '🔍 24K Bullion Rate Inquiry',
+    item_details: '10g 24K Gold Bar IBJA Rate',
+    invoice_or_ref: 'Enquiry #442',
+    amount: 0,
+    payment_mode: 'Walk-in Consultation',
+    salesman: 'Pooja Sharma (EMP-204)',
+    status: 'Quotation Given',
+  },
+  {
+    id: 'vis-7',
+    time: '05:15 PM',
+    name: 'Ramesh Kulkarni',
+    phone: '9823456789',
+    purpose: '💵 Debtors Ledger Part Payment',
+    item_details: 'Ledger Clearance (Bill #INV-88)',
+    invoice_or_ref: 'DB-REC-309',
+    amount: 15000,
+    payment_mode: 'Cash Received',
+    salesman: 'Counter Cashier',
+    status: 'Receipt Issued',
+  },
+  {
+    id: 'vis-8',
+    time: '06:00 PM',
+    name: 'Walk-in Patron (Mrs. Shinde)',
+    phone: '9820771122',
+    purpose: '🛠️ Earring Stem Repair & Laser Polish',
+    item_details: '22K Jhumka Repair',
+    invoice_or_ref: 'JOB-REP-12',
+    amount: 450,
+    payment_mode: 'Cash',
+    salesman: 'Karagir Desk',
+    status: 'Delivered',
+  },
+];
+
 export interface ChatTableColumn {
   key: string;
   label: string;
@@ -147,6 +268,7 @@ export interface ErpContext {
   silverRate: number;
   branchName?: string;
   bhishiMembers?: BhishiMember[];
+  customerVisits?: CustomerVisitRecord[];
 }
 
 export interface ChatMessage {
@@ -174,7 +296,6 @@ export interface ChatMessage {
 // 1. WORKFLOW DEFINITIONS (1-by-1 Questioning)
 // ----------------------------------------------------
 export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
-  // WORKFLOW 1: PURCHASE INWARD
   purchase_inward: {
     id: 'purchase_inward',
     name: 'Purchase Inward & Inventory Lot',
@@ -314,7 +435,6 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
     ],
   },
 
-  // WORKFLOW 2: BARCODE TAG GENERATION
   barcode_generate: {
     id: 'barcode_generate',
     name: 'Generate Barcode & HUID Tag',
@@ -430,7 +550,6 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
     ],
   },
 
-  // WORKFLOW 3: SALES POS INVOICE
   sales_invoice: {
     id: 'sales_invoice',
     name: 'Sales POS Counter Billing',
@@ -543,7 +662,6 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
     ],
   },
 
-  // WORKFLOW 4: ORDER BOOKING
   order_booking: {
     id: 'order_booking',
     name: 'Custom Order Booking',
@@ -614,7 +732,6 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
     ],
   },
 
-  // WORKFLOW 5: REFINERY / OLD GOLD MELTING
   refinery_melting: {
     id: 'refinery_melting',
     name: 'Old Gold & Refinery Inward',
@@ -678,7 +795,6 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
     ],
   },
 
-  // WORKFLOW 6: CREATE ACCOUNT / PARTY
   account_create: {
     id: 'account_create',
     name: 'New Customer / Supplier Account Master',
@@ -738,7 +854,6 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
     ],
   },
 
-  // WORKFLOW 7: DAY BOOK EXPENSE / RECEIPT
   daybook_expense: {
     id: 'daybook_expense',
     name: 'Day Book Cash / Bank Voucher',
@@ -795,16 +910,21 @@ export const TASK_WORKFLOWS: Record<TaskType, TaskWorkflow> = {
 export class AiChatbotEngine {
   private context: ErpContext;
   private bhishiMembers: BhishiMember[];
+  private customerVisits: CustomerVisitRecord[];
 
   constructor(context: ErpContext) {
     this.context = context;
     this.bhishiMembers = context.bhishiMembers || INITIAL_BHISHI_MEMBERS;
+    this.customerVisits = context.customerVisits || INITIAL_TODAY_VISITS;
   }
 
   public updateContext(context: ErpContext) {
     this.context = context;
     if (context.bhishiMembers) {
       this.bhishiMembers = context.bhishiMembers;
+    }
+    if (context.customerVisits) {
+      this.customerVisits = context.customerVisits;
     }
   }
 
@@ -817,16 +937,23 @@ export class AiChatbotEngine {
     const lower = text.toLowerCase();
 
     // Marathi keywords & Devanagari patterns
-    const marathiKeywords = ['दाखवा', 'करा', 'आहे', 'नाही', 'सोनं', 'सोने', 'भिशी', 'ग्राहकांची', 'योजना', 'गल्ला', 'टंच', 'मजुरी', 'हिशोब', 'तपशील', 'शिल्लक', 'खरेदी', 'विक्री', 'भाव', 'अनप्रिंटेड', 'तोळा', 'तोळे'];
+    const marathiKeywords = [
+      'दाखवा', 'करा', 'आहे', 'नाही', 'सोनं', 'सोने', 'भिशी', 'ग्राहकांची', 'योजना',
+      'गल्ला', 'टंच', 'मजुरी', 'हिशोब', 'तपशील', 'शिल्लक', 'खरेदी', 'विक्री', 'भाव',
+      'अनप्रिंटेड', 'तोळा', 'तोळे', 'आलेले', 'भेट', 'ग्राहक'
+    ];
     if (marathiKeywords.some((w) => lower.includes(w))) return 'mr';
 
     // Hindi keywords & Devanagari patterns
-    const hindiKeywords = ['दिखाओ', 'कितना', 'सोना', 'भिशी', 'योजना', 'गल्ला', 'दुकान', 'हिसाब', 'बकाया', 'खरीद', 'बिक्री', 'तोला', 'बिना', 'प्रिंट'];
+    const hindiKeywords = [
+      'दिखाओ', 'कितना', 'सोना', 'भिशी', 'योजना', 'गल्ला', 'दुकान', 'हिसाब', 'बकाया',
+      'खरीद', 'बिक्री', 'तोला', 'बिना', 'प्रिंट', 'आए', 'विजिट'
+    ];
     if (hindiKeywords.some((w) => lower.includes(w))) return 'hi';
 
     // Check Devanagari script presence
     if (/[\u0900-\u097F]/.test(text)) {
-      if (lower.includes('कॅश') || lower.includes('सोनं') || lower.includes('दाखवा') || lower.includes('करा')) return 'mr';
+      if (lower.includes('कॅश') || lower.includes('सोनं') || lower.includes('दाखवा') || lower.includes('करा') || lower.includes('आलेले')) return 'mr';
       return 'hi';
     }
 
@@ -846,11 +973,123 @@ export class AiChatbotEngine {
     quickChips?: ChatMessage['quickChips'];
   } {
     const raw = input.trim();
-    const text = raw.toLowerCase();
+    const text = raw.toLowerCase().replace(/[?'"!.,]/g, '');
     const lang = this.detectLanguage(raw, forcedLang);
 
     // ----------------------------------------------------
-    // 1. BHISHI / GOLD SAVINGS SCHEME CUSTOMERS QUERY
+    // 1. TODAY'S VISITED CUSTOMERS & FOOTFALL LOG QUERY
+    // Matches: "todays visited customers", "today visited customers", "visited customers",
+    // "today's customer list", "who visited today", "walk-in customers", "आज आलेले ग्राहक", "आज के ग्राहक"
+    // ----------------------------------------------------
+    const isBhishiSchemeQuery =
+      text.includes('bhishi') ||
+      text.includes('gold scheme') ||
+      text.includes('swarna nidhi') ||
+      text.includes('भिशी') ||
+      text.includes('योजना') ||
+      text.includes('savings scheme') ||
+      text.includes('scheme member') ||
+      text.includes('swarna nidi');
+
+    const isVisitedCustomersQuery =
+      !isBhishiSchemeQuery &&
+      (text.includes('visited customer') ||
+        text.includes('visited customers') ||
+        text.includes('todays visited') ||
+        text.includes('today visited') ||
+        text.includes('customer visit') ||
+        text.includes('customer visits') ||
+        text.includes('visitor') ||
+        text.includes('visitors') ||
+        text.includes('who visited') ||
+        text.includes('today customer') ||
+        text.includes('todays customer') ||
+        text.includes('today clients') ||
+        text.includes('todays clients') ||
+        text.includes('walk in customer') ||
+        text.includes('walk-in customer') ||
+        text.includes('footfall') ||
+        text.includes('footfalls') ||
+        (text.includes('visited') && (text.includes('today') || text.includes('customer') || text.includes('shop') || text.includes('showroom'))) ||
+        (text.includes('visit') && (text.includes('today') || text.includes('customer') || text.includes('shop') || text.includes('showroom'))) ||
+        (text.includes('today') && (text.includes('customer') || text.includes('client') || text.includes('patron') || text.includes('people') || text.includes('walk in') || text.includes('walk-in'))) ||
+        (text.includes('customer') && (text.includes('came') || text.includes('come') || text.includes('visited') || text.includes('walked') || text.includes('today'))) ||
+        text.includes('आलेले ग्राहक') ||
+        text.includes('भेट दिलेले ग्राहक') ||
+        text.includes('आजचे ग्राहक') ||
+        text.includes('ग्राहकांची यादी') ||
+        text.includes('दुकान भेट') ||
+        text.includes('आए हुए ग्राहक') ||
+        text.includes('आज के ग्राहक') ||
+        text.includes('दुकान में आए') ||
+        text.includes('विजिट किए ग्राहक') ||
+        (text.includes('ग्राहक') && (text.includes('आज') || text.includes('भेट') || text.includes('आले'))));
+
+    if (isVisitedCustomersQuery) {
+      const visits = this.customerVisits;
+      const totalAmountTransacted = visits.reduce((s, v) => s + (v.amount || 0), 0);
+      const totalBilled = visits.filter((v) => v.amount > 0).length;
+
+      const rows = visits.map((v) => ({
+        time: v.time,
+        name: v.name,
+        phone: v.phone,
+        purpose: v.purpose,
+        item_details: v.item_details,
+        voucher_ref: v.invoice_or_ref,
+        amount: v.amount > 0 ? formatCurrency(v.amount) : 'Enquiry',
+        salesman: v.salesman.split(' ')[0],
+        status: v.status,
+      }));
+
+      const title = lang === 'mr'
+        ? 'आज शोरूमला भेट दिलेल्या ग्राहकांची नोंद (Today\'s Visited Customers)'
+        : lang === 'hi'
+        ? 'आज शोरूम में आए ग्राहकों की सूची (Today\'s Visited Customers)'
+        : 'Today\'s Showroom Customer Visits & Footfall Log';
+
+      const subtitle = lang === 'mr'
+        ? `एकूण भेट दिलेले ग्राहक: ${visits.length} | बिल झालेले व्यवहार: ${totalBilled} | एकूण उलाढाल: ${formatCurrency(totalAmountTransacted)}`
+        : lang === 'hi'
+        ? `कुल विज़िटर ग्राहक: ${visits.length} | बिलिंग व्यवहार: ${totalBilled} | कुल टर्नओवर: ${formatCurrency(totalAmountTransacted)}`
+        : `Total Footfalls Today: ${visits.length} patrons | Completed Invoices: ${totalBilled} | Value: ${formatCurrency(totalAmountTransacted)}`;
+
+      const resp = lang === 'mr'
+        ? `### 👥 आज शोरूमला भेट दिलेले ग्राहक (Today's Visited Customers)\nआज एकूण **${visits.length} ग्राहकांनी** शोरूमला भेट दिली आहे:\n- **बिलिंग झालेले ग्राहक**: **${totalBilled} ग्राहक**\n- **एकूण व्यवहार उलाढाल**: **${formatCurrency(totalAmountTransacted)}**\n- **भिशी/चौकशी/ऑर्डर/दुरुस्ती**: ${visits.length - totalBilled} ग्राहक\n\nखालील तक्त्यामध्ये आज आलेल्या सर्व ग्राहकांचे नाव, वेळ, भेटीचा उद्देश, दागिना व बिल तपशील दिलेला आहे:`
+        : lang === 'hi'
+        ? `### 👥 आज शोरूम में आए ग्राहक (Today's Visited Customers)\nआज कुल **${visits.length} ग्राहकों** ने शोरूम विज़िट किया है:\n- **बिलिंग ग्राहक**: **${totalBilled} ग्राहक**\n- **कुल टर्नओवर**: **${formatCurrency(totalAmountTransacted)}**\n- **भिशी/पूछताछ/ऑर्डर**: ${visits.length - totalBilled} ग्राहक\n\nनीचे तालिका में आज आए सभी ग्राहकों का नाम, समय, उद्देश्य, आभूषण और बिल विवरण दिया गया है:`
+        : `### 👥 Today's Visited Customers & Footfall Register\nRecorded **${visits.length} customer visits** in the showroom today:\n- **Purchases / Paid Transactions**: **${totalBilled} patrons**\n- **Total Turnout Value**: **${formatCurrency(totalAmountTransacted)}**\n- **Inquiries / Bhishi / Repairs**: ${visits.length - totalBilled} patrons\n\nComplete chronological visitor log with contact details, purpose, and bill reference below:`;
+
+      return {
+        response: resp,
+        language: lang,
+        tableData: {
+          title,
+          subtitle,
+          columns: [
+            { key: 'time', label: 'Time', align: 'center', format: 'badge' },
+            { key: 'name', label: 'Customer Name', align: 'left', format: 'text' },
+            { key: 'phone', label: 'Contact Phone', align: 'left', format: 'text' },
+            { key: 'purpose', label: 'Purpose of Visit', align: 'left', format: 'text' },
+            { key: 'item_details', label: 'Ornament / Details', align: 'left', format: 'text' },
+            { key: 'voucher_ref', label: 'Invoice / Ref #', align: 'left', format: 'badge' },
+            { key: 'amount', label: 'Amount (₹)', align: 'right', format: 'text' },
+            { key: 'status', label: 'Status', align: 'center', format: 'badge' },
+          ],
+          rows,
+          navigationAction: { label: 'Open Sales POS Counter (F4)', section: 'transactions', subView: 'sales_invoice' },
+        },
+        quickChips: [
+          { label: '💰 New Sales POS Bill (F4)', action: 'start_task', payload: 'sales_invoice' },
+          { label: '📋 Book Customer Order (F7)', action: 'start_task', payload: 'order_booking' },
+          { label: '🪙 भिशी ग्राहक यादी (Bhishi)', action: 'query', payload: 'bhishi' },
+          { label: '💵 आजचा गल्ला (Till)', action: 'query', payload: 'till' },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // 2. BHISHI / GOLD SAVINGS SCHEME CUSTOMERS QUERY
     // ----------------------------------------------------
     if (
       text.includes('bhishi') ||
@@ -859,7 +1098,8 @@ export class AiChatbotEngine {
       text.includes('भिशी') ||
       text.includes('योजना') ||
       text.includes('savings scheme') ||
-      text.includes('scheme member')
+      text.includes('scheme member') ||
+      text.includes('swarna nidi')
     ) {
       const members = this.bhishiMembers;
       const totalAccumulated = members.reduce((s, m) => s + m.accumulated_amt, 0);
@@ -916,7 +1156,7 @@ export class AiChatbotEngine {
     }
 
     // ----------------------------------------------------
-    // 2. NON-PRINTED BARCODES / UNPRINTED TAGS QUERY
+    // 3. NON-PRINTED BARCODES / UNPRINTED TAGS QUERY
     // ----------------------------------------------------
     if (
       text.includes('non printed') ||
@@ -925,9 +1165,9 @@ export class AiChatbotEngine {
       text.includes('print pending') ||
       text.includes('अनप्रिंट') ||
       text.includes('प्रिंट न केलेले') ||
-      text.includes('प्रिंट बाकी')
+      text.includes('प्रिंट बाकी') ||
+      text.includes('बिना प्रिंट')
     ) {
-      // Find items that have tags or need tags printed
       const unprintedItems = this.context.stockItems.filter((i) => !i.is_urd);
       const rows = unprintedItems.slice(0, 10).map((i, idx) => ({
         sr_no: idx + 1,
@@ -973,15 +1213,17 @@ export class AiChatbotEngine {
     }
 
     // ----------------------------------------------------
-    // 3. ALL ITEM BARCODES QUERY
+    // 4. ALL ITEM BARCODES QUERY
     // ----------------------------------------------------
     if (
       text.includes('barcodes of items') ||
       text.includes('all barcodes') ||
       text.includes('show barcodes') ||
+      text.includes('item barcodes') ||
       text.includes('सर्व बारकोड') ||
       text.includes('बारकोड यादी') ||
-      text.includes('बारकोड दिखाओ')
+      text.includes('बारकोड दिखाओ') ||
+      text.includes('सभी बारकोड')
     ) {
       const taggedItems = this.context.stockItems.filter((i) => i.tag_no || !i.is_loose);
       const rows = taggedItems.map((i, idx) => ({
@@ -1029,12 +1271,13 @@ export class AiChatbotEngine {
     }
 
     // ----------------------------------------------------
-    // 4. LOOSE STOCK INVENTORY QUERY
+    // 5. LOOSE STOCK INVENTORY QUERY
     // ----------------------------------------------------
     if (
       text.includes('loose stock') ||
       text.includes('loose items') ||
       text.includes('un-tagged') ||
+      text.includes('untagged') ||
       text.includes('लूज स्टॉक') ||
       text.includes('विना टॅग') ||
       text.includes('खुला सोना') ||
@@ -1089,7 +1332,7 @@ export class AiChatbotEngine {
     }
 
     // ----------------------------------------------------
-    // 5. TOTAL GOLD AVAILABLE & METAL BREAKDOWN QUERY
+    // 6. TOTAL GOLD AVAILABLE & METAL BREAKDOWN QUERY
     // ----------------------------------------------------
     if (
       text.includes('total gold') ||
@@ -1144,18 +1387,18 @@ export class AiChatbotEngine {
     }
 
     // ----------------------------------------------------
-    // 6. TODAY'S TILL & CUSTOMER VISITS QUERY
+    // 7. TODAY'S TILL / CASH COUNTER QUERY
     // ----------------------------------------------------
     if (
       text.includes('till') ||
-      text.includes('today customer') ||
-      text.includes('customer visit') ||
-      text.includes('footfall') ||
       text.includes('cash counter') ||
       text.includes('today sales') ||
+      text.includes('cash collection') ||
+      text.includes('till balance') ||
+      text.includes('drawer balance') ||
       text.includes('गल्ला') ||
-      text.includes('आजचे ग्राहक') ||
       text.includes('कॅश कलेक्शन') ||
+      text.includes('कॅश काउंटर') ||
       text.includes('काउंटर')
     ) {
       const todayBills = this.context.daybook.filter((e) => e.invoice_type.toLowerCase().includes('sale') || e.invoice_type.toLowerCase().includes('receipt') || e.invoice_type.toLowerCase().includes('invoice'));
@@ -1163,7 +1406,6 @@ export class AiChatbotEngine {
       const totalCashOut = this.context.daybook.reduce((s, e) => s + (e.cash_payment || 0), 0);
       const totalBankIn = this.context.daybook.reduce((s, e) => s + (e.bank_received || 0), 0);
       const netCashDrawer = totalCashIn - totalCashOut;
-      const estimatedVisits = Math.max(todayBills.length * 2 + 5, 8);
 
       const rows = this.context.daybook.slice(0, 8).map((d) => ({
         invoice_no: d.invoice_no,
@@ -1175,10 +1417,10 @@ export class AiChatbotEngine {
       }));
 
       const resp = lang === 'mr'
-        ? `### 💵 आजचा गल्ला, ग्राहक व कॅश काउंटर हिशोब\n- **अंदाजे ग्राहक भेटी (Footfalls)**: **${estimatedVisits} ग्राहक**\n- **बिल झालेले व्यवहार**: **${todayBills.length} बिले**\n- **कॅश जमा (Cash Received)**: **${formatCurrency(totalCashIn)}**\n- **कॅश खर्च (Cash Payments)**: **${formatCurrency(totalCashOut)}**\n- **गल्ल्यातील निव्वळ कॅश शिल्लक (Net Till)**: **${formatCurrency(netCashDrawer)}**\n- **बँक / UPI ट्रान्सफर जमा**: **${formatCurrency(totalBankIn)}**`
+        ? `### 💵 आजचा गल्ला व कॅश काउंटर हिशोब\n- **बिल झालेले व्यवहार**: **${todayBills.length} बिले**\n- **कॅश जमा (Cash In)**: **${formatCurrency(totalCashIn)}**\n- **कॅश खर्च (Cash Out)**: **${formatCurrency(totalCashOut)}**\n- **गल्ल्यातील निव्वळ कॅश शिल्लक (Net Till Balance)**: **${formatCurrency(netCashDrawer)}**\n- **बँक / UPI ट्रान्सफर जमा**: **${formatCurrency(totalBankIn)}**`
         : lang === 'hi'
-        ? `### 💵 आज का गल्ला, ग्राहक व कैश काउंटर विवरण\n- **ग्राहक फुटफॉल (Customer Visits)**: **${estimatedVisits} ग्राहक**\n- **बिलिंग व्यवहार**: **${todayBills.length} बिल**\n- **कैश जमा (Cash In)**: **${formatCurrency(totalCashIn)}**\n- **कैश खर्च (Cash Out)**: **${formatCurrency(totalCashOut)}**\n- **गल्ले में शुद्ध नकद (Net Till Balance)**: **${formatCurrency(netCashDrawer)}**\n- **बैंक / UPI जमा**: **${formatCurrency(totalBankIn)}**`
-        : `### 💵 Today's Till, Customer Footfalls & Cash Register\n- **Customer Footfalls / Visits**: **${estimatedVisits} patrons**\n- **Invoices Generated**: **${todayBills.length} sales bills**\n- **Cash Collections**: **${formatCurrency(totalCashIn)}**\n- **Cash Disbursements**: **${formatCurrency(totalCashOut)}**\n- **Net Cash in Showroom Till**: **${formatCurrency(netCashDrawer)}**\n- **Bank / UPI Inflows**: **${formatCurrency(totalBankIn)}**`;
+        ? `### 💵 आज का गल्ला व कैश काउंटर विवरण\n- **बिलिंग व्यवहार**: **${todayBills.length} बिल**\n- **कैश जमा (Cash In)**: **${formatCurrency(totalCashIn)}**\n- **कैश खर्च (Cash Out)**: **${formatCurrency(totalCashOut)}**\n- **गल्ले में शुद्ध नकद (Net Till Balance)**: **${formatCurrency(netCashDrawer)}**\n- **बैंक / UPI जमा**: **${formatCurrency(totalBankIn)}**`
+        : `### 💵 Today's Showroom Till & Cash Register\n- **Invoices Generated**: **${todayBills.length} sales bills**\n- **Cash Collections**: **${formatCurrency(totalCashIn)}**\n- **Cash Disbursements**: **${formatCurrency(totalCashOut)}**\n- **Net Cash in Showroom Till**: **${formatCurrency(netCashDrawer)}**\n- **Bank / UPI Inflows**: **${formatCurrency(totalBankIn)}**`;
 
       return {
         response: resp,
@@ -1205,7 +1447,65 @@ export class AiChatbotEngine {
     }
 
     // ----------------------------------------------------
-    // 7. TASK INITIATION INTENTS (Multilingual)
+    // 8. ALL CUSTOMERS / DEBTORS INQUIRY
+    // ----------------------------------------------------
+    if (
+      text.includes('all customers') ||
+      text.includes('customer list') ||
+      text.includes('show customers') ||
+      text.includes('search customer') ||
+      text.includes('debtor') ||
+      text.includes('pending payment') ||
+      text.includes('सर्व ग्राहक') ||
+      text.includes('ग्राहक यादी') ||
+      text.includes('उधारी') ||
+      text.includes('बाकीदार') ||
+      text.includes('बकाया') ||
+      text.includes('सभी ग्राहक')
+    ) {
+      const debtors = this.context.debtors;
+      const totalPendingCash = debtors.reduce((s, d) => s + (d.balance || 0), 0);
+      const totalPendingWt = debtors.reduce((s, d) => s + (d.pending_wt || 0), 0);
+
+      const rows = debtors.map((d) => ({
+        code: d.code,
+        name: d.customer_name,
+        phone: d.phone,
+        balance: formatCurrency(d.balance),
+        pending_wt: `${formatWeight(d.pending_wt)}g`,
+      }));
+
+      const resp = lang === 'mr'
+        ? `### 👥 नोंदणीकृत ग्राहक व उधारी बाकीदार यादी (Customer Master)\n- **एकूण ग्राहक/बाकीदार**: **${debtors.length} ग्राहक**\n- **एकूण बाकी रक्कम**: **${formatCurrency(totalPendingCash)}**\n- **एकूण प्रलंबित सोने**: **${formatWeight(totalPendingWt)} ग्रॅम**`
+        : lang === 'hi'
+        ? `### 👥 पंजीकृत ग्राहक व बकाया सूची (Customer Master)\n- **कुल ग्राहक/देनदार**: **${debtors.length} ग्राहक**\n- **कुल बकाया राशि**: **${formatCurrency(totalPendingCash)}**\n- **कुल बकाया सोना**: **${formatWeight(totalPendingWt)} ग्राम**`
+        : `### 👥 Customer Directory & Debtors Ledger\n- **Total Registered Debtors**: ${debtors.length} parties\n- **Total Cash Outstanding**: **${formatCurrency(totalPendingCash)}**\n- **Pending Metal Dues**: **${formatWeight(totalPendingWt)}g**`;
+
+      return {
+        response: resp,
+        language: lang,
+        tableData: {
+          title: lang === 'mr' ? 'ग्राहक खाते व उधारी लेजर' : lang === 'hi' ? 'ग्राहक खाता व बकाया लेजर' : 'Customer Directory & Debtors Ledger',
+          subtitle: `Total Dues: ${formatCurrency(totalPendingCash)} | Metal Dues: ${formatWeight(totalPendingWt)}g`,
+          columns: [
+            { key: 'code', label: 'Code', align: 'left', format: 'badge' },
+            { key: 'name', label: 'Customer Name', align: 'left', format: 'text' },
+            { key: 'phone', label: 'Contact Phone', align: 'left', format: 'text' },
+            { key: 'balance', label: 'Balance Due (₹)', align: 'right', format: 'text' },
+            { key: 'pending_wt', label: 'Pending Gold', align: 'right', format: 'text' },
+          ],
+          rows,
+          navigationAction: { label: 'Open Debtors Ledger (F11)', section: 'accounts', subView: 'book_display' },
+        },
+        quickChips: [
+          { label: '👥 Open Debtors Ledger (F11)', action: 'navigate', payload: { section: 'accounts', subView: 'book_display' } },
+          { label: '👤 Add New Customer Master', action: 'start_task', payload: 'account_create' },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // 9. TASK INITIATION INTENTS (Multilingual)
     // ----------------------------------------------------
     if (text.includes('purchase') || text.includes('buy gold') || text.includes('खरेदी') || text.includes('खरीद') || text.includes('inward')) {
       const resp = lang === 'mr'
@@ -1262,54 +1562,9 @@ export class AiChatbotEngine {
     }
 
     // ----------------------------------------------------
-    // 8. DEBTORS & BALANCES QUERY
+    // 10. CALCULATOR & FORMULAS (Multilingual)
     // ----------------------------------------------------
-    if (text.includes('debtor') || text.includes('pending payment') || text.includes('बाकी') || text.includes('उधारी') || text.includes('बकाया')) {
-      const totalDebtors = this.context.debtors.length;
-      const totalPendingCash = this.context.debtors.reduce((s, d) => s + (d.balance || 0), 0);
-      const totalPendingWt = this.context.debtors.reduce((s, d) => s + (d.pending_wt || 0), 0);
-
-      const rows = this.context.debtors.map((d) => ({
-        code: d.code,
-        name: d.customer_name,
-        phone: d.phone,
-        balance: formatCurrency(d.balance),
-        pending_wt: `${formatWeight(d.pending_wt)}g`,
-      }));
-
-      const resp = lang === 'mr'
-        ? `### 👥 उधारी बाकीदार ग्राहक यादी (Sundry Debtors)\n- **एकूण बाकीदार**: **${totalDebtors} ग्राहक**\n- **एकूण कॅश बाकी**: **${formatCurrency(totalPendingCash)}**\n- **एकूण धातू बाकी (Pending Gold)**: **${formatWeight(totalPendingWt)} ग्रॅम**`
-        : lang === 'hi'
-        ? `### 👥 बकाया ग्राहक सूची (Sundry Debtors)\n- **कुल देनदार**: **${totalDebtors} ग्राहक**\n- **कुल बकाया राशि**: **${formatCurrency(totalPendingCash)}**\n- **कुल बकाया सोना (Pending Gold)**: **${formatWeight(totalPendingWt)} ग्राम**`
-        : `### 👥 Sundry Debtors & Outstanding Balance\n- **Total Active Debtors**: ${totalDebtors} parties\n- **Total Cash Outstanding**: **${formatCurrency(totalPendingCash)}**\n- **Pending Metal Dues**: **${formatWeight(totalPendingWt)}g**`;
-
-      return {
-        response: resp,
-        language: lang,
-        tableData: {
-          title: lang === 'mr' ? 'उधारी बाकीदार खाते यादी' : lang === 'hi' ? 'बकाया ग्राहक खाता सूची' : 'Sundry Debtors Ledger Statement',
-          subtitle: `Total Cash Dues: ${formatCurrency(totalPendingCash)} | Total Gold Dues: ${formatWeight(totalPendingWt)}g`,
-          columns: [
-            { key: 'code', label: 'Code', align: 'left', format: 'badge' },
-            { key: 'name', label: 'Customer Name', align: 'left', format: 'text' },
-            { key: 'phone', label: 'Contact', align: 'left', format: 'text' },
-            { key: 'balance', label: 'Balance Due (₹)', align: 'right', format: 'text' },
-            { key: 'pending_wt', label: 'Pending Gold', align: 'right', format: 'text' },
-          ],
-          rows,
-          navigationAction: { label: 'Open Debtors Ledger (F11)', section: 'accounts', subView: 'book_display' },
-        },
-        quickChips: [
-          { label: '👥 Open Debtors Ledger (F11)', action: 'navigate', payload: { section: 'accounts', subView: 'book_display' } },
-          { label: '💵 Record Receipt in Day Book', action: 'start_task', payload: 'daybook_expense' },
-        ],
-      };
-    }
-
-    // ----------------------------------------------------
-    // 9. CALCULATOR & FORMULAS (Multilingual)
-    // ----------------------------------------------------
-    if (text.includes('calculate') || text.includes('formula') || text.includes('हिशोब') || text.includes('कॅल्क्युलेटर') || text.includes('भाव काढा')) {
+    if (text.includes('calculate') || text.includes('formula') || text.includes('हिशोब') || text.includes('कॅल्क्युलेटर') || text.includes('भाव काढा') || text.includes('तोळा भाव')) {
       const resp = lang === 'mr'
         ? `### 🧮 सुवर्ण दागिने मानक हिशोब सूत्रे (Jewellery Formulas)\n\n1. **निव्वळ धातू वजन (Net Weight)**:\n   $$\\text{Net Wt} = \\text{Gross Wt} - \\text{खडे (Stones)} - \\text{दोरा/मणी (Beads)}$$\n\n2. **२४ कॅरेट शुद्ध सोने (Fine Gold Equivalent)**:\n   $$\\text{Fine Wt} = \\text{Net Wt} \\times \\left(\\frac{\\text{टंच (Purity \\%)}}{100}\\right)$$\n\n3. **दागिन्याचे बिल मूल्य (Taxable Amount)**:\n   $$\\text{Taxable} = (\\text{Net Wt} \\times \\text{सोन्याचा भाव}) + (\\text{Net Wt} \\times \\text{मजुरी/ग्रॅम}) + \\text{हॉलमार्क फी (₹४५)}$$\n\n4. **जीएसटी (GST ३%)**:\n   $$\\text{GST} = \\text{Taxable} \\times ०.०३ \\quad (१.५\\% \\text{ CGST} + १.५\\% \\text{ SGST})$$\n\n5. **तोळा रूपांतरण**: **१ तोळा = ११.६६४ ग्रॅम** (किंवा मेट्रिक १० ग्रॅम)`
         : lang === 'hi'
@@ -1327,24 +1582,23 @@ export class AiChatbotEngine {
     }
 
     // ----------------------------------------------------
-    // 10. DEFAULT MULTILINGUAL WELCOME / HELP
+    // 11. DEFAULT MULTILINGUAL WELCOME / HELP
     // ----------------------------------------------------
     const defaultResp = lang === 'mr'
-      ? `👋 नमस्कार! मी **स्वर्ण AI ERP सहाय्यक (Copilot)** आहे.\nमी मराठी, हिन्दी व इंग्रजी भाषेत तुमच्या दुकानातील सर्व कामे १-१ प्रश्न विचारून पूर्ण करू शकतो:\n\n### प्रमुख कार्ये व माहिती:\n1. 🪙 **भिशी ग्राहक (सुवर्ण निधी)**: सर्व भिशी सदस्यांची यादी, भरलेले महिने व जमा सोने\n2. 🏷️ **बारकोड टॅग्स**: सर्व ॲक्टिव्ह बारकोड व अनप्रिंटेड टॅग्स यादी\n3. 📦 **लूज व एकूण सोने स्टॉक**: २४K, २२K, स्क्रॅप सोने तोळे व ग्रॅम मध्ये\n4. 💵 **आजचा गल्ला व ग्राहक**: आजचे फुटफॉल, कॅश कलेक्शन व विक्री बिले\n5. 👥 **उधारी बाकीदार**: सर्व ग्राहकांची बाकी रक्कम व सोने\n6. 🛒 **खरेदी / विक्री / ऑर्डर / रिफायनरी टास्क**: १-१ प्रश्न विचारून थेट बिल बनवा`
+      ? `👋 नमस्कार! मी **स्वर्ण AI ERP सहाय्यक (Copilot)** आहे.\nमी मराठी, हिन्दी व इंग्रजी भाषेत तुमच्या दुकानातील सर्व कामे १-१ प्रश्न विचारून पूर्ण करू शकतो:\n\n### प्रमुख कार्ये व माहिती:\n1. 👥 **आज आलेले ग्राहक (Visited Customers)**: आज शोरूमला भेट दिलेल्या सर्व ग्राहकांची यादी व व्यवहार\n2. 🪙 **भिशी ग्राहक (सुवर्ण निधी)**: सर्व भिशी सदस्यांची यादी, भरलेले महिने व जमा सोने\n3. 🏷️ **बारकोड टॅग्स**: सर्व ॲक्टिव्ह बारकोड व अनप्रिंटेड टॅग्स यादी\n4. 📦 **लूज व एकूण सोने स्टॉक**: २४K, २२K, स्क्रॅप सोने तोळे व ग्रॅम मध्ये\n5. 💵 **आजचा गल्ला**: आजचे कॅश कलेक्शन व विक्री बिले\n6. 🛒 **खरेदी / विक्री / ऑर्डर / रिफायनरी टास्क**: १-१ प्रश्न विचारून थेट बिल बनवा`
       : lang === 'hi'
-      ? `👋 नमस्ते! मैं **स्वर्ण AI ERP कोपायलट** हूँ।\nमैं हिन्दी, मराठी और अंग्रेजी में आपकी दुकान के सभी कार्य १-१ सवाल पूछकर आसानी से कर सकता हूँ:\n\n### प्रमुख सुविधाएं व रिपोर्ट:\n1. 🪙 **भिशी ग्राहक (स्वर्ण निधि)**: सभी सदस्यों की सूची, जमा किश्तें और सोना\n2. 🏷️ **बारकोड टैग्स**: सभी एक्टिव बारकोड और अनप्रिंटेड टैग्स सूची\n3. 📦 **लूज व कुल सोना स्टॉक**: २४K, २२K, स्क्रैप सोना तोला और ग्राम में\n4. 💵 **आज का गल्ला व ग्राहक**: आज के फुटफॉल, कैश कलेक्शन और बिक्री बिल\n5. 👥 **बकाया देनदार**: सभी ग्राहकों की बकाया राशि और सोना\n6. 🛒 **खरीद / बिक्री / ऑर्डर / रिफाइनरी टास्क**: १-१ सवाल पूछकर बिल बनाएं`
-      : `👋 Hello! I am **Swarna AI ERP Copilot**.\nI support English, Marathi (मराठी), and Hindi (हिन्दी) with voice speech dictation and audio responses.\n\n### What would you like to explore?\n1. 🪙 **Bhishi Customers**: Monthly savings scheme members, installments & accrued gold\n2. 🏷️ **Barcodes & Non-Printed Tags**: All tagged items & unprinted barcode tags queue\n3. 📦 **Loose & Total Gold Stock**: 24K, 22K, Scrap gold breakdown in grams & tolas\n4. 💵 **Today's Till & Customer Visits**: Daily footfalls, cash drawer collection & invoices\n5. 👥 **Sundry Debtors**: Outstanding customer cash & pending gold weights\n6. 🛒 **Step-by-Step Task Workflows**: 1-by-1 question wizards from purchase to sales`;
+      ? `👋 नमस्ते! मैं **स्वर्ण AI ERP कोपायलट** हूँ।\nमैं हिन्दी, मराठी और अंग्रेजी में आपकी दुकान के सभी कार्य १-१ सवाल पूछकर आसानी से कर सकता हूँ:\n\n### प्रमुख सुविधाएं व रिपोर्ट:\n1. 👥 **आज आए हुए ग्राहक (Visited Customers)**: आज शोरूम विज़िट करने वाले सभी ग्राहकों की सूची व बिलिंग\n2. 🪙 **भिशी ग्राहक (स्वर्ण निधि)**: सभी सदस्यों की सूची, जमा किश्तें और सोना\n3. 🏷️ **बारकोड टैग्स**: सभी एक्टिव बारकोड और अनप्रिंटेड टैग्स सूची\n4. 📦 **लूज व कुल सोना स्टॉक**: २४K, २२K, स्क्रैप सोना तोला और ग्राम में\n5. 💵 **आज का गल्ला**: आज का कैश कलेक्शन और बिक्री बिल\n6. 🛒 **खरीद / बिक्री / ऑर्डर / रिफाइनरी टास्क**: १-१ सवाल पूछकर बिल बनाएं`
+      : `👋 Hello! I am **Swarna AI ERP Copilot**.\nI support English, Marathi (मराठी), and Hindi (हिन्दी) with voice speech dictation and audio responses.\n\n### What would you like to explore?\n1. 👥 **Today's Visited Customers**: Today's showroom visitor log, footfalls & billed patrons\n2. 🪙 **Bhishi Customers**: Monthly savings scheme members, installments & accrued gold\n3. 🏷️ **Barcodes & Non-Printed Tags**: All tagged items & unprinted barcode tags queue\n4. 📦 **Loose & Total Gold Stock**: 24K, 22K, Scrap gold breakdown in grams & tolas\n5. 💵 **Today's Till & Cash Register**: Daily footfalls, cash drawer collection & invoices\n6. 🛒 **Step-by-Step Task Workflows**: 1-by-1 question wizards from purchase to sales`;
 
     return {
       response: defaultResp,
       language: lang,
       quickChips: [
+        { label: '👥 आज आलेले ग्राहक (Visited Customers)', action: 'query', payload: 'todays visited customers' },
         { label: '🪙 भिशी ग्राहक (Bhishi)', action: 'query', payload: 'bhishi' },
         { label: '🏷️ अनप्रिंटेड बारकोड (Unprinted)', action: 'query', payload: 'unprinted' },
         { label: '📦 एकूण उपलब्ध सोने (Total Gold)', action: 'query', payload: 'total gold' },
-        { label: '💵 आजचा गल्ला व ग्राहक (Till)', action: 'query', payload: 'till' },
-        { label: '📦 लूज स्टॉक (Loose Stock)', action: 'query', payload: 'loose stock' },
-        { label: '👥 उधारी बाकीदार (Debtors)', action: 'query', payload: 'debtors' },
+        { label: '💵 आजचा गल्ला (Till)', action: 'query', payload: 'till' },
       ],
     };
   }
@@ -1529,13 +1783,12 @@ export class AiChatbotEngine {
         const making = Number(data.making_per_gm) || 450;
         const metalVal = netWt * rate;
         const makingVal = netWt * making;
-        const taxableVal = metalVal + makingVal + 45; // 45 hallmark fee
+        const taxableVal = metalVal + makingVal + 45;
         const gstVal = Math.round(taxableVal * 0.03);
         const oldGold = Number(data.old_gold_amount) || 0;
         const totalInvoice = Math.round(taxableVal + gstVal - oldGold);
         const invNo = `INV-2026-${Math.floor(100 + Math.random() * 900)}`;
 
-        // Add DayBook entry for sales cash/bank collection
         if (callbacks.onAddDayBookEntry) {
           const isCash = data.payment_mode === 'Cash';
           const isSplit = data.payment_mode === 'Split';
