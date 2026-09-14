@@ -64,6 +64,20 @@
   background: #475569;
 }
 
+/* Color scheme management for native browser UI controls & select popups */
+:root {
+  color-scheme: light;
+}
+
+:root.dark,
+:root.theme-apple-glass,
+:root.theme-obsidian-velvet,
+.dark,
+.theme-apple-glass,
+.theme-obsidian-velvet {
+  color-scheme: dark !important;
+}
+
 /* ==========================================================================
    Apple iOS Frosted Glass Theme Global Screen Transformer
    Applies true iPhone glass screens, gray ambient blur, and specular highlights
@@ -73,6 +87,7 @@
 .theme-apple-glass {
   background: radial-gradient(circle at 50% -10%, #374151 0%, #1f2937 40%, #111827 100%) fixed !important;
   color: #ffffff !important;
+  color-scheme: dark !important;
 }
 
 /* 1. All Main Glass Card Containers & Panels across all screens */
@@ -144,7 +159,6 @@
 
 /* 4. Form Inputs, Selects & Numeric Textboxes */
 .theme-apple-glass input,
-.theme-apple-glass select,
 .theme-apple-glass textarea {
   background: rgba(255, 255, 255, 0.09) !important;
   backdrop-filter: blur(16px) !important;
@@ -154,10 +168,72 @@
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
-.theme-apple-glass select option,
-.theme-obsidian-velvet select option {
-  background: #1e293b !important;
+.theme-apple-glass select,
+.theme-obsidian-velvet select,
+.dark select {
+  color-scheme: dark !important;
+  background-color: rgba(30, 41, 59, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
+}
+
+/* Native select options & dropdown menus */
+select option,
+select optgroup {
+  font-family: inherit;
+}
+
+.theme-apple-glass select option,
+.theme-apple-glass option,
+.theme-apple-glass optgroup,
+.theme-obsidian-velvet select option,
+.theme-obsidian-velvet option,
+.theme-obsidian-velvet optgroup,
+.dark select option,
+.dark option,
+.dark optgroup {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+}
+
+.theme-apple-glass select option:checked,
+.theme-apple-glass option:checked,
+.theme-obsidian-velvet select option:checked,
+.theme-obsidian-velvet option:checked,
+.dark select option:checked,
+.dark option:checked {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+/* Light Theme native dropdown menu & options */
+.theme-light-blue select,
+.theme-royal-gold select,
+.theme-emerald-luxury select,
+.theme-rose-gold select,
+.theme-velvet-purple select,
+.theme-platinum-ice select,
+.theme-ruby-regal select {
+  color-scheme: light !important;
+}
+
+.theme-light-blue select option,
+.theme-light-blue option,
+.theme-royal-gold select option,
+.theme-royal-gold option,
+.theme-emerald-luxury select option,
+.theme-emerald-luxury option,
+.theme-rose-gold select option,
+.theme-rose-gold option,
+.theme-velvet-purple select option,
+.theme-velvet-purple option,
+.theme-platinum-ice select option,
+.theme-platinum-ice option,
+.theme-ruby-regal select option,
+.theme-ruby-regal option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .theme-apple-glass input::placeholder,

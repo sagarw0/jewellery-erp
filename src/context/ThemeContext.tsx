@@ -303,6 +303,23 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const currentTheme = THEMES[themeId] || THEMES['light-blue'];
   const isDark = !!currentTheme.isDark;
 
+  useEffect(() => {
+    // 1. Set standard browser color-scheme on root document to inform OS/Chromium native controls & dropdowns
+    document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+
+    // 2. Sync theme classes directly on documentElement and body for full OS/browser native control theming
+    const allThemeClasses = Object.keys(THEMES).map((k) => `theme-${k}`);
+    document.documentElement.classList.remove(...allThemeClasses, 'dark');
+    document.body.classList.remove(...allThemeClasses, 'dark');
+
+    document.documentElement.classList.add(`theme-${themeId}`);
+    document.body.classList.add(`theme-${themeId}`);
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+    }
+  }, [isDark, themeId]);
+
   return (
     <ThemeContext.Provider value={{ currentTheme, isDark, density, setTheme, setDensity }}>
       <div className={`theme-${themeId} density-${density} ${isDark ? 'dark' : ''} min-h-screen transition-colors duration-200`}>
