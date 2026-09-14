@@ -6,8 +6,10 @@ import {
   NewOrderPayment,
   NewOrderTab,
   ColumnSetting,
-  KaragirAssignment
+  KaragirAssignment,
+  Karagir
 } from '../../types/erp';
+import { INITIAL_KARAGIRS } from '../../utils/mockData';
 import {
   Save,
   Printer,
@@ -67,6 +69,8 @@ interface NewOrderBookingViewProps {
   onDeleteOrder: (id: string) => void;
   onClose: () => void;
   goldRate: number;
+  karagirs?: Karagir[];
+  onSaveKaragir?: (karagir: Karagir) => void;
 }
 
 const DEFAULT_ORDER_COLUMNS: ColumnSetting[] = [
@@ -90,6 +94,8 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
   onDeleteOrder,
   onClose,
   goldRate,
+  karagirs = INITIAL_KARAGIRS,
+  onSaveKaragir,
 }) => {
   const [activeTab, setActiveTab] = useState<NewOrderTab>('new_order_booking');
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(orders[0]?.id || null);
@@ -1326,9 +1332,9 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                 className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-700 font-bold"
               >
                 <option value="all">All Karagirs</option>
-                {DEFAULT_KARAGIRS.map((k) => (
-                  <option key={k.id} value={k.name}>
-                    {k.name}
+                {karagirs.map((k) => (
+                  <option key={k.id} value={k.karagir_name}>
+                    {k.karagir_name}
                   </option>
                 ))}
               </select>
@@ -2014,6 +2020,8 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
             order={modalTargetOrder}
             onAssign={handleAssignKaragir}
             onPrintJobCard={(ord, asg) => handleOpenJobCard(ord, asg)}
+            karagirs={karagirs}
+            onSaveKaragir={onSaveKaragir}
           />
 
           <KaragirJobCardModal

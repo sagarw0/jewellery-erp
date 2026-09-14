@@ -13,7 +13,7 @@ export type NavSection =
   | 'settings'
   | 'field_dictionary';
 
-export type MasterSubView = 'account_master' | 'vendor_master' | 'item_creation' | 'barcode';
+export type MasterSubView = 'account_master' | 'vendor_master' | 'karagir_master' | 'item_creation' | 'barcode';
 export type TransactionSubView = 'new_order' | 'purchase' | 'refinery_in' | 'sales_invoice';
 export type AccountSubView = 'day_book' | 'book_display' | 'account_display';
 export type StockSubView = 'stock_report' | 'audit';
@@ -122,6 +122,48 @@ export interface Vendor {
   opening_balance_silver_fine_gm?: number; // Pure Silver fine weight balance (g)
   opening_balance_cash: number; // ₹ Opening ledger amount
   balance_type: 'Cr' | 'Dr';    // 'Cr' = Payable (We owe), 'Dr' = Receivable (Advance paid)
+  status: 'Active' | 'Inactive';
+  notes?: string;
+  created_at?: string;
+}
+
+export type KaragirSpecialty =
+  | 'Mangalsutra & Antique Filigree'
+  | 'Bangles, Kada & CNC Machine'
+  | 'Nakas, Temple Jewellery & Choker'
+  | 'Casting Rings, Solitaires & Studs'
+  | 'Micro-Prong Setting & Rhodium'
+  | 'Plain Gold Chains & Kolhapuri Saaj'
+  | 'Silver Articles & Utensils'
+  | 'Diamond Setting Specialist'
+  | 'General Goldsmith';
+
+export interface Karagir {
+  id: string;
+  karagir_code: string;         // e.g. "KARA-101"
+  karagir_name: string;         // e.g. "Soni Govindbhai & Sons"
+  contact_person?: string;      // e.g. "Govindbhai Soni"
+  phone: string;                // e.g. "+91 98920 44556"
+  email?: string;
+  specialty: KaragirSpecialty | string;
+  workshop_name?: string;       // e.g. "Dadar Jewellery Workshop Unit 4"
+  address: string;
+  city: string;
+  state: string;
+  pincode?: string;
+  pan_no?: string;
+  gstin?: string;
+  default_making_rate_per_gm: number; // e.g. ₹380/g
+  default_wastage_pct: number;        // e.g. 1.5%
+  opening_balance_gold_fine_gm: number; // Pure Gold fine weight balance (g)
+  opening_balance_silver_fine_gm: number;
+  opening_balance_cash: number;       // ₹ Opening ledger amount
+  balance_type: 'Cr' | 'Dr';          // 'Cr' = Payable to karagir, 'Dr' = Advance paid
+  bank_name?: string;
+  bank_account_no?: string;
+  ifsc_code?: string;
+  branch_name?: string;
+  active_jobs_count?: number;
   status: 'Active' | 'Inactive';
   notes?: string;
   created_at?: string;

@@ -1,6 +1,7 @@
 import {
   AccountMaster,
   Vendor,
+  Karagir,
   NewOrderBookingRecord,
   RefineryRecord,
   PurchaseRecord,
@@ -271,6 +272,7 @@ export interface ErpContext {
   bhishiMembers?: BhishiMember[];
   customerVisits?: CustomerVisitRecord[];
   vendors?: Vendor[];
+  karagirs?: Karagir[];
 }
 
 export interface ScreenDirectionData {
@@ -474,6 +476,29 @@ export const ERP_SCREENS: ErpScreenDefinition[] = [
     actions: [
       { label: '🚀 Open Vendor Master', action: 'navigate', payload: { section: 'masters', subView: 'vendor_master' } },
       { label: '🛒 Go to Purchase Invoice (F5)', action: 'navigate', payload: { section: 'transactions', subView: 'purchase' } }
+    ]
+  },
+  {
+    id: 'karagir_master',
+    name: 'Karagir / Maker Master',
+    nameMr: 'कारागीर / सुवर्णकार मास्टर',
+    nameHi: 'कारीगर / निर्माता मास्टर',
+    section: 'masters',
+    subView: 'karagir_master',
+    shortcut: 'F6',
+    icon: '🔨',
+    description: 'Manage goldsmiths, artisans, workshops, labor making charges (₹/g), metal balances, and craft specialties.',
+    descriptionMr: 'कारागीर, सुवर्णकार, घडणावळ दर (₹/ग्रॅम), शुद्ध सोने शिल्लक आणि कामाचे प्रकार व्यवस्थापित करा.',
+    descriptionHi: 'कारीगर, सुनार, मजदूरी दर (₹/ग्राम), शुद्ध सोना बैलेंस और कारीगरी प्रकार प्रबंधित करें।',
+    keywords: [
+      'karagir', 'karagir master', 'goldsmith', 'maker', 'artisan', 'workshop',
+      'making charge', 'wastage', 'babu rao', 'ramesh sutar', 'govindbhai',
+      'कारागीर', 'कारीगर', 'सुवर्णकार', 'सुनार', 'घडणावळ', 'मजदूरी', 'maker list', 'karagir list'
+    ],
+    tasks: ['order_booking'],
+    actions: [
+      { label: '🚀 Open Karagir Master', action: 'navigate', payload: { section: 'masters', subView: 'karagir_master' } },
+      { label: '📋 Order Booking (F7)', action: 'navigate', payload: { section: 'transactions', subView: 'new_order' } }
     ]
   },
   {
@@ -2380,6 +2405,123 @@ export class AiChatbotEngine {
         quickChips: [
           { label: '👥 Open Debtors Ledger (F11)', action: 'navigate', payload: { section: 'accounts', subView: 'book_display' } },
           { label: '👤 Add New Customer Master', action: 'start_task', payload: 'account_create' },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // 8.1 KARAGIR / MAKER / GOLDSMITH MASTER INQUIRY
+    // ----------------------------------------------------
+    if (
+      text.includes('karagir') ||
+      text.includes('karagirs') ||
+      text.includes('goldsmith') ||
+      text.includes('goldsmiths') ||
+      text.includes('maker') ||
+      text.includes('makers') ||
+      text.includes('artisan') ||
+      text.includes('artisans') ||
+      text.includes('workshop') ||
+      text.includes('कारागीर') ||
+      text.includes('कारीगर') ||
+      text.includes('सुवर्णकार') ||
+      text.includes('सुनार') ||
+      text.includes('घडणावळ')
+    ) {
+      const karagirList = this.context.karagirs || [];
+      const totalActiveJobs = karagirList.reduce((s, k) => s + (k.active_jobs_count || 0), 0);
+      const totalFineGoldInWorkshop = karagirList.reduce((s, k) => s + (k.opening_balance_gold_fine_gm || 0), 0);
+
+      const rows = karagirList.map((k) => ({
+        code: k.karagir_code,
+        name: k.karagir_name,
+        specialty: k.specialty,
+        phone: k.phone,
+        making_rate: `₹${k.default_making_rate_per_gm}/g`,
+        wastage: `${k.default_wastage_pct}%`,
+        active_jobs: `${k.active_jobs_count || 0} Jobs`,
+      }));
+
+      const resp = lang === 'mr'
+        ? `### 🔨 कारागीर व सुवर्णकार मास्टर डिरेक्टरी (${karagirList.length} कारागीर)\n- **एकूण ॲक्टिव्ह कारागीर**: **${karagirList.length}**\n- **सध्या चालू जॉब्स (Active Jobs)**: **${totalActiveJobs} ऑर्डर्स**\n- **वर्कशॉपमधील फाइन गोल्ड शिल्लक**: **${formatWeight(totalFineGoldInWorkshop)}g**\nखालील तक्त्यातून कारागीर निवडून तुम्ही थेट **नवीन ऑर्डर (F7)** बुक करू शकता किंवा कारागीर मास्टर व्यवस्थापित करू शकता:`
+        : lang === 'hi'
+        ? `### 🔨 कारीगर व सुनार मास्टर डायरेक्टरी (${karagirList.length} कारीगर)\n- **कुल सक्रिय कारीगर**: **${karagirList.length}**\n- **कार्य प्रगति पर (Active Jobs)**: **${totalActiveJobs} ऑर्डर्स**\n- **वर्कशॉप में शुद्ध सोना**: **${formatWeight(totalFineGoldInWorkshop)}g**\nनीचे दी गई तालिका से कारीगर चुनकर सीधे **नई ऑर्डर (F7)** बुक करें या कारीगर मास्टर प्रबंधित करें:`
+        : `### 🔨 Karagir & Goldsmith Master Directory (${karagirList.length} Artisans)\n- **Active Master Goldsmiths**: **${karagirList.length} registered**\n- **In-Progress Workshop Jobs**: **${totalActiveJobs} active orders**\n- **Fine Gold in Workshops**: **${formatWeight(totalFineGoldInWorkshop)}g**\nView making rates (₹/g), standard wastage tolerances, and assign jobs in New Order Booking (F7):`;
+
+      return {
+        response: resp,
+        language: lang,
+        tableData: {
+          title: lang === 'mr' ? 'कारागीर व घडणावळ दर मास्टर' : lang === 'hi' ? 'कारीगर व मजदूरी दर मास्टर' : 'Goldsmith & Karagir Master Directory',
+          subtitle: `Total: ${karagirList.length} Artisans • Active Jobs: ${totalActiveJobs}`,
+          columns: [
+            { key: 'code', label: 'Code', align: 'left', format: 'badge' },
+            { key: 'name', label: 'Karagir Name', align: 'left', format: 'text' },
+            { key: 'specialty', label: 'Craft Specialty', align: 'left', format: 'text' },
+            { key: 'phone', label: 'WhatsApp', align: 'left', format: 'text' },
+            { key: 'making_rate', label: 'Making Rate', align: 'right', format: 'text' },
+            { key: 'wastage', label: 'Wastage', align: 'center', format: 'text' },
+            { key: 'active_jobs', label: 'Active Jobs', align: 'center', format: 'badge' },
+          ],
+          rows,
+          navigationAction: { label: 'Open Karagir Master', section: 'masters', subView: 'karagir_master' },
+        },
+        quickChips: [
+          { label: '🔨 Open Karagir Master', action: 'navigate', payload: { section: 'masters', subView: 'karagir_master' } },
+          { label: '📋 Order Booking (F7)', action: 'navigate', payload: { section: 'transactions', subView: 'new_order' } },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // 8.2 VENDOR / BULLION SUPPLIER MASTER INQUIRY
+    // ----------------------------------------------------
+    if (
+      text.includes('vendor') ||
+      text.includes('vendors') ||
+      text.includes('supplier') ||
+      text.includes('suppliers') ||
+      text.includes('व्हेंडर') ||
+      text.includes('सप्लायर') ||
+      text.includes('डीलर') ||
+      text.includes('वेंडर')
+    ) {
+      const vendorList = this.context.vendors || [];
+      const rows = vendorList.map((v) => ({
+        code: v.vendor_code,
+        name: v.vendor_name,
+        type: v.vendor_type,
+        city: `${v.city}, ${v.state}`,
+        phone: v.phone,
+        gstin: v.gstin || '—',
+      }));
+
+      const resp = lang === 'mr'
+        ? `### 🏢 नोंदणीकृत सप्लायर व व्हेंडर यादी (${vendorList.length} सप्लायर्स)\nबुलियन व्यापारी, मॅन्युफॅक्चरर आणि होलसेल सप्लायर्सचा तपशील खालीलप्रमाणे आहे:`
+        : lang === 'hi'
+        ? `### 🏢 पंजीकृत सप्लायर व वेंडर सूची (${vendorList.length} सप्लायर्स)\nबुलियन व्यापारी, निर्माता और होलसेल सप्लायर्स का विवरण नीचे दिया गया है:`
+        : `### 🏢 Registered Bullion Suppliers & Vendor Directory (${vendorList.length} Vendors)\nDirectory of bullion dealers, manufacturers, and casting units:`;
+
+      return {
+        response: resp,
+        language: lang,
+        tableData: {
+          title: lang === 'mr' ? 'सप्लायर व व्हेंडर मास्टर' : lang === 'hi' ? 'सप्लायर व वेंडर मास्टर' : 'Supplier & Vendor Master Directory',
+          subtitle: `Total: ${vendorList.length} Registered Suppliers`,
+          columns: [
+            { key: 'code', label: 'Code', align: 'left', format: 'badge' },
+            { key: 'name', label: 'Vendor Name', align: 'left', format: 'text' },
+            { key: 'type', label: 'Category', align: 'center', format: 'badge' },
+            { key: 'city', label: 'City / State', align: 'left', format: 'text' },
+            { key: 'phone', label: 'Contact', align: 'left', format: 'text' },
+            { key: 'gstin', label: 'GSTIN', align: 'left', format: 'text' },
+          ],
+          rows,
+          navigationAction: { label: 'Open Vendor Master', section: 'masters', subView: 'vendor_master' },
+        },
+        quickChips: [
+          { label: '🏢 Open Vendor Master', action: 'navigate', payload: { section: 'masters', subView: 'vendor_master' } },
+          { label: '🛒 Purchase Invoice (F5)', action: 'navigate', payload: { section: 'transactions', subView: 'purchase' } },
         ],
       };
     }

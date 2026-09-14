@@ -7,6 +7,7 @@ import {
   StockSubView,
   AccountMaster,
   Vendor,
+  Karagir,
   NewOrderBookingRecord,
   RefineryRecord,
   PurchaseRecord,
@@ -22,6 +23,7 @@ import {
 import {
   INITIAL_ACCOUNTS,
   INITIAL_VENDORS,
+  INITIAL_KARAGIRS,
   INITIAL_ORDERS,
   INITIAL_REFINERY,
   INITIAL_PURCHASES,
@@ -41,6 +43,7 @@ import { Navbar } from './components/layout/Navbar';
 import { DashboardView } from './components/dashboard/DashboardView';
 import { AccountMasterView } from './components/masters/AccountMasterView';
 import { VendorMasterView } from './components/masters/VendorMasterView';
+import { KaragirMasterView } from './components/masters/KaragirMasterView';
 import { ItemCreationView } from './components/masters/ItemCreationView';
 import { BarcodeView } from './components/masters/BarcodeView';
 import { NewOrderBookingView } from './components/transactions/NewOrderBookingView';
@@ -114,6 +117,7 @@ export function App() {
   // Core Data Stores (Synced with Supabase Cloud DB)
   const [accounts, setAccounts] = useState<AccountMaster[]>(INITIAL_ACCOUNTS);
   const [vendors, setVendors] = useState<Vendor[]>(INITIAL_VENDORS);
+  const [karagirs, setKaragirs] = useState<Karagir[]>(INITIAL_KARAGIRS);
   const [orders, setOrders] = useState<NewOrderBookingRecord[]>(INITIAL_ORDERS);
   const [refineries, setRefineries] = useState<RefineryRecord[]>(INITIAL_REFINERY);
   const [purchases, setPurchases] = useState<PurchaseRecord[]>(INITIAL_PURCHASES);
@@ -129,9 +133,10 @@ export function App() {
   useEffect(() => {
     async function loadCloudData() {
       try {
-        const [cAccounts, cVendors, cOrders, cPurchases, cStock, cDaybook] = await Promise.all([
+        const [cAccounts, cVendors, cKaragirs, cOrders, cPurchases, cStock, cDaybook] = await Promise.all([
           cloudService.getAccounts(),
           cloudService.getVendors(),
+          cloudService.getKaragirs(),
           cloudService.getOrders(),
           cloudService.getPurchases(),
           cloudService.getStock(),
@@ -139,6 +144,7 @@ export function App() {
         ]);
         if (cAccounts && cAccounts.length > 0) setAccounts(cAccounts);
         if (cVendors && cVendors.length > 0) setVendors(cVendors);
+        if (cKaragirs && cKaragirs.length > 0) setKaragirs(cKaragirs);
         if (cOrders && cOrders.length > 0) setOrders(cOrders);
         if (cPurchases && cPurchases.length > 0) setPurchases(cPurchases);
         if (cStock && cStock.length > 0) setStockItems(cStock);
@@ -309,6 +315,25 @@ export function App() {
     cloudService.deleteVendor(id);
   };
 
+  const handleSaveKaragir = (karagir: Karagir) => {
+    setKaragirs((prev) => {
+      const idx = prev.findIndex((k) => k.id === karagir.id || k.karagir_code === karagir.karagir_code);
+      if (idx >= 0) {
+        const next = [...prev];
+        next[idx] = karagir;
+        return next;
+      }
+      return [karagir, ...prev];
+    });
+    // Async push to Supabase
+    cloudService.saveKaragir(karagir);
+  };
+
+  const handleDeleteKaragir = (id: string) => {
+    setKaragirs((prev) => prev.filter((k) => k.id !== id));
+    cloudService.deleteKaragir(id);
+  };
+
   const handleSaveOrder = (order: NewOrderBookingRecord) => {
     setOrders((prev) => {
       const idx = prev.findIndex((o) => o.id === order.id);
@@ -471,6 +496,19 @@ export function App() {
               <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
                 masterSubView === 'vendor_master' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
               }`}>F1</span>
+            </button>
+            <button
+              onClick={() => setMasterSubView('karagir_master')}
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
+                masterSubView === 'karagir_master'
+                  ? `${currentTheme.activePill} shadow-xs`
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
+              }`}
+            >
+              <span>Karagir Master</span>
+              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
+                masterSubView === 'karagir_master' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
+              }`}>F6</span>
             </button>
             <button
               onClick={() => setMasterSubView('item_creation')}
@@ -655,6 +693,18 @@ export function App() {
                 }}
               />
             )}
+            {masterSubView === 'karagir_master' && (
+              <KaragirMasterView
+                karagirs={karagirs}
+                onSaveKaragir={handleSaveKaragir}
+                onDeleteKaragir={handleDeleteKaragir}
+                onClose={() => setCurrentSection('dashboard')}
+                onNavigateToOrderBooking={(karagir: Karagir) => {
+                  setCurrentSection('transactions');
+                  setTransSubView('new_order');
+                }}
+              />
+            )}
             {masterSubView === 'item_creation' && (
               <ItemCreationView
                 onAddItem={handleAddItemToStock}
@@ -681,6 +731,8 @@ export function App() {
                 onDeleteOrder={handleDeleteOrder}
                 onClose={() => setCurrentSection('dashboard')}
                 goldRate={gold22kRate}
+                karagirs={karagirs}
+                onSaveKaragir={handleSaveKaragir}
               />
             )}
             {transSubView === 'purchase' && (
@@ -860,6 +912,7 @@ export function App() {
           silverRate,
           branchName: currentUser.branch,
           vendors,
+          karagirs,
         }}
         onSavePurchase={handleSavePurchase}
         onSaveOrder={handleSaveOrder}

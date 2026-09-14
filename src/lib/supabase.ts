@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import {
   AccountMaster,
   Vendor,
+  Karagir,
   NewOrderBookingRecord,
   PurchaseRecord,
   RefineryRecord,
@@ -154,6 +155,92 @@ export const cloudService = {
   async deleteVendor(id: string): Promise<boolean> {
     try {
       const { error } = await supabase.from('erp_vendors').delete().eq('id', id);
+      return !error;
+    } catch {
+      return false;
+    }
+  },
+
+  // Karagirs / Goldsmiths / Makers
+  async getKaragirs(): Promise<Karagir[] | null> {
+    try {
+      const { data, error } = await supabase.from('erp_karagirs').select('*');
+      if (error || !data || data.length === 0) return null;
+      return data.map((d: any) => ({
+        id: d.id,
+        karagir_code: d.karagir_code,
+        karagir_name: d.karagir_name,
+        contact_person: d.contact_person,
+        phone: d.phone,
+        email: d.email,
+        specialty: d.specialty,
+        workshop_name: d.workshop_name,
+        address: d.address,
+        city: d.city,
+        state: d.state,
+        pincode: d.pincode,
+        pan_no: d.pan_no,
+        gstin: d.gstin,
+        default_making_rate_per_gm: Number(d.default_making_rate_per_gm || 0),
+        default_wastage_pct: Number(d.default_wastage_pct || 0),
+        opening_balance_gold_fine_gm: Number(d.opening_balance_gold_fine_gm || 0),
+        opening_balance_silver_fine_gm: Number(d.opening_balance_silver_fine_gm || 0),
+        opening_balance_cash: Number(d.opening_balance_cash || 0),
+        balance_type: d.balance_type || 'Cr',
+        bank_name: d.bank_name,
+        bank_account_no: d.bank_account_no,
+        ifsc_code: d.ifsc_code,
+        branch_name: d.branch_name,
+        active_jobs_count: Number(d.active_jobs_count || 0),
+        status: d.status || 'Active',
+        notes: d.notes,
+        created_at: d.created_at,
+      }));
+    } catch {
+      return null;
+    }
+  },
+
+  async saveKaragir(karagir: Karagir): Promise<boolean> {
+    try {
+      const { error } = await supabase.from('erp_karagirs').upsert({
+        id: karagir.id,
+        karagir_code: karagir.karagir_code,
+        karagir_name: karagir.karagir_name,
+        contact_person: karagir.contact_person || '',
+        phone: karagir.phone || '',
+        email: karagir.email || '',
+        specialty: karagir.specialty,
+        workshop_name: karagir.workshop_name || '',
+        address: karagir.address || '',
+        city: karagir.city || '',
+        state: karagir.state || '',
+        pincode: karagir.pincode || '',
+        pan_no: karagir.pan_no || '',
+        gstin: karagir.gstin || '',
+        default_making_rate_per_gm: karagir.default_making_rate_per_gm || 0,
+        default_wastage_pct: karagir.default_wastage_pct || 0,
+        opening_balance_gold_fine_gm: karagir.opening_balance_gold_fine_gm || 0,
+        opening_balance_silver_fine_gm: karagir.opening_balance_silver_fine_gm || 0,
+        opening_balance_cash: karagir.opening_balance_cash || 0,
+        balance_type: karagir.balance_type,
+        bank_name: karagir.bank_name || '',
+        bank_account_no: karagir.bank_account_no || '',
+        ifsc_code: karagir.ifsc_code || '',
+        branch_name: karagir.branch_name || '',
+        active_jobs_count: karagir.active_jobs_count || 0,
+        status: karagir.status,
+        notes: karagir.notes || '',
+      }, { onConflict: 'karagir_code' });
+      return !error;
+    } catch {
+      return false;
+    }
+  },
+
+  async deleteKaragir(id: string): Promise<boolean> {
+    try {
+      const { error } = await supabase.from('erp_karagirs').delete().eq('id', id);
       return !error;
     } catch {
       return false;

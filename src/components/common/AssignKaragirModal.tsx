@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Hammer,
   X,
@@ -16,9 +16,12 @@ import {
   Upload,
   Camera,
   ExternalLink,
-  Eye
+  Eye,
+  Plus,
+  Save
 } from 'lucide-react';
-import { NewOrderBookingRecord, KaragirAssignment } from '../../types/erp';
+import { NewOrderBookingRecord, KaragirAssignment, Karagir } from '../../types/erp';
+import { INITIAL_KARAGIRS } from '../../utils/mockData';
 import { formatCurrency, formatWeight, roundTo } from '../../utils/calculations';
 
 export interface KaragirMasterProfile {
@@ -32,58 +35,16 @@ export interface KaragirMasterProfile {
   active_jobs: number;
 }
 
-export const DEFAULT_KARAGIRS: KaragirMasterProfile[] = [
-  {
-    id: 'KARA-01',
-    name: 'Soni Govindbhai & Sons',
-    phone: '9892044556',
-    specialty: 'Mangalsutra & Antique Filigree',
-    location: 'Dadar Jewellery Workshop',
-    default_rate: 380,
-    default_wastage: 1.5,
-    active_jobs: 2,
-  },
-  {
-    id: 'KARA-02',
-    name: 'Ramesh Sutar Goldsmith',
-    phone: '9820144321',
-    specialty: 'Bangles, Kada & CNC Machine',
-    location: 'Zaveri Bazaar Hub',
-    default_rate: 280,
-    default_wastage: 1.2,
-    active_jobs: 1,
-  },
-  {
-    id: 'KARA-03',
-    name: 'Vijay Patwardhan Temple Jewellery',
-    phone: '9819277665',
-    specialty: 'Nakas, Temple Jewellery & Choker',
-    location: 'Kolhapur Nakas Hub',
-    default_rate: 480,
-    default_wastage: 2.0,
-    active_jobs: 3,
-  },
-  {
-    id: 'KARA-04',
-    name: 'Babu Rao Casted Specialist',
-    phone: '9833599112',
-    specialty: 'Casting Rings, Solitaires & Studs',
-    location: 'Malad Industrial Estate',
-    default_rate: 220,
-    default_wastage: 1.0,
-    active_jobs: 1,
-  },
-  {
-    id: 'KARA-05',
-    name: 'Ganesh Polish & Rhodium Works',
-    phone: '9869100234',
-    specialty: 'Micro-Prong Setting & Rhodium',
-    location: 'Andheri West Workshop',
-    default_rate: 150,
-    default_wastage: 0.5,
-    active_jobs: 0,
-  },
-];
+export const DEFAULT_KARAGIRS: KaragirMasterProfile[] = INITIAL_KARAGIRS.map((k) => ({
+  id: k.id,
+  name: k.karagir_name,
+  phone: k.phone,
+  specialty: k.specialty,
+  location: k.workshop_name || k.city,
+  default_rate: k.default_making_rate_per_gm,
+  default_wastage: k.default_wastage_pct,
+  active_jobs: k.active_jobs_count || 0,
+}));
 
 export const JEWELLERY_SAMPLE_PRESETS = [
   {
@@ -110,6 +71,8 @@ interface AssignKaragirModalProps {
   order: NewOrderBookingRecord;
   onAssign: (orderId: string, assignment: KaragirAssignment) => void;
   onPrintJobCard?: (order: NewOrderBookingRecord, assignment: KaragirAssignment) => void;
+  karagirs?: Karagir[];
+  onSaveKaragir?: (karagir: Karagir) => void;
 }
 
 export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
@@ -118,11 +81,30 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
   order,
   onAssign,
   onPrintJobCard,
+  karagirs = INITIAL_KARAGIRS,
+  onSaveKaragir,
 }) => {
   if (!isOpen) return null;
 
   const totalRequiredNetWt = order.items.reduce((s, it) => s + (it.net_wt || 0), 0) || 10;
-  const initialKaragir = DEFAULT_KARAGIRS[0];
+  
+  // Available Karagirs list (mapped to profiles for seamless compatibility)
+  const availableKaragirs = useMemo(() => {
+    const sourceList = karagirs && karagirs.length > 0 ? karagirs : INITIAL_KARAGIRS;
+    return sourceList.map((k) => ({
+      id: k.id || k.karagir_code,
+      name: k.karagir_name,
+      phone: k.phone,
+      specialty: k.specialty,
+      location: k.workshop_name || k.city,
+      default_rate: k.default_making_rate_per_gm,
+      default_wastage: k.default_wastage_pct,
+      active_jobs: k.active_jobs_count || 0,
+      code: k.karagir_code,
+    }));
+  }, [karagirs]);
+
+  const initialKaragir = availableKaragirs[0] || DEFAULT_KARAGIRS[0];
 
   const [selectedKaragirId, setSelectedKaragirId] = useState<string>(
     order.karagir_assignment?.karagir_id || initialKaragir.id
@@ -131,6 +113,56 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
   const [karagirPhone, setKaragirPhone] = useState<string>(
     order.karagir_assignment?.karagir_phone || initialKaragir.phone
   );
+
+  // Quick Add Karagir Modal State
+  const [showQuickAddKaragir, setShowQuickAddKaragir] = useState(false);
+  const [quickKaragirData, setQuickKaragirData] = useState({
+    code: `KARA-${(karagirs?.length || 5) + 101}`,
+    name: '',
+    phone: '',
+    specialty: 'Mangalsutra & Antique Filigree',
+    workshop_name: '',
+    city: 'Mumbai',
+    rate: 350,
+    wastage: 1.2,
+  });
+
+  const handleSaveQuickKaragir = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!quickKaragirData.name.trim()) return;
+
+    const newKaragir: Karagir = {
+      id: `kara-${Date.now()}`,
+      karagir_code: quickKaragirData.code || `KARA-${Date.now().toString().slice(-4)}`,
+      karagir_name: quickKaragirData.name.trim(),
+      phone: quickKaragirData.phone.trim(),
+      specialty: quickKaragirData.specialty as any,
+      workshop_name: quickKaragirData.workshop_name || quickKaragirData.name,
+      address: quickKaragirData.workshop_name || 'Jewellery Workshop Cluster, Zaveri Bazaar',
+      city: quickKaragirData.city || 'Mumbai',
+      state: 'Maharashtra',
+      pincode: '400002',
+      default_making_rate_per_gm: quickKaragirData.rate || 350,
+      default_wastage_pct: quickKaragirData.wastage || 1.2,
+      opening_balance_gold_fine_gm: 0,
+      opening_balance_silver_fine_gm: 0,
+      opening_balance_cash: 0,
+      balance_type: 'Dr',
+      active_jobs_count: 0,
+      status: 'Active',
+      created_at: new Date().toISOString(),
+    };
+
+    if (onSaveKaragir) {
+      onSaveKaragir(newKaragir);
+    }
+
+    setSelectedKaragirId(newKaragir.id);
+    setKaragirPhone(newKaragir.phone);
+    setMakingRatePerGm(newKaragir.default_making_rate_per_gm);
+    setWastagePct(newKaragir.default_wastage_pct);
+    setShowQuickAddKaragir(false);
+  };
 
   const [metalType, setMetalType] = useState<string>(
     order.karagir_assignment?.issued_metal_type || '24K Pure Gold Granules (999)'
@@ -176,7 +208,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
   // When Karagir selection changes, update defaults
   const handleKaragirChange = (id: string) => {
     setSelectedKaragirId(id);
-    const k = DEFAULT_KARAGIRS.find((x) => x.id === id);
+    const k = availableKaragirs.find((x) => x.id === id);
     if (k) {
       setKaragirPhone(k.phone);
       setMakingRatePerGm(k.default_rate);
@@ -198,7 +230,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
   };
 
   const buildAssignmentData = (): KaragirAssignment => {
-    const karagirProfile = DEFAULT_KARAGIRS.find((k) => k.id === selectedKaragirId);
+    const karagirProfile = availableKaragirs.find((k) => k.id === selectedKaragirId);
     const karagirName =
       selectedKaragirId === 'CUSTOM'
         ? customKaragirName || 'Custom Goldsmith'
@@ -430,19 +462,29 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
             </label>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <div>
+              <div className="flex space-x-1.5">
                 <select
                   value={selectedKaragirId}
                   onChange={(e) => handleKaragirChange(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-bold text-xs focus:ring-2 focus:ring-amber-500 focus:outline-hidden"
                 >
-                  {DEFAULT_KARAGIRS.map((k) => (
+                  {availableKaragirs.map((k) => (
                     <option key={k.id} value={k.id}>
                       {k.name} ({k.specialty})
                     </option>
                   ))}
                   <option value="CUSTOM">+ Add Custom Karagir Name</option>
                 </select>
+
+                <button
+                  type="button"
+                  onClick={() => setShowQuickAddKaragir(true)}
+                  className="px-2.5 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 font-bold text-xs flex items-center space-x-1 shrink-0 cursor-pointer shadow-2xs"
+                  title="Quick Add New Karagir"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">New</span>
+                </button>
               </div>
 
               <div>
@@ -456,11 +498,11 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
                   />
                 ) : (
                   <div className="px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-slate-700 font-medium text-[11px] flex justify-between items-center">
-                    <span>
-                      {DEFAULT_KARAGIRS.find((k) => k.id === selectedKaragirId)?.location}
+                    <span className="truncate mr-2">
+                      {availableKaragirs.find((k) => k.id === selectedKaragirId)?.location || 'Workshop'}
                     </span>
-                    <span className="font-bold text-amber-800">
-                      {DEFAULT_KARAGIRS.find((k) => k.id === selectedKaragirId)?.active_jobs} Active Jobs
+                    <span className="font-bold text-amber-800 shrink-0">
+                      {availableKaragirs.find((k) => k.id === selectedKaragirId)?.active_jobs || 0} Active Jobs
                     </span>
                   </div>
                 )}
@@ -657,6 +699,136 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
                 alt="Enlarged Design Sample"
                 className="w-full max-h-[70vh] object-contain rounded-xl"
               />
+            </div>
+          </div>
+        )}
+        {/* Quick Add Karagir Modal */}
+        {showQuickAddKaragir && (
+          <div className="fixed inset-0 bg-slate-900/80 z-70 flex items-center justify-center p-4 animate-in fade-in duration-150">
+            <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-amber-300 overflow-hidden text-slate-800">
+              <div className="px-5 py-3.5 bg-gradient-to-r from-amber-600 to-yellow-600 text-white flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Hammer className="w-5 h-5 text-amber-200" />
+                  <div>
+                    <h4 className="text-sm font-bold">Quick Add New Karagir / Maker</h4>
+                    <p className="text-[11px] text-amber-100">Register artisan & select instantly for this order</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowQuickAddKaragir(false)}
+                  className="p-1 text-white/80 hover:text-white rounded-lg hover:bg-white/10"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveQuickKaragir} className="p-5 space-y-3 text-xs">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-600 block mb-1">Karagir Code</label>
+                    <input
+                      type="text"
+                      required
+                      value={quickKaragirData.code}
+                      onChange={(e) => setQuickKaragirData({ ...quickKaragirData, code: e.target.value })}
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 font-mono font-bold text-slate-800"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-600 block mb-1">WhatsApp Phone *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="9892044556"
+                      value={quickKaragirData.phone}
+                      onChange={(e) => setQuickKaragirData({ ...quickKaragirData, phone: e.target.value })}
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 font-mono font-bold text-emerald-900"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-bold text-slate-600 block mb-1">Karagir / Goldsmith Name *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Ramesh Sutar Goldsmith"
+                    value={quickKaragirData.name}
+                    onChange={(e) => setQuickKaragirData({ ...quickKaragirData, name: e.target.value })}
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 font-bold text-slate-900"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-600 block mb-1">Specialty</label>
+                    <select
+                      value={quickKaragirData.specialty}
+                      onChange={(e) => setQuickKaragirData({ ...quickKaragirData, specialty: e.target.value })}
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 font-medium text-slate-800"
+                    >
+                      <option value="Mangalsutra & Antique Filigree">Mangalsutra & Antique Filigree</option>
+                      <option value="Plain Gold Casting & Die Work">Plain Gold Casting & Die Work</option>
+                      <option value="Temple & Nakashi Jewellery">Temple & Nakashi Jewellery</option>
+                      <option value="Diamond Setting & Micro-Prong">Diamond Setting & Micro-Prong</option>
+                      <option value="Chains, Mangalsutra & CNC Wires">Chains, Mangalsutra & CNC Wires</option>
+                      <option value="Polishing, Rhodium & Enameling">Polishing, Rhodium & Enameling</option>
+                      <option value="Silver Articles & Ornaments">Silver Articles & Ornaments</option>
+                      <option value="General Handcrafted Jewellery">General Handcrafted Jewellery</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-600 block mb-1">Workshop Area / City</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Zaveri Bazaar, Mumbai"
+                      value={quickKaragirData.workshop_name}
+                      onChange={(e) => setQuickKaragirData({ ...quickKaragirData, workshop_name: e.target.value })}
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 pt-1">
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-600 block mb-1">Making Rate (₹/g)</label>
+                    <input
+                      type="number"
+                      value={quickKaragirData.rate}
+                      onChange={(e) => setQuickKaragirData({ ...quickKaragirData, rate: parseFloat(e.target.value) || 0 })}
+                      className="w-full bg-amber-50 border border-amber-300 rounded-xl px-3 py-2 font-mono font-bold text-amber-950 text-right"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-600 block mb-1">Wastage Tolerance (%)</label>
+                    <input
+                      type="number"
+                      step={0.1}
+                      value={quickKaragirData.wastage}
+                      onChange={(e) => setQuickKaragirData({ ...quickKaragirData, wastage: parseFloat(e.target.value) || 0 })}
+                      className="w-full bg-rose-50 border border-rose-300 rounded-xl px-3 py-2 font-mono font-bold text-rose-950 text-right"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100">
+                  <button
+                    type="button"
+                    onClick={() => setShowQuickAddKaragir(false)}
+                    className="px-3 py-2 rounded-xl text-slate-600 hover:bg-slate-100 font-bold"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold shadow-xs cursor-pointer"
+                  >
+                    <Save className="w-3.5 h-3.5" />
+                    <span>Save & Select Karagir</span>
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
