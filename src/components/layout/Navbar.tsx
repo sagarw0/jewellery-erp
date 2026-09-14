@@ -266,7 +266,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {/* 8 Luxury Themes Palette Grid */}
                 <div className="space-y-1.5 max-h-[300px] overflow-y-auto pr-1">
                   <div className={`text-[10px] font-bold uppercase tracking-wider mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                    Luxury Themes (8 Styles)
+                    Luxury Themes ({Object.keys(THEMES).length} Styles)
                   </div>
                   {(Object.keys(THEMES) as ThemeId[]).map((tId) => {
                     const t = THEMES[tId];

@@ -29,7 +29,8 @@ export type ThemeId =
   | 'velvet-purple'
   | 'platinum-ice'
   | 'ruby-regal'
-  | 'obsidian-velvet';
+  | 'obsidian-velvet'
+  | 'apple-glass';
 
 export type UiDensity = 'compact' | 'comfortable';
 
