@@ -154,6 +154,12 @@
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
+.theme-apple-glass select option,
+.theme-obsidian-velvet select option {
+  background: #1e293b !important;
+  color: #ffffff !important;
+}
+
 .theme-apple-glass input::placeholder,
 .theme-apple-glass textarea::placeholder {
   color: #94a3b8 !important;
