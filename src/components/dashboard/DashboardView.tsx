@@ -34,7 +34,6 @@ import {
 import { formatCurrency, formatWeight } from '../../utils/calculations';
 import { NewOrderBookingRecord, SundryDebtorRow, StockItem } from '../../types/erp';
 import { useTheme } from '../../context/ThemeContext';
-import { AnalyticsModal } from './AnalyticsModal';
 import { WhatsAppShareModal } from '../common/WhatsAppShareModal';
 
 interface DashboardViewProps {
@@ -59,7 +58,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onOpenBullionRates,
 }) => {
   const { currentTheme, isDark } = useTheme();
-  const [showAnalytics, setShowAnalytics] = useState(false);
   const [activeNoticeTab, setActiveNoticeTab] = useState<'all' | 'receivables' | 'orders' | 'birthdays' | 'bhishi'>('all');
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
 
@@ -282,44 +280,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
-      {/* Top Banner with Executive Analytics Action */}
-      <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-2xl p-4 sm:p-4.5 shadow-xs flex flex-wrap items-center justify-between gap-3 transition-all duration-200`}>
-        <div className="flex items-center space-x-3">
-          <div className={`p-2.5 rounded-xl ${currentTheme.primaryBtn} text-white shadow-xs flex items-center justify-center`}>
-            <Gem className="w-5 h-5 text-inherit" />
-          </div>
-          <div>
-            <div className="flex items-center space-x-2">
-              <h1 className={`text-base font-semibold font-sans tracking-tight ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-                Showroom Operations & Live Financial Center
-              </h1>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium border hidden sm:inline-block ${
-                isDark
-                  ? 'bg-emerald-500/15 text-emerald-300 border-emerald-400/30 backdrop-blur-sm'
-                  : 'bg-emerald-100 text-emerald-900 border-emerald-300'
-              }`}>
-                ● Live Cloud Synced
-              </span>
-            </div>
-            <p className={`text-xs mt-0.5 font-normal ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Real-time bullion weights, till cash, bank positions, category stock breakdown, and daily alerts.
-            </p>
-          </div>
-        </div>
-
-        {/* Top Analytics Action */}
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={() => setShowAnalytics(true)}
-            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-medium text-xs shadow-xs hover:shadow transition-all cursor-pointer"
-          >
-            <BarChart3 className="w-3.5 h-3.5 text-amber-300" />
-            <span>Executive Analytics</span>
-            <span className="text-[10px] bg-white/20 px-1 py-0.2 rounded font-mono">F1</span>
-          </button>
-        </div>
-      </div>
-
       {/* 1. TOP METRICS STRIP (7 Sleek, Elegant, Balanced Metric Cards) */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2 sm:gap-2.5 items-stretch">
         {/* Card 1: Today's Cash */}
@@ -928,9 +888,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
         </div>
       </div>
-
-      {/* Analytics Modal */}
-      <AnalyticsModal isOpen={showAnalytics} onClose={() => setShowAnalytics(false)} />
 
       {/* WhatsApp Share / Dispatch Modal for interactive actions */}
       <WhatsAppShareModal
