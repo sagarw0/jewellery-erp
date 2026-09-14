@@ -11,6 +11,7 @@ import {
   RotateCcw,
   Maximize2,
   Minimize2,
+  Minus,
   ArrowRight,
   ArrowLeft,
   CheckCircle2,
@@ -83,6 +84,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 }) => {
   const { currentTheme, isDark } = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const [inputVal, setInputVal] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [autoSpeakAudio, setAutoSpeakAudio] = useState(false);
@@ -185,6 +187,20 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, isOpen, activeTask]);
+
+  // Global Escape key listener to cleanly close modal
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        stopSpeaking();
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [isOpen, onClose]);
 
   // Focus input on open
   useEffect(() => {
@@ -528,46 +544,111 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
         : currentStep.question)
     : '';
 
+  // Minimized Floating Pill Bar Dock (Preserves active conversation & tasks)
+  if (isMinimized) {
+    return (
+      <div className="fixed bottom-4 right-4 z-50 pointer-events-auto select-none transition-all duration-300 animate-in fade-in slide-in-from-bottom-3">
+        <div
+          className={`flex items-center space-x-3 px-4 py-2.5 rounded-2xl shadow-2xl border backdrop-blur-xl transition-all ${
+            isDark
+              ? 'bg-[#0f172a]/95 border-amber-400/50 text-white shadow-black/80 ring-1 ring-amber-400/20'
+              : 'bg-white/95 border-sky-300 text-slate-800 shadow-xl shadow-sky-950/10'
+          }`}
+        >
+          <button
+            onClick={() => setIsMinimized(false)}
+            className="flex items-center space-x-2.5 cursor-pointer text-left hover:opacity-90 transition-opacity"
+            title="Click to Restore Copilot Window"
+          >
+            <div className="relative p-2 rounded-xl bg-gradient-to-tr from-amber-400 to-amber-600 text-slate-950 font-bold shadow-xs">
+              <Sparkles className="w-4 h-4" />
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900 animate-pulse" />
+            </div>
+            <div>
+              <div className="flex items-center space-x-1.5">
+                <span className="font-bold text-xs tracking-wide">Swarna AI Copilot</span>
+                <span className="text-[9px] px-1.5 py-0.2 rounded-full font-bold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-400/30">
+                  Active
+                </span>
+              </div>
+              <span className="text-[10px] text-slate-400 block font-medium max-w-[180px] truncate">
+                {activeTask ? `Task: ${currentWorkflow?.name}` : 'Click to reopen chat'}
+              </span>
+            </div>
+          </button>
+
+          <div className="flex items-center space-x-1 border-l pl-2.5 border-slate-200 dark:border-white/10">
+            <button
+              onClick={() => setIsMinimized(false)}
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                isDark ? 'hover:bg-white/10 text-slate-300' : 'hover:bg-slate-100 text-slate-600'
+              }`}
+              title="Restore Window (🗖)"
+            >
+              <Maximize2 className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => {
+                stopSpeaking();
+                setIsMinimized(false);
+                onClose();
+              }}
+              className="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-600 text-rose-500 hover:text-white transition-all cursor-pointer font-bold"
+              title="Close Copilot (Esc)"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-end p-2 sm:p-6 pointer-events-none">
-      {/* Backdrop for mobile */}
+    <div className="fixed inset-0 z-50 flex flex-col justify-end items-end p-2 sm:p-4 md:p-5 pointer-events-none overflow-hidden select-none">
+      {/* Universal Backdrop overlay - Clicking outside cleanly closes the Copilot */}
       <div
-        className="fixed inset-0 bg-black/40 backdrop-blur-xs pointer-events-auto sm:hidden"
-        onClick={onClose}
+        className="fixed inset-0 bg-black/35 backdrop-blur-xs pointer-events-auto transition-opacity"
+        onClick={() => {
+          stopSpeaking();
+          onClose();
+        }}
+        title="Click outside to close (Esc)"
       />
 
-      {/* Main Copilot Drawer Container */}
+      {/* Main Copilot Drawer Container - Always anchored within screen viewport */}
       <div
-        className={`pointer-events-auto flex flex-col rounded-3xl shadow-2xl border transition-all duration-300 overflow-hidden ${
+        className={`pointer-events-auto flex flex-col rounded-2xl sm:rounded-3xl shadow-2xl border transition-all duration-300 overflow-hidden relative z-10 ${
           isExpanded
-            ? 'w-full sm:w-[940px] h-[92vh] sm:h-[88vh]'
-            : 'w-full sm:w-[540px] h-[88vh] sm:h-[720px]'
+            ? 'w-full sm:w-[840px] md:w-[940px] lg:w-[1040px] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] h-[min(760px,calc(100dvh-2.5rem))] max-h-[calc(100dvh-1.5rem)]'
+            : 'w-full sm:w-[500px] md:w-[550px] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] h-[min(640px,calc(100dvh-2.5rem))] max-h-[calc(100dvh-1.5rem)]'
         } ${
           isDark
-            ? 'bg-[#0f172a]/95 backdrop-blur-2xl border-white/20 text-white'
-            : 'bg-white/95 backdrop-blur-xl border-sky-200/90 text-slate-800'
+            ? 'bg-[#0f172a]/95 backdrop-blur-2xl border-white/20 text-white shadow-2xl shadow-black/80'
+            : 'bg-white/95 backdrop-blur-xl border-sky-200/90 text-slate-800 shadow-2xl shadow-sky-950/20'
         }`}
+        onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
+        {/* Header - Guaranteed 100% visible on all screen sizes */}
         <div
-          className={`px-4 py-3 border-b flex items-center justify-between shrink-0 ${
+          className={`px-3 sm:px-4 py-2.5 sm:py-3 border-b flex items-center justify-between shrink-0 ${
             isDark
               ? 'bg-[#0b1120] border-white/10'
               : 'bg-gradient-to-r from-blue-700 via-indigo-700 to-indigo-900 text-white border-blue-900'
           }`}
         >
-          <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-xl bg-gradient-to-tr from-amber-400 to-amber-600 text-slate-950 shadow-md">
+          <div className="flex items-center space-x-2.5 sm:space-x-3">
+            <div className="p-1.5 sm:p-2 rounded-xl bg-gradient-to-tr from-amber-400 to-amber-600 text-slate-950 shadow-md shrink-0">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-sm tracking-wide">Swarna AI Copilot</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full font-semibold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                <span className="font-bold text-xs sm:text-sm tracking-wide">Swarna AI Copilot</span>
+                <span className="text-[9px] sm:text-[10px] px-1.5 py-0.2 rounded-full font-semibold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
                   Online
                 </span>
               </div>
-              <span className={`text-[11px] block font-medium ${isDark ? 'text-slate-400' : 'text-blue-100'}`}>
+              <span className={`text-[10px] sm:text-[11px] block font-medium truncate max-w-[160px] sm:max-w-xs ${isDark ? 'text-slate-400' : 'text-blue-100'}`}>
                 {activeTask
                   ? `Task: ${currentWorkflow?.name}`
                   : 'मराठी • हिन्दी • English • Voice Supported'}
@@ -575,22 +656,22 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center space-x-1.5">
+          <div className="flex items-center space-x-1 sm:space-x-1.5">
             {/* Language Selector Dropdown */}
             <div className="relative">
               <select
                 value={selectedLanguage}
                 onChange={(e) => setSelectedLanguage(e.target.value as ChatLanguage)}
-                className={`text-[11px] font-bold px-2 py-1 rounded-lg border outline-hidden cursor-pointer transition-all ${
+                className={`text-[10px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-1 rounded-lg border outline-hidden cursor-pointer transition-all ${
                   isDark
                     ? 'bg-white/10 text-white border-white/20'
                     : 'bg-white/20 text-white border-white/30 hover:bg-white/30'
                 }`}
                 title="Select Language / भाषा निवडा"
               >
-                <option value="auto" className="text-slate-900">🌐 Auto-Detect</option>
-                <option value="mr" className="text-slate-900">मराठी (Marathi)</option>
-                <option value="hi" className="text-slate-900">हिन्दी (Hindi)</option>
+                <option value="auto" className="text-slate-900">🌐 Auto</option>
+                <option value="mr" className="text-slate-900">मराठी</option>
+                <option value="hi" className="text-slate-900">हिन्दी</option>
                 <option value="en" className="text-slate-900">English</option>
               </select>
             </div>
@@ -613,7 +694,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               }`}
               title={autoSpeakAudio ? 'Audio Voice: ON (Click to Mute)' : 'Enable Audio Voice (Text-To-Speech)'}
             >
-              {isSpeaking ? <Volume2 className="w-4 h-4 animate-bounce" /> : autoSpeakAudio ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+              {isSpeaking ? <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-bounce" /> : autoSpeakAudio ? <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
             </button>
 
             {/* Reset / Clear */}
@@ -641,32 +722,41 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               }`}
               title="Reset Chat"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
 
-            {/* Expand Full Width */}
+            {/* Expand / Collapse Full Width */}
             <button
               onClick={() => setIsExpanded(!isExpanded)}
               className={`p-1.5 rounded-lg transition-colors cursor-pointer hidden sm:block ${
                 isDark ? 'hover:bg-white/10 text-slate-400' : 'hover:bg-white/20 text-white/80'
               }`}
-              title={isExpanded ? 'Collapse' : 'Expand Full Width'}
+              title={isExpanded ? 'Standard Width' : 'Expand Full Width'}
             >
               {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </button>
 
-            {/* Close */}
+            {/* Minimize to Floating Bar */}
+            <button
+              onClick={() => setIsMinimized(true)}
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                isDark ? 'hover:bg-white/10 text-slate-400 hover:text-white' : 'hover:bg-white/20 text-white'
+              }`}
+              title="Minimize to Floating Bar"
+            >
+              <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            </button>
+
+            {/* Prominent High-Contrast Close Button */}
             <button
               onClick={() => {
                 stopSpeaking();
                 onClose();
               }}
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                isDark ? 'hover:bg-white/10 text-slate-400 hover:text-white' : 'hover:bg-white/20 text-white'
-              }`}
-              title="Close Copilot"
+              className="p-1.5 rounded-lg bg-white/10 hover:bg-rose-600 text-white hover:text-white transition-all cursor-pointer font-bold shadow-xs flex items-center justify-center"
+              title="Close Copilot (Esc)"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           </div>
         </div>
@@ -1197,9 +1287,16 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
           <div className="flex items-center justify-between text-[10px] text-slate-400 mt-2 px-1">
             <span className="flex items-center space-x-1">
               <Globe className="w-3 h-3 text-amber-500" />
-              <span>मराठी, हिन्दी, English Voice & Text Active</span>
+              <span>मराठी, हिन्दी, English Voice & Text</span>
             </span>
-            <span className="font-mono">Ctrl+Space</span>
+            <div className="flex items-center space-x-2 font-mono">
+              <span className="px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-white/10 text-slate-600 dark:text-slate-300 font-semibold">
+                Esc: Close
+              </span>
+              <span className="px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-white/10 text-slate-600 dark:text-slate-300">
+                Ctrl+Space
+              </span>
+            </div>
           </div>
         </div>
       </div>

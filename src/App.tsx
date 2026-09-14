@@ -149,6 +149,11 @@ export function App() {
     if (!currentUser) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowAiAssistant(false);
+        setShowAnalytics(false);
+        return;
+      }
       if ((e.ctrlKey && e.code === 'Space') || (e.altKey && (e.key === 'a' || e.key === 'A'))) {
         e.preventDefault();
         setShowAiAssistant((prev) => !prev);
