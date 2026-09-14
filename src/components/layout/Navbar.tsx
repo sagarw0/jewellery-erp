@@ -50,7 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onLogout,
   onOpenAnalytics,
 }) => {
-  const { currentTheme, density, setTheme, setDensity } = useTheme();
+  const { currentTheme, isDark, density, setTheme, setDensity } = useTheme();
   const [showHotkeys, setShowHotkeys] = useState(false);
   const [showThemePicker, setShowThemePicker] = useState(false);
 
@@ -69,44 +69,60 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-slate-200/90 text-slate-800 sticky top-0 z-40 shadow-xs no-print transition-colors duration-200">
+    <header className={`sticky top-0 z-40 shadow-xs no-print transition-colors duration-200 ${
+      isDark
+        ? 'bg-[#070b14]/90 backdrop-blur-xl border-b border-white/10 text-white'
+        : 'bg-white/95 backdrop-blur-md border-b border-slate-200/90 text-slate-800'
+    }`}>
       {/* Top Utility Bar & Live Bullion Ticker */}
       <div className={`px-4 py-2 ${currentTheme.headerBg} flex items-center justify-between text-xs`}>
         {/* Brand & Showroom Branch */}
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2.5">
             <div className={`p-2 rounded-xl ${currentTheme.primaryBtn} flex items-center justify-center shadow-xs`}>
-              <Gem className="w-4 h-4 text-white animate-pulse" />
+              <Gem className="w-4 h-4 text-inherit animate-pulse" />
             </div>
             <div>
               <div className="flex items-center space-x-1.5">
-                <span className="font-extrabold tracking-wider text-slate-900 uppercase text-sm font-sans">
+                <span className={`font-extrabold tracking-wider uppercase text-sm font-sans ${isDark ? 'text-white' : 'text-slate-900'}`}>
                   SWARNA ERP
                 </span>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 hidden sm:inline-block">
+                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full border hidden sm:inline-block ${
+                  isDark
+                    ? 'bg-amber-500/20 text-amber-300 border-amber-400/40 backdrop-blur-sm'
+                    : 'bg-amber-100 text-amber-900 border border-amber-300'
+                }`}>
                   v2.6 Luxury
                 </span>
               </div>
-              <span className="text-[10px] text-slate-500 font-medium block">
+              <span className={`text-[10px] font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                 ogaworld.in • Showroom Cloud Edition
               </span>
             </div>
           </div>
 
-          <span className="text-slate-300 hidden md:inline">|</span>
+          <span className={`${isDark ? 'text-white/20' : 'text-slate-300'} hidden md:inline`}>|</span>
 
           {/* Cloud Database Connected Badge */}
-          <div className="hidden lg:flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-[11px] font-semibold">
+          <div className={`hidden lg:flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border ${
+            isDark
+              ? 'bg-emerald-500/15 border-emerald-400/30 text-emerald-300 backdrop-blur-sm'
+              : 'bg-emerald-50 border-emerald-300 text-emerald-800'
+          }`}>
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <Database className="w-3.5 h-3.5 text-emerald-600" />
+            <Database className="w-3.5 h-3.5 text-emerald-500" />
             <span>Supabase Cloud Sync</span>
           </div>
 
           {/* Showroom Branch context */}
           {currentUser && (
-            <div className="hidden xl:flex items-center space-x-2 text-[11px] text-slate-600 bg-white/70 px-2.5 py-0.5 rounded-lg border border-slate-200/60 shadow-2xs">
-              <Building2 className="w-3.5 h-3.5 text-blue-600" />
-              <span className="font-bold text-slate-800 truncate max-w-[200px]" title={currentUser.branch}>
+            <div className={`hidden xl:flex items-center space-x-2 text-[11px] px-2.5 py-0.5 rounded-lg border shadow-2xs ${
+              isDark
+                ? 'bg-white/10 text-slate-200 border-white/15'
+                : 'bg-white/70 text-slate-600 border-slate-200/60'
+            }`}>
+              <Building2 className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
+              <span className={`font-bold truncate max-w-[200px] ${isDark ? 'text-white' : 'text-slate-800'}`} title={currentUser.branch}>
                 {currentUser.branch.split(' - ')[0]}
               </span>
             </div>
@@ -116,26 +132,32 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Live Bullion Ticker & Customization Controls */}
         <div className="flex items-center space-x-3 text-xs">
           {/* Live Bullion Ticker */}
-          <div className="hidden sm:flex items-center space-x-2 bg-white/80 backdrop-blur-xs border border-slate-200/80 px-2.5 py-1 rounded-xl shadow-2xs">
-            <div className="flex items-center space-x-1 text-slate-500 pr-1 border-r border-slate-200">
-              <TrendingUp className="w-3.5 h-3.5 text-amber-600 animate-bounce" />
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">Live Rates:</span>
+          <div className={`hidden sm:flex items-center space-x-2 px-2.5 py-1 rounded-xl shadow-2xs border ${
+            isDark
+              ? 'bg-white/10 backdrop-blur-md border-white/15 text-white'
+              : 'bg-white/80 backdrop-blur-xs border-slate-200/80 text-slate-800'
+          }`}>
+            <div className={`flex items-center space-x-1 pr-1 border-r ${isDark ? 'border-white/15 text-amber-400' : 'border-slate-200 text-slate-500'}`}>
+              <TrendingUp className="w-3.5 h-3.5 text-amber-500 animate-bounce" />
+              <span className={`text-[10px] font-bold uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                Live Rates:
+              </span>
             </div>
 
             <div className="flex items-center space-x-2 font-mono text-[11px]">
               <div className="flex items-center space-x-1">
-                <span className="text-amber-700 font-bold">24K:</span>
-                <span className="text-slate-900 font-extrabold">₹{gold24kRate.toLocaleString('en-IN')}</span>
+                <span className={`font-bold ${isDark ? 'text-amber-300' : 'text-amber-700'}`}>24K:</span>
+                <span className={`font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{gold24kRate.toLocaleString('en-IN')}</span>
               </div>
-              <span className="text-slate-300">•</span>
+              <span className={isDark ? 'text-white/20' : 'text-slate-300'}>•</span>
               <div className="flex items-center space-x-1">
-                <span className="text-amber-700 font-bold">22K 916:</span>
-                <span className="text-slate-900 font-extrabold">₹{gold22kRate.toLocaleString('en-IN')}</span>
+                <span className={`font-bold ${isDark ? 'text-amber-300' : 'text-amber-700'}`}>22K 916:</span>
+                <span className={`font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{gold22kRate.toLocaleString('en-IN')}</span>
               </div>
-              <span className="text-slate-300">•</span>
+              <span className={isDark ? 'text-white/20' : 'text-slate-300'}>•</span>
               <div className="flex items-center space-x-1">
-                <span className="text-slate-600 font-bold">Silver:</span>
-                <span className="text-slate-900 font-extrabold">₹{silverRate.toLocaleString('en-IN')}/g</span>
+                <span className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Silver:</span>
+                <span className={`font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{silverRate.toLocaleString('en-IN')}/g</span>
               </div>
             </div>
           </div>
@@ -155,50 +177,58 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="relative">
             <button
               onClick={() => setShowThemePicker(!showThemePicker)}
-              className="px-2.5 py-1.5 text-slate-700 hover:text-blue-600 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/80 shadow-2xs flex items-center space-x-1.5 cursor-pointer transition-all"
+              className={`px-2.5 py-1.5 rounded-xl border shadow-2xs flex items-center space-x-1.5 cursor-pointer transition-all ${
+                isDark
+                  ? 'bg-white/10 text-white hover:bg-white/20 border-white/15'
+                  : 'bg-white text-slate-700 hover:bg-slate-50 border-slate-200/80'
+              }`}
               title="Theme, Colors & Density Customizer"
             >
-              <Palette className="w-3.5 h-3.5 text-blue-600" />
+              <Palette className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
               <span className="hidden lg:inline text-[11px] font-bold">Theme</span>
               <div
                 className="w-3 h-3 rounded-full border border-white shadow-2xs"
                 style={{ backgroundColor: currentTheme.swatchPrimary }}
               />
-              <ChevronDown className="w-3 h-3 text-slate-400" />
+              <ChevronDown className={`w-3 h-3 ${isDark ? 'text-slate-300' : 'text-slate-400'}`} />
             </button>
 
             {/* Expanded Theme & UI Density Customizer Popup */}
             {showThemePicker && (
-              <div className="absolute right-0 top-10 bg-white border border-slate-200/90 rounded-2xl shadow-2xl p-4 w-80 z-50 text-xs animate-in fade-in zoom-in-95 duration-150">
-                <div className="flex justify-between items-center pb-2.5 mb-3 border-b border-slate-100">
+              <div className={`absolute right-0 top-10 border rounded-2xl shadow-2xl p-4 w-80 z-50 text-xs animate-in fade-in zoom-in-95 duration-150 ${
+                isDark
+                  ? 'bg-[#0f172a]/95 backdrop-blur-2xl border-white/20 text-white'
+                  : 'bg-white border-slate-200/90 text-slate-800'
+              }`}>
+                <div className={`flex justify-between items-center pb-2.5 mb-3 border-b ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
                   <div className="flex items-center space-x-2">
                     <Sparkles className="w-4 h-4 text-amber-500" />
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-xs">Theme & Display Settings</h4>
-                      <p className="text-[10px] text-slate-400">Personalize ERP appearance & layout</p>
+                      <h4 className={`font-extrabold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>Theme & Display Settings</h4>
+                      <p className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-400'}`}>Personalize ERP appearance & layout</p>
                     </div>
                   </div>
                   <button
                     onClick={() => setShowThemePicker(false)}
-                    className="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors"
+                    className={`p-1 rounded-lg transition-colors ${isDark ? 'text-slate-400 hover:text-white hover:bg-white/10' : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100'}`}
                   >
                     ✕
                   </button>
                 </div>
 
                 {/* UI Density Switcher */}
-                <div className="mb-3.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
-                  <div className="text-[11px] font-bold text-slate-700 mb-1.5 flex items-center justify-between">
+                <div className={`mb-3.5 p-2.5 rounded-xl border ${isDark ? 'bg-white/[0.06] border-white/10' : 'bg-slate-50 border-slate-200/70'}`}>
+                  <div className={`text-[11px] font-bold mb-1.5 flex items-center justify-between ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
                     <span>UI Spacing & Density</span>
-                    <span className="text-[10px] font-mono text-blue-700 font-semibold uppercase">{density}</span>
+                    <span className={`text-[10px] font-mono font-semibold uppercase ${isDark ? 'text-amber-300' : 'text-blue-700'}`}>{density}</span>
                   </div>
                   <div className="grid grid-cols-2 gap-1.5">
                     <button
                       onClick={() => setDensity('compact')}
                       className={`px-2 py-1.5 rounded-lg flex items-center justify-center space-x-1.5 text-[11px] font-bold transition-all cursor-pointer ${
                         density === 'compact'
-                          ? 'bg-blue-600 text-white shadow-xs'
-                          : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
+                          ? currentTheme.activePill
+                          : isDark ? 'bg-white/10 text-slate-200 hover:bg-white/15' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
                       }`}
                     >
                       <Minimize2 className="w-3 h-3" />
@@ -208,8 +238,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                       onClick={() => setDensity('comfortable')}
                       className={`px-2 py-1.5 rounded-lg flex items-center justify-center space-x-1.5 text-[11px] font-bold transition-all cursor-pointer ${
                         density === 'comfortable'
-                          ? 'bg-blue-600 text-white shadow-xs'
-                          : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
+                          ? currentTheme.activePill
+                          : isDark ? 'bg-white/10 text-slate-200 hover:bg-white/15' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
                       }`}
                     >
                       <Maximize2 className="w-3 h-3" />
@@ -220,7 +250,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 {/* 8 Luxury Themes Palette Grid */}
                 <div className="space-y-1.5 max-h-[300px] overflow-y-auto pr-1">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                  <div className={`text-[10px] font-bold uppercase tracking-wider mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     Luxury Themes (8 Styles)
                   </div>
                   {(Object.keys(THEMES) as ThemeId[]).map((tId) => {
@@ -235,8 +265,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                         }}
                         className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition-all cursor-pointer border ${
                           isSelected
-                            ? 'bg-blue-50/80 text-blue-950 font-bold border-blue-300 shadow-xs'
-                            : 'hover:bg-slate-50 text-slate-700 border-transparent hover:border-slate-200'
+                            ? isDark ? 'bg-white/20 text-white font-extrabold border-amber-400/50 shadow-md' : 'bg-blue-50/80 text-blue-950 font-bold border-blue-300 shadow-xs'
+                            : isDark ? 'hover:bg-white/10 text-slate-200 border-transparent' : 'hover:bg-slate-50 text-slate-700 border-transparent hover:border-slate-200'
                         }`}
                       >
                         <div className="flex items-center space-x-2.5">
@@ -253,10 +283,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                           </div>
                           <div>
                             <div className="text-[11px] font-bold leading-tight">{t.name}</div>
-                            <div className="text-[9px] text-slate-400 leading-tight">{t.subtitle}</div>
+                            <div className={`text-[9px] leading-tight ${isDark ? 'text-slate-400' : 'text-slate-400'}`}>{t.subtitle}</div>
                           </div>
                         </div>
-                        {isSelected && <Check className="w-4 h-4 text-blue-600 shrink-0" />}
+                        {isSelected && <Check className={`w-4 h-4 shrink-0 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />}
                       </button>
                     );
                   })}
@@ -267,17 +297,17 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* User Profile & Logout */}
           {currentUser && (
-            <div className="flex items-center space-x-2 pl-2 border-l border-slate-200">
+            <div className={`flex items-center space-x-2 pl-2 border-l ${isDark ? 'border-white/15' : 'border-slate-200'}`}>
               <div className="text-right hidden sm:block">
-                <div className="font-bold text-slate-900 text-[11px] leading-tight flex items-center justify-end space-x-1">
-                  <UserCheck className="w-3 h-3 text-emerald-600 inline" />
+                <div className={`font-bold text-[11px] leading-tight flex items-center justify-end space-x-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  <UserCheck className="w-3 h-3 text-emerald-500 inline" />
                   <span>{currentUser.name}</span>
                 </div>
-                <div className="text-[10px] text-blue-700 font-mono font-semibold">{currentUser.code} ({currentUser.role})</div>
+                <div className={`text-[10px] font-mono font-semibold ${isDark ? 'text-amber-300' : 'text-blue-700'}`}>{currentUser.code} ({currentUser.role})</div>
               </div>
               <button
                 onClick={onLogout}
-                className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
+                className={`p-1.5 rounded-xl transition-colors cursor-pointer ${isDark ? 'text-slate-400 hover:text-rose-400 hover:bg-white/10' : 'text-slate-500 hover:text-rose-600 hover:bg-rose-50'}`}
                 title="Sign Out"
               >
                 <LogOut className="w-4 h-4" />
@@ -288,7 +318,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Hotkey Helper Button */}
           <button
             onClick={() => setShowHotkeys(!showHotkeys)}
-            className="p-1.5 text-slate-500 hover:text-blue-600 rounded-xl hover:bg-slate-100 border border-slate-200 transition-colors"
+            className={`p-1.5 rounded-xl border transition-colors ${isDark ? 'text-slate-300 hover:text-white hover:bg-white/10 border-white/15' : 'text-slate-500 hover:text-blue-600 hover:bg-slate-100 border-slate-200'}`}
             title="ERP Keyboard Shortcuts (F1-F12)"
           >
             <Keyboard className="w-4 h-4" />
@@ -297,7 +327,11 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Main Navigation Bar (Horizontal Top Menus) */}
-      <nav className="px-4 py-1.5 flex items-center justify-between overflow-x-auto scrollbar-none bg-white border-t border-slate-100">
+      <nav className={`px-4 py-1.5 flex items-center justify-between overflow-x-auto scrollbar-none border-t ${
+        isDark
+          ? 'bg-[#070b14]/95 border-white/10'
+          : 'bg-white border-slate-100'
+      }`}>
         <div className="flex items-center space-x-1 min-w-max">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -309,14 +343,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-150 cursor-pointer ${
                   isActive
                     ? `${currentTheme.activePill} shadow-xs`
+                    : isDark
+                    ? 'text-slate-300 hover:text-white hover:bg-white/10'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-inherit' : 'text-slate-400'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-inherit' : isDark ? 'text-slate-400' : 'text-slate-400'}`} />
                 <span>{item.label}</span>
                 {item.hotkey && (
                   <span className={`text-[9px] px-1 py-0.2 rounded font-mono font-normal ml-0.5 ${
-                    isActive ? 'bg-black/20 text-white' : 'bg-slate-100 text-slate-400'
+                    isActive ? 'bg-black/20 text-white' : isDark ? 'bg-white/10 text-slate-300' : 'bg-slate-100 text-slate-400'
                   }`}>
                     {item.hotkey}
                   </span>
@@ -329,31 +365,34 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Hotkeys Floating Cheat Sheet */}
       {showHotkeys && (
-        <div className="absolute right-4 top-16 bg-white border border-slate-200/90 rounded-2xl shadow-2xl p-4 w-76 z-50 text-xs animate-in fade-in duration-150 text-slate-800">
-          <div className="flex justify-between items-center pb-2 mb-2 border-b border-slate-100">
-            <span className="font-extrabold text-slate-900 flex items-center space-x-1.5">
-              <Keyboard className="w-4 h-4 text-blue-600" />
+        <div className={`absolute right-4 top-16 border rounded-2xl shadow-2xl p-4 w-76 z-50 text-xs animate-in fade-in duration-150 ${
+          isDark
+            ? 'bg-[#0f172a]/95 backdrop-blur-2xl border-white/20 text-white'
+            : 'bg-white border-slate-200/90 text-slate-800'
+        }`}>
+          <div className={`flex justify-between items-center pb-2 mb-2 border-b ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
+            <span className={`font-extrabold flex items-center space-x-1.5 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <Keyboard className={`w-4 h-4 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
               <span>Keyboard Hotkeys (F1–F12)</span>
             </span>
-            <button onClick={() => setShowHotkeys(false)} className="text-slate-400 hover:text-slate-700">✕</button>
+            <button onClick={() => setShowHotkeys(false)} className={`p-1 rounded ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-400 hover:text-slate-700'}`}>✕</button>
           </div>
-          <div className="space-y-1.5 text-slate-600 font-mono text-[11px]">
-            <div className="flex justify-between items-center py-0.5 border-b border-slate-50"><span className="font-bold text-blue-700 bg-blue-50 px-1.5 rounded">F1</span><span className="text-slate-600 font-sans">Executive Analytics</span></div>
-            <div className="flex justify-between items-center py-0.5 border-b border-slate-50"><span className="font-bold text-blue-700 bg-blue-50 px-1.5 rounded">F2</span><span className="text-slate-600 font-sans">Item Creation Master</span></div>
-            <div className="flex justify-between items-center py-0.5 border-b border-slate-50"><span className="font-bold text-blue-700 bg-blue-50 px-1.5 rounded">F3</span><span className="text-slate-600 font-sans">Barcode Studio</span></div>
-            <div className="flex justify-between items-center py-0.5 border-b border-slate-50"><span className="font-bold text-blue-700 bg-blue-50 px-1.5 rounded">F4</span><span className="text-slate-600 font-sans">Sales Invoice / POS</span></div>
-            <div className="flex justify-between items-center py-0.5 border-b border-slate-50"><span className="font-bold text-blue-700 bg-blue-50 px-1.5 rounded">F5</span><span className="text-slate-600 font-sans">Purchase Invoice</span></div>
-            <div className="flex justify-between items-center py-0.5 border-b border-slate-50"><span className="font-bold text-blue-700 bg-blue-50 px-1.5 rounded">F6</span><span className="text-slate-600 font-sans">Refinery In</span></div>
-            <div className="flex justify-between items-center py-0.5 border-b border-slate-50"><span className="font-bold text-blue-700 bg-blue-50 px-1.5 rounded">F7</span><span className="text-slate-600 font-sans">New Order Booking</span></div>
-            <div className="flex justify-between items-center py-0.5 border-b border-slate-50"><span className="font-bold text-blue-700 bg-blue-50 px-1.5 rounded">F8</span><span className="text-slate-600 font-sans">Account Master</span></div>
-            <div className="flex justify-between items-center py-0.5 border-b border-slate-50"><span className="font-bold text-blue-700 bg-blue-50 px-1.5 rounded">F9</span><span className="text-slate-600 font-sans">Stock Report</span></div>
-            <div className="flex justify-between items-center py-0.5 border-b border-slate-50"><span className="font-bold text-blue-700 bg-blue-50 px-1.5 rounded">F10</span><span className="text-slate-600 font-sans">Day Book</span></div>
-            <div className="flex justify-between items-center py-0.5 border-b border-slate-50"><span className="font-bold text-blue-700 bg-blue-50 px-1.5 rounded">F11</span><span className="text-slate-600 font-sans">Debtors Ledger</span></div>
-            <div className="flex justify-between items-center py-0.5"><span className="font-bold text-blue-700 bg-blue-50 px-1.5 rounded">F12</span><span className="text-slate-600 font-sans">USB Backup Manager</span></div>
+          <div className={`space-y-1.5 font-mono text-[11px] ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>
+            <div className={`flex justify-between items-center py-0.5 border-b ${isDark ? 'border-white/10' : 'border-slate-50'}`}><span className={`font-bold px-1.5 rounded ${isDark ? 'bg-amber-500/20 text-amber-300' : 'text-blue-700 bg-blue-50'}`}>F1</span><span className={`font-sans ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>Executive Analytics</span></div>
+            <div className={`flex justify-between items-center py-0.5 border-b ${isDark ? 'border-white/10' : 'border-slate-50'}`}><span className={`font-bold px-1.5 rounded ${isDark ? 'bg-amber-500/20 text-amber-300' : 'text-blue-700 bg-blue-50'}`}>F2</span><span className={`font-sans ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>Item Creation Master</span></div>
+            <div className={`flex justify-between items-center py-0.5 border-b ${isDark ? 'border-white/10' : 'border-slate-50'}`}><span className={`font-bold px-1.5 rounded ${isDark ? 'bg-amber-500/20 text-amber-300' : 'text-blue-700 bg-blue-50'}`}>F3</span><span className={`font-sans ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>Barcode Studio</span></div>
+            <div className={`flex justify-between items-center py-0.5 border-b ${isDark ? 'border-white/10' : 'border-slate-50'}`}><span className={`font-bold px-1.5 rounded ${isDark ? 'bg-amber-500/20 text-amber-300' : 'text-blue-700 bg-blue-50'}`}>F4</span><span className={`font-sans ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>Sales Invoice / POS</span></div>
+            <div className={`flex justify-between items-center py-0.5 border-b ${isDark ? 'border-white/10' : 'border-slate-50'}`}><span className={`font-bold px-1.5 rounded ${isDark ? 'bg-amber-500/20 text-amber-300' : 'text-blue-700 bg-blue-50'}`}>F5</span><span className={`font-sans ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>Purchase Invoice</span></div>
+            <div className={`flex justify-between items-center py-0.5 border-b ${isDark ? 'border-white/10' : 'border-slate-50'}`}><span className={`font-bold px-1.5 rounded ${isDark ? 'bg-amber-500/20 text-amber-300' : 'text-blue-700 bg-blue-50'}`}>F6</span><span className={`font-sans ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>Refinery In</span></div>
+            <div className={`flex justify-between items-center py-0.5 border-b ${isDark ? 'border-white/10' : 'border-slate-50'}`}><span className={`font-bold px-1.5 rounded ${isDark ? 'bg-amber-500/20 text-amber-300' : 'text-blue-700 bg-blue-50'}`}>F7</span><span className={`font-sans ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>New Order Booking</span></div>
+            <div className={`flex justify-between items-center py-0.5 border-b ${isDark ? 'border-white/10' : 'border-slate-50'}`}><span className={`font-bold px-1.5 rounded ${isDark ? 'bg-amber-500/20 text-amber-300' : 'text-blue-700 bg-blue-50'}`}>F8</span><span className={`font-sans ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>Account Master</span></div>
+            <div className={`flex justify-between items-center py-0.5 border-b ${isDark ? 'border-white/10' : 'border-slate-50'}`}><span className={`font-bold px-1.5 rounded ${isDark ? 'bg-amber-500/20 text-amber-300' : 'text-blue-700 bg-blue-50'}`}>F9</span><span className={`font-sans ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>Stock Report</span></div>
+            <div className={`flex justify-between items-center py-0.5 border-b ${isDark ? 'border-white/10' : 'border-slate-50'}`}><span className={`font-bold px-1.5 rounded ${isDark ? 'bg-amber-500/20 text-amber-300' : 'text-blue-700 bg-blue-50'}`}>F10</span><span className={`font-sans ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>Day Book</span></div>
+            <div className={`flex justify-between items-center py-0.5 border-b ${isDark ? 'border-white/10' : 'border-slate-50'}`}><span className={`font-bold px-1.5 rounded ${isDark ? 'bg-amber-500/20 text-amber-300' : 'text-blue-700 bg-blue-50'}`}>F11</span><span className={`font-sans ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>Debtors Ledger</span></div>
+            <div className="flex justify-between items-center py-0.5"><span className={`font-bold px-1.5 rounded ${isDark ? 'bg-amber-500/20 text-amber-300' : 'text-blue-700 bg-blue-50'}`}>F12</span><span className={`font-sans ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>USB Backup Manager</span></div>
           </div>
         </div>
       )}
     </header>
   );
 };
-

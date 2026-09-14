@@ -37,6 +37,7 @@ export interface ThemeConfig {
   id: ThemeId;
   name: string;
   subtitle: string;
+  isDark: boolean;
   swatchPrimary: string;
   swatchSecondary: string;
   bgGradient: string;
@@ -50,9 +51,16 @@ export interface ThemeConfig {
   headerBg: string;
   appBg: string;
   textPrimary: string;
+  textSecondary: string;
+  textMuted: string;
   subnavBg: string;
   activePill: string;
   inputBorder: string;
+  inputBg: string;
+  tableHeaderBg: string;
+  tableRowHover: string;
+  glassCard: string;
+  glassBorder: string;
 }
 
 // ----------------------------------------------------
