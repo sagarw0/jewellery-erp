@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   PurchaseRecord,
   PurchaseHeader,
@@ -7,8 +7,11 @@ import {
   PurchaseTab,
   ColumnSetting,
   AccountMaster,
-  StockItem
+  StockItem,
+  Vendor,
+  VendorType,
 } from '../../types/erp';
+import { INITIAL_VENDORS } from '../../utils/mockData';
 import {
   Save,
   Printer,
@@ -46,7 +49,9 @@ import {
   Tag,
   Copy,
   LayoutGrid,
-  Columns
+  Columns,
+  X,
+  Sparkles
 } from 'lucide-react';
 import {
   calculateNetWeight,
@@ -69,6 +74,8 @@ interface PurchaseInvoiceViewProps {
   goldRate: number;
   accounts?: AccountMaster[];
   stockItems?: StockItem[];
+  vendors?: Vendor[];
+  onSaveVendor?: (vendor: Vendor) => void;
   onNavigateToBarcode?: () => void;
 }
 
@@ -215,6 +222,28 @@ interface ConsignmentItem {
   selected: boolean;
 }
 
+const vendorToSupplierProfile = (v: Vendor): SupplierProfile => ({
+  code: v.vendor_code,
+  name: v.vendor_name,
+  contact_person: v.contact_person || '',
+  phone: v.phone,
+  email: v.email || '',
+  gstin: v.gstin || '',
+  pan: v.pan_no || '',
+  address: v.address || '',
+  city: v.city,
+  state: v.state,
+  pincode: v.pincode || '',
+  credit_limit: v.credit_limit || 0,
+  credit_days: v.credit_days || 0,
+  opening_balance: v.opening_balance_cash || 0,
+  balance_type: v.balance_type || 'Cr',
+  bank_name: v.bank_name || '',
+  account_no: v.bank_account_no || '',
+  ifsc: v.ifsc_code || '',
+  branch: v.branch_name || '',
+});
+
 export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
   purchases,
   onSavePurchase,
@@ -223,8 +252,16 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
   goldRate,
   accounts = [],
   stockItems = [],
+  vendors = [],
+  onSaveVendor,
   onNavigateToBarcode,
 }) => {
+  // Dynamic Vendors from Master
+  const availableVendors = useMemo(() => {
+    if (vendors && vendors.length > 0) return vendors;
+    return INITIAL_VENDORS;
+  }, [vendors]);
+
   // View layout mode: 'tabbed' (tab by tab) vs 'single_screen' (all 7 sections on 1 screen)
   const [viewMode, setViewMode] = useState<'tabbed' | 'single_screen'>('tabbed');
   const [activeTab, setActiveTab] = useState<PurchaseTab>('purchase_bill');
@@ -236,23 +273,52 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
   const [showHelp, setShowHelp] = useState(false);
   const [showPrint, setShowPrint] = useState(false);
   const [showWhatsApp, setShowWhatsApp] = useState(false);
+  const [showQuickVendorModal, setShowQuickVendorModal] = useState(false);
+
+  // Quick Vendor Form State
+  const [quickVendor, setQuickVendor] = useState({
+    name: '',
+    code: '',
+    type: 'Bullion Dealer' as VendorType,
+    phone: '',
+    city: 'Mumbai',
+    state: 'Maharashtra (27)',
+    gstin: '',
+    opening_balance_cash: 0,
+    balance_type: 'Cr' as 'Cr' | 'Dr',
+  });
 
   // Active Supplier Profile State
-  const [currentSupplier, setCurrentSupplier] = useState<SupplierProfile>(PRESET_SUPPLIERS[0]);
+  const [currentSupplier, setCurrentSupplier] = useState<SupplierProfile>(() => {
+    return vendorToSupplierProfile(availableVendors[0]);
+  });
+
+  // Keep supplier synced if availableVendors changes
+  useEffect(() => {
+    if (availableVendors.length > 0 && !availableVendors.find((v) => v.vendor_code === currentSupplier.code)) {
+      const first = availableVendors[0];
+      setCurrentSupplier(vendorToSupplierProfile(first));
+      setHeader((prev) => ({
+        ...prev,
+        supplier_name: first.vendor_name,
+        state: first.state,
+      }));
+    }
+  }, [availableVendors]);
 
   // Header State (Spec #34)
-  const [header, setHeader] = useState<PurchaseHeader>({
-    supplier_name: PRESET_SUPPLIERS[0].name,
+  const [header, setHeader] = useState<PurchaseHeader>(() => ({
+    supplier_name: availableVendors[0]?.vendor_name || 'MMTC-PAMP India Bullion Ltd',
     remark: 'Lot of 22K 916 CNC Bangles + Jhumkas',
     payment_mode: 'Credit',
     invoice_prefix: 'PUR',
     manual_no: 'CH-892',
     invoice_date: new Date().toISOString().split('T')[0],
     invoice_no: 'PUR-2026-104',
-    state: PRESET_SUPPLIERS[0].state,
+    state: availableVendors[0]?.state || 'Maharashtra (27)',
     gst_not_required: false,
     weightwise: true,
-  });
+  }));
 
   // Items State (Spec #35)
   const [items, setItems] = useState<PurchaseItem[]>([
@@ -784,23 +850,46 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                 </div>
               </div>
 
-              {/* Quick Supplier Selector */}
+              {/* Quick Supplier Selector with + Add New Vendor */}
               <div className="flex items-center space-x-2">
-                <span className="text-xs text-slate-500 font-medium">Select Supplier:</span>
+                <span className="text-xs text-slate-500 font-medium hidden sm:inline">Select Vendor:</span>
                 <select
                   value={currentSupplier.code}
                   onChange={(e) => {
-                    const found = PRESET_SUPPLIERS.find((s) => s.code === e.target.value);
-                    if (found) handleSelectSupplier(found);
+                    const found = availableVendors.find((s) => s.vendor_code === e.target.value);
+                    if (found) handleSelectSupplier(vendorToSupplierProfile(found));
                   }}
-                  className="px-3 py-1.5 bg-sky-50/70 border border-sky-200 rounded-xl text-xs font-medium text-blue-900 focus:ring-2 focus:ring-blue-500"
+                  className="px-3 py-1.5 bg-sky-50/70 border border-sky-200 rounded-xl text-xs font-semibold text-blue-900 focus:ring-2 focus:ring-blue-500 cursor-pointer"
                 >
-                  {PRESET_SUPPLIERS.map((s) => (
-                    <option key={s.code} value={s.code}>
-                      {s.name} ({s.city})
+                  {availableVendors.map((s) => (
+                    <option key={s.id} value={s.vendor_code}>
+                      {s.vendor_name} ({s.vendor_code}) - {s.city || s.vendor_type}
                     </option>
                   ))}
                 </select>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuickVendor({
+                      name: '',
+                      code: `SUP-${availableVendors.length + 101}`,
+                      type: 'Bullion Dealer',
+                      phone: '',
+                      city: 'Mumbai',
+                      state: 'Maharashtra (27)',
+                      gstin: '',
+                      opening_balance_cash: 0,
+                      balance_type: 'Cr',
+                    });
+                    setShowQuickVendorModal(true);
+                  }}
+                  className="px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-2xs flex items-center space-x-1 cursor-pointer"
+                  title="Add New Vendor to Master"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>+ New Vendor</span>
+                </button>
               </div>
             </div>
 
@@ -986,16 +1075,48 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                    Supplier Name <span className="text-rose-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={header.supplier_name}
-                    onChange={(e) => setHeader({ ...header, supplier_name: e.target.value })}
-                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
-                  />
+                <div className="sm:col-span-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-[11px] font-bold text-slate-600">
+                      Supplier / Vendor <span className="text-rose-500">*</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setQuickVendor({
+                          name: '',
+                          code: `SUP-${availableVendors.length + 101}`,
+                          type: 'Bullion Dealer',
+                          phone: '',
+                          city: 'Mumbai',
+                          state: 'Maharashtra (27)',
+                          gstin: '',
+                          opening_balance_cash: 0,
+                          balance_type: 'Cr',
+                        });
+                        setShowQuickVendorModal(true);
+                      }}
+                      className="text-[10px] text-blue-600 hover:text-blue-800 font-bold flex items-center space-x-0.5 cursor-pointer"
+                      title="Add New Vendor"
+                    >
+                      <Plus className="w-3 h-3" />
+                      <span>New Vendor</span>
+                    </button>
+                  </div>
+                  <select
+                    value={currentSupplier.code}
+                    onChange={(e) => {
+                      const found = availableVendors.find((s) => s.vendor_code === e.target.value);
+                      if (found) handleSelectSupplier(vendorToSupplierProfile(found));
+                    }}
+                    className="w-full px-2.5 py-1.5 bg-sky-50/60 border border-sky-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 text-xs cursor-pointer shadow-2xs"
+                  >
+                    {availableVendors.map((s) => (
+                      <option key={s.id} value={s.vendor_code}>
+                        {s.vendor_name} ({s.vendor_code}) - {s.city || s.vendor_type}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
@@ -1980,6 +2101,194 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         phone={currentSupplier.phone}
         defaultMessage={`Purchase Invoice ${header.invoice_no} acknowledged. Total: ${formatCurrency(payment.bill_amount)}, Balance: ${formatCurrency(payment.net_balance)}.`}
       />
+
+      {/* Quick Add Vendor Modal */}
+      {showQuickVendorModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/50 backdrop-blur-xs">
+          <div className="w-full max-w-lg rounded-3xl shadow-2xl border bg-white border-slate-200 text-slate-900 overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="px-5 py-4 border-b bg-gradient-to-r from-blue-700 to-indigo-800 text-white flex items-center justify-between shrink-0">
+              <div className="flex items-center space-x-2.5">
+                <div className="p-2 rounded-xl bg-white/20 text-white">
+                  <Building2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-sm font-bold">Add New Vendor to Master</h2>
+                  <p className="text-[11px] text-blue-100">Once saved, vendor appears in purchase dropdown automatically</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowQuickVendorModal(false)}
+                className="p-1 rounded-lg hover:bg-white/20 text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!quickVendor.name.trim()) {
+                  alert('Please enter Vendor / Supplier Name');
+                  return;
+                }
+                const newVendor: Vendor = {
+                  id: `ven-${Date.now()}`,
+                  vendor_code: quickVendor.code.trim().toUpperCase() || `SUP-${Date.now().toString().slice(-3)}`,
+                  vendor_name: quickVendor.name.trim(),
+                  vendor_type: quickVendor.type,
+                  phone: quickVendor.phone.trim() || '+91 98200 11223',
+                  city: quickVendor.city.trim() || 'Mumbai',
+                  state: quickVendor.state || 'Maharashtra (27)',
+                  gstin: quickVendor.gstin.trim().toUpperCase() || '',
+                  opening_balance_cash: Number(quickVendor.opening_balance_cash) || 0,
+                  balance_type: quickVendor.balance_type,
+                  status: 'Active',
+                  created_at: new Date().toISOString().slice(0, 10),
+                };
+
+                if (onSaveVendor) {
+                  onSaveVendor(newVendor);
+                }
+                handleSelectSupplier(vendorToSupplierProfile(newVendor));
+                setShowQuickVendorModal(false);
+                alert(`✅ Vendor "${newVendor.vendor_name}" (${newVendor.vendor_code}) added and selected for this purchase!`);
+              }}
+              className="p-5 space-y-3.5 text-xs overflow-y-auto font-sans"
+            >
+              <div className="grid grid-cols-2 gap-3">
+                <div className="col-span-2">
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                    Vendor / Supplier Company Name <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={quickVendor.name}
+                    onChange={(e) => setQuickVendor({ ...quickVendor, name: e.target.value })}
+                    placeholder="e.g. Omkar Ornaments Rajkot"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                    Vendor Code <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={quickVendor.code}
+                    onChange={(e) => setQuickVendor({ ...quickVendor, code: e.target.value.toUpperCase() })}
+                    placeholder="e.g. SUP-108"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Category / Type</label>
+                  <select
+                    value={quickVendor.type}
+                    onChange={(e) => setQuickVendor({ ...quickVendor, type: e.target.value as VendorType })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-semibold text-slate-900 cursor-pointer"
+                  >
+                    <option value="Bullion Dealer">Bullion Dealer</option>
+                    <option value="Manufacturer / Karigar">Manufacturer / Karigar</option>
+                    <option value="Casting Unit">Casting Unit</option>
+                    <option value="Diamond Merchant">Diamond Merchant</option>
+                    <option value="Silver Artisan">Silver Artisan</option>
+                    <option value="Wholesaler">Wholesaler</option>
+                    <option value="Packaging & Others">Packaging & Others</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Contact Phone</label>
+                  <input
+                    type="text"
+                    value={quickVendor.phone}
+                    onChange={(e) => setQuickVendor({ ...quickVendor, phone: e.target.value })}
+                    placeholder="e.g. 9825012345"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-900"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">City</label>
+                  <input
+                    type="text"
+                    value={quickVendor.city}
+                    onChange={(e) => setQuickVendor({ ...quickVendor, city: e.target.value })}
+                    placeholder="e.g. Rajkot / Mumbai / Surat"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">GSTIN Number</label>
+                  <input
+                    type="text"
+                    maxLength={15}
+                    value={quickVendor.gstin}
+                    onChange={(e) => setQuickVendor({ ...quickVendor, gstin: e.target.value.toUpperCase() })}
+                    placeholder="e.g. 24AABCO1234K1Z2"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono uppercase text-slate-900 font-bold"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">State</label>
+                  <input
+                    type="text"
+                    value={quickVendor.state}
+                    onChange={(e) => setQuickVendor({ ...quickVendor, state: e.target.value })}
+                    placeholder="e.g. Gujarat (24) / Maharashtra (27)"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Opening Cash Balance (₹)</label>
+                  <input
+                    type="number"
+                    value={quickVendor.opening_balance_cash}
+                    onChange={(e) => setQuickVendor({ ...quickVendor, opening_balance_cash: parseFloat(e.target.value) || 0 })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono font-bold text-slate-900"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Balance Type</label>
+                  <select
+                    value={quickVendor.balance_type}
+                    onChange={(e) => setQuickVendor({ ...quickVendor, balance_type: e.target.value as 'Cr' | 'Dr' })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-semibold text-slate-900 cursor-pointer"
+                  >
+                    <option value="Cr">Cr - Payable (आपण देणे)</option>
+                    <option value="Dr">Dr - Advance (आगाऊ दिली)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t flex items-center justify-end space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setShowQuickVendorModal(false)}
+                  className="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-xs font-semibold cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white text-xs font-bold shadow-md cursor-pointer flex items-center space-x-1.5"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Save & Select Vendor</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

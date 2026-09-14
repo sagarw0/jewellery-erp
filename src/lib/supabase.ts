@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import {
   AccountMaster,
+  Vendor,
   NewOrderBookingRecord,
   PurchaseRecord,
   RefineryRecord,
@@ -71,6 +72,88 @@ export const cloudService = {
         phone: account.phone || '',
         area: account.area || '',
       }, { onConflict: 'account_code' });
+      return !error;
+    } catch {
+      return false;
+    }
+  },
+
+  // Vendors / Suppliers
+  async getVendors(): Promise<Vendor[] | null> {
+    try {
+      const { data, error } = await supabase.from('erp_vendors').select('*');
+      if (error || !data || data.length === 0) return null;
+      return data.map((d: any) => ({
+        id: d.id,
+        vendor_code: d.vendor_code,
+        vendor_name: d.vendor_name,
+        contact_person: d.contact_person,
+        phone: d.phone,
+        email: d.email,
+        gstin: d.gstin,
+        pan_no: d.pan_no,
+        city: d.city,
+        state: d.state,
+        address: d.address,
+        pincode: d.pincode,
+        vendor_type: d.vendor_type,
+        bank_name: d.bank_name,
+        bank_account_no: d.bank_account_no,
+        ifsc_code: d.ifsc_code,
+        branch_name: d.branch_name,
+        credit_limit: Number(d.credit_limit || 0),
+        credit_days: Number(d.credit_days || 0),
+        opening_balance_gold_fine_gm: Number(d.opening_balance_gold_fine_gm || 0),
+        opening_balance_silver_fine_gm: Number(d.opening_balance_silver_fine_gm || 0),
+        opening_balance_cash: Number(d.opening_balance_cash || 0),
+        balance_type: d.balance_type || 'Cr',
+        status: d.status || 'Active',
+        notes: d.notes,
+        created_at: d.created_at,
+      }));
+    } catch {
+      return null;
+    }
+  },
+
+  async saveVendor(vendor: Vendor): Promise<boolean> {
+    try {
+      const { error } = await supabase.from('erp_vendors').upsert({
+        id: vendor.id,
+        vendor_code: vendor.vendor_code,
+        vendor_name: vendor.vendor_name,
+        contact_person: vendor.contact_person || '',
+        phone: vendor.phone || '',
+        email: vendor.email || '',
+        gstin: vendor.gstin || '',
+        pan_no: vendor.pan_no || '',
+        city: vendor.city || '',
+        state: vendor.state || '',
+        address: vendor.address || '',
+        pincode: vendor.pincode || '',
+        vendor_type: vendor.vendor_type,
+        bank_name: vendor.bank_name || '',
+        bank_account_no: vendor.bank_account_no || '',
+        ifsc_code: vendor.ifsc_code || '',
+        branch_name: vendor.branch_name || '',
+        credit_limit: vendor.credit_limit || 0,
+        credit_days: vendor.credit_days || 0,
+        opening_balance_gold_fine_gm: vendor.opening_balance_gold_fine_gm || 0,
+        opening_balance_silver_fine_gm: vendor.opening_balance_silver_fine_gm || 0,
+        opening_balance_cash: vendor.opening_balance_cash || 0,
+        balance_type: vendor.balance_type,
+        status: vendor.status,
+        notes: vendor.notes || '',
+      }, { onConflict: 'vendor_code' });
+      return !error;
+    } catch {
+      return false;
+    }
+  },
+
+  async deleteVendor(id: string): Promise<boolean> {
+    try {
+      const { error } = await supabase.from('erp_vendors').delete().eq('id', id);
       return !error;
     } catch {
       return false;

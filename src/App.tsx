@@ -6,6 +6,7 @@ import {
   AccountSubView,
   StockSubView,
   AccountMaster,
+  Vendor,
   NewOrderBookingRecord,
   RefineryRecord,
   PurchaseRecord,
@@ -20,6 +21,7 @@ import {
 } from './types/erp';
 import {
   INITIAL_ACCOUNTS,
+  INITIAL_VENDORS,
   INITIAL_ORDERS,
   INITIAL_REFINERY,
   INITIAL_PURCHASES,
@@ -38,6 +40,7 @@ import { LoginView } from './components/auth/LoginView';
 import { Navbar } from './components/layout/Navbar';
 import { DashboardView } from './components/dashboard/DashboardView';
 import { AccountMasterView } from './components/masters/AccountMasterView';
+import { VendorMasterView } from './components/masters/VendorMasterView';
 import { ItemCreationView } from './components/masters/ItemCreationView';
 import { BarcodeView } from './components/masters/BarcodeView';
 import { NewOrderBookingView } from './components/transactions/NewOrderBookingView';
@@ -110,6 +113,7 @@ export function App() {
 
   // Core Data Stores (Synced with Supabase Cloud DB)
   const [accounts, setAccounts] = useState<AccountMaster[]>(INITIAL_ACCOUNTS);
+  const [vendors, setVendors] = useState<Vendor[]>(INITIAL_VENDORS);
   const [orders, setOrders] = useState<NewOrderBookingRecord[]>(INITIAL_ORDERS);
   const [refineries, setRefineries] = useState<RefineryRecord[]>(INITIAL_REFINERY);
   const [purchases, setPurchases] = useState<PurchaseRecord[]>(INITIAL_PURCHASES);
@@ -125,14 +129,16 @@ export function App() {
   useEffect(() => {
     async function loadCloudData() {
       try {
-        const [cAccounts, cOrders, cPurchases, cStock, cDaybook] = await Promise.all([
+        const [cAccounts, cVendors, cOrders, cPurchases, cStock, cDaybook] = await Promise.all([
           cloudService.getAccounts(),
+          cloudService.getVendors(),
           cloudService.getOrders(),
           cloudService.getPurchases(),
           cloudService.getStock(),
           cloudService.getDayBook(),
         ]);
         if (cAccounts && cAccounts.length > 0) setAccounts(cAccounts);
+        if (cVendors && cVendors.length > 0) setVendors(cVendors);
         if (cOrders && cOrders.length > 0) setOrders(cOrders);
         if (cPurchases && cPurchases.length > 0) setPurchases(cPurchases);
         if (cStock && cStock.length > 0) setStockItems(cStock);
@@ -284,6 +290,25 @@ export function App() {
     setAccounts((prev) => prev.filter((a) => a.account_code !== code));
   };
 
+  const handleSaveVendor = (vendor: Vendor) => {
+    setVendors((prev) => {
+      const idx = prev.findIndex((v) => v.id === vendor.id || v.vendor_code === vendor.vendor_code);
+      if (idx >= 0) {
+        const next = [...prev];
+        next[idx] = vendor;
+        return next;
+      }
+      return [vendor, ...prev];
+    });
+    // Async push to Supabase
+    cloudService.saveVendor(vendor);
+  };
+
+  const handleDeleteVendor = (id: string) => {
+    setVendors((prev) => prev.filter((v) => v.id !== id));
+    cloudService.deleteVendor(id);
+  };
+
   const handleSaveOrder = (order: NewOrderBookingRecord) => {
     setOrders((prev) => {
       const idx = prev.findIndex((o) => o.id === order.id);
@@ -433,6 +458,19 @@ export function App() {
               <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
                 masterSubView === 'account_master' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
               }`}>F8</span>
+            </button>
+            <button
+              onClick={() => setMasterSubView('vendor_master')}
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
+                masterSubView === 'vendor_master'
+                  ? `${currentTheme.activePill} shadow-xs`
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
+              }`}
+            >
+              <span>Vendor Master</span>
+              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
+                masterSubView === 'vendor_master' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
+              }`}>F1</span>
             </button>
             <button
               onClick={() => setMasterSubView('item_creation')}
@@ -605,6 +643,18 @@ export function App() {
                 onClose={() => setCurrentSection('dashboard')}
               />
             )}
+            {masterSubView === 'vendor_master' && (
+              <VendorMasterView
+                vendors={vendors}
+                onSaveVendor={handleSaveVendor}
+                onDeleteVendor={handleDeleteVendor}
+                onClose={() => setCurrentSection('dashboard')}
+                onNavigateToPurchase={(vendor) => {
+                  setCurrentSection('transactions');
+                  setTransSubView('purchase');
+                }}
+              />
+            )}
             {masterSubView === 'item_creation' && (
               <ItemCreationView
                 onAddItem={handleAddItemToStock}
@@ -641,6 +691,8 @@ export function App() {
                 onClose={() => setCurrentSection('dashboard')}
                 goldRate={gold24kRate}
                 accounts={accounts}
+                vendors={vendors}
+                onSaveVendor={handleSaveVendor}
                 stockItems={stockItems}
                 onNavigateToBarcode={() => {
                   setCurrentSection('masters');
@@ -807,6 +859,7 @@ export function App() {
           gold22kRate,
           silverRate,
           branchName: currentUser.branch,
+          vendors,
         }}
         onSavePurchase={handleSavePurchase}
         onSaveOrder={handleSaveOrder}

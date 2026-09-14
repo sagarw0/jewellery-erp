@@ -1,5 +1,6 @@
 import {
   AccountMaster,
+  Vendor,
   NewOrderBookingRecord,
   RefineryRecord,
   PurchaseRecord,
@@ -269,6 +270,7 @@ export interface ErpContext {
   branchName?: string;
   bhishiMembers?: BhishiMember[];
   customerVisits?: CustomerVisitRecord[];
+  vendors?: Vendor[];
 }
 
 export interface ScreenDirectionData {
@@ -451,6 +453,27 @@ export const ERP_SCREENS: ErpScreenDefinition[] = [
     actions: [
       { label: '🚀 Open Account Master', action: 'navigate', payload: { section: 'masters', subView: 'account_master' } },
       { label: '👤 Create Account with AI', action: 'start_task', payload: 'account_create' }
+    ]
+  },
+  {
+    id: 'vendor_master',
+    name: 'Vendor & Bullion Supplier Master Management',
+    nameMr: 'सप्लायर व व्हेंडर मास्टर (Vendor Master)',
+    nameHi: 'सप्लायर व वेंडर मास्टर (Vendor Master)',
+    section: 'masters',
+    subView: 'vendor_master',
+    shortcut: 'Alt+V',
+    icon: '🏢',
+    description: 'Comprehensive directory of Bullion Dealers, Manufacturers, Casting Units, Diamond Merchants, and Silver Artisans with GSTIN state routing, bank RTGS/NEFT details, and metal/cash credit balances.',
+    descriptionMr: 'बुलियन व्यापारी, मॅन्युफॅक्चरर, कास्टिंग युनिट, डायमंड मर्चंट आणि चांदी कारागिरांची संपूर्ण नोंद, बँक खाती व येणे/देणे सोने-कॅश हिशोब.',
+    descriptionHi: 'बुलियन व्यापारी, मैन्युफैक्चरर, कास्टिंग यूनिट, डायमंड मर्चेंट और चांदी कारीगरों की विस्तृत सूची, बैंक खाते और सोना/कैश बकाया हिसाब।',
+    keywords: [
+      'vendor', 'vendors', 'supplier', 'suppliers', 'vendor master', 'supplier master', 'bullion dealer', 'manufacturer', 'karigar vendor', 'casting unit', 'diamond merchant', 'dealer list', 'wholesaler',
+      'व्हेंडर', 'सप्लायर', 'सप्लायर मास्टर', 'व्यापारी', 'बुलियन डीलर', 'व्हेंडर यादी', 'सप्लायर यादी', 'कारखानदार', 'होलसेलर', 'सप्लायर लिस्ट', 'वेंडर'
+    ],
+    actions: [
+      { label: '🚀 Open Vendor Master', action: 'navigate', payload: { section: 'masters', subView: 'vendor_master' } },
+      { label: '🛒 Go to Purchase Invoice (F5)', action: 'navigate', payload: { section: 'transactions', subView: 'purchase' } }
     ]
   },
   {
@@ -1846,6 +1869,101 @@ export class AiChatbotEngine {
           { label: '💵 Open Day Book (F10)', action: 'navigate', payload: { section: 'accounts', subView: 'day_book' } },
           { label: '👥 आज आलेले ग्राहक (Visited)', action: 'query', payload: 'todays visited customers' },
           { label: '🪙 भिशी ग्राहक (Bhishi)', action: 'query', payload: 'bhishi' },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // 1.95 VENDOR & SUPPLIER MASTER DIRECTORY QUERY
+    // Matches: "vendors", "vendor list", "show vendors", "suppliers", "supplier list", "vendor master", "व्हेंडर यादी", "सप्लायर लिस्ट", "सप्लायर", "व्यापारी यादी"
+    // ----------------------------------------------------
+    const isVendorQuery =
+      (text.includes('vendor') ||
+        text.includes('vendors') ||
+        text.includes('supplier') ||
+        text.includes('suppliers') ||
+        text.includes('व्हेंडर') ||
+        text.includes('सप्लायर') ||
+        text.includes('वेंडर')) &&
+      !text.includes('purchase') &&
+      !text.includes('buy') &&
+      !text.includes('खरेदी') &&
+      !text.includes('खरीद');
+
+    if (isVendorQuery) {
+      const vendorList = this.context.vendors || [];
+      const totalCashDue = vendorList.reduce((s, v) => s + (v.opening_balance_cash || 0), 0);
+      const totalGoldDue = vendorList.reduce((s, v) => s + (v.opening_balance_gold_fine_gm || 0), 0);
+      const totalSilverDue = vendorList.reduce((s, v) => s + (v.opening_balance_silver_fine_gm || 0), 0);
+
+      const rows = vendorList.map((v) => ({
+        code: v.vendor_code,
+        name: v.vendor_name,
+        type: v.vendor_type,
+        phone: v.phone,
+        city: v.city,
+        gold_due: (v.opening_balance_gold_fine_gm || 0) > 0 ? `${formatWeight(v.opening_balance_gold_fine_gm || 0)}g` : '0.000g',
+        cash_due: formatCurrency(v.opening_balance_cash || 0),
+        status: v.status,
+      }));
+
+      const title = lang === 'mr'
+        ? 'नोंदणीकृत सप्लायर व व्हेंडर यादी (Vendor Master Directory)'
+        : lang === 'hi'
+        ? 'पंजीकृत सप्लायर व वेंडर सूची (Vendor Master Directory)'
+        : 'Registered Bullion Suppliers & Vendor Master Directory';
+
+      const subtitle = lang === 'mr'
+        ? `एकूण सप्लायर्स: ${vendorList.length} | येणे/देणे बाकी रक्कम: ${formatCurrency(totalCashDue)} | शुद्ध सोने बाकी: ${formatWeight(totalGoldDue)}g`
+        : lang === 'hi'
+        ? `कुल सप्लायर्स: ${vendorList.length} | कुल बकाया राशि: ${formatCurrency(totalCashDue)} | शुद्ध सोना बकाया: ${formatWeight(totalGoldDue)}g`
+        : `Total Suppliers: ${vendorList.length} | Total Outstanding: ${formatCurrency(totalCashDue)} | Fine Gold Due: ${formatWeight(totalGoldDue)}g`;
+
+      const resp = lang === 'mr'
+        ? `### 🏢 नोंदणीकृत सप्लायर व व्हेंडर यादी (Vendor Master)\nएकूण **${vendorList.length} सप्लायर्स/व्यापारी** सिस्टीममध्ये नोंदणीकृत आहेत:\n- **एकूण बाकी देय रक्कम (Cash Payable)**: **${formatCurrency(totalCashDue)}**\n- **शुद्ध सोने देय बाकी (24K Gold Due)**: **${formatWeight(totalGoldDue)} ग्रॅम**\n- **चांदी देय बाकी (Fine Silver Due)**: **${formatWeight(totalSilverDue)} ग्रॅम**\n\nखालील तक्त्यामध्ये सप्लायर कोड, नाव, प्रकार, संपर्क फोन आणि शिल्लक हिशोब दिलेला आहे. खरेदी बिलामध्ये हे सर्व सप्लायर आपोआप ड्रॉपडाउनमध्ये दिसतील:`
+        : lang === 'hi'
+        ? `### 🏢 पंजीकृत सप्लायर व वेंडर सूची (Vendor Master)\nकुल **${vendorList.length} सप्लायर्स/व्यापारी** सिस्टम में पंजीकृत हैं:\n- **कुल बकाया देय राशि (Cash Payable)**: **${formatCurrency(totalCashDue)}**\n- **शुद्ध सोना देय बकाया (24K Gold Due)**: **${formatWeight(totalGoldDue)} ग्राम**\n- **चांदी देय बकाया (Fine Silver Due)**: **${formatWeight(totalSilverDue)} ग्राम**\n\nनीचे तालिका में सप्लायर कोड, नाम, श्रेणी, संपर्क और बकाया विवरण दिया गया है। खरीद बिल में ये सभी सप्लायर ड्रॉपडाउन में उपलब्ध हैं:`
+        : `### 🏢 Registered Bullion Suppliers & Vendor Master\nFound **${vendorList.length} registered vendors & bullion suppliers** in the system:\n- **Total Cash Payables**: **${formatCurrency(totalCashDue)}**\n- **Pure 24K Gold Due**: **${formatWeight(totalGoldDue)}g**\n- **Fine Silver Due**: **${formatWeight(totalSilverDue)}g**\n\nAll registered vendors automatically appear in the Purchase Invoice supplier dropdown and ledger accounts:`;
+
+      return {
+        response: resp,
+        language: lang,
+        tableData: {
+          title,
+          subtitle,
+          columns: [
+            { key: 'code', label: 'Vendor Code', align: 'center', format: 'badge' },
+            { key: 'name', label: 'Supplier / Firm Name', align: 'left', format: 'text' },
+            { key: 'type', label: 'Category', align: 'center', format: 'text' },
+            { key: 'phone', label: 'Phone', align: 'left', format: 'text' },
+            { key: 'city', label: 'City', align: 'left', format: 'text' },
+            { key: 'gold_due', label: 'Fine Gold Due', align: 'right', format: 'text' },
+            { key: 'cash_due', label: 'Outstanding (₹)', align: 'right', format: 'text' },
+            { key: 'status', label: 'Status', align: 'center', format: 'badge' },
+          ],
+          rows,
+          navigationAction: { label: 'Open Vendor Master', section: 'masters', subView: 'vendor_master' },
+        },
+        cardData: {
+          type: 'info_card',
+          title: 'Vendor Master Summary',
+          details: {
+            'Total Active Suppliers': `${vendorList.filter((v) => v.status === 'Active').length} Vendors`,
+            'Total Cash Payable': formatCurrency(totalCashDue),
+            'Fine 24K Gold Due': `${formatWeight(totalGoldDue)}g`,
+            'Fine Silver Due': `${formatWeight(totalSilverDue)}g`,
+            'Purchase Screen Linked': 'Auto-synced in F5 Dropdown',
+          },
+          actions: [
+            { label: '🏢 Open Vendor Master', actionId: 'nav_vendor_master', primary: true },
+            { label: '🛒 Record Purchase (F5)', actionId: 'nav_purchase' },
+          ],
+        },
+        quickChips: [
+          { label: '🏢 Open Vendor Master', action: 'navigate', payload: { section: 'masters', subView: 'vendor_master' } },
+          { label: '🛒 New Purchase Bill (F5)', action: 'start_task', payload: 'purchase_inward' },
+          { label: '📦 Stock Report (F9)', action: 'navigate', payload: { section: 'stock', subView: 'stock_report' } },
+          { label: '💵 Day Book (F10)', action: 'navigate', payload: { section: 'accounts', subView: 'day_book' } },
         ],
       };
     }

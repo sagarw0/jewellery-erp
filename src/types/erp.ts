@@ -13,7 +13,7 @@ export type NavSection =
   | 'settings'
   | 'field_dictionary';
 
-export type MasterSubView = 'account_master' | 'item_creation' | 'barcode';
+export type MasterSubView = 'account_master' | 'vendor_master' | 'item_creation' | 'barcode';
 export type TransactionSubView = 'new_order' | 'purchase' | 'refinery_in' | 'sales_invoice';
 export type AccountSubView = 'day_book' | 'book_display' | 'account_display';
 export type StockSubView = 'stock_report' | 'audit';
@@ -83,6 +83,47 @@ export interface AccountMaster {
   card_charges: CardCharges;
   phone?: string;
   area?: string;
+  created_at?: string;
+}
+
+// ----------------------------------------------------
+// 1b. Vendor Master / Supplier Management
+// ----------------------------------------------------
+export type VendorType =
+  | 'Bullion Dealer'
+  | 'Manufacturer / Karigar'
+  | 'Casting Unit'
+  | 'Diamond Merchant'
+  | 'Silver Artisan'
+  | 'Wholesaler'
+  | 'Packaging & Others';
+
+export interface Vendor {
+  id: string;
+  vendor_code: string;         // e.g. "SUP-101", "VEN-102"
+  vendor_name: string;         // e.g. "MMTC-PAMP India Bullion Ltd"
+  contact_person?: string;     // e.g. "Rajesh Sharma"
+  phone: string;               // e.g. "+91 98200 11223"
+  email?: string;              // e.g. "bullion@mmtc.com"
+  gstin?: string;              // e.g. "27AABCM8921J1ZX"
+  pan_no?: string;             // e.g. "AABCM8921J"
+  city: string;                // e.g. "Mumbai"
+  state: string;               // e.g. "Maharashtra (27)"
+  address?: string;            // e.g. "Plot 14, Bullion Complex, Zaveri Bazaar"
+  pincode?: string;            // e.g. "400002"
+  vendor_type: VendorType;
+  bank_name?: string;          // e.g. "HDFC Bank Ltd"
+  bank_account_no?: string;    // e.g. "50200089211244"
+  ifsc_code?: string;          // e.g. "HDFC0000145"
+  branch_name?: string;        // e.g. "Fort Mumbai"
+  credit_limit?: number;       // ₹ Credit Limit
+  credit_days?: number;        // Credit Period in Days
+  opening_balance_gold_fine_gm?: number; // Pure Gold fine weight balance (g)
+  opening_balance_silver_fine_gm?: number; // Pure Silver fine weight balance (g)
+  opening_balance_cash: number; // ₹ Opening ledger amount
+  balance_type: 'Cr' | 'Dr';    // 'Cr' = Payable (We owe), 'Dr' = Receivable (Advance paid)
+  status: 'Active' | 'Inactive';
+  notes?: string;
   created_at?: string;
 }
 
