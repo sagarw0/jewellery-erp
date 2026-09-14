@@ -54,12 +54,18 @@
 }
 
 /* Dark mode scrollbars */
-.theme-obsidian-velvet ::-webkit-scrollbar-thumb {
+.theme-obsidian-velvet ::-webkit-scrollbar-thumb,
+.theme-apple-glass ::-webkit-scrollbar-thumb {
   background: #334155;
 }
 
-.theme-obsidian-velvet ::-webkit-scrollbar-thumb:hover {
+.theme-obsidian-velvet ::-webkit-scrollbar-thumb:hover,
+.theme-apple-glass ::-webkit-scrollbar-thumb:hover {
   background: #475569;
+}
+
+.theme-apple-glass {
+  background: radial-gradient(circle at 50% 0%, #374151 0%, #1f2937 50%, #111827 100%) fixed !important;
 }
 
 /* Smooth Focus Rings */
