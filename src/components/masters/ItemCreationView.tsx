@@ -536,7 +536,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
                   step={0.001}
                   value={totalStockWeight}
                   onChange={(e) => setTotalStockWeight(parseFloat(e.target.value) || 0)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-blue-900 font-mono text-right font-extrabold text-sm"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-blue-900 font-mono text-right font-semibold text-sm"
                 />
               </div>
 
@@ -620,14 +620,14 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
             {/* 1. Master Total Weight */}
             <div className="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center font-mono">
               <span className="text-[10px] text-slate-500 font-bold uppercase block">1. Total Batch Weight</span>
-              <strong className="text-lg text-slate-900 font-extrabold">{formatWeight(itemTotalBatchWeight)}</strong>
+              <strong className="text-lg text-slate-900 font-semibold">{formatWeight(itemTotalBatchWeight)}</strong>
               <span className="text-[10px] text-slate-500 block truncate font-sans">{selectedOpeningItem}</span>
             </div>
 
             {/* 2. Allocated to Pieces */}
             <div className="bg-sky-50 border border-sky-200 p-3 rounded-xl text-center font-mono">
               <span className="text-[10px] text-blue-700 font-bold uppercase block">2. Allocated to Pieces</span>
-              <strong className="text-lg text-blue-900 font-extrabold">{formatWeight(totalAllocatedGross)}</strong>
+              <strong className="text-lg text-blue-900 font-semibold">{formatWeight(totalAllocatedGross)}</strong>
               <span className="text-[10px] text-blue-700 block font-sans">{currentItemPieces.length} Pieces Divided</span>
             </div>
 
@@ -640,7 +640,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
               <span className="text-[10px] font-bold uppercase block">
                 {isFullyAllocated ? '3. Remaining Weight' : '3. Remaining Weight to Divide'}
               </span>
-              <strong className="text-lg font-extrabold">
+              <strong className="text-lg font-semibold">
                 {formatWeight(remainingBatchWeight)}
               </strong>
               <span className="text-[10px] block font-sans">
@@ -661,7 +661,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
                 ) : (
                   <PackageCheck className="w-4 h-4 text-blue-600 inline" />
                 )}
-                <span className="text-sm font-extrabold font-sans">
+                <span className="text-sm font-semibold font-sans">
                   {isFullyAllocated ? '✓ 100% Fully Allocated' : 'Division in Progress'}
                 </span>
               </div>
@@ -920,13 +920,13 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
                       <td colSpan={3} className="p-2 font-sans uppercase text-right">
                         Allocated Total:
                       </td>
-                      <td className="p-2 text-right text-slate-900 font-extrabold">{formatWeight(totalAllocatedGross)}</td>
+                      <td className="p-2 text-right text-slate-900 font-semibold">{formatWeight(totalAllocatedGross)}</td>
                       <td colSpan={3} className="p-2"></td>
-                      <td className="p-2 text-right text-blue-900 font-extrabold">
+                      <td className="p-2 text-right text-blue-900 font-semibold">
                         {formatWeight(currentItemPieces.reduce((s, p) => s + p.net_wt, 0))}
                       </td>
                       <td></td>
-                      <td className="p-2 text-right text-amber-900 font-extrabold">
+                      <td className="p-2 text-right text-amber-900 font-semibold">
                         {formatWeight(currentItemPieces.reduce((s, p) => s + p.fine_wt, 0))}
                       </td>
                       <td colSpan={2}></td>
@@ -963,7 +963,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
       {/* Weight Adjustment Modal */}
       {showWeightAdjustmentModal && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-white border border-sky-200 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in duration-150 text-slate-800">
+          <div className="bg-white border border-sky-200/90 rounded-2xl w-full max-w-md shadow-xl overflow-hidden animate-in fade-in duration-150 text-slate-800">
             <div className="px-5 py-3.5 bg-gradient-to-r from-blue-700 to-sky-600 text-white flex justify-between items-center">
               <span className="font-bold text-sm">Item Weight Adjustment</span>
               <button onClick={() => setShowWeightAdjustmentModal(false)} className="text-white/80 hover:text-white">

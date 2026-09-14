@@ -629,20 +629,20 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
           </div>
           <div>
             <div className="flex items-center space-x-2.5">
-              <h1 className="text-base font-extrabold text-slate-900 tracking-tight">Purchase Invoice</h1>
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 font-mono font-bold border border-indigo-200 shadow-2xs">
+              <h1 className="text-base font-semibold text-slate-900 tracking-tight">Purchase Invoice</h1>
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 font-mono font-medium border border-indigo-200 shadow-2xs">
                 {header.invoice_no}
               </span>
-              <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold border border-slate-200">
+              <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium border border-slate-200">
                 F5
               </span>
             </div>
             <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-2">
               <span>Wholesale lots inwards</span>
               <span>•</span>
-              <span className="font-semibold text-slate-700">{header.supplier_name}</span>
+              <span className="font-medium text-slate-700">{header.supplier_name}</span>
               <span>•</span>
-              <span className="text-emerald-700 font-bold font-mono">₹{payment.bill_amount.toLocaleString('en-IN')}</span>
+              <span className="text-emerald-700 font-semibold font-mono">₹{payment.bill_amount.toLocaleString('en-IN')}</span>
             </p>
           </div>
         </div>
@@ -653,7 +653,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
           <div className="bg-slate-100 p-1 rounded-xl border border-slate-200 flex items-center space-x-1">
             <button
               onClick={() => setViewMode('tabbed')}
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 viewMode === 'tabbed'
                   ? 'bg-white text-blue-700 shadow-xs border border-blue-200'
                   : 'text-slate-600 hover:text-slate-900'
@@ -665,7 +665,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             </button>
             <button
               onClick={() => setViewMode('single_screen')}
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 viewMode === 'single_screen'
                   ? 'bg-blue-600 text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
@@ -679,7 +679,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
 
           <button
             onClick={handleSave}
-            className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 active:scale-98 transition-all"
+            className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs active:scale-98 transition-all"
           >
             <Save className="w-3.5 h-3.5" />
             <span>Save Invoice</span>
@@ -687,7 +687,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
 
           <button
             onClick={() => setShowPrint(true)}
-            className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-sky-50 text-sky-800 text-xs font-semibold border border-sky-200 hover:bg-sky-100 transition-colors"
+            className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-sky-50 text-sky-800 text-xs font-medium border border-sky-200 hover:bg-sky-100 transition-colors"
           >
             <Printer className="w-3.5 h-3.5" />
             <span>Print</span>
@@ -695,7 +695,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
 
           <button
             onClick={() => setShowWhatsApp(true)}
-            className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-200 hover:bg-emerald-100 transition-colors"
+            className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-medium border border-emerald-200 hover:bg-emerald-100 transition-colors"
           >
             <MessageCircle className="w-3.5 h-3.5" />
             <span>WhatsApp</span>
@@ -703,7 +703,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
 
           <button
             onClick={() => setShowColumnSettings(true)}
-            className="flex items-center space-x-1 px-2.5 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-mono font-bold border border-slate-200 hover:bg-slate-200 transition-colors"
+            className="flex items-center space-x-1 px-2.5 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-mono font-medium border border-slate-200 hover:bg-slate-200 transition-colors"
             title="Column Settings"
           >
             <Sliders className="w-3.5 h-3.5 text-blue-600" />
@@ -712,7 +712,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
 
           <button
             onClick={() => setShowHelp(true)}
-            className="flex items-center space-x-1 px-2.5 py-2 rounded-xl bg-amber-50 text-amber-800 text-xs font-bold border border-amber-300 hover:bg-amber-100 transition-colors"
+            className="flex items-center space-x-1 px-2.5 py-2 rounded-xl bg-amber-50 text-amber-800 text-xs font-medium border border-amber-300 hover:bg-amber-100 transition-colors"
             title="Keyboard Shortcuts & Help"
           >
             <HelpCircle className="w-3.5 h-3.5" />
@@ -739,9 +739,9 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+                className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 font-extrabold'
+                    ? 'bg-blue-600 text-white shadow-xs font-semibold'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
                 }`}
               >
@@ -749,7 +749,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                 <span>{tab.label}</span>
                 {tab.count !== undefined && (
                   <span
-                    className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
+                    className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono font-medium ${
                       isActive ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'
                     }`}
                   >
@@ -768,14 +768,14 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {/* TAB 1: SUPPLIER PROFILE & MASTER DETAILS */}
         {/* ========================================================== */}
         {(viewMode === 'single_screen' || activeTab === 'supplier') && (
-          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-sm space-y-4">
+          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
               <div className="flex items-center space-x-2">
                 <div className="p-1.5 bg-blue-50 rounded-lg text-blue-600 border border-blue-200">
                   <Building2 className="w-4 h-4" />
                 </div>
                 <div>
-                  <h2 className="text-xs font-extrabold text-blue-950 uppercase tracking-wider">
+                  <h2 className="text-xs font-semibold text-blue-950 uppercase tracking-wider">
                     Supplier Profile & Master Registry
                   </h2>
                   <p className="text-[11px] text-slate-500">
@@ -786,14 +786,14 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
 
               {/* Quick Supplier Selector */}
               <div className="flex items-center space-x-2">
-                <span className="text-xs text-slate-500 font-semibold">Select Supplier:</span>
+                <span className="text-xs text-slate-500 font-medium">Select Supplier:</span>
                 <select
                   value={currentSupplier.code}
                   onChange={(e) => {
                     const found = PRESET_SUPPLIERS.find((s) => s.code === e.target.value);
                     if (found) handleSelectSupplier(found);
                   }}
-                  className="px-3 py-1.5 bg-sky-50/70 border border-sky-200 rounded-xl text-xs font-bold text-blue-900 focus:ring-2 focus:ring-blue-500"
+                  className="px-3 py-1.5 bg-sky-50/70 border border-sky-200 rounded-xl text-xs font-medium text-blue-900 focus:ring-2 focus:ring-blue-500"
                 >
                   {PRESET_SUPPLIERS.map((s) => (
                     <option key={s.code} value={s.code}>
@@ -942,26 +942,26 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             {/* Supplier Balances KPI Strip */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl">
-                <span className="text-[10px] uppercase font-bold text-blue-700 block">Opening Balance</span>
-                <span className="text-base font-mono font-extrabold text-blue-950">
+                <span className="text-[10px] uppercase font-semibold text-blue-700 block">Opening Balance</span>
+                <span className="text-base font-mono font-semibold text-blue-950">
                   {formatCurrency(currentSupplier.opening_balance)} {currentSupplier.balance_type}
                 </span>
               </div>
               <div className="p-3 bg-indigo-50/70 border border-indigo-200 rounded-xl">
-                <span className="text-[10px] uppercase font-bold text-indigo-700 block">Credit Limit Available</span>
-                <span className="text-base font-mono font-extrabold text-indigo-950">
+                <span className="text-[10px] uppercase font-semibold text-indigo-700 block">Credit Limit Available</span>
+                <span className="text-base font-mono font-semibold text-indigo-950">
                   {formatCurrency(currentSupplier.credit_limit - currentSupplier.opening_balance)}
                 </span>
               </div>
               <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-xl">
-                <span className="text-[10px] uppercase font-bold text-amber-700 block">Fine Gold Balance</span>
-                <span className="text-base font-mono font-extrabold text-amber-950">
+                <span className="text-[10px] uppercase font-semibold text-amber-700 block">Fine Gold Balance</span>
+                <span className="text-base font-mono font-semibold text-amber-950">
                   148.520 g (Cr)
                 </span>
               </div>
               <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl">
-                <span className="text-[10px] uppercase font-bold text-emerald-700 block">YTD Purchase Volume</span>
-                <span className="text-base font-mono font-extrabold text-emerald-950">
+                <span className="text-[10px] uppercase font-semibold text-emerald-700 block">YTD Purchase Volume</span>
+                <span className="text-base font-mono font-semibold text-emerald-950">
                   ₹1,48,20,000
                 </span>
               </div>
@@ -977,7 +977,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             {/* Header Form */}
             <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-sm space-y-3">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                <span className="text-xs font-extrabold text-blue-950 uppercase tracking-wider flex items-center gap-1.5">
+                <span className="text-xs font-semibold text-blue-950 uppercase tracking-wider flex items-center gap-1.5">
                   <FileText className="w-4 h-4 text-blue-600" /> Invoice Header & Dispatch Parameters
                 </span>
                 <span className="text-[11px] font-mono text-slate-500">
@@ -1104,7 +1104,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-sm space-y-3">
               <div className="flex justify-between items-center flex-wrap gap-2">
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs font-extrabold text-blue-950 uppercase tracking-wider">
+                  <span className="text-xs font-semibold text-blue-950 uppercase tracking-wider">
                     Wholesale Inward Grid ({items.length} lots)
                   </span>
                   <span className="text-[11px] px-2 py-0.5 bg-sky-50 text-blue-700 font-bold rounded-md border border-sky-200">
@@ -1239,10 +1239,10 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                             step={0.001}
                             value={it.stone_wt}
                             onChange={(e) => updateItem(idx, 'stone_wt', parseFloat(e.target.value) || 0)}
-                            className="w-full bg-slate-50 border border-slate-300 rounded px-1 py-1 text-right text-slate-700 text-xs"
+                            className="w-full bg-slate-50 border border-slate-300 rounded px-1.5 py-1 text-right text-slate-700 text-xs"
                           />
                         </td>
-                        <td className="p-2 border-r border-slate-200 text-right font-extrabold text-blue-800 bg-sky-50/80">
+                        <td className="p-2 border-r border-slate-200 text-right font-semibold text-blue-800 bg-sky-50/80">
                           {formatWeight(it.net_wt)}
                         </td>
                         <td className="p-1.5 border-r border-slate-200">
@@ -1274,7 +1274,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                         <td className="p-2 border-r border-slate-200 text-right font-bold text-indigo-900 bg-indigo-50/40">
                           {formatWeight(it.fin_plus_wastage)}
                         </td>
-                        <td className="p-2 border-r border-slate-200 text-right font-extrabold text-emerald-700 bg-emerald-50/40">
+                        <td className="p-2 border-r border-slate-200 text-right font-semibold text-emerald-700 bg-emerald-50/40">
                           ₹{Math.round(it.total_amt).toLocaleString('en-IN')}
                         </td>
                         <td className="p-1.5 border-r border-slate-200">
@@ -1312,23 +1312,23 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                   {/* Totals Footer */}
                   <tfoot className="bg-slate-100 font-bold text-slate-800 border-t-2 border-slate-300 font-mono text-xs">
                     <tr>
-                      <td colSpan={3} className="p-2.5 text-right font-sans font-extrabold text-blue-950 uppercase">
+                      <td colSpan={3} className="p-2.5 text-right font-sans font-semibold text-blue-950 uppercase">
                         Totals ({items.length} lots):
                       </td>
-                      <td className="p-2.5 text-center text-slate-900 font-extrabold">{totalQty}</td>
+                      <td className="p-2.5 text-center text-slate-900 font-semibold">{totalQty}</td>
                       <td className="p-2.5 text-right text-slate-900">{formatWeight(totalGrossWt)}</td>
                       <td className="p-2.5 text-right text-slate-500">—</td>
-                      <td className="p-2.5 text-right text-blue-900 font-extrabold bg-sky-100/60">
+                      <td className="p-2.5 text-right text-blue-900 font-semibold bg-sky-100/60">
                         {formatWeight(totalNetWt)}
                       </td>
                       <td colSpan={2} className="p-2.5 text-right text-slate-500 font-sans text-[11px]">
                         Fine Gold Eq:
                       </td>
-                      <td className="p-2.5 text-right text-indigo-700 font-extrabold">—</td>
-                      <td className="p-2.5 text-right text-indigo-950 font-extrabold bg-indigo-100/60">
+                      <td className="p-2.5 text-right text-indigo-700 font-semibold">—</td>
+                      <td className="p-2.5 text-right text-indigo-950 font-semibold bg-indigo-100/60">
                         {formatWeight(totalFineWt)}
                       </td>
-                      <td className="p-2.5 text-right text-emerald-800 font-extrabold bg-emerald-100/60 text-sm">
+                      <td className="p-2.5 text-right text-emerald-800 font-semibold bg-emerald-100/60 text-sm">
                         {formatCurrency(totalTaxableAmt)}
                       </td>
                       <td colSpan={2} className="p-2.5 text-center text-slate-500 text-[10px] font-sans">
@@ -1350,7 +1350,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             {/* Payment Method Distribution (Left Col 7) */}
             <div className="lg:col-span-7 bg-white border border-sky-200/90 rounded-2xl p-4 shadow-sm space-y-3 text-xs">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                <span className="font-extrabold text-blue-950 uppercase tracking-wider flex items-center gap-1.5">
+                <span className="font-semibold text-blue-950 uppercase tracking-wider flex items-center gap-1.5">
                   <CreditCard className="w-4 h-4 text-blue-600" /> Payment & Settlement Distribution
                 </span>
                 <span className="text-[11px] px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-bold border border-indigo-200">
@@ -1452,9 +1452,9 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             </div>
 
             {/* Tax Engine & Balance Summary (Right Col 5) */}
-            <div className="lg:col-span-5 bg-gradient-to-br from-indigo-50/70 via-blue-50/50 to-white border border-indigo-200 rounded-2xl p-4 shadow-sm space-y-3 text-xs flex flex-col justify-between">
+            <div className="lg:col-span-5 bg-gradient-to-br from-indigo-50/70 via-blue-50/50 to-white border border-indigo-200 rounded-2xl p-4 shadow-xs space-y-3 text-xs flex flex-col justify-between">
               <div>
-                <span className="font-extrabold text-indigo-950 uppercase tracking-wider block border-b border-indigo-200/80 pb-2">
+                <span className="font-semibold text-indigo-950 uppercase tracking-wider block border-b border-indigo-200/80 pb-2">
                   Statutory Taxes & Balance Ledger
                 </span>
 
@@ -1474,7 +1474,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                         <span>SGST (1.5%):</span>
                         <span className="font-mono font-semibold">{formatCurrency(payment.mgst_amt)}</span>
                       </div>
-                      <div className="flex justify-between font-bold text-indigo-950 border-t border-dashed border-indigo-200 pt-1">
+                      <div className="flex justify-between font-semibold text-indigo-950 border-t border-dashed border-indigo-200 pt-1">
                         <span>Total GST (3.0%):</span>
                         <span className="font-mono">{formatCurrency(payment.gst_amt)}</span>
                       </div>
@@ -1493,12 +1493,12 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                     <span className="font-mono font-semibold">- {formatCurrency(payment.discount)}</span>
                   </div>
 
-                  <div className="flex justify-between text-sm font-extrabold text-slate-900 border-t border-slate-300 pt-1.5">
+                  <div className="flex justify-between text-sm font-semibold text-slate-900 border-t border-slate-300 pt-1.5">
                     <span>Grand Bill Amount:</span>
                     <span className="font-mono text-indigo-950">{formatCurrency(payment.bill_amount)}</span>
                   </div>
 
-                  <div className="flex justify-between font-bold text-emerald-700">
+                  <div className="flex justify-between font-semibold text-emerald-700">
                     <span>Total Amount Paid:</span>
                     <span className="font-mono">{formatCurrency(payment.paid_amount)}</span>
                   </div>
@@ -1506,14 +1506,14 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
               </div>
 
               {/* Net Balance Callout */}
-              <div className="p-3.5 bg-white border-2 border-indigo-400 rounded-xl flex justify-between items-center shadow-xs mt-2">
+              <div className="p-3.5 bg-white border border-indigo-300 rounded-xl flex justify-between items-center shadow-2xs mt-2">
                 <div>
-                  <span className="font-extrabold text-indigo-950 text-xs uppercase block">Net Balance Due</span>
-                  <span className="text-[10px] text-slate-500 font-semibold">
+                  <span className="font-semibold text-indigo-950 text-xs uppercase block">Net Balance Due</span>
+                  <span className="text-[10px] text-slate-500 font-medium">
                     {payment.net_balance === 0 ? 'Fully Cleared' : 'Payable to Supplier'}
                   </span>
                 </div>
-                <span className={`text-xl font-mono font-black ${payment.net_balance > 0 ? 'text-rose-700' : 'text-emerald-700'}`}>
+                <span className={`text-xl font-mono font-semibold ${payment.net_balance > 0 ? 'text-rose-700' : 'text-emerald-700'}`}>
                   {formatCurrency(payment.net_balance)}
                 </span>
               </div>
@@ -1525,14 +1525,14 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {/* TAB 4: ACCOUNT DISPLAY / SUPPLIER LEDGER */}
         {/* ========================================================== */}
         {(viewMode === 'single_screen' || activeTab === 'account_display') && (
-          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-sm space-y-4">
+          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
               <div className="flex items-center space-x-2">
                 <div className="p-1.5 bg-indigo-50 rounded-lg text-indigo-600 border border-indigo-200">
                   <BookOpen className="w-4 h-4" />
                 </div>
                 <div>
-                  <h2 className="text-xs font-extrabold text-blue-950 uppercase tracking-wider">
+                  <h2 className="text-xs font-semibold text-blue-950 uppercase tracking-wider">
                     Supplier Account Ledger Statement
                   </h2>
                   <p className="text-[11px] text-slate-500">
@@ -1545,14 +1545,14 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => alert('Printing Supplier Ledger Statement...')}
-                  className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold"
+                  className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Print Statement</span>
                 </button>
                 <button
                   onClick={() => alert('Exporting statement in CSV/Excel...')}
-                  className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-blue-700 text-xs font-semibold border border-sky-200"
+                  className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-blue-700 text-xs font-medium border border-sky-200"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Export CSV</span>
@@ -1563,7 +1563,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             {/* Ledger Transactions Table */}
             <div className="overflow-x-auto border border-slate-200 rounded-xl shadow-2xs">
               <table className="w-full text-left text-xs border-collapse">
-                <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 select-none">
+                <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200 select-none">
                   <tr>
                     <th className="p-2.5 border-r border-slate-200 w-24">Date</th>
                     <th className="p-2.5 border-r border-slate-200 w-32">Voucher No</th>
@@ -1572,26 +1572,26 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                     <th className="p-2.5 border-r border-slate-200 w-24 text-right text-indigo-700">Metal (g)</th>
                     <th className="p-2.5 border-r border-slate-200 w-28 text-right text-emerald-700">Debit (₹)</th>
                     <th className="p-2.5 border-r border-slate-200 w-28 text-right text-rose-700">Credit (₹)</th>
-                    <th className="p-2.5 w-32 text-right font-extrabold text-slate-900 bg-slate-100">Balance (₹)</th>
+                    <th className="p-2.5 w-32 text-right font-semibold text-slate-900 bg-slate-100">Balance (₹)</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 bg-white font-mono text-[11px]">
                   {supplierLedger.map((row, idx) => (
                     <tr key={idx} className="hover:bg-sky-50/40 transition-colors">
                       <td className="p-2.5 border-r border-slate-200 text-slate-600">{row.date}</td>
-                      <td className="p-2.5 border-r border-slate-200 font-bold text-indigo-700">{row.voucher_no}</td>
-                      <td className="p-2.5 border-r border-slate-200 font-sans font-semibold text-slate-700">{row.type}</td>
+                      <td className="p-2.5 border-r border-slate-200 font-semibold text-indigo-700">{row.voucher_no}</td>
+                      <td className="p-2.5 border-r border-slate-200 font-sans font-medium text-slate-700">{row.type}</td>
                       <td className="p-2.5 border-r border-slate-200 font-sans text-slate-800">{row.narration}</td>
-                      <td className="p-2.5 border-r border-slate-200 text-right text-indigo-900 font-bold">
+                      <td className="p-2.5 border-r border-slate-200 text-right text-indigo-900 font-medium">
                         {row.metal_cr > 0 ? `+${formatWeight(row.metal_cr)}` : row.metal_dr > 0 ? `-${formatWeight(row.metal_dr)}` : '—'}
                       </td>
-                      <td className="p-2.5 border-r border-slate-200 text-right text-emerald-700 font-bold">
+                      <td className="p-2.5 border-r border-slate-200 text-right text-emerald-700 font-medium">
                         {row.debit > 0 ? formatCurrency(row.debit) : '—'}
                       </td>
-                      <td className="p-2.5 border-r border-slate-200 text-right text-rose-700 font-bold">
+                      <td className="p-2.5 border-r border-slate-200 text-right text-rose-700 font-medium">
                         {row.credit > 0 ? formatCurrency(row.credit) : '—'}
                       </td>
-                      <td className="p-2.5 text-right font-extrabold text-blue-950 bg-slate-50">
+                      <td className="p-2.5 text-right font-semibold text-blue-950 bg-slate-50">
                         {formatCurrency(row.balance)} Cr
                       </td>
                     </tr>
@@ -1606,14 +1606,14 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {/* TAB 5: STOCK DISPLAY / INVENTORY RECEIVED */}
         {/* ========================================================== */}
         {(viewMode === 'single_screen' || activeTab === 'account_cum_stock_display') && (
-          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-sm space-y-4">
+          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
               <div className="flex items-center space-x-2">
                 <div className="p-1.5 bg-emerald-50 rounded-lg text-emerald-600 border border-emerald-200">
                   <Layers className="w-4 h-4" />
                 </div>
                 <div>
-                  <h2 className="text-xs font-extrabold text-blue-950 uppercase tracking-wider">
+                  <h2 className="text-xs font-semibold text-blue-950 uppercase tracking-wider">
                     Stock Inwards & Inventory Breakdown
                   </h2>
                   <p className="text-[11px] text-slate-500">
@@ -1625,7 +1625,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
               {onNavigateToBarcode && (
                 <button
                   onClick={onNavigateToBarcode}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition-colors"
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium shadow-xs transition-colors"
                 >
                   <Tag className="w-3.5 h-3.5" />
                   <span>Open Barcode Studio (F3)</span>
@@ -1637,22 +1637,22 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-xl">
                 <span className="text-[10px] uppercase font-bold text-amber-800 block">24K Fine Bullion</span>
-                <span className="text-base font-mono font-extrabold text-amber-950">50.000 g</span>
+                <span className="text-base font-mono font-semibold text-amber-950">50.000 g</span>
                 <span className="text-[10px] text-amber-600 block mt-0.5">1 Lot Inward</span>
               </div>
               <div className="p-3 bg-indigo-50/70 border border-indigo-200 rounded-xl">
                 <span className="text-[10px] uppercase font-bold text-indigo-800 block">22K 916 Jewellery</span>
-                <span className="text-base font-mono font-extrabold text-indigo-950">223.300 g</span>
+                <span className="text-base font-mono font-semibold text-indigo-950">223.300 g</span>
                 <span className="text-[10px] text-indigo-600 block mt-0.5">18 Pcs Bangles/Jhumkas</span>
               </div>
               <div className="p-3 bg-sky-50/70 border border-sky-200 rounded-xl">
                 <span className="text-[10px] uppercase font-bold text-sky-800 block">18K Diamond Studded</span>
-                <span className="text-base font-mono font-extrabold text-sky-950">14.200 g</span>
+                <span className="text-base font-mono font-semibold text-sky-950">14.200 g</span>
                 <span className="text-[10px] text-sky-600 block mt-0.5">2 Pairs Solitaires</span>
               </div>
               <div className="p-3 bg-slate-100 border border-slate-300 rounded-xl">
                 <span className="text-[10px] uppercase font-bold text-slate-700 block">999 Pure Silver</span>
-                <span className="text-base font-mono font-extrabold text-slate-900">1,000.000 g</span>
+                <span className="text-base font-mono font-semibold text-slate-900">1,000.000 g</span>
                 <span className="text-[10px] text-slate-500 block mt-0.5">1 Ingot Bar</span>
               </div>
             </div>
@@ -1709,14 +1709,14 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {/* TAB 6: CONSIGNMENT & APPROVAL INWARDS */}
         {/* ========================================================== */}
         {(viewMode === 'single_screen' || activeTab === 'purchase_consignment') && (
-          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-sm space-y-4">
+          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
               <div className="flex items-center space-x-2">
                 <div className="p-1.5 bg-amber-50 rounded-lg text-amber-600 border border-amber-200">
                   <PackageCheck className="w-4 h-4" />
                 </div>
                 <div>
-                  <h2 className="text-xs font-extrabold text-blue-950 uppercase tracking-wider">
+                  <h2 className="text-xs font-semibold text-blue-950 uppercase tracking-wider">
                     Consignment & Approval Inwards (Kaccha Inward)
                   </h2>
                   <p className="text-[11px] text-slate-500">
@@ -1729,7 +1729,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
               <div className="flex items-center space-x-2">
                 <button
                   onClick={handleConvertConsignmentToPurchase}
-                  className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-500/20 transition-all cursor-pointer"
+                  className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
                 >
                   <ArrowRight className="w-3.5 h-3.5" />
                   <span>Convert Approved to Purchase Bill</span>
@@ -1835,14 +1835,14 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {/* TAB 7: CASH & METAL SETTLEMENT / BHAV CUT */}
         {/* ========================================================== */}
         {(viewMode === 'single_screen' || activeTab === 'stock_cash_settlement') && (
-          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-sm space-y-4">
+          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
               <div className="flex items-center space-x-2">
                 <div className="p-1.5 bg-indigo-50 rounded-lg text-indigo-600 border border-indigo-200">
                   <Scale className="w-4 h-4" />
                 </div>
                 <div>
-                  <h2 className="text-xs font-extrabold text-blue-950 uppercase tracking-wider">
+                  <h2 className="text-xs font-semibold text-blue-950 uppercase tracking-wider">
                     Metal Cut (Bhav Cut) & Cash Arbitrage Settlement
                   </h2>
                   <p className="text-[11px] text-slate-500">
@@ -1852,7 +1852,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
               </div>
 
               <div className="flex items-center space-x-2">
-                <span className="text-xs font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-xl border border-amber-200">
+                <span className="text-xs font-semibold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-xl border border-amber-200">
                   Current Market 24K: ₹{goldRate || 7650}/g
                 </span>
               </div>
@@ -1861,42 +1861,42 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Bhav Cut Rate Fixation Calculator */}
               <div className="p-4 bg-gradient-to-br from-amber-50/60 to-orange-50/40 border border-amber-200 rounded-2xl space-y-3 text-xs">
-                <span className="font-extrabold text-amber-950 uppercase tracking-wider block border-b border-amber-200 pb-1.5 flex items-center gap-1.5">
+                <span className="font-semibold text-amber-950 uppercase tracking-wider block border-b border-amber-200 pb-1.5 flex items-center gap-1.5">
                   <RefreshCw className="w-3.5 h-3.5 text-amber-700" /> Bhav Cut (Gold Rate Fixation)
                 </span>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[10px] font-bold text-slate-600 block mb-1">Fine Gold Grams to Fix</label>
+                    <label className="text-[10px] font-semibold text-slate-600 block mb-1">Fine Gold Grams to Fix</label>
                     <input
                       type="number"
                       step={0.001}
                       value={bhavCutGrams}
                       onChange={(e) => setBhavCutGrams(parseFloat(e.target.value) || 0)}
-                      className="w-full px-2.5 py-1.5 bg-white border border-amber-300 rounded-xl font-mono font-bold text-amber-950 text-xs text-right"
+                      className="w-full px-2.5 py-1.5 bg-white border border-amber-300 rounded-xl font-mono font-semibold text-amber-950 text-xs text-right"
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-600 block mb-1">Agreed Bhav Cut Rate (₹/g)</label>
+                    <label className="text-[10px] font-semibold text-slate-600 block mb-1">Agreed Bhav Cut Rate (₹/g)</label>
                     <input
                       type="number"
                       value={bhavCutRate}
                       onChange={(e) => setBhavCutRate(parseFloat(e.target.value) || 0)}
-                      className="w-full px-2.5 py-1.5 bg-white border border-amber-300 rounded-xl font-mono font-bold text-slate-900 text-xs text-right"
+                      className="w-full px-2.5 py-1.5 bg-white border border-amber-300 rounded-xl font-mono font-semibold text-slate-900 text-xs text-right"
                     />
                   </div>
                 </div>
 
                 <div className="p-3 bg-white border border-amber-300 rounded-xl flex justify-between items-center">
-                  <span className="font-bold text-amber-900 text-xs">Calculated Settlement Value:</span>
-                  <span className="text-base font-mono font-extrabold text-amber-950">
+                  <span className="font-semibold text-amber-900 text-xs">Calculated Settlement Value:</span>
+                  <span className="text-base font-mono font-semibold text-amber-950">
                     {formatCurrency(bhavCutGrams * bhavCutRate)}
                   </span>
                 </div>
 
                 <button
                   onClick={handleApplyBhavCut}
-                  className="w-full py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold text-xs shadow-sm transition-colors cursor-pointer"
+                  className="w-full py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-semibold text-xs shadow-xs transition-colors cursor-pointer"
                 >
                   Apply Bhav Cut & Credit to Invoice
                 </button>
@@ -1904,36 +1904,36 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
 
               {/* Pure Bullion Physical Surrender */}
               <div className="p-4 bg-gradient-to-br from-indigo-50/60 to-blue-50/40 border border-indigo-200 rounded-2xl space-y-3 text-xs">
-                <span className="font-extrabold text-indigo-950 uppercase tracking-wider block border-b border-indigo-200 pb-1.5 flex items-center gap-1.5">
+                <span className="font-semibold text-indigo-950 uppercase tracking-wider block border-b border-indigo-200 pb-1.5 flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-indigo-700" /> Pure Bullion Bar Surrender
                 </span>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[10px] font-bold text-slate-600 block mb-1">Surrender Bar Gross Wt (g)</label>
+                    <label className="text-[10px] font-semibold text-slate-600 block mb-1">Surrender Bar Gross Wt (g)</label>
                     <input
                       type="number"
                       step={0.001}
                       value={surrenderMetalGrossWt}
                       onChange={(e) => setSurrenderMetalGrossWt(parseFloat(e.target.value) || 0)}
-                      className="w-full px-2.5 py-1.5 bg-white border border-indigo-300 rounded-xl font-mono font-bold text-indigo-950 text-xs text-right"
+                      className="w-full px-2.5 py-1.5 bg-white border border-indigo-300 rounded-xl font-mono font-semibold text-indigo-950 text-xs text-right"
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-600 block mb-1">Purity (%)</label>
+                    <label className="text-[10px] font-semibold text-slate-600 block mb-1">Purity (%)</label>
                     <input
                       type="number"
                       step={0.1}
                       value={surrenderMetalPurity}
                       onChange={(e) => setSurrenderMetalPurity(parseFloat(e.target.value) || 99.9)}
-                      className="w-full px-2.5 py-1.5 bg-white border border-indigo-300 rounded-xl font-mono font-bold text-slate-900 text-xs text-center"
+                      className="w-full px-2.5 py-1.5 bg-white border border-indigo-300 rounded-xl font-mono font-semibold text-slate-900 text-xs text-center"
                     />
                   </div>
                 </div>
 
                 <div className="p-3 bg-white border border-indigo-300 rounded-xl flex justify-between items-center">
-                  <span className="font-bold text-indigo-900 text-xs">Fine Weight Equivalent:</span>
-                  <span className="text-base font-mono font-extrabold text-indigo-950">
+                  <span className="font-semibold text-indigo-900 text-xs">Fine Weight Equivalent:</span>
+                  <span className="text-base font-mono font-semibold text-indigo-950">
                     {formatWeight((surrenderMetalGrossWt * surrenderMetalPurity) / 100)}
                   </span>
                 </div>
@@ -1942,7 +1942,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                   onClick={() =>
                     alert(`✅ Physical Pure Bar Surrender of ${surrenderMetalGrossWt}g recorded in Metal Ledger.`)
                   }
-                  className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs shadow-sm transition-colors cursor-pointer"
+                  className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-xs shadow-xs transition-colors cursor-pointer"
                 >
                   Record Bullion Surrender to Supplier
                 </button>

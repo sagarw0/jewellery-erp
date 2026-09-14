@@ -146,7 +146,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
               <span className="font-bold text-blue-900 text-xs uppercase tracking-wider">
                 DEBIT (Receivable / Dr)
               </span>
-              <span className="font-mono text-xs font-extrabold text-blue-800">
+              <span className="font-mono text-xs font-semibold text-blue-800">
                 Total: {formatCurrency(totalDebit)}
               </span>
             </div>
@@ -181,7 +181,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
               <span className="font-bold text-emerald-900 text-xs uppercase tracking-wider">
                 CREDIT (Payable / Cr)
               </span>
-              <span className="font-mono text-xs font-extrabold text-emerald-800">
+              <span className="font-mono text-xs font-semibold text-emerald-800">
                 Total: {formatCurrency(totalCredit)}
               </span>
             </div>
@@ -258,7 +258,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
           <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block">Net Ledger Position</span>
           <span className="text-xs text-slate-500">{selectedAccount}</span>
         </div>
-        <div className="text-xl font-mono font-extrabold text-blue-900">
+        <div className="text-xl font-mono font-semibold text-blue-900">
           {formatCurrency(netClosingBalance)} {netClosingBalance >= 0 ? 'Dr (Receivable)' : 'Cr (Payable)'}
         </div>
       </div>

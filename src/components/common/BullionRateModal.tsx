@@ -110,7 +110,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
       <div
-        className={`w-full max-w-4xl rounded-3xl border shadow-2xl overflow-hidden flex flex-col max-h-[92vh] transition-all ${
+        className={`w-full max-w-4xl rounded-3xl border shadow-lg overflow-hidden flex flex-col max-h-[92vh] transition-all ${
           isDark
             ? 'bg-[#0b1329]/95 backdrop-blur-2xl border-white/20 text-white'
             : 'bg-white border-slate-200 text-slate-900'
@@ -119,16 +119,16 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
         {/* Modal Header */}
         <div className={`px-6 py-4 border-b flex items-center justify-between ${currentTheme.headerBg}`}>
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-600 text-slate-950 shadow-md flex items-center justify-center">
+            <div className="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-600 text-slate-950 shadow-xs flex items-center justify-center">
               <Coins className="w-5 h-5 text-inherit" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h2 className="text-base font-extrabold tracking-tight font-sans">
+                <h2 className="text-base font-semibold tracking-tight font-sans">
                   Real-Time Bullion Rate Center
                 </h2>
                 <span
-                  className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold border flex items-center space-x-1.5 ${
+                  className={`text-[10px] px-2.5 py-0.5 rounded-full font-medium border flex items-center space-x-1.5 ${
                     rates.isLocked
                       ? 'bg-amber-500/20 text-amber-300 border-amber-400/40'
                       : 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40'
@@ -153,7 +153,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
             <button
               onClick={handleRefresh}
               disabled={isRefreshing || rates.isLocked}
-              className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl border text-xs font-semibold flex items-center space-x-1.5 transition-all cursor-pointer ${
                 rates.isLocked
                   ? 'opacity-40 cursor-not-allowed border-slate-500 text-slate-400'
                   : isDark
@@ -169,9 +169,9 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
             {/* Lock / Freeze Rate Button */}
             <button
               onClick={handleToggleLock}
-              className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl border text-xs font-semibold flex items-center space-x-1.5 transition-all cursor-pointer ${
                 rates.isLocked
-                  ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-md'
+                  ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-xs'
                   : isDark
                   ? 'bg-white/10 hover:bg-white/20 border-white/20 text-slate-300'
                   : 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-700'
@@ -199,16 +199,16 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
           {/* 1. Six Metallic Rate Cards Grid */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h3 className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+              <h3 className={`text-xs font-semibold uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                 Active Metal Rates & Pure Karat Conversions
               </h3>
               <div className="flex items-center space-x-2 text-[11px]">
-                <span className={`flex items-center space-x-1 ${rates.gold24kChange >= 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}`}>
+                <span className={`flex items-center space-x-1 ${rates.gold24kChange >= 0 ? 'text-emerald-400 font-semibold' : 'text-rose-400 font-semibold'}`}>
                   {rates.gold24kChange >= 0 ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
                   <span>Gold 24K: {rates.gold24kChange >= 0 ? '+' : ''}₹{rates.gold24kChange}/g ({rates.gold24kChangePct}%)</span>
                 </span>
                 <span className={isDark ? 'text-white/20' : 'text-slate-300'}>•</span>
-                <span className={`flex items-center space-x-1 ${rates.silverChange >= 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}`}>
+                <span className={`flex items-center space-x-1 ${rates.silverChange >= 0 ? 'text-emerald-400 font-semibold' : 'text-rose-400 font-semibold'}`}>
                   {rates.silverChange >= 0 ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
                   <span>Silver: {rates.silverChange >= 0 ? '+' : ''}₹{rates.silverChange}/g ({rates.silverChangePct}%)</span>
                 </span>
@@ -226,21 +226,21 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
               >
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-400 border border-amber-400/40">
+                    <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-400 border border-amber-400/40">
                       99.9% Fine
                     </span>
-                    <h4 className="text-sm font-extrabold mt-1">Gold 24K (Pure)</h4>
+                    <h4 className="text-sm font-semibold mt-1">Gold 24K (Pure)</h4>
                   </div>
                   <Coins className="w-5 h-5 text-amber-400" />
                 </div>
 
                 <div className="my-2">
-                  <div className="text-2xl font-black font-mono tracking-tight text-amber-400">
+                  <div className="text-2xl font-semibold font-mono tracking-tight text-amber-400">
                     ₹{rates.gold24k.toLocaleString('en-IN')}
                     <span className="text-xs font-normal text-slate-400 ml-1">/ gram</span>
                   </div>
-                  <div className={`text-xs font-mono font-semibold mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    10g (Tola): <span className="font-bold">₹{rates.gold24kTola.toLocaleString('en-IN')}</span>
+                  <div className={`text-xs font-mono font-medium mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                    10g (Tola): <span className="font-semibold">₹{rates.gold24kTola.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
@@ -260,27 +260,27 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
               >
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-yellow-500/20 text-yellow-400 border border-yellow-400/40">
+                    <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-md bg-yellow-500/20 text-yellow-400 border border-yellow-400/40">
                       91.6% Hallmark (BIS)
                     </span>
-                    <h4 className="text-sm font-extrabold mt-1">Gold 22K (916)</h4>
+                    <h4 className="text-sm font-semibold mt-1">Gold 22K (916)</h4>
                   </div>
                   <Sparkles className="w-5 h-5 text-yellow-400" />
                 </div>
 
                 <div className="my-2">
-                  <div className="text-2xl font-black font-mono tracking-tight text-yellow-400">
+                  <div className="text-2xl font-semibold font-mono tracking-tight text-yellow-400">
                     ₹{rates.gold22k.toLocaleString('en-IN')}
                     <span className="text-xs font-normal text-slate-400 ml-1">/ gram</span>
                   </div>
-                  <div className={`text-xs font-mono font-semibold mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    10g Bar: <span className="font-bold">₹{rates.gold22kTola.toLocaleString('en-IN')}</span>
+                  <div className={`text-xs font-mono font-medium mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                    10g Bar: <span className="font-semibold">₹{rates.gold22kTola.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
                 <div className={`pt-2 border-t flex items-center justify-between text-[10.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
                   <span className={isDark ? 'text-slate-300 font-medium' : 'text-slate-600'}>Standard Jewellery Rate</span>
-                  <span className="text-emerald-400 font-bold">● Active POS Rate</span>
+                  <span className="text-emerald-400 font-semibold">● Active POS Rate</span>
                 </div>
               </div>
 
@@ -294,21 +294,21 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
               >
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-orange-500/20 text-orange-400 border border-orange-400/40">
+                    <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-md bg-orange-500/20 text-orange-400 border border-orange-400/40">
                       75.0% Fine (750)
                     </span>
-                    <h4 className="text-sm font-extrabold mt-1">Gold 18K (Diamond)</h4>
+                    <h4 className="text-sm font-semibold mt-1">Gold 18K (Diamond)</h4>
                   </div>
                   <Flame className="w-5 h-5 text-orange-400" />
                 </div>
 
                 <div className="my-2">
-                  <div className="text-2xl font-black font-mono tracking-tight text-orange-400">
+                  <div className="text-2xl font-semibold font-mono tracking-tight text-orange-400">
                     ₹{rates.gold18k.toLocaleString('en-IN')}
                     <span className="text-xs font-normal text-slate-400 ml-1">/ gram</span>
                   </div>
-                  <div className={`text-xs font-mono font-semibold mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    10g: <span className="font-bold">₹{(rates.gold18k * 10).toLocaleString('en-IN')}</span>
+                  <div className={`text-xs font-mono font-medium mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                    10g: <span className="font-semibold">₹{(rates.gold18k * 10).toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
@@ -328,21 +328,21 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
               >
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-400 border border-rose-400/40">
+                    <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-400 border border-rose-400/40">
                       58.5% Fine (585)
                     </span>
-                    <h4 className="text-sm font-extrabold mt-1">Gold 14K (Fashion)</h4>
+                    <h4 className="text-sm font-semibold mt-1">Gold 14K (Fashion)</h4>
                   </div>
                   <Sparkles className="w-5 h-5 text-rose-400" />
                 </div>
 
                 <div className="my-2">
-                  <div className="text-2xl font-black font-mono tracking-tight text-rose-400">
+                  <div className="text-2xl font-semibold font-mono tracking-tight text-rose-400">
                     ₹{rates.gold14k.toLocaleString('en-IN')}
                     <span className="text-xs font-normal text-slate-400 ml-1">/ gram</span>
                   </div>
-                  <div className={`text-xs font-mono font-semibold mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    10g: <span className="font-bold">₹{(rates.gold14k * 10).toLocaleString('en-IN')}</span>
+                  <div className={`text-xs font-mono font-medium mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                    10g: <span className="font-semibold">₹{(rates.gold14k * 10).toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
@@ -362,21 +362,21 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
               >
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-slate-400/20 text-slate-300 border border-slate-300/40">
+                    <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-md bg-slate-400/20 text-slate-300 border border-slate-300/40">
                       99.9% Fine Pure
                     </span>
-                    <h4 className="text-sm font-extrabold mt-1">Silver 999 (Pure)</h4>
+                    <h4 className="text-sm font-semibold mt-1">Silver 999 (Pure)</h4>
                   </div>
                   <Scale className="w-5 h-5 text-slate-300" />
                 </div>
 
                 <div className="my-2">
-                  <div className="text-2xl font-black font-mono tracking-tight text-slate-200">
+                  <div className="text-2xl font-semibold font-mono tracking-tight text-slate-200">
                     ₹{rates.silver999.toFixed(2)}
                     <span className="text-xs font-normal text-slate-400 ml-1">/ gram</span>
                   </div>
-                  <div className={`text-xs font-mono font-semibold mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    1 Kg Bar: <span className="font-bold">₹{rates.silverKg.toLocaleString('en-IN')}</span>
+                  <div className={`text-xs font-mono font-medium mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                    1 Kg Bar: <span className="font-semibold">₹{rates.silverKg.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
@@ -396,21 +396,21 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
               >
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-zinc-400/20 text-zinc-300 border border-zinc-300/40">
+                    <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-md bg-zinc-400/20 text-zinc-300 border border-zinc-300/40">
                       92.5% Sterling
                     </span>
-                    <h4 className="text-sm font-extrabold mt-1">Silver 925 (Chandi)</h4>
+                    <h4 className="text-sm font-semibold mt-1">Silver 925 (Chandi)</h4>
                   </div>
                   <Sparkles className="w-5 h-5 text-zinc-300" />
                 </div>
 
                 <div className="my-2">
-                  <div className="text-2xl font-black font-mono tracking-tight text-zinc-200">
+                  <div className="text-2xl font-semibold font-mono tracking-tight text-zinc-200">
                     ₹{rates.silver925.toFixed(2)}
                     <span className="text-xs font-normal text-slate-400 ml-1">/ gram</span>
                   </div>
-                  <div className={`text-xs font-mono font-semibold mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    1 Kg: <span className="font-bold">₹{Math.round(rates.silver925 * 1000).toLocaleString('en-IN')}</span>
+                  <div className={`text-xs font-mono font-medium mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                    1 Kg: <span className="font-semibold">₹{Math.round(rates.silver925 * 1000).toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
@@ -431,13 +431,13 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
             <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
               <div className="flex items-center space-x-2">
                 <Sliders className="w-4 h-4 text-amber-400" />
-                <h4 className="text-xs font-bold uppercase tracking-wider">
+                <h4 className="text-xs font-semibold uppercase tracking-wider">
                   Showroom Premium & Custom Board Overrides
                 </h4>
               </div>
               <button
                 onClick={() => setIsManualEdit(!isManualEdit)}
-                className={`text-xs font-bold px-2.5 py-1 rounded-lg border flex items-center space-x-1.5 transition-all cursor-pointer ${
+                className={`text-xs font-semibold px-2.5 py-1 rounded-lg border flex items-center space-x-1.5 transition-all cursor-pointer ${
                   isManualEdit
                     ? 'bg-amber-500 text-slate-950 border-amber-400'
                     : isDark
@@ -453,35 +453,35 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
             {isManualEdit ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 <div>
-                  <label className="text-[11px] font-bold block mb-1">Manual 24K Gold Rate (₹/g)</label>
+                  <label className="text-[11px] font-semibold block mb-1">Manual 24K Gold Rate (₹/g)</label>
                   <input
                     type="number"
                     value={manual24k}
                     onChange={(e) => setManual24k(parseFloat(e.target.value) || 0)}
-                    className={`w-full px-3 py-1.5 rounded-xl border font-mono font-bold text-center ${
+                    className={`w-full px-3 py-1.5 rounded-xl border font-mono font-semibold text-center ${
                       isDark ? 'bg-white/10 border-white/20 text-amber-300' : 'bg-white border-slate-300 text-amber-900'
                     }`}
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] font-bold block mb-1">Manual Silver 999 Rate (₹/g)</label>
+                  <label className="text-[11px] font-semibold block mb-1">Manual Silver 999 Rate (₹/g)</label>
                   <input
                     type="number"
                     step={0.1}
                     value={manualSilver}
                     onChange={(e) => setManualSilver(parseFloat(e.target.value) || 0)}
-                    className={`w-full px-3 py-1.5 rounded-xl border font-mono font-bold text-center ${
+                    className={`w-full px-3 py-1.5 rounded-xl border font-mono font-semibold text-center ${
                       isDark ? 'bg-white/10 border-white/20 text-slate-200' : 'bg-white border-slate-300 text-slate-900'
                     }`}
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] font-bold block mb-1">Gold Premium (+₹/g)</label>
+                  <label className="text-[11px] font-semibold block mb-1">Gold Premium (+₹/g)</label>
                   <input
                     type="number"
                     value={markupGold}
                     onChange={(e) => setMarkupGold(parseFloat(e.target.value) || 0)}
-                    className={`w-full px-3 py-1.5 rounded-xl border font-mono font-bold text-center ${
+                    className={`w-full px-3 py-1.5 rounded-xl border font-mono font-semibold text-center ${
                       isDark ? 'bg-white/10 border-white/20 text-white' : 'bg-white border-slate-300 text-slate-900'
                     }`}
                   />
@@ -489,7 +489,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
                 <div className="flex items-end">
                   <button
                     onClick={handleSaveAdjustments}
-                    className="w-full py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-md transition-all cursor-pointer"
+                    className="w-full py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold text-xs shadow-xs transition-all cursor-pointer"
                   >
                     Save & Recalculate
                   </button>
@@ -498,7 +498,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
                 <div>
-                  <label className="text-[11px] font-bold block mb-1 text-slate-400">
+                  <label className="text-[11px] font-semibold block mb-1 text-slate-400">
                     Showroom Gold Premium (+₹/g)
                   </label>
                   <div className="flex items-center space-x-2">
@@ -506,7 +506,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
                       type="number"
                       value={markupGold}
                       onChange={(e) => setMarkupGold(parseFloat(e.target.value) || 0)}
-                      className={`w-full px-3 py-1.5 rounded-xl border font-mono font-bold text-center ${
+                      className={`w-full px-3 py-1.5 rounded-xl border font-mono font-semibold text-center ${
                         isDark ? 'bg-white/10 border-white/20 text-amber-300' : 'bg-white border-slate-300 text-amber-900'
                       }`}
                       placeholder="+₹0"
@@ -515,7 +515,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold block mb-1 text-slate-400">
+                  <label className="text-[11px] font-semibold block mb-1 text-slate-400">
                     Showroom Silver Premium (+₹/g)
                   </label>
                   <div className="flex items-center space-x-2">
@@ -524,7 +524,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
                       step={0.1}
                       value={markupSilver}
                       onChange={(e) => setMarkupSilver(parseFloat(e.target.value) || 0)}
-                      className={`w-full px-3 py-1.5 rounded-xl border font-mono font-bold text-center ${
+                      className={`w-full px-3 py-1.5 rounded-xl border font-mono font-semibold text-center ${
                         isDark ? 'bg-white/10 border-white/20 text-slate-200' : 'bg-white border-slate-300 text-slate-900'
                       }`}
                       placeholder="+₹0"
@@ -535,7 +535,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
                 <div className="flex items-end">
                   <button
                     onClick={handleSaveAdjustments}
-                    className="w-full py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center space-x-1.5"
+                    className="w-full py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-xs transition-all cursor-pointer flex items-center justify-center space-x-1.5"
                   >
                     <Check className="w-3.5 h-3.5" />
                     <span>Apply Showroom Markup</span>
@@ -551,7 +551,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setShowWhatsApp(true)}
-              className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
+              className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-xs transition-all cursor-pointer"
             >
               <Share2 className="w-4 h-4" />
               <span>Share Daily Rate Card (WhatsApp)</span>
@@ -561,7 +561,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
           <div className="flex items-center space-x-2">
             <button
               onClick={onClose}
-              className={`px-4 py-2 rounded-xl border font-bold text-xs transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-xl border font-semibold text-xs transition-all cursor-pointer ${
                 isDark
                   ? 'bg-white/10 hover:bg-white/15 border-white/20 text-slate-300'
                   : 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-700'
@@ -572,7 +572,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
 
             <button
               onClick={handleApplyToERP}
-              className={`px-5 py-2 rounded-xl font-extrabold text-xs shadow-lg transition-all cursor-pointer flex items-center space-x-2 ${
+              className={`px-5 py-2 rounded-xl font-semibold text-xs shadow-xs transition-all cursor-pointer flex items-center space-x-2 ${
                 applySuccess
                   ? 'bg-emerald-500 text-slate-950'
                   : 'bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950'

@@ -1256,32 +1256,32 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 text-xs no-print">
             <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
               <span className="text-[10px] text-slate-500 font-bold uppercase block">Total Tags in List</span>
-              <strong className="text-base text-slate-900 font-extrabold">{stats.totalTags}</strong>
+              <strong className="text-base text-slate-900 font-semibold">{stats.totalTags}</strong>
               <span className="text-[10px] text-slate-400 block font-sans">Barcodes Registered</span>
             </div>
             <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
               <span className="text-[10px] text-slate-500 font-bold uppercase block">Total Gross Wt</span>
-              <strong className="text-base text-blue-900 font-extrabold">{formatWeight(stats.totalGross)}</strong>
+              <strong className="text-base text-blue-900 font-semibold">{formatWeight(stats.totalGross)}</strong>
               <span className="text-[10px] text-slate-400 block font-sans">Across All Tags</span>
             </div>
             <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
               <span className="text-[10px] text-slate-500 font-bold uppercase block">Total Net Wt</span>
-              <strong className="text-base text-sky-800 font-extrabold">{formatWeight(stats.totalNet)}</strong>
+              <strong className="text-base text-sky-800 font-semibold">{formatWeight(stats.totalNet)}</strong>
               <span className="text-[10px] text-slate-400 block font-sans">Pure Metal Net</span>
             </div>
             <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
               <span className="text-[10px] text-slate-500 font-bold uppercase block">Fine Bullion Wt</span>
-              <strong className="text-base text-amber-700 font-extrabold">{formatWeight(stats.totalFine)}</strong>
+              <strong className="text-base text-amber-700 font-semibold">{formatWeight(stats.totalFine)}</strong>
               <span className="text-[10px] text-slate-400 block font-sans">24K / 99.9% Equivalent</span>
             </div>
             <div className="p-3 rounded-xl bg-emerald-50/60 border border-emerald-200 shadow-2xs font-mono">
               <span className="text-[10px] text-emerald-800 font-bold uppercase block">Printed Tags</span>
-              <strong className="text-base text-emerald-900 font-extrabold">{stats.printedCount}</strong>
+              <strong className="text-base text-emerald-900 font-semibold">{stats.printedCount}</strong>
               <span className="text-[10px] text-emerald-700 block font-sans">Labels Generated</span>
             </div>
             <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200 shadow-2xs font-mono">
               <span className="text-[10px] text-amber-800 font-bold uppercase block">Not Printed Yet</span>
-              <strong className="text-base text-amber-900 font-extrabold">{stats.unprintedCount}</strong>
+              <strong className="text-base text-amber-900 font-semibold">{stats.unprintedCount}</strong>
               <span className="text-[10px] text-amber-700 block font-sans">Ready to Print</span>
             </div>
           </div>
@@ -1679,7 +1679,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                         );
                       })}
                     </tbody>
-                    <tfoot className="bg-slate-100 font-bold font-mono border-t-2 border-slate-300 text-xs">
+                    <tfoot className="bg-slate-100 font-semibold font-mono border-t-2 border-slate-300 text-xs">
                       <tr>
                         <td colSpan={3} className="p-2.5 font-sans uppercase text-right">
                           List Totals ({filteredPrintTags.length} Tags):
@@ -1687,17 +1687,17 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                         <td className="p-2.5"></td>
                         <td className="p-2.5"></td>
                         <td className="p-2.5"></td>
-                        <td className="p-2.5 text-center text-slate-900 font-extrabold">
+                        <td className="p-2.5 text-center text-slate-900 font-semibold">
                           {filteredPrintTags.reduce((s, t) => s + (t.qty || 1), 0)}
                         </td>
-                        <td className="p-2.5 text-right text-slate-900 font-extrabold">
+                        <td className="p-2.5 text-right text-slate-900 font-semibold">
                           {formatWeight(stats.totalGross)}
                         </td>
-                        <td className="p-2.5 text-right text-blue-900 font-extrabold">
+                        <td className="p-2.5 text-right text-blue-900 font-semibold">
                           {formatWeight(stats.totalNet)}
                         </td>
                         <td className="p-2.5"></td>
-                        <td className="p-2.5 text-right text-amber-900 font-extrabold">
+                        <td className="p-2.5 text-right text-amber-900 font-semibold">
                           {formatWeight(stats.totalFine)}
                         </td>
                         <td colSpan={5} className="p-2.5"></td>
@@ -1754,7 +1754,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                   <div className="my-3 p-3 bg-slate-50 border border-dashed border-slate-300 rounded-xl space-y-2">
                     {/* Item Name prominently at the top */}
                     <div className="text-center pb-1.5 border-b border-slate-200">
-                      <span className="text-xs font-black uppercase text-slate-900 tracking-wide block">
+                      <span className="text-xs font-semibold uppercase text-slate-900 tracking-wide block">
                         {tag.item_name}
                       </span>
                     </div>
@@ -1853,7 +1853,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
               <span className="text-[10px] font-bold uppercase block">
                 {isWeightReconciled ? '✓ Fully Reconciled' : 'Remaining to Tag'}
               </span>
-              <strong className="text-base font-extrabold">{formatWeight(remainingWeightToReconcile)}</strong>
+              <strong className="text-base font-semibold">{formatWeight(remainingWeightToReconcile)}</strong>
             </div>
           </div>
 
@@ -2018,27 +2018,27 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 text-xs no-print">
             <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
               <span className="text-[10px] text-slate-500 font-bold uppercase block">Loose Lots</span>
-              <strong className="text-base text-slate-900 font-extrabold">{looseStats.totalLots}</strong>
+              <strong className="text-base text-slate-900 font-semibold">{looseStats.totalLots}</strong>
               <span className="text-[10px] text-slate-400 block font-sans">Ready for Tagging</span>
             </div>
             <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
               <span className="text-[10px] text-slate-500 font-bold uppercase block">Total Gross Wt</span>
-              <strong className="text-base text-blue-900 font-extrabold">{formatWeight(looseStats.totalGross)}</strong>
+              <strong className="text-base text-blue-900 font-semibold">{formatWeight(looseStats.totalGross)}</strong>
               <span className="text-[10px] text-slate-400 block font-sans">Untagged Inventory</span>
             </div>
             <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs font-mono">
               <span className="text-[10px] text-slate-500 font-bold uppercase block">Fine Bullion Wt</span>
-              <strong className="text-base text-amber-700 font-extrabold">{formatWeight(looseStats.totalFine)}</strong>
+              <strong className="text-base text-amber-700 font-semibold">{formatWeight(looseStats.totalFine)}</strong>
               <span className="text-[10px] text-slate-400 block font-sans">24K / 99.9% Equivalent</span>
             </div>
             <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200 shadow-2xs font-mono">
               <span className="text-[10px] text-blue-800 font-bold uppercase block">Selected Lots</span>
-              <strong className="text-base text-blue-900 font-extrabold">{selectedLooseIds.length}</strong>
+              <strong className="text-base text-blue-900 font-semibold">{selectedLooseIds.length}</strong>
               <span className="text-[10px] text-blue-700 block font-sans">For Batch Transfer</span>
             </div>
             <div className="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 shadow-2xs font-mono">
               <span className="text-[10px] text-emerald-800 font-bold uppercase block">Transfer History</span>
-              <strong className="text-base text-emerald-900 font-extrabold">{transferHistory.length}</strong>
+              <strong className="text-base text-emerald-900 font-semibold">{transferHistory.length}</strong>
               <span className="text-[10px] text-emerald-700 block font-sans">Completed Transfers</span>
             </div>
           </div>
@@ -2513,7 +2513,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
       {/* ========================================================================= */}
       {showSplitModal && splitTargetLot && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-xl border border-slate-200/90 overflow-hidden animate-in zoom-in-95 duration-150">
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
               <div className="flex items-center space-x-2">
@@ -2759,7 +2759,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
       {/* ========================================================================= */}
       {showInwardModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-xl border border-slate-200/90 overflow-hidden animate-in zoom-in-95 duration-150">
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
               <div className="flex items-center space-x-2">
@@ -2944,7 +2944,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
       {/* ========================================================================= */}
       {showPrintModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-xl border border-slate-200/90 overflow-hidden animate-in zoom-in-95 duration-150">
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center no-print">
               <div className="flex items-center space-x-2">
@@ -2966,7 +2966,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                 <select
                   value={printFormat}
                   onChange={(e) => setPrintFormat(e.target.value as any)}
-                  className="px-2.5 py-1 bg-white border border-slate-300 rounded text-slate-800 text-xs font-bold"
+                  className="px-2.5 py-1 bg-white border border-slate-300 rounded text-slate-800 text-xs font-semibold"
                 >
                   <option value="dumbbell">Dumbbell Butterfly Tag (50x12mm)</option>
                   <option value="two_up">2-Up Barcode Label (A4 Sheet)</option>
@@ -2977,7 +2977,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow flex items-center space-x-1.5 cursor-pointer"
+                  className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow flex items-center space-x-1.5 cursor-pointer"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Send to Printer</span>
@@ -3005,13 +3005,13 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                     >
                       {/* Left Flap: Item Name & Barcode */}
                       <div className="w-[45%] text-left space-y-0.5">
-                        <div className="font-black text-[11px] leading-tight text-slate-950 uppercase line-clamp-1">
+                        <div className="font-semibold text-[11px] leading-tight text-slate-950 uppercase line-clamp-1">
                           {tag.item_name}
                         </div>
                         <div className="py-0.5">
                           <BarcodeSvg value={tag.tag_no} width={110} height={20} />
                         </div>
-                        <div className="text-[10px] font-bold text-slate-900 tracking-wider">
+                        <div className="text-[10px] font-semibold text-slate-900 tracking-wider">
                           {tag.tag_no}
                         </div>
                       </div>
@@ -3023,13 +3023,13 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
 
                       {/* Right Flap: Gross Wt, Net Wt, Purity, HUID, Size */}
                       <div className="w-[45%] text-right text-[10px] leading-tight space-y-0.5">
-                        <div className="font-bold text-slate-900">
+                        <div className="font-semibold text-slate-900">
                           Gr: <strong>{tag.gross_wt}g</strong> | Nt: <strong>{tag.net_wt}g</strong>
                         </div>
-                        <div className="font-semibold text-slate-800">
+                        <div className="font-medium text-slate-800">
                           Pur: <strong>{tag.purity}%</strong> • Sz: <strong>{tag.size}</strong>
                         </div>
-                        <div className="font-black text-blue-900 text-[11px]">
+                        <div className="font-semibold text-blue-900 text-[11px]">
                           HUID: {tag.huid}
                         </div>
                         <div className="text-[9px] text-slate-600">
@@ -3050,13 +3050,13 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                       className="p-3 bg-white border-2 border-slate-800 rounded-lg text-center space-y-1 font-mono text-slate-900"
                     >
                       {/* Item Name Prominently at Top */}
-                      <div className="font-black text-xs uppercase tracking-wide border-b border-slate-200 pb-1">
+                      <div className="font-semibold text-xs uppercase tracking-wide border-b border-slate-200 pb-1">
                         {tag.item_name}
                       </div>
                       <div className="flex justify-center py-1">
                         <BarcodeSvg value={tag.tag_no} width={150} height={26} />
                       </div>
-                      <div className="flex justify-between text-[10px] font-bold px-1">
+                      <div className="flex justify-between text-[10px] font-semibold px-1">
                         <span>{tag.tag_no}</span>
                         <span>HUID: {tag.huid}</span>
                       </div>
@@ -3081,13 +3081,13 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                     >
                       <QrCode className="w-14 h-14 text-slate-950 shrink-0" />
                       <div className="text-left text-[10px] leading-tight space-y-0.5">
-                        <div className="font-black text-[11px] uppercase text-slate-950 line-clamp-1">
+                        <div className="font-semibold text-[11px] uppercase text-slate-950 line-clamp-1">
                           {tag.item_name}
                         </div>
-                        <div className="font-bold text-blue-900">{tag.tag_no}</div>
+                        <div className="font-semibold text-blue-900">{tag.tag_no}</div>
                         <div>Gr: {tag.gross_wt}g | Nt: {tag.net_wt}g</div>
                         <div>Purity: {tag.purity}% | Size: {tag.size}</div>
-                        <div className="font-black text-blue-900">HUID: {tag.huid}</div>
+                        <div className="font-semibold text-blue-900">HUID: {tag.huid}</div>
                       </div>
                     </div>
                   ))}
@@ -3098,7 +3098,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
               {printFormat === 'sheet' && (
                 <div className="bg-white p-4 border border-slate-300 rounded-xl">
                   <div className="text-center pb-3 border-b-2 border-slate-800 mb-3">
-                    <h3 className="text-sm font-black uppercase text-slate-900">
+                    <h3 className="text-sm font-semibold uppercase text-slate-900">
                       Jewellery Barcode Inventory Sheet
                     </h3>
                     <p className="text-[10px] text-slate-500 font-mono">

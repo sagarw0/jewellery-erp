@@ -237,7 +237,7 @@ export const DayBookView: React.FC<DayBookViewProps> = ({
           </div>
           <div className="grid grid-cols-2 gap-2 text-slate-600 font-mono">
             <div>Opening: <strong className="text-slate-900">{formatCurrency(summary.total_cash_opening)}</strong></div>
-            <div>Closing: <strong className="text-emerald-700 font-extrabold">{formatCurrency(summary.total_cash_closing)}</strong></div>
+            <div>Closing: <strong className="text-emerald-700 font-semibold">{formatCurrency(summary.total_cash_closing)}</strong></div>
           </div>
         </div>
 
@@ -249,7 +249,7 @@ export const DayBookView: React.FC<DayBookViewProps> = ({
           </div>
           <div className="grid grid-cols-2 gap-2 text-slate-600 font-mono">
             <div>Opening: <strong className="text-slate-900">{formatCurrency(summary.bank_opening)}</strong></div>
-            <div>Closing: <strong className="text-blue-700 font-extrabold">{formatCurrency(summary.bank_closing)}</strong></div>
+            <div>Closing: <strong className="text-blue-700 font-semibold">{formatCurrency(summary.bank_closing)}</strong></div>
           </div>
         </div>
       </div>

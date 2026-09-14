@@ -34,7 +34,7 @@ export const ColumnSettingsModal: React.FC<ColumnSettingsModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-      <div className="bg-white border border-sky-200 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800">
+      <div className="bg-white border border-sky-200/90 rounded-2xl w-full max-w-md shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800">
         <div className="px-5 py-3.5 bg-gradient-to-r from-blue-600 to-sky-600 text-white flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Sliders className="w-4 h-4 text-amber-300" />

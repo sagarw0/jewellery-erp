@@ -75,7 +75,7 @@ export const ReceiveKaragirModal: React.FC<ReceiveKaragirModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-      <div className="bg-white border border-emerald-300 rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800 flex flex-col max-h-[92vh]">
+      <div className="bg-white border border-emerald-300 rounded-2xl w-full max-w-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800 flex flex-col max-h-[92vh]">
         {/* Header */}
         <div className="px-5 py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white flex items-center justify-between shadow-xs">
           <div className="flex items-center space-x-2.5">
@@ -83,7 +83,7 @@ export const ReceiveKaragirModal: React.FC<ReceiveKaragirModalProps> = ({
               <CheckCircle2 className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-extrabold tracking-wide">
+              <h3 className="text-sm font-semibold tracking-wide">
                 Receive Finished Jewellery from Karagir
               </h3>
               <p className="text-[11px] text-emerald-100 mt-0.5">
@@ -107,7 +107,7 @@ export const ReceiveKaragirModal: React.FC<ReceiveKaragirModalProps> = ({
               <span className="text-[10px] text-emerald-800 font-bold uppercase block">
                 Order & Artisan:
               </span>
-              <div className="font-extrabold text-emerald-950 text-xs">
+              <div className="font-semibold text-emerald-950 text-xs">
                 {order.order_no} • {assignment?.karagir_name || order.assigned_karagir || 'Assigned Karagir'}
               </div>
               <div className="text-[11px] text-slate-600 font-medium">
@@ -119,7 +119,7 @@ export const ReceiveKaragirModal: React.FC<ReceiveKaragirModalProps> = ({
               <span className="text-[10px] text-emerald-800 font-bold uppercase block">
                 Issued Metal Weight:
               </span>
-              <div className="text-sm font-black font-mono text-emerald-950">
+              <div className="text-sm font-semibold font-mono text-emerald-950">
                 {formatWeight(issuedGrossWt)} (Purity: {assignment?.issued_purity || 99.9}%)
               </div>
               <div className="text-[10px] text-slate-500 font-mono">
@@ -130,7 +130,7 @@ export const ReceiveKaragirModal: React.FC<ReceiveKaragirModalProps> = ({
 
           {/* Section 1: Received Weights */}
           <div className="space-y-2 border-b border-slate-100 pb-3">
-            <label className="text-[11px] font-extrabold text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
+            <label className="text-[11px] font-semibold text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
               <Scale className="w-3.5 h-3.5 text-emerald-700" />
               <span>Finished Ornament & Scrap Weights</span>
             </label>

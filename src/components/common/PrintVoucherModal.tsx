@@ -33,7 +33,7 @@ export const PrintVoucherModal: React.FC<PrintVoucherModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-      <div className="bg-white border border-sky-200 rounded-2xl w-full max-w-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800">
+      <div className="bg-white border border-sky-200/90 rounded-2xl w-full max-w-3xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800">
         <div className="px-5 py-3.5 bg-gradient-to-r from-blue-600 to-sky-600 text-white flex items-center justify-between no-print">
           <div className="flex items-center space-x-2">
             <Printer className="w-5 h-5" />
@@ -146,7 +146,7 @@ export const PrintVoucherModal: React.FC<PrintVoucherModalProps> = ({
               </div>
               <div className="text-right">
                 <span className="text-slate-500 text-[10px] uppercase font-bold block">Balance Due</span>
-                <span className="text-xl font-mono font-extrabold text-blue-950">
+                <span className="text-xl font-mono font-semibold text-blue-950">
                   {formatCurrency(data.payment.balance_amount || 0)}
                 </span>
               </div>

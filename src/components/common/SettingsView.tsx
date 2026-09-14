@@ -138,7 +138,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   type="number"
                   value={rate24k}
                   onChange={(e) => setRate24k(parseFloat(e.target.value) || 0)}
-                  className="w-full px-2.5 py-1.5 bg-amber-50 border border-amber-300 rounded-lg text-amber-900 font-mono text-center font-extrabold"
+                  className="w-full px-2.5 py-1.5 bg-amber-50 border border-amber-300 rounded-lg text-amber-900 font-mono text-center font-semibold"
                 />
               </div>
               <div>
@@ -147,7 +147,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   type="number"
                   value={rate22k}
                   onChange={(e) => setRate22k(parseFloat(e.target.value) || 0)}
-                  className="w-full px-2.5 py-1.5 bg-amber-50 border border-amber-300 rounded-lg text-amber-900 font-mono text-center font-extrabold"
+                  className="w-full px-2.5 py-1.5 bg-amber-50 border border-amber-300 rounded-lg text-amber-900 font-mono text-center font-semibold"
                 />
               </div>
               <div>

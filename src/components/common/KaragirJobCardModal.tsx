@@ -103,12 +103,12 @@ export const KaragirJobCardModal: React.FC<KaragirJobCardModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-      <div className="bg-white border border-amber-300 rounded-2xl w-full max-w-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800 flex flex-col max-h-[92vh]">
+      <div className="bg-white border border-amber-300 rounded-2xl w-full max-w-3xl shadow-xl border-amber-300/90 overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800 flex flex-col max-h-[92vh]">
         {/* Modal Top Bar */}
         <div className="px-5 py-3.5 bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 text-white flex items-center justify-between no-print shadow-xs">
           <div className="flex items-center space-x-2">
             <Hammer className="w-5 h-5 text-amber-200" />
-            <h3 className="text-sm font-bold tracking-wide">
+            <h3 className="text-sm font-semibold tracking-wide">
               Official Karagir Workshop Job Card & Issue Voucher
             </h3>
           </div>
@@ -143,7 +143,7 @@ export const KaragirJobCardModal: React.FC<KaragirJobCardModalProps> = ({
           <div className="border-b-2 border-slate-900 pb-3 flex justify-between items-start">
             <div>
               <div className="flex items-center space-x-2">
-                <h2 className="text-lg font-black tracking-wide uppercase text-amber-950">
+                <h2 className="text-lg font-bold tracking-wide uppercase text-amber-950">
                   SWARNA JEWELLERS & WORKSHOP
                 </h2>
                 <span className="px-2 py-0.5 bg-amber-100 border border-amber-300 text-amber-900 text-[10px] font-bold rounded uppercase">
@@ -158,7 +158,7 @@ export const KaragirJobCardModal: React.FC<KaragirJobCardModalProps> = ({
               </p>
             </div>
             <div className="text-right space-y-1">
-              <div className="text-xs font-mono font-black px-2.5 py-1 bg-amber-50 border border-amber-300 rounded text-amber-950">
+              <div className="text-xs font-mono font-semibold px-2.5 py-1 bg-amber-50 border border-amber-300 rounded text-amber-950">
                 VOUCHER: {currentAssignment.voucher_no}
               </div>
               <div className="text-[10px] text-slate-600 font-mono">
@@ -176,7 +176,7 @@ export const KaragirJobCardModal: React.FC<KaragirJobCardModalProps> = ({
               <span className="text-[10px] uppercase font-bold text-amber-900 block mb-0.5">
                 Assigned Artisan / Karagir:
               </span>
-              <div className="text-sm font-extrabold text-slate-900 flex items-center space-x-1.5">
+              <div className="text-sm font-semibold text-slate-900 flex items-center space-x-1.5">
                 <span>{currentAssignment.karagir_name}</span>
               </div>
               {currentAssignment.karagir_phone && (
@@ -305,7 +305,7 @@ export const KaragirJobCardModal: React.FC<KaragirJobCardModalProps> = ({
                 </div>
                 <div className="flex justify-between pt-1 border-t border-slate-200 text-amber-950 font-bold">
                   <span className="text-amber-900 font-sans">Fine Gold Issued:</span>
-                  <span className="font-black text-amber-900">{formatWeight(currentAssignment.issued_fine_wt)}</span>
+                  <span className="font-semibold text-amber-900">{formatWeight(currentAssignment.issued_fine_wt)}</span>
                 </div>
               </div>
             </div>

@@ -1250,7 +1250,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
               </div>
 
               <div>
-                <div className="text-2xl font-mono font-extrabold text-amber-900">
+                <div className="text-2xl font-mono font-semibold text-amber-900">
                   {formatCurrency(payment.balance_amount)}
                 </div>
                 <div className="text-[11px] text-amber-800 mt-1 flex items-center space-x-1 font-mono">
@@ -1271,7 +1271,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
               <span className="text-[10.5px] font-bold text-slate-500 uppercase tracking-tight block">
                 Total Orders Booked
               </span>
-              <div className="text-xl font-black font-mono text-slate-900 mt-1">{orders.length} Orders</div>
+              <div className="text-xl font-semibold font-mono text-slate-900 mt-1">{orders.length} Orders</div>
               <span className="text-[10px] text-slate-400">All customer bookings</span>
             </div>
 
@@ -1279,7 +1279,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
               <span className="text-[10.5px] font-bold text-amber-800 uppercase tracking-tight block">
                 Assigned to Karagirs
               </span>
-              <div className="text-xl font-black font-mono text-amber-950 mt-1">
+              <div className="text-xl font-semibold font-mono text-amber-950 mt-1">
                 {orders.filter((o) => o.assigned_karagir || o.karagir_assignment).length} Orders
               </div>
               <span className="text-[10px] text-amber-700">Allocated to workshops</span>
@@ -1289,7 +1289,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
               <span className="text-[10.5px] font-bold text-blue-800 uppercase tracking-tight block">
                 Active in Workshop
               </span>
-              <div className="text-xl font-black font-mono text-blue-950 mt-1">
+              <div className="text-xl font-semibold font-mono text-blue-950 mt-1">
                 {orders.filter((o) => o.status === 'In Workshop' || (o.assigned_karagir && o.status !== 'Received (Ready for Delivery)')).length} Orders
               </div>
               <span className="text-[10px] text-blue-700">Currently in manufacturing</span>
@@ -1299,7 +1299,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
               <span className="text-[10.5px] font-bold text-emerald-800 uppercase tracking-tight block">
                 Received / Ready
               </span>
-              <div className="text-xl font-black font-mono text-emerald-950 mt-1">
+              <div className="text-xl font-semibold font-mono text-emerald-950 mt-1">
                 {orders.filter((o) => o.status === 'Received (Ready for Delivery)' || o.karagir_assignment?.status === 'Received').length} Orders
               </div>
               <span className="text-[10px] text-emerald-700">Ready for hallmarking/pickup</span>
@@ -1520,7 +1520,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
         <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
           <div className="flex flex-wrap justify-between items-center border-b border-slate-100 pb-3 gap-2">
             <div>
-              <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center space-x-2">
+              <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider flex items-center space-x-2">
                 <Scale className="w-4 h-4 text-amber-600" />
                 <span>Workshop Bullion & Raw Material Issue Ledger</span>
               </h2>
@@ -1545,7 +1545,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                 <span className="text-[10px] font-bold text-amber-900 uppercase block">
                   24K Fine Gold Issued to Karagirs
                 </span>
-                <div className="text-xl font-black font-mono text-amber-950 mt-1">185.450 g</div>
+                <div className="text-xl font-semibold font-mono text-amber-950 mt-1">185.450 g</div>
                 <span className="text-[10px] text-amber-700 font-medium">99.9% Pure Granules</span>
               </div>
               <div className="p-2.5 rounded-xl bg-amber-500 text-white">
@@ -1558,7 +1558,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                 <span className="text-[10px] font-bold text-yellow-900 uppercase block">
                   916 Alloyed Wire in Workshop
                 </span>
-                <div className="text-xl font-black font-mono text-yellow-950 mt-1">94.200 g</div>
+                <div className="text-xl font-semibold font-mono text-yellow-950 mt-1">94.200 g</div>
                 <span className="text-[10px] text-yellow-800 font-medium">22K Standard Wire / Plate</span>
               </div>
               <div className="p-2.5 rounded-xl bg-yellow-600 text-white">
@@ -1571,7 +1571,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                 <span className="text-[10px] font-bold text-slate-700 uppercase block">
                   Fine Silver Issued to Karagirs
                 </span>
-                <div className="text-xl font-black font-mono text-slate-900 mt-1">1,640.000 g</div>
+                <div className="text-xl font-semibold font-mono text-slate-900 mt-1">1,640.000 g</div>
                 <span className="text-[10px] text-slate-500 font-medium">99.9% / 92.5% Silver Stock</span>
               </div>
               <div className="p-2.5 rounded-xl bg-slate-600 text-white">
@@ -1630,7 +1630,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                           <td className="p-2.5 border-r border-slate-200 text-center text-slate-700">
                             {pur}%
                           </td>
-                          <td className="p-2.5 border-r border-slate-200 text-right font-black text-amber-900">
+                          <td className="p-2.5 border-r border-slate-200 text-right font-semibold text-amber-900">
                             {formatWeight(fWt)}
                           </td>
                           <td className="p-2.5 border-r border-slate-200 font-bold text-blue-900">
@@ -1659,7 +1659,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
       {activeTab === 'receive_order_from_karagir' && (
         <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
           <div className="border-b border-slate-100 pb-3">
-            <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center space-x-2">
+            <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider flex items-center space-x-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
               <span>Workshop Returns, Finished Ornament Receiving & Wastage Audit</span>
             </h2>
@@ -1753,7 +1753,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
         <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
           <div className="border-b border-slate-100 pb-3 flex justify-between items-center">
             <div>
-              <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
+              <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
                 Generate Sales Tax Invoice for Completed Orders
               </h2>
               <p className="text-xs text-slate-500">
@@ -1793,7 +1793,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                     <td className="p-2.5 border-r border-slate-200 text-right font-bold text-emerald-800">
                       {formatCurrency(ord.payment.advance_amt)}
                     </td>
-                    <td className="p-2.5 border-r border-slate-200 text-right font-black text-rose-800">
+                    <td className="p-2.5 border-r border-slate-200 text-right font-semibold text-rose-800">
                       {formatCurrency(ord.payment.balance_amount)}
                     </td>
                     <td className="p-2.5 border-r border-slate-200 text-center font-sans">
@@ -1825,7 +1825,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
         <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
           <div className="border-b border-slate-100 pb-3 flex flex-wrap justify-between items-center gap-2">
             <div>
-              <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
+              <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
                 Comprehensive Order Tracking & Workshop Status Register
               </h2>
               <p className="text-xs text-slate-500">
@@ -1905,7 +1905,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
         <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
           <div className="border-b border-slate-100 pb-3 flex justify-between items-center">
             <div>
-              <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
+              <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
                 Customer Advance Deposits & Old Gold (URD) Ledger
               </h2>
               <p className="text-xs text-slate-500">
@@ -1953,10 +1953,10 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                       <td className="p-2.5 border-r border-slate-200 text-right text-amber-900 font-bold">
                         {formatCurrency(urdAdv)}
                       </td>
-                      <td className="p-2.5 border-r border-slate-200 text-right font-black text-emerald-900 bg-emerald-50/40">
+                      <td className="p-2.5 border-r border-slate-200 text-right font-semibold text-emerald-900 bg-emerald-50/40">
                         {formatCurrency(totAdv)}
                       </td>
-                      <td className="p-2.5 text-right font-black text-rose-900 bg-rose-50/40">
+                      <td className="p-2.5 text-right font-semibold text-rose-900 bg-rose-50/40">
                         {formatCurrency(ord.payment.balance_amount)}
                       </td>
                     </tr>
@@ -2042,7 +2042,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
       {/* Enlarged Photo Preview Modal */}
       {enlargedPhotoUrl && (
         <div className="fixed inset-0 bg-slate-900/80 z-60 flex items-center justify-center p-4">
-          <div className="bg-white p-4 rounded-2xl max-w-lg w-full space-y-3 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-white p-4 rounded-2xl max-w-lg w-full space-y-3 shadow-xl border border-slate-200/90 animate-in fade-in zoom-in-95 duration-150">
             <div className="flex justify-between items-center border-b border-slate-100 pb-2">
               <span className="font-bold text-slate-900 text-xs flex items-center space-x-1.5">
                 <Image className="w-4 h-4 text-amber-600" />

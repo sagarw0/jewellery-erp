@@ -22,7 +22,7 @@ export const FieldHelpModal: React.FC<FieldHelpModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-      <div className="bg-white border border-sky-200 rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800">
+      <div className="bg-white border border-sky-200/90 rounded-2xl w-full max-w-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800">
         <div className="px-5 py-3.5 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 text-white flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <HelpCircle className="w-5 h-5" />

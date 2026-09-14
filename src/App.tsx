@@ -399,7 +399,7 @@ export function App() {
       {currentSection === 'masters' && (
         <div className={`${currentTheme.subnavBg} px-4 py-2 flex items-center justify-between text-xs overflow-x-auto scrollbar-none transition-colors duration-200`}>
           <div className="flex items-center space-x-2">
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mr-1 hidden sm:inline">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mr-1 hidden sm:inline">
               Masters:
             </span>
             <button
@@ -449,7 +449,7 @@ export function App() {
       {currentSection === 'transactions' && (
         <div className={`${currentTheme.subnavBg} px-4 py-2 flex items-center justify-between text-xs overflow-x-auto scrollbar-none transition-colors duration-200`}>
           <div className="flex items-center space-x-2">
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mr-1 hidden sm:inline">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mr-1 hidden sm:inline">
               Vouchers:
             </span>
             <button
@@ -512,7 +512,7 @@ export function App() {
       {currentSection === 'accounts' && (
         <div className={`${currentTheme.subnavBg} px-4 py-2 flex items-center justify-between text-xs overflow-x-auto scrollbar-none transition-colors duration-200`}>
           <div className="flex items-center space-x-2">
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mr-1 hidden sm:inline">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mr-1 hidden sm:inline">
               Ledgers:
             </span>
             <button

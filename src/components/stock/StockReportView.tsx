@@ -262,10 +262,10 @@ export const StockReportView: React.FC<StockReportViewProps> = ({ stockItems, on
                 <td colSpan={2} className="p-2 text-right font-sans uppercase">Total Stock Summary:</td>
                 <td className="p-2 text-center text-slate-900">{totalQty}</td>
                 <td className="p-2 text-right text-slate-900">{formatWeight(totalGrossWt)}</td>
-                <td className="p-2 text-right text-blue-800 bg-sky-100/60 font-extrabold">{formatWeight(totalNetWt)}</td>
+                <td className="p-2 text-right text-blue-800 bg-sky-100/60 font-semibold">{formatWeight(totalNetWt)}</td>
                 <td className="p-2"></td>
-                <td className="p-2 text-right text-amber-800 bg-amber-100/60 font-extrabold">{formatWeight(totalFineWt)}</td>
-                <td className="p-2 text-right text-emerald-800 font-extrabold">{formatCurrency(totalValuation)}</td>
+                <td className="p-2 text-right text-amber-800 bg-amber-100/60 font-semibold">{formatWeight(totalFineWt)}</td>
+                <td className="p-2 text-right text-emerald-800 font-semibold">{formatCurrency(totalValuation)}</td>
               </tr>
             </tfoot>
           </table>

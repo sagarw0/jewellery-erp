@@ -184,7 +184,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
                   <td className="p-2 border-r border-slate-200 font-sans font-semibold text-slate-900">{row.customer_name}</td>
                   <td className="p-2 border-r border-slate-200 text-blue-700 font-bold">{row.code}</td>
                   <td className="p-2 border-r border-slate-200 text-right font-bold text-slate-800">{formatCurrency(row.balance)}</td>
-                  <td className="p-2 border-r border-slate-200 text-right font-extrabold text-rose-700 bg-rose-50/30">
+                  <td className="p-2 border-r border-slate-200 text-right font-semibold text-rose-700 bg-rose-50/30">
                     {formatWeight(row.pending_wt)}
                   </td>
                   <td className="p-2 text-slate-600">{row.phone}</td>
@@ -194,8 +194,8 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
             <tfoot className="bg-slate-50 font-bold font-mono border-t-2 border-slate-300 text-xs">
               <tr>
                 <td colSpan={3} className="p-2 text-right font-sans uppercase">Total ({filteredDebtors.length} parties):</td>
-                <td className="p-2 text-right font-extrabold text-slate-900">{formatCurrency(totalBalance)}</td>
-                <td className="p-2 text-right font-extrabold text-rose-800 bg-rose-50/70">{formatWeight(totalPendingWt)}</td>
+                <td className="p-2 text-right font-semibold text-slate-900">{formatCurrency(totalBalance)}</td>
+                <td className="p-2 text-right font-semibold text-rose-800 bg-rose-50/70">{formatWeight(totalPendingWt)}</td>
                 <td className="p-2"></td>
               </tr>
             </tfoot>

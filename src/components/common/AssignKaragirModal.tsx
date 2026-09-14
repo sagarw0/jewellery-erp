@@ -279,7 +279,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-      <div className="bg-white border border-amber-300 rounded-2xl w-full max-w-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800 flex flex-col max-h-[94vh]">
+      <div className="bg-white border border-amber-300 rounded-2xl w-full max-w-3xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-800 flex flex-col max-h-[94vh]">
         {/* Header */}
         <div className="px-5 py-3.5 bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 text-white flex items-center justify-between shadow-xs">
           <div className="flex items-center space-x-2.5">
@@ -287,7 +287,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
               <Hammer className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-extrabold tracking-wide">
+              <h3 className="text-sm font-semibold tracking-wide">
                 Assign Order to Karagir / Goldsmith
               </h3>
               <p className="text-[11px] text-amber-100 mt-0.5">
@@ -311,7 +311,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
               <span className="text-[10px] text-blue-700 font-bold uppercase block">
                 Target Customer Order:
               </span>
-              <div className="font-extrabold text-blue-950 text-xs">
+              <div className="font-semibold text-blue-950 text-xs">
                 {order.order_no} • {order.header.customer_n || 'Patron Order'}
               </div>
               <div className="text-[11px] text-blue-800 font-medium truncate max-w-md">
@@ -323,7 +323,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
               <span className="text-[10px] text-blue-700 font-bold uppercase block">
                 Required Net Metal:
               </span>
-              <div className="text-sm font-black font-mono text-blue-900">
+              <div className="text-sm font-semibold font-mono text-blue-900">
                 {formatWeight(totalRequiredNetWt)} (22K)
               </div>
               <div className="text-[10px] text-slate-500 font-mono">
@@ -335,7 +335,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
           {/* Section 0: Ornament Design Photo & Reference */}
           <div className="p-3.5 bg-amber-50/60 border border-amber-200 rounded-xl space-y-2.5">
             <div className="flex justify-between items-center">
-              <label className="text-[11px] font-extrabold text-amber-950 uppercase tracking-wider flex items-center space-x-1.5">
+              <label className="text-[11px] font-semibold text-amber-950 uppercase tracking-wider flex items-center space-x-1.5">
                 <Image className="w-3.5 h-3.5 text-amber-700" />
                 <span>Ornament Design Sample Picture for Karagir</span>
               </label>
@@ -424,7 +424,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
 
           {/* Section 1: Karagir Selection & WhatsApp Phone */}
           <div className="space-y-2 border-b border-slate-100 pb-3">
-            <label className="text-[11px] font-extrabold text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
+            <label className="text-[11px] font-semibold text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
               <User className="w-3.5 h-3.5 text-amber-700" />
               <span>Select Artisan / Karagir Master & WhatsApp Contact</span>
             </label>
@@ -496,7 +496,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
 
           {/* Section 2: Metal Issue Allocation */}
           <div className="space-y-2 border-b border-slate-100 pb-3">
-            <label className="text-[11px] font-extrabold text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
+            <label className="text-[11px] font-semibold text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
               <Scale className="w-3.5 h-3.5 text-amber-700" />
               <span>Raw Metal & Bullion Allocation</span>
             </label>
@@ -543,7 +543,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
             {/* Calculated Fine Weight Banner */}
             <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex justify-between items-center text-xs">
               <span className="text-amber-900 font-bold">Issued Fine Bullion:</span>
-              <span className="font-mono font-black text-amber-950 text-sm">
+              <span className="font-mono font-semibold text-amber-950 text-sm">
                 {formatWeight(issuedFineWt)}
               </span>
             </div>
@@ -551,7 +551,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
 
           {/* Section 3: Labour & Wastage Agreement */}
           <div className="space-y-2 border-b border-slate-100 pb-3">
-            <label className="text-[11px] font-extrabold text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
+            <label className="text-[11px] font-semibold text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-blue-700" />
               <span>Labour Charges & Wastage Agreement</span>
             </label>
@@ -580,7 +580,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
 
               <div>
                 <label className="text-[10px] text-slate-500 font-bold">Agreed Labour Amount (₹)</label>
-                <div className="w-full bg-emerald-50 border border-emerald-300 rounded-lg px-2.5 py-1.5 text-emerald-950 font-mono text-right text-xs font-black">
+                <div className="w-full bg-emerald-50 border border-emerald-300 rounded-lg px-2.5 py-1.5 text-emerald-950 font-mono text-right text-xs font-semibold">
                   {formatCurrency(totalAgreedMaking)}
                 </div>
               </div>
@@ -642,7 +642,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
         {/* Enlarged Photo Modal */}
         {showPhotoPreview && (
           <div className="fixed inset-0 bg-slate-900/80 z-60 flex items-center justify-center p-4">
-            <div className="bg-white p-3 rounded-2xl max-w-lg w-full space-y-3 shadow-2xl">
+            <div className="bg-white p-3 rounded-2xl max-w-lg w-full space-y-3 shadow-xl border border-slate-200/90">
               <div className="flex justify-between items-center">
                 <span className="font-bold text-slate-900 text-xs">Design Reference Preview</span>
                 <button

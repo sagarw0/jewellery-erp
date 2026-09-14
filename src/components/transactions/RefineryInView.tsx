@@ -288,7 +288,7 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
           </div>
           <div>
             <span className="text-amber-800 font-bold">Pure Fin Wt:</span>{' '}
-            <strong className="text-amber-900 font-extrabold text-sm">{formatWeight(weightSummary.fin_wgt)}</strong>
+            <strong className="text-amber-900 font-semibold text-sm">{formatWeight(weightSummary.fin_wgt)}</strong>
           </div>
         </div>
       </div>
