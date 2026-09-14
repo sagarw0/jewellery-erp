@@ -440,6 +440,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           tableData: result.tableData,
           cardData: result.cardData,
+          screenDirection: result.screenDirection,
           quickChips: result.quickChips,
         },
       ]);
@@ -829,6 +830,66 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                           ))}
                         </div>
                       )}
+                    </div>
+                  )}
+
+                  {/* Dynamic Screen Direction & Direct Navigation Card */}
+                  {msg.screenDirection && (
+                    <div className={`mt-3 p-3.5 rounded-2xl border transition-all ${
+                      isDark
+                        ? 'bg-gradient-to-br from-blue-950/60 via-[#0f172a] to-indigo-950/40 border-blue-500/30 text-white shadow-lg'
+                        : 'bg-gradient-to-br from-blue-50/90 via-indigo-50/70 to-amber-50/50 border-blue-200 text-slate-900 shadow-md'
+                    }`}>
+                      <div className="flex items-start justify-between gap-2 pb-2.5 border-b border-blue-200/50 dark:border-white/10">
+                        <div className="flex items-center space-x-2.5">
+                          <span className="text-2xl p-2 rounded-xl bg-blue-500/10 dark:bg-white/10 border border-blue-400/20 shadow-xs">
+                            {msg.screenDirection.icon}
+                          </span>
+                          <div>
+                            <div className="flex items-center space-x-2 flex-wrap">
+                              <span className="font-bold text-xs text-blue-700 dark:text-amber-400">
+                                {msg.screenDirection.screenName}
+                              </span>
+                              <span className="px-1.5 py-0.5 rounded-md text-[10px] font-mono font-bold bg-amber-400 text-slate-950 shadow-2xs">
+                                {msg.screenDirection.shortcut}
+                              </span>
+                            </div>
+                            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium block">
+                              {msg.screenDirection.reason || 'Screen Navigation & Module Access'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="mt-2 text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+                        {msg.screenDirection.description}
+                      </p>
+
+                      <div className="mt-3 pt-2.5 border-t border-blue-200/50 dark:border-white/10 flex flex-wrap items-center gap-2">
+                        <button
+                          onClick={() => {
+                            onNavigate(msg.screenDirection!.section, msg.screenDirection!.subView);
+                          }}
+                          className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs shadow-md hover:shadow-lg flex items-center space-x-1.5 transition-all cursor-pointer group"
+                        >
+                          <span>🚀 Open {msg.screenDirection.screenName.split('(')[0].trim()} ({msg.screenDirection.shortcut})</span>
+                          <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                        </button>
+
+                        {msg.screenDirection.relatedActions && msg.screenDirection.relatedActions.map((act, actIdx) => (
+                          <button
+                            key={actIdx}
+                            onClick={() => handleChipClick(act)}
+                            className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1 transition-all cursor-pointer ${
+                              isDark
+                                ? 'bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15'
+                                : 'bg-white hover:bg-amber-50 text-slate-700 border border-slate-200 shadow-2xs'
+                            }`}
+                          >
+                            <span>{act.label}</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
 

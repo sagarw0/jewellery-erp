@@ -271,6 +271,386 @@ export interface ErpContext {
   customerVisits?: CustomerVisitRecord[];
 }
 
+export interface ScreenDirectionData {
+  screenId: string;
+  screenName: string;
+  section: string;
+  subView?: string;
+  shortcut: string;
+  icon: string;
+  description: string;
+  reason?: string;
+  relatedActions?: { label: string; action: string; payload?: any }[];
+}
+
+export interface ErpScreenDefinition {
+  id: string;
+  name: string;
+  nameMr: string;
+  nameHi: string;
+  section: string;
+  subView?: string;
+  shortcut: string;
+  icon: string;
+  description: string;
+  descriptionMr: string;
+  descriptionHi: string;
+  keywords: string[];
+  tasks?: TaskType[];
+  actions?: { label: string; action: string; payload?: any }[];
+}
+
+export const ERP_SCREENS: ErpScreenDefinition[] = [
+  {
+    id: 'sales_invoice',
+    name: 'Sales POS Counter & Hallmarking Billing',
+    nameMr: 'विक्री बिलिंग व हॉलमार्किंग (Sales POS)',
+    nameHi: 'बिक्री बिलिंग व हॉलमार्किंग (Sales POS)',
+    section: 'transactions',
+    subView: 'sales_invoice',
+    shortcut: 'F4',
+    icon: '💰',
+    description: 'Counter POS sales, 3% GST calculation, barcode tag scanning, BIS HUID 6-digit hallmarking, old gold exchange deduction, multi-mode payment settlements.',
+    descriptionMr: 'दागिने विक्री बिलिंग, ३% जीएसटी हिशोब, बारकोड स्कॅनिंग, BIS HUID नोंद, जुने सोने वजावट आणि बिल प्रिंट.',
+    descriptionHi: 'आभूषण बिक्री बिलिंग, ३% जीएसटी गणना, बारकोड स्कैनिंग, BIS HUID सत्यापन, पुराना सोना एक्सचेंज और बिल प्रिंट।',
+    keywords: [
+      'sale', 'sales', 'pos', 'bill', 'billing', 'invoice', 'counter', 'gst bill', 'cash memo', 'tax invoice', 'sell', 'customer bill', 'jewellery bill', 'retail', 'counter sales',
+      'विक्री', 'बिल', 'बिलिंग', 'पावती', 'बिक्री', 'काउंटर', 'हॉलमार्क बिल', 'जीएसटी बिल', 'विक्री बिल', 'सोने विक्री', 'कस्टमर बिल'
+    ],
+    tasks: ['sales_invoice'],
+    actions: [
+      { label: '🚀 Open Sales POS (F4)', action: 'navigate', payload: { section: 'transactions', subView: 'sales_invoice' } },
+      { label: '💰 Start AI POS Bill', action: 'start_task', payload: 'sales_invoice' }
+    ]
+  },
+  {
+    id: 'purchase',
+    name: 'Purchase Inward & Supplier Lot Entry',
+    nameMr: 'खरेदी नोंद व सप्लायर लॉट इनवर्ड (Purchase)',
+    nameHi: 'खरीद इनवर्ड व सप्लायर लॉट प्रविष्टि (Purchase)',
+    section: 'transactions',
+    subView: 'purchase',
+    shortcut: 'F5',
+    icon: '🛒',
+    description: 'Bullion dealer & manufacturer purchase inward, weight-wise & lot-wise entry, fine gold calculation, melting touch recovery, supplier vouchers.',
+    descriptionMr: 'सप्लायर व बुलियन व्यापाऱ्यांकडून माल खरेदी, ग्रॅम व लॉट नोंद, शुद्ध सोने हिशोब आणि खरेदी पावती.',
+    descriptionHi: 'थोक सप्लायर व बुलियन व्यापारियों से खरीद इनवर्ड, ग्राम व लॉट प्रविष्टि, शुद्ध सोना गणना और खरीद वाउचर।',
+    keywords: [
+      'purchase', 'buy', 'inward', 'supplier', 'bullion', 'wholesale', 'lot', 'dealer', 'vendor', 'purchase bill', 'stock inward',
+      'खरेदी', 'सप्लायर', 'माल इनवर्ड', 'खरीद', 'बुलियन व्यापारी', 'कच्चा माल', 'खरेदी बिल', 'माल खरेदी'
+    ],
+    tasks: ['purchase_inward'],
+    actions: [
+      { label: '🚀 Open Purchase (F5)', action: 'navigate', payload: { section: 'transactions', subView: 'purchase' } },
+      { label: '🛒 Record Inward with AI', action: 'start_task', payload: 'purchase_inward' }
+    ]
+  },
+  {
+    id: 'barcode',
+    name: 'Barcode Studio & Thermal Label Printing',
+    nameMr: 'बारकोड स्टुडिओ व थर्मल लेबल प्रिंटिंग (Barcode Studio)',
+    nameHi: 'बारकोड स्टूडियो व थर्मल लेबल प्रिंटिंग (Barcode Studio)',
+    section: 'masters',
+    subView: 'barcode',
+    shortcut: 'F3',
+    icon: '🏷️',
+    description: 'Jewellery barcode tag generation, BIS HUID 6-digit alphanumeric tagging, QR codes, 50x25mm / butterfly label printing, unprinted queue management.',
+    descriptionMr: 'दागिन्यांचे बारकोड टॅग, BIS HUID ६-अंकी कोड, QR कोड जनरेशन आणि थर्मल स्टिकर लेबल प्रिंटिंग.',
+    descriptionHi: 'आभूषण बारकोड टैग, BIS HUID ६-अंक कोड, QR कोड और थर्मल स्टीकर लेबल प्रिंटिंग।',
+    keywords: [
+      'barcode', 'tag', 'label', 'huid', 'thermal', 'print tag', 'stickers', 'bar code', 'unprinted', 'tagging', 'qr code', 'thermal printer',
+      'बारकोड', 'टॅग', 'लेबल', 'प्रिंट', 'टैग', 'स्टिकर', 'अनप्रिंटेड', 'हॉलमार्क टॅग', 'बारकोड स्टुडिओ', 'प्रिंटर'
+    ],
+    tasks: ['barcode_generate'],
+    actions: [
+      { label: '🚀 Open Barcode Studio (F3)', action: 'navigate', payload: { section: 'masters', subView: 'barcode' } },
+      { label: '✨ Create Barcode with AI', action: 'start_task', payload: 'barcode_generate' }
+    ]
+  },
+  {
+    id: 'item_creation',
+    name: 'Item Creation & Master Directory',
+    nameMr: 'नवीन आयटम व दागिना निर्मिती (Item Creation)',
+    nameHi: 'नया आइटम व आभूषण निर्माण (Item Creation)',
+    section: 'masters',
+    subView: 'item_creation',
+    shortcut: 'F2',
+    icon: '💎',
+    description: 'Ornament master directory, category setup (22K/24K/18K Gold, Silver, Diamond, 1gm Imitation), HSN 7113 codes, standard wastage % and making charge presets.',
+    descriptionMr: 'दागिना प्रकार मास्टर, कॅटेगरी (सोने, चांदी, हिरे, १ ग्रॅम), HSN कोड, मानक घट (Wastage %) व मजुरी दर सेटिंग.',
+    descriptionHi: 'आभूषण मास्टर, श्रेणी (सोना, चांदी, हीरा, १ ग्राम), HSN कोड, मानक वेस्टेज % और मजदूरी दर सेटिंग।',
+    keywords: [
+      'item creation', 'create item', 'new ornament', 'ornament master', 'hsn', 'wastage', 'making charge preset', 'product category',
+      'आयटम निर्मिती', 'नवीन दागिना', 'दागिना प्रकार', 'कॅटेगरी', 'आइटम निर्माण', 'नया जेवर', 'वेस्टेज सेटिंग'
+    ],
+    actions: [
+      { label: '🚀 Open Item Creation (F2)', action: 'navigate', payload: { section: 'masters', subView: 'item_creation' } }
+    ]
+  },
+  {
+    id: 'new_order',
+    name: 'Custom Customer Order Booking',
+    nameMr: 'कस्टम ग्राहक ऑर्डर बुकिंग (Order Booking)',
+    nameHi: 'कस्टम ग्राहक ऑर्डर बुकिंग (Order Booking)',
+    section: 'transactions',
+    subView: 'new_order',
+    shortcut: 'F7',
+    icon: '📋',
+    description: 'Custom bridal jewellery orders, Karigar job work assignment, delivery schedule tracking, advance cash/metal booking, rate lock-in protection.',
+    descriptionMr: 'ग्राहकांची कस्टम ऑर्डर, कारागीर वर्क ऑर्डर, डिलिव्हरी तारीख, ॲडव्हान्स कॅश/सोने जमा आणि भाव लॉक सुविधा.',
+    descriptionHi: 'ग्राहक कस्टम ऑर्डर, कारीगर वर्क ऑर्डर, डिलीवरी दिनांक, एडवांस कैश/सोना जमा और रेट लॉक सुविधा।',
+    keywords: [
+      'order', 'booking', 'custom order', 'karigar order', 'advance', 'promised date', 'job work', 'bridal order', 'custom design',
+      'ऑर्डर', 'बुकिंग', 'कस्टम दागिना', 'ॲडव्हान्स', 'कारागीर ऑर्डर', 'ग्राहक ऑर्डर', 'कामाचा आदेश'
+    ],
+    tasks: ['order_booking'],
+    actions: [
+      { label: '🚀 Open Order Booking (F7)', action: 'navigate', payload: { section: 'transactions', subView: 'new_order' } },
+      { label: '📋 Book Order with AI', action: 'start_task', payload: 'order_booking' }
+    ]
+  },
+  {
+    id: 'refinery_in',
+    name: 'Refinery, Old Gold Melting & Touch Recovery',
+    nameMr: 'जुने सोने गाळणे, रिफायनरी व टंच तपासणी (Refinery)',
+    nameHi: 'पुराना सोना गलाई, रिफाइनरी व टंच जांच (Refinery)',
+    section: 'transactions',
+    subView: 'refinery_in',
+    shortcut: 'F6',
+    icon: '🔥',
+    description: 'Old gold scrap (URD) inward, melting weight loss computation, fire assay touch %, fine gold 24K bar recovery, refinery settlement vouchers.',
+    descriptionMr: 'जुने मोड सोने गाळणे (Melting), टंच तपासणी, २४ कॅरेट शुद्ध सोने रिकव्हरी आणि रिफायनरी पावती हिशोब.',
+    descriptionHi: 'पुराना स्क्रैप सोना गलाई, टंच टेस्टिंग, २४ कैरेट शुद्ध सोना रिकवरी और रिफाइनरी वाउचर हिसाब।',
+    keywords: [
+      'refinery', 'melting', 'touch', 'old gold', 'scrap', 'urd', 'assay', 'fine gold recovery', 'goldsmith melting', 'fire assay',
+      'रिफायनरी', 'गाळणे', 'टंच', 'जुने सोने', 'स्क्रॅप', 'शुद्धता चाचणी', 'गलाई', 'सोने गाळणे', 'मोड'
+    ],
+    tasks: ['refinery_melting'],
+    actions: [
+      { label: '🚀 Open Refinery (F6)', action: 'navigate', payload: { section: 'transactions', subView: 'refinery_in' } },
+      { label: '🔥 Record Old Gold with AI', action: 'start_task', payload: 'refinery_melting' }
+    ]
+  },
+  {
+    id: 'account_master',
+    name: 'Account Master & Ledger Directory',
+    nameMr: 'खाते वही व पार्टी मास्टर (Account Master)',
+    nameHi: 'खाता बही व पार्टी मास्टर (Account Master)',
+    section: 'masters',
+    subView: 'account_master',
+    shortcut: 'Alt+M',
+    icon: '👤',
+    description: 'Directory for customers, suppliers, Karigars (goldsmiths), banks, expense ledgers, credit limits, PAN/GSTIN records.',
+    descriptionMr: 'ग्राहक, सप्लायर, कारागीर, बँक व खर्चाची नवीन खाती उघडणे, फोन नंबर, पत्ता आणि जीएसटी नोंद.',
+    descriptionHi: 'ग्राहक, सप्लायर, कारीगर, बैंक व खर्च के नए खाते खोलना, फोन नंबर, पता और जीएसटी प्रविष्टि।',
+    keywords: [
+      'account', 'party', 'customer master', 'supplier master', 'karigar master', 'ledger master', 'party creation', 'new account',
+      'खाते', 'ग्राहक नोंद', 'सप्लायर खाते', 'कारागीर', 'पार्टी मास्टर', 'खाता', 'नवीन खाते', 'खातेदार'
+    ],
+    tasks: ['account_create'],
+    actions: [
+      { label: '🚀 Open Account Master', action: 'navigate', payload: { section: 'masters', subView: 'account_master' } },
+      { label: '👤 Create Account with AI', action: 'start_task', payload: 'account_create' }
+    ]
+  },
+  {
+    id: 'day_book',
+    name: 'Day Book Register & Cash Counter',
+    nameMr: 'डे बुक रजिस्टर व दैनिक कॅश काउंटर (Day Book)',
+    nameHi: 'डे बुक रजिस्टर व दैनिक कैश काउंटर (Day Book)',
+    section: 'accounts',
+    subView: 'day_book',
+    shortcut: 'F10',
+    icon: '💵',
+    description: 'Daily transaction journal, counter cash collections & disbursements, bank/UPI entries, drawer reconciliation, daily audit summary.',
+    descriptionMr: 'दैनिक जमा-खर्च वही, गल्ल्यातील कॅश हिशोब, बँक/UPI जमा, व्हाउचर नोंद आणि दिवसअखेर ताळेबंद.',
+    descriptionHi: 'दैनिक जमा-खर्च बही, गल्ले का नकद हिसाब, बैंक/UPI जमा, वाउचर प्रविष्टि और दैनिक ऑडिट।',
+    keywords: [
+      'daybook', 'day book', 'till', 'cash counter', 'daily cash', 'journal', 'vouchers', 'cash in', 'cash out', 'galla', 'drawer balance',
+      'डे बुक', 'गल्ला', 'दैनिक व्यवहार', 'कॅश काउंटर', 'जमा खर्च', 'दैनिक हिशोब', 'व्हाउचर', 'कॅश जमा'
+    ],
+    tasks: ['daybook_expense'],
+    actions: [
+      { label: '🚀 Open Day Book (F10)', action: 'navigate', payload: { section: 'accounts', subView: 'day_book' } },
+      { label: '💵 Record Voucher with AI', action: 'start_task', payload: 'daybook_expense' }
+    ]
+  },
+  {
+    id: 'stock_report',
+    name: 'Live Stock Report & Metal Valuation',
+    nameMr: 'थेट स्टॉक रिपोर्ट व धातू मूल्यांकन (Stock Report)',
+    nameHi: 'लाइव स्टॉक रिपोर्ट व धातु मूल्यांकन (Stock Report)',
+    section: 'stock',
+    subView: 'stock_report',
+    shortcut: 'F9',
+    icon: '📦',
+    description: 'Live physical inventory by category (24K Bullion, 22K 916, 18K, Silver, Diamond, Loose Lots), gross/net/fine weights, live valuation.',
+    descriptionMr: 'शोरूममधील उपलब्ध सोने-चांदी शिल्लक, ग्रॅम व तोळे वजन, २४K/२२K/१८K प्रकार, विना-टॅग लूज स्टॉक आणि एकूण भांडवली मूल्य.',
+    descriptionHi: 'शोरूम में उपलब्ध सोना-चांदी स्टॉक, ग्राम व तोला वजन, २४K/२२K/१८K प्रकार, बिना-टैग लूज स्टॉक और कुल स्टॉक मूल्य।',
+    keywords: [
+      'stock', 'inventory', 'total gold', 'stock report', 'metal balance', 'loose stock', 'valuation', 'gold weight', 'available gold', 'tola',
+      'स्टॉक', 'शिल्लक सोने', 'माल साठा', 'एकूण सोनं', 'मूल्यांकन', 'उपलब्ध सोने', 'तोळा', 'सोने वजन'
+    ],
+    actions: [
+      { label: '🚀 Open Stock Report (F9)', action: 'navigate', payload: { section: 'stock', subView: 'stock_report' } }
+    ]
+  },
+  {
+    id: 'account_display',
+    name: 'Multi-Account T-Ledger Display',
+    nameMr: 'खाते लेजर व कारागीर हिशोब (Account Display)',
+    nameHi: 'खाता लेजर व कारीगर हिसाब (Account Display)',
+    section: 'accounts',
+    subView: 'account_display',
+    shortcut: 'F8',
+    icon: '📖',
+    description: 'Detailed debit/credit ledger statement, Karigar fine gold balances, supplier payment records, party-wise running balance.',
+    descriptionMr: 'पार्टीनिहाय लेजर स्टेटमेंट, कारागीर शुद्ध सोने जमा-उधार हिशोब, सप्लायर पेमेंट आणि संपूर्ण खाते उतारा.',
+    descriptionHi: 'पार्टी अनुसार लेजर स्टेटमेंट, कारीगर शुद्ध सोना हिसाब, सप्लायर पेमेंट और विस्तृत खाता विवरण।',
+    keywords: [
+      'ledger', 'statement', 'account display', 'karigar ledger', 't-ledger', 'running balance', 'party statement', 'account copy',
+      'लेजर', 'खाते उतारा', 'कारागीर हिशोब', 'स्टेटमेंट', 'पार्टी लेजर', 'खाता बही'
+    ],
+    actions: [
+      { label: '🚀 Open Account Ledger (F8)', action: 'navigate', payload: { section: 'accounts', subView: 'account_display' } }
+    ]
+  },
+  {
+    id: 'book_display',
+    name: 'Sundry Debtors & Outstanding Credit Book',
+    nameMr: 'उधारी ग्राहक यादी व बाकी सोने/रक्कम (Book Display)',
+    nameHi: 'उधारी ग्राहक सूची व बकाया सोना/रकम (Book Display)',
+    section: 'accounts',
+    subView: 'book_display',
+    shortcut: 'F11',
+    icon: '👥',
+    description: 'Customer credit ledger, outstanding receivables, pending metal weights in grams, credit aging, collection contact directory.',
+    descriptionMr: 'उधारीवर गेलेला माल, ग्राहकांकडे येणे असलेली बाकी रक्कम व प्रलंबित सोने ग्रॅम, फोन नंबर व वसुली यादी.',
+    descriptionHi: 'उधारी पर गया माल, ग्राहकों से बकाया नकद व लंबित सोना ग्राम, फोन नंबर और वसूली सूची।',
+    keywords: [
+      'debtor', 'debtors', 'sundry debtors', 'outstanding', 'credit', 'pending payment', 'udhari', 'receivables', 'customer balance',
+      'उधारी', 'बाकी रक्कम', 'ग्राहक बाकी', 'थकबाकी', 'उधारी यादी', 'येणे रक्कम', 'उधारी ग्राहक'
+    ],
+    actions: [
+      { label: '🚀 Open Debtors Register (F11)', action: 'navigate', payload: { section: 'accounts', subView: 'book_display' } }
+    ]
+  },
+  {
+    id: 'gold_scheme',
+    name: 'Swarna Nidhi - Monthly Gold Savings Scheme (Bhishi)',
+    nameMr: 'सुवर्ण निधी मासिक भिशी योजना (Gold Scheme)',
+    nameHi: 'स्वर्ण निधि मासिक भिशी योजना (Gold Scheme)',
+    section: 'gold_scheme',
+    shortcut: 'Gold Scheme',
+    icon: '🪙',
+    description: '11+1 Monthly Gold Accumulation Scheme, customer passbooks, monthly installment collection, bonus gold disbursement, maturity redemption.',
+    descriptionMr: '११+१ मासिक सुवर्ण ठेव योजना, ग्राहक पासबुक, मासिक हप्ता पावती, १ महिन्याचा बोनस आणि मुदतपूर्ती दागिना खरेदी.',
+    descriptionHi: '११+१ मासिक स्वर्ण बचत योजना, ग्राहक पासबुक, मासिक किश्त पावती, १ माह बोनस और परिपक्वता आभूषण खरीद।',
+    keywords: [
+      'gold scheme', 'bhishi', 'swarna nidhi', 'savings scheme', 'monthly installment', 'passbook', 'gold saving', 'scheme member',
+      'भिशी', 'सुवर्ण निधी', 'मासिक योजना', 'बचत योजना', 'भिशी हप्ता', 'सुवर्ण संचय'
+    ],
+    actions: [
+      { label: '🚀 Open Gold Scheme Center', action: 'navigate', payload: { section: 'gold_scheme' } }
+    ]
+  },
+  {
+    id: 'backup',
+    name: 'Encrypted Cloud & USB Backup Manager',
+    nameMr: 'डेटा बॅकअप मॅनेजर व क्लाउड सिंक (Backup Manager)',
+    nameHi: 'डेटा बैकअप मैनेजर व क्लाउड सिंक (Backup Manager)',
+    section: 'backup',
+    shortcut: 'F12',
+    icon: '💾',
+    description: 'Automated daily encrypted SQL/JSON backups, USB flash drive export, Supabase cloud sync, disaster recovery safeguards.',
+    descriptionMr: 'दैनंदिन डेटा बॅकअप, पेनड्राईव्ह / USB एक्सपोर्ट, क्लाउड ऑटो-सिंक आणि आपत्कालीन डेटा रिकव्हरी.',
+    descriptionHi: 'दैनिक डेटा बैकअप, पेनड्राइव / USB निर्यात, क्लाउड ऑटो-सिंक और आपातकालीन डेटा सुरक्षा।',
+    keywords: [
+      'backup', 'data backup', 'usb', 'export data', 'restore', 'cloud sync', 'database backup', 'save data',
+      'बॅकअप', 'डेटा सुरक्षितता', 'पेनड्राईव्ह', 'क्लाउड सिंक', 'डेटा सेव्ह', 'बॅकअप मॅनेजर'
+    ],
+    actions: [
+      { label: '🚀 Open Backup Manager (F12)', action: 'navigate', payload: { section: 'backup' } }
+    ]
+  },
+  {
+    id: 'settings',
+    name: 'Showroom Settings & Theme Customization',
+    nameMr: 'शोरूम सेटिंग्ज व थीम कस्टमायझेशन (Settings)',
+    nameHi: 'शोरूम सेटिंग्स व थीम कस्टमाइजेशन (Settings)',
+    section: 'settings',
+    shortcut: 'Settings',
+    icon: '⚙️',
+    description: 'Showroom name, GSTIN, BIS Hallmark license, thermal printer dimensions, theme switcher (Apple iOS Frosted Glass, Classic Gold, etc.).',
+    descriptionMr: 'शोरूम नाव, पत्ता, जीएसटी नंबर, बीआयएस हॉलमार्क लायसन्स, प्रिंटर साइज आणि ॲपल आयओएस / क्लासिक गोल्ड थीम्स.',
+    descriptionHi: 'दुकान का नाम, पता, जीएसटी नंबर, बीआईएस हॉलमार्क लाइसेंस, प्रिंटर आकार और ऐप्पल आईओएस / क्लासिक गोल्ड थीम्स।',
+    keywords: [
+      'setting', 'settings', 'theme', 'profile', 'gstin', 'printer', 'apple theme', 'ios theme', 'frosted glass', 'setup', 'preferences',
+      'सेटिंग्ज', 'थीम', 'प्रोफाइल', 'प्रिंटर सेटिंग', 'शोरूम माहिती', 'ॲपल थीम', 'कस्टमायझेशन'
+    ],
+    actions: [
+      { label: '🚀 Open ERP Settings', action: 'navigate', payload: { section: 'settings' } }
+    ]
+  },
+  {
+    id: 'messenger',
+    name: 'Internal Showroom Messenger & Staff Chat',
+    nameMr: 'अंतर्गत मेसेंजर व स्टाफ चॅट (Internal Messenger)',
+    nameHi: 'आंतरिक मैसेंजर व स्टाफ चैट (Internal Messenger)',
+    section: 'messenger',
+    shortcut: 'Messenger',
+    icon: '💬',
+    description: 'Counter-to-counter instant messaging, Karigar job work instructions, urgent showroom alerts, owner broadcast messages.',
+    descriptionMr: 'काउंन्टर ते काउंन्टर अंतर्गत मेसेजिंग, स्टाफ चॅट, कारागीर सूचना आणि मालक ब्रॉडकास्ट अलर्ट.',
+    descriptionHi: 'काउंटर से काउंटर आंतरिक मैसेजिंग, स्टाफ चैट, कारीगर निर्देश और ओनर ब्रॉडकास्ट अलर्ट।',
+    keywords: [
+      'message', 'messenger', 'chat', 'staff', 'internal message', 'counter chat', 'communication',
+      'मेसेंजर', 'चॅट', 'स्टाफ संदेश', 'निरोप', 'अंतर्गत मेसेज'
+    ],
+    actions: [
+      { label: '🚀 Open Internal Messenger', action: 'navigate', payload: { section: 'messenger' } }
+    ]
+  },
+  {
+    id: 'dashboard',
+    name: 'Executive Dashboard & Live Bullion Monitor',
+    nameMr: 'मुख्य डॅशबोर्ड व थेट बाजार भाव (Dashboard)',
+    nameHi: 'मुख्य डैशबोर्ड व लाइव बाजार भाव (Dashboard)',
+    section: 'dashboard',
+    shortcut: 'Home',
+    icon: '📊',
+    description: 'Real-time 24K/22K/Silver bullion ticker, daily turnover, top-selling ornaments, low stock alerts, quick ERP action launcher.',
+    descriptionMr: 'थेट २४K/२२K सोने व चांदी भाव टिकर, आजची एकूण विक्री उलाढाल, टॉप दागिने आणि जलद ॲक्शन बटन्स.',
+    descriptionHi: 'लाइव २४K/२२K सोना व चांदी दर टिकर, आज की कुल बिक्री टर्नओवर, टॉप आभूषण और त्वरित एक्शन बटन्स।',
+    keywords: [
+      'dashboard', 'home', 'overview', 'live rate', 'ticker', 'turnover', 'rates', 'gold rate', 'silver rate', 'market price',
+      'डॅशबोर्ड', 'मुख्य पान', 'थेट भाव', 'उलाढाल', 'लाईव्ह भाव', 'बाजार भाव', 'सोने भाव', 'चांदी भाव'
+    ],
+    actions: [
+      { label: '🚀 Open Main Dashboard', action: 'navigate', payload: { section: 'dashboard' } }
+    ]
+  },
+  {
+    id: 'field_dictionary',
+    name: 'Field Preservation Audit & ERP Schema',
+    nameMr: 'फील्ड ऑडिट व सिस्टीम डिक्शनरी (Field Dictionary)',
+    nameHi: 'फील्ड ऑडिट व सिस्टम डिक्शनरी (Field Dictionary)',
+    section: 'field_dictionary',
+    shortcut: 'Dictionary',
+    icon: '📚',
+    description: 'Audit of 40+ jewellery ERP field preservation rules, database schema specifications, and compliance standards.',
+    descriptionMr: '४०+ ज्वेलरी ईआरपी फील्ड ऑडिट नियम, डेटाबेस स्कीमा आणि सुवर्ण मानके तपासणी.',
+    descriptionHi: '४०+ ज्वेलरी ईआरपी फील्ड ऑडिट नियम, डेटाबेस स्कीमा और मानक अनुपालन।',
+    keywords: [
+      'dictionary', 'field dictionary', 'audit', 'schema', 'preservation', 'spec',
+      'डिक्शनरी', 'फील्ड ऑडिट', 'स्कीमा'
+    ],
+    actions: [
+      { label: '🚀 Open Field Dictionary', action: 'navigate', payload: { section: 'field_dictionary' } }
+    ]
+  }
+];
+
 export interface ChatMessage {
   id: string;
   sender: 'bot' | 'user';
@@ -283,6 +663,7 @@ export interface ChatMessage {
     collectedData: Record<string, any>;
   };
   tableData?: ChatTableData;
+  screenDirection?: ScreenDirectionData;
   cardData?: {
     type: 'purchase_receipt' | 'barcode_tag' | 'sales_receipt' | 'order_receipt' | 'refinery_receipt' | 'account_receipt' | 'daybook_receipt' | 'stock_summary' | 'debtor_summary' | 'info_card';
     title: string;
@@ -960,7 +1341,79 @@ export class AiChatbotEngine {
     return 'en';
   }
 
-  // Process User Input with Multi-lingual capability, table generation & calculations
+  // Match and score ERP screens based on user query keywords and intent
+  public findScreenMatch(text: string): {
+    matchedScreen: ErpScreenDefinition;
+    isExplicitNavRequest: boolean;
+    score: number;
+  } | null {
+    const clean = text.toLowerCase().replace(/[?'"!.,]/g, '');
+    const isExplicit =
+      clean.includes('screen') ||
+      clean.includes('open') ||
+      clean.includes('go to') ||
+      clean.includes('goto') ||
+      clean.includes('take me to') ||
+      clean.includes('navigate') ||
+      clean.includes('show me') ||
+      clean.includes('where is') ||
+      clean.includes('window') ||
+      clean.includes('view') ||
+      clean.includes('screenवर') ||
+      clean.includes('स्क्रीनवर') ||
+      clean.includes('उघडा') ||
+      clean.includes('दाखवा') ||
+      clean.includes('जा') ||
+      clean.includes('घेऊन चला') ||
+      clean.includes('कुठे आहे') ||
+      clean.includes('कसे जायचे') ||
+      clean.includes('खोलो') ||
+      clean.includes('दिखाओ') ||
+      clean.includes('पर जाओ') ||
+      clean.includes('ले चलो') ||
+      clean.includes('कहाँ है') ||
+      clean.includes('डायरेक्ट') ||
+      clean.includes('direct');
+
+    let bestScreen: ErpScreenDefinition | null = null;
+    let highestScore = 0;
+
+    for (const sc of ERP_SCREENS) {
+      let score = 0;
+      // Direct id, shortcut or name match
+      if (clean.includes(sc.id.replace('_', ' ')) || clean.includes(sc.shortcut.toLowerCase())) {
+        score += 15;
+      }
+      if (clean.includes(sc.name.toLowerCase())) {
+        score += 20;
+      }
+      if (clean.includes(sc.nameMr.toLowerCase()) || clean.includes(sc.nameHi.toLowerCase())) {
+        score += 20;
+      }
+
+      // Keyword scoring
+      for (const kw of sc.keywords) {
+        const kwLower = kw.toLowerCase();
+        if (clean === kwLower) {
+          score += 12;
+        } else if (clean.includes(kwLower)) {
+          score += kwLower.length > 4 ? 6 : 3;
+        }
+      }
+
+      if (score > highestScore) {
+        highestScore = score;
+        bestScreen = sc;
+      }
+    }
+
+    if (bestScreen && highestScore > 0) {
+      return { matchedScreen: bestScreen, isExplicitNavRequest: isExplicit, score: highestScore };
+    }
+    return null;
+  }
+
+  // Process User Input with Multi-lingual capability, table generation, screen detection & calculations
   public processUserInput(
     input: string,
     forcedLang: ChatLanguage = 'auto'
@@ -970,6 +1423,7 @@ export class AiChatbotEngine {
     taskToStart?: TaskType;
     tableData?: ChatTableData;
     cardData?: ChatMessage['cardData'];
+    screenDirection?: ScreenDirectionData;
     quickChips?: ChatMessage['quickChips'];
   } {
     const raw = input.trim();
@@ -1505,6 +1959,43 @@ export class AiChatbotEngine {
     }
 
     // ----------------------------------------------------
+    // 8.5 EXPLICIT SCREEN DETECTION & DIRECT NAVIGATION INTENTS
+    // (e.g., "open billing screen", "take me to barcode", "go to gold scheme", "show daybook", "सेटिंग्ज स्क्रीन उघडा")
+    // ----------------------------------------------------
+    const explicitScreenMatch = this.findScreenMatch(text);
+    if (explicitScreenMatch && explicitScreenMatch.isExplicitNavRequest) {
+      const sc = explicitScreenMatch.matchedScreen;
+      const title = lang === 'mr' ? sc.nameMr : lang === 'hi' ? sc.nameHi : sc.name;
+      const desc = lang === 'mr' ? sc.descriptionMr : lang === 'hi' ? sc.descriptionHi : sc.description;
+      const resp = lang === 'mr'
+        ? `### ${sc.icon} ${title} (${sc.shortcut})\n\nमी तुम्हाला थेट **${title}** स्क्रीनवर नेण्यासाठी खालील बटण तयार केले आहे.\n\n**या स्क्रीनवरील प्रमुख सुविधा:**\n${desc}\n\nखालील **"🚀 Open Screen"** बटणावर क्लिक करा:`
+        : lang === 'hi'
+        ? `### ${sc.icon} ${title} (${sc.shortcut})\n\nमैं आपको सीधे **${title}** स्क्रीन पर ले जाने के लिए नीचे बटन दे रहा हूँ।\n\n**इस स्क्रीन की मुख्य सुविधाएं:**\n${desc}\n\nनीचे दिए गए **"🚀 Open Screen"** बटन पर क्लिक करें:`
+        : `### ${sc.icon} ${title} (${sc.shortcut})\n\nDirecting you to the **${title}** screen.\n\n**Key features on this screen:**\n${desc}\n\nClick the **"🚀 Open Screen"** button below to navigate directly:`;
+
+      return {
+        response: resp,
+        language: lang,
+        screenDirection: {
+          screenId: sc.id,
+          screenName: title,
+          section: sc.section,
+          subView: sc.subView,
+          shortcut: sc.shortcut,
+          icon: sc.icon,
+          description: desc,
+          reason: lang === 'mr' ? 'थेट स्क्रीन नेव्हिगेशन' : lang === 'hi' ? 'सीधा स्क्रीन नेविगेशन' : 'Direct Screen Navigation',
+          relatedActions: sc.actions,
+        },
+        quickChips: [
+          { label: `🚀 ${sc.icon} Open ${sc.name.split('(')[0].trim()} (${sc.shortcut})`, action: 'navigate', payload: { section: sc.section, subView: sc.subView } },
+          ...(sc.actions || []).map((a) => ({ label: a.label, action: a.action, payload: a.payload })),
+          { label: '📦 Stock Report (F9)', action: 'navigate', payload: { section: 'stock', subView: 'stock_report' } },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
     // 9. TASK INITIATION INTENTS (Multilingual)
     // ----------------------------------------------------
     if (text.includes('purchase') || text.includes('buy gold') || text.includes('खरेदी') || text.includes('खरीद') || text.includes('inward')) {
@@ -1582,23 +2073,65 @@ export class AiChatbotEngine {
     }
 
     // ----------------------------------------------------
-    // 11. DEFAULT MULTILINGUAL WELCOME / HELP
+    // 11. SMART FALLBACK SCREEN REDIRECTION ("If no answer to bot, direct me to this screen")
+    // When no specific data answer matches, analyze the query keywords and direct to the closest ERP screen!
+    // ----------------------------------------------------
+    const fallbackScreenMatch = this.findScreenMatch(text);
+    if (fallbackScreenMatch && fallbackScreenMatch.score > 0) {
+      const sc = fallbackScreenMatch.matchedScreen;
+      const title = lang === 'mr' ? sc.nameMr : lang === 'hi' ? sc.nameHi : sc.name;
+      const desc = lang === 'mr' ? sc.descriptionMr : lang === 'hi' ? sc.descriptionHi : sc.description;
+      const resp = lang === 'mr'
+        ? `### 💡 संबंधित स्क्रीन: ${sc.icon} ${title} (${sc.shortcut})\n\nमी तुमच्या विचारलेल्या प्रश्नासाठी अचूक थेट डेटा शोधू शकलो नाही, परंतु हे काम **${title} (${sc.shortcut})** स्क्रीनवर केले जाऊ शकते.\n\n**या स्क्रीनवरील सुविधा:**\n${desc}\n\nतुम्ही खालील **"🚀 Open Screen"** बटणावर क्लिक करून थेट त्या स्क्रीनवर जाऊ शकता:`
+        : lang === 'hi'
+        ? `### 💡 संबंधित स्क्रीन: ${sc.icon} ${title} (${sc.shortcut})\n\nमुझे आपके प्रश्न का सीधा डेटा रिकॉर्ड नहीं मिला, लेकिन यह कार्य **${title} (${sc.shortcut})** स्क्रीन पर उपलब्ध है।\n\n**इस स्क्रीन की सुविधाएं:**\n${desc}\n\nआप नीचे दिए गए **"🚀 Open Screen"** बटन पर क्लिक करके सीधे उस स्क्रीन पर जा सकते हैं:`
+        : `### 💡 Suggested Screen: ${sc.icon} ${title} (${sc.shortcut})\n\nI couldn't find a direct data record for your exact query, but this function is managed in the **${title} (${sc.shortcut})** screen.\n\n**Functions on this screen:**\n${desc}\n\nClick the **"🚀 Open Screen"** button below to navigate directly to this module:`;
+
+      return {
+        response: resp,
+        language: lang,
+        screenDirection: {
+          screenId: sc.id,
+          screenName: title,
+          section: sc.section,
+          subView: sc.subView,
+          shortcut: sc.shortcut,
+          icon: sc.icon,
+          description: desc,
+          reason: lang === 'mr' ? 'प्रश्नाशी संबंधित योग्य स्क्रीन' : lang === 'hi' ? 'प्रश्न से संबंधित उपयुक्त स्क्रीन' : 'Closest Matching ERP Module',
+          relatedActions: sc.actions,
+        },
+        quickChips: [
+          { label: `🚀 ${sc.icon} Open ${sc.name.split('(')[0].trim()} (${sc.shortcut})`, action: 'navigate', payload: { section: sc.section, subView: sc.subView } },
+          ...(sc.actions || []).map((a) => ({ label: a.label, action: a.action, payload: a.payload })),
+          { label: '📦 Stock Report (F9)', action: 'navigate', payload: { section: 'stock', subView: 'stock_report' } },
+          { label: '💵 Day Book (F10)', action: 'navigate', payload: { section: 'accounts', subView: 'day_book' } },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // 12. DEFAULT INTERACTIVE ERP NAVIGATION DIRECTORY (When 0 matches)
     // ----------------------------------------------------
     const defaultResp = lang === 'mr'
-      ? `👋 नमस्कार! मी **स्वर्ण AI ERP सहाय्यक (Copilot)** आहे.\nमी मराठी, हिन्दी व इंग्रजी भाषेत तुमच्या दुकानातील सर्व कामे १-१ प्रश्न विचारून पूर्ण करू शकतो:\n\n### प्रमुख कार्ये व माहिती:\n1. 👥 **आज आलेले ग्राहक (Visited Customers)**: आज शोरूमला भेट दिलेल्या सर्व ग्राहकांची यादी व व्यवहार\n2. 🪙 **भिशी ग्राहक (सुवर्ण निधी)**: सर्व भिशी सदस्यांची यादी, भरलेले महिने व जमा सोने\n3. 🏷️ **बारकोड टॅग्स**: सर्व ॲक्टिव्ह बारकोड व अनप्रिंटेड टॅग्स यादी\n4. 📦 **लूज व एकूण सोने स्टॉक**: २४K, २२K, स्क्रॅप सोने तोळे व ग्रॅम मध्ये\n5. 💵 **आजचा गल्ला**: आजचे कॅश कलेक्शन व विक्री बिले\n6. 🛒 **खरेदी / विक्री / ऑर्डर / रिफायनरी टास्क**: १-१ प्रश्न विचारून थेट बिल बनवा`
+      ? `👋 नमस्कार! मी **स्वर्ण AI ERP सहाय्यक (Copilot)** आहे.\nमी मराठी, हिन्दी व इंग्रजी भाषेत तुमच्या दुकानातील सर्व कामे १-१ प्रश्न विचारून पूर्ण करू शकतो अथवा थेट हव्या त्या स्क्रीनवर नेऊ शकतो:\n\n### 🏢 प्रमुख ईआरपी स्क्रीन डिरेक्टरी:\n1. 💰 **विक्री बिलिंग (Sales POS)** — \`F4\`\n2. 🛒 **खरेदी नोंद (Purchase)** — \`F5\`\n3. 🏷️ **बारकोड स्टुडिओ (Barcode)** — \`F3\`\n4. 📦 **स्टॉक रिपोर्ट (Stock Report)** — \`F9\`\n5. 💵 **डे बुक व गल्ला (Day Book)** — \`F10\`\n6. 🪙 **सुवर्ण निधी भिशी (Gold Scheme)**\n7. 👥 **उधारी ग्राहक (Debtors Book)** — \`F11\`\n8. 💾 **डेटा बॅकअप (Backup)** — \`F12\`\n9. ⚙️ **सेटिंग्ज व थीम्स (Settings)**\n\nखालील कोणत्याही स्क्रीनवर क्लिक करून थेट जा:`
       : lang === 'hi'
-      ? `👋 नमस्ते! मैं **स्वर्ण AI ERP कोपायलट** हूँ।\nमैं हिन्दी, मराठी और अंग्रेजी में आपकी दुकान के सभी कार्य १-१ सवाल पूछकर आसानी से कर सकता हूँ:\n\n### प्रमुख सुविधाएं व रिपोर्ट:\n1. 👥 **आज आए हुए ग्राहक (Visited Customers)**: आज शोरूम विज़िट करने वाले सभी ग्राहकों की सूची व बिलिंग\n2. 🪙 **भिशी ग्राहक (स्वर्ण निधि)**: सभी सदस्यों की सूची, जमा किश्तें और सोना\n3. 🏷️ **बारकोड टैग्स**: सभी एक्टिव बारकोड और अनप्रिंटेड टैग्स सूची\n4. 📦 **लूज व कुल सोना स्टॉक**: २४K, २२K, स्क्रैप सोना तोला और ग्राम में\n5. 💵 **आज का गल्ला**: आज का कैश कलेक्शन और बिक्री बिल\n6. 🛒 **खरीद / बिक्री / ऑर्डर / रिफाइनरी टास्क**: १-१ सवाल पूछकर बिल बनाएं`
-      : `👋 Hello! I am **Swarna AI ERP Copilot**.\nI support English, Marathi (मराठी), and Hindi (हिन्दी) with voice speech dictation and audio responses.\n\n### What would you like to explore?\n1. 👥 **Today's Visited Customers**: Today's showroom visitor log, footfalls & billed patrons\n2. 🪙 **Bhishi Customers**: Monthly savings scheme members, installments & accrued gold\n3. 🏷️ **Barcodes & Non-Printed Tags**: All tagged items & unprinted barcode tags queue\n4. 📦 **Loose & Total Gold Stock**: 24K, 22K, Scrap gold breakdown in grams & tolas\n5. 💵 **Today's Till & Cash Register**: Daily footfalls, cash drawer collection & invoices\n6. 🛒 **Step-by-Step Task Workflows**: 1-by-1 question wizards from purchase to sales`;
+      ? `👋 नमस्ते! मैं **स्वर्ण AI ERP कोपायलट** हूँ।\nमैं हिन्दी, मराठी और अंग्रेजी में आपकी दुकान के सभी कार्य १-१ सवाल पूछकर आसानी से कर सकता हूँ या सीधे सही स्क्रीन पर ले जा सकता हूँ:\n\n### 🏢 प्रमुख ईआरपी स्क्रीन डायरेक्टरी:\n1. 💰 **बिक्री बिलिंग (Sales POS)** — \`F4\`\n2. 🛒 **खरीद इनवर्ड (Purchase)** — \`F5\`\n3. 🏷️ **बारकोड स्टूडियो (Barcode)** — \`F3\`\n4. 📦 **स्टॉक रिपोर्ट (Stock Report)** — \`F9\`\n5. 💵 **डे बुक व गल्ला (Day Book)** — \`F10\`\n6. 🪙 **स्वर्ण निधि भिशी (Gold Scheme)**\n7. 👥 **उधारी ग्राहक (Debtors Book)** — \`F11\`\n8. 💾 **डेटा बैकअप (Backup)** — \`F12\`\n9. ⚙️ **सेटिंग्स व थीम्स (Settings)**\n\nनीचे दिए गए किसी भी स्क्रीन बटन पर क्लिक करके सीधे जाएं:`
+      : `👋 Hello! I am **Swarna AI ERP Copilot**.\nI can guide you step-by-step through any task or direct you straight to the corresponding ERP screen.\n\n### 🏢 Quick ERP Screen Navigator:\n1. 💰 **Sales POS Billing** — \`F4\`\n2. 🛒 **Purchase Inward** — \`F5\`\n3. 🏷️ **Barcode Studio** — \`F3\`\n4. 📦 **Stock Report & Valuation** — \`F9\`\n5. 💵 **Day Book & Till Register** — \`F10\`\n6. 🪙 **Swarna Nidhi Gold Scheme**\n7. 👥 **Sundry Debtors Ledger** — \`F11\`\n8. 💾 **Backup Manager** — \`F12\`\n9. ⚙️ **ERP Settings & Themes**\n\nClick any screen button below to navigate instantly:`;
 
     return {
       response: defaultResp,
       language: lang,
       quickChips: [
-        { label: '👥 आज आलेले ग्राहक (Visited Customers)', action: 'query', payload: 'todays visited customers' },
-        { label: '🪙 भिशी ग्राहक (Bhishi)', action: 'query', payload: 'bhishi' },
-        { label: '🏷️ अनप्रिंटेड बारकोड (Unprinted)', action: 'query', payload: 'unprinted' },
-        { label: '📦 एकूण उपलब्ध सोने (Total Gold)', action: 'query', payload: 'total gold' },
-        { label: '💵 आजचा गल्ला (Till)', action: 'query', payload: 'till' },
+        { label: '💰 Sales POS (F4)', action: 'navigate', payload: { section: 'transactions', subView: 'sales_invoice' } },
+        { label: '🛒 Purchase (F5)', action: 'navigate', payload: { section: 'transactions', subView: 'purchase' } },
+        { label: '🏷️ Barcode Studio (F3)', action: 'navigate', payload: { section: 'masters', subView: 'barcode' } },
+        { label: '📦 Stock Report (F9)', action: 'navigate', payload: { section: 'stock', subView: 'stock_report' } },
+        { label: '💵 Day Book (F10)', action: 'navigate', payload: { section: 'accounts', subView: 'day_book' } },
+        { label: '🪙 Gold Scheme', action: 'navigate', payload: { section: 'gold_scheme' } },
+        { label: '👥 Debtors (F11)', action: 'navigate', payload: { section: 'accounts', subView: 'book_display' } },
+        { label: '💾 Backup (F12)', action: 'navigate', payload: { section: 'backup' } },
+        { label: '⚙️ Settings', action: 'navigate', payload: { section: 'settings' } },
       ],
     };
   }
