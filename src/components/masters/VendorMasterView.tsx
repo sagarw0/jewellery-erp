@@ -376,12 +376,12 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h1 className="text-xl font-extrabold tracking-tight text-slate-950 dark:text-white">Vendor & Supplier Master</h1>
-                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30">
+                <h1 className="text-xl font-extrabold tracking-tight text-slate-950">Vendor & Supplier Master</h1>
+                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400 shadow-2xs">
                   व्हेंडर व पुरवठादार व्यवस्थापन
                 </span>
               </div>
-              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
+              <p className="text-xs text-slate-700 font-semibold mt-0.5">
                 Manage Bullion Dealers, Karigars, Casting Units, Wholesalers & auto-populate Purchase Inwards
               </p>
             </div>
@@ -391,10 +391,10 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
         <div className="flex items-center space-x-2">
           <button
             onClick={handleExportCSV}
-            className="px-3 py-2 rounded-xl border border-slate-300 dark:border-white/15 bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-900 dark:text-slate-200 text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer shadow-xs"
+            className="px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-900 text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer shadow-xs"
             title="Download CSV"
           >
-            <Download className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+            <Download className="w-4 h-4 text-slate-700" />
             <span className="hidden sm:inline">Export CSV</span>
           </button>
 
@@ -410,62 +410,54 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
 
       {/* KPI Cards Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-        <div className={`p-4 rounded-2xl border transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-300 shadow-sm'
-        }`}>
-          <div className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 font-bold mb-1">
+        <div className="p-4 rounded-2xl border bg-white border-slate-300 shadow-sm transition-all">
+          <div className="flex items-center justify-between text-xs text-slate-700 font-bold mb-1">
             <span>Active Suppliers</span>
             <Building2 className="w-4 h-4 text-blue-600" />
           </div>
-          <div className="text-xl font-black text-slate-950 dark:text-white">
-            {metrics.totalActive} <span className="text-xs font-bold text-slate-600 dark:text-slate-400">/ {vendors.length} Total</span>
+          <div className="text-xl font-black text-slate-950">
+            {metrics.totalActive} <span className="text-xs font-bold text-slate-600">/ {vendors.length} Total</span>
           </div>
-          <div className="text-[11px] text-emerald-800 dark:text-emerald-400 font-bold mt-1">
+          <div className="text-[11px] text-emerald-800 font-bold mt-1">
             ✓ Ready for Purchase & Orders
           </div>
         </div>
 
-        <div className={`p-4 rounded-2xl border transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-300 shadow-sm'
-        }`}>
-          <div className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 font-bold mb-1">
+        <div className="p-4 rounded-2xl border bg-white border-slate-300 shadow-sm transition-all">
+          <div className="flex items-center justify-between text-xs text-slate-700 font-bold mb-1">
             <span>Outstanding Payable (₹)</span>
             <CreditCard className="w-4 h-4 text-amber-600" />
           </div>
-          <div className="text-xl font-black text-amber-950 dark:text-amber-400 font-mono">
+          <div className="text-xl font-black text-amber-950 font-mono">
             {formatCurrency(metrics.totalCashPayable)}
           </div>
-          <div className="text-[11px] text-slate-600 dark:text-slate-400 font-semibold mt-1">
+          <div className="text-[11px] text-slate-600 font-semibold mt-1">
             Total ledger credit balance
           </div>
         </div>
 
-        <div className={`p-4 rounded-2xl border transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-300 shadow-sm'
-        }`}>
-          <div className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 font-bold mb-1">
+        <div className="p-4 rounded-2xl border bg-white border-slate-300 shadow-sm transition-all">
+          <div className="flex items-center justify-between text-xs text-slate-700 font-bold mb-1">
             <span>Fine Gold Due (g)</span>
             <Coins className="w-4 h-4 text-amber-600" />
           </div>
-          <div className="text-xl font-black font-mono text-amber-950 dark:text-yellow-400">
+          <div className="text-xl font-black font-mono text-amber-950">
             {formatWeight(metrics.totalGoldGrams)}
           </div>
-          <div className="text-[11px] text-slate-600 dark:text-slate-400 font-semibold mt-1">
+          <div className="text-[11px] text-slate-600 font-semibold mt-1">
             ~{(metrics.totalGoldGrams / 11.664).toFixed(2)} tolas pure gold
           </div>
         </div>
 
-        <div className={`p-4 rounded-2xl border transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-300 shadow-sm'
-        }`}>
-          <div className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 font-bold mb-1">
+        <div className="p-4 rounded-2xl border bg-white border-slate-300 shadow-sm transition-all">
+          <div className="flex items-center justify-between text-xs text-slate-700 font-bold mb-1">
             <span>Fine Silver Due (g)</span>
             <Scale className="w-4 h-4 text-slate-600" />
           </div>
-          <div className="text-xl font-black font-mono text-slate-950 dark:text-slate-200">
+          <div className="text-xl font-black font-mono text-slate-950">
             {formatWeight(metrics.totalSilverGrams)}
           </div>
-          <div className="text-[11px] text-slate-600 dark:text-slate-400 font-semibold mt-1">
+          <div className="text-[11px] text-slate-600 font-semibold mt-1">
             ~{(metrics.totalSilverGrams / 1000).toFixed(2)} kg 999 silver
           </div>
         </div>

@@ -349,20 +349,20 @@ export const KaragirMasterView: React.FC<KaragirMasterViewProps> = ({
       {/* Top Header Card */}
       <div className={`p-5 rounded-2xl ${currentTheme.cardBg} ${currentTheme.cardBorder} border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4`}>
         <div className="flex items-center space-x-3.5">
-          <div className="p-3 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 text-white shadow-md">
-            <Hammer className="w-6 h-6" />
+          <div className="p-3 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 text-slate-950 font-bold shadow-md">
+            <Hammer className="w-6 h-6 text-slate-950" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">
-                Karagir Master Directory
+              <h1 className="text-xl font-extrabold text-slate-950 tracking-tight">
+                Karagir & Artisan Master
               </h1>
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30">
-                Goldsmiths & Makers
+              <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400 shadow-2xs">
+                कारागीर व कारागिरी व्यवस्थापन
               </span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Manage artisan profiles, specialty crafts, labor making rates (₹/g), standard wastage %, and live fine gold metal accounts.
+            <p className="text-xs text-slate-700 font-semibold mt-0.5">
+              Manage artisan profiles, craft specialties, labor making rates (₹/g), standard wastage %, and live fine gold metal accounts.
             </p>
           </div>
         </div>
@@ -370,9 +370,9 @@ export const KaragirMasterView: React.FC<KaragirMasterViewProps> = ({
         <div className="flex items-center space-x-2.5">
           <button
             onClick={handleExportCSV}
-            className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/60 shadow-xs flex items-center space-x-1.5 transition-all cursor-pointer"
+            className="px-3.5 py-2 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-900 hover:bg-slate-50 shadow-xs flex items-center space-x-1.5 transition-all cursor-pointer"
           >
-            <Download className="w-4 h-4 text-slate-500" />
+            <Download className="w-4 h-4 text-slate-700" />
             <span>Export CSV</span>
           </button>
 
