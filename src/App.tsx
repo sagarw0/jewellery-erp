@@ -55,8 +55,10 @@ import { MessengerView } from './components/common/MessengerView';
 import { SettingsView } from './components/common/SettingsView';
 import { AnalyticsModal } from './components/dashboard/AnalyticsModal';
 import { BullionRateModal } from './components/common/BullionRateModal';
+import { AiAssistantModal } from './components/common/AiAssistantModal';
 import { bullionRatesService } from './services/bullionRatesService';
 import { useTheme } from './context/ThemeContext';
+import { Sparkles } from 'lucide-react';
 
 interface AuthUser {
   code: string;
@@ -75,6 +77,9 @@ export function App() {
 
   // Bullion Rates Center Modal State
   const [showBullionRates, setShowBullionRates] = useState(false);
+
+  // Swarna AI ERP Copilot Modal State
+  const [showAiAssistant, setShowAiAssistant] = useState(false);
 
   // Navigation State
   const [currentSection, setCurrentSection] = useState<NavSection>('dashboard');
@@ -144,7 +149,10 @@ export function App() {
     if (!currentUser) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'F1') {
+      if ((e.ctrlKey && e.code === 'Space') || (e.altKey && (e.key === 'a' || e.key === 'A'))) {
+        e.preventDefault();
+        setShowAiAssistant((prev) => !prev);
+      } else if (e.key === 'F1') {
         e.preventDefault();
         setShowAnalytics((prev) => !prev);
       } else if (e.key === 'F2') {
@@ -360,6 +368,11 @@ export function App() {
     cloudService.saveStockItem(item);
   };
 
+  const handleAddDayBookEntry = (entry: DayBookEntry) => {
+    setDaybook((prev) => [entry, ...prev]);
+    cloudService.saveDayBookEntry(entry);
+  };
+
   const handleTriggerBackup = (media: BackupMediaOption) => {
     setBackupStatus((prev) =>
       prev.map((s) =>
@@ -393,6 +406,7 @@ export function App() {
         onLogout={() => setCurrentUser(null)}
         onOpenAnalytics={() => setShowAnalytics(true)}
         onOpenBullionRates={() => setShowBullionRates(true)}
+        onOpenAiAssistant={() => setShowAiAssistant(true)}
       />
 
       {/* Sub-Header Navigation Tabs for Multi-view Sections */}
@@ -752,14 +766,57 @@ export function App() {
       {/* Global Executive Analytics Modal */}
       <AnalyticsModal isOpen={showAnalytics} onClose={() => setShowAnalytics(false)} />
 
-      {/* Global Bullion Rate Center & Showroom Board Modal */}
-      <BullionRateModal
-        isOpen={showBullionRates}
-        onClose={() => setShowBullionRates(false)}
-        onApplyRates={(g24, g22, sil) => {
-          setGold24kRate(g24);
-          setGold22kRate(g22);
-          setSilverRate(sil);
+      {/* Floating AI Copilot Trigger Button (Bottom-Right) */}
+      {!showAiAssistant && (
+        <button
+          onClick={() => setShowAiAssistant(true)}
+          className="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-full bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-800 text-slate-950 font-bold shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center space-x-2.5 border-2 border-amber-300 group no-print"
+          title="Swarna AI ERP Copilot (Ctrl+Space)"
+        >
+          <span className="relative flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+          </span>
+          <Sparkles className="w-5 h-5 text-slate-950 group-hover:rotate-12 transition-transform" />
+          <div className="text-left hidden sm:block">
+            <span className="text-xs font-bold tracking-wider block leading-tight">AI Copilot</span>
+            <span className="text-[9px] font-mono text-slate-900/80 font-normal leading-tight">Ctrl+Space</span>
+          </div>
+        </button>
+      )}
+
+      {/* Global Swarna AI ERP Copilot Modal / Drawer */}
+      <AiAssistantModal
+        isOpen={showAiAssistant}
+        onClose={() => setShowAiAssistant(false)}
+        context={{
+          accounts,
+          orders,
+          purchases,
+          stockItems,
+          daybook,
+          daybookSummary,
+          debtors,
+          refineries,
+          gold24kRate,
+          gold22kRate,
+          silverRate,
+          branchName: currentUser.branch,
+        }}
+        onSavePurchase={handleSavePurchase}
+        onSaveOrder={handleSaveOrder}
+        onSaveAccount={handleSaveAccount}
+        onSaveRefinery={handleSaveRefinery}
+        onAddItemToStock={handleAddItemToStock}
+        onAddDayBookEntry={handleAddDayBookEntry}
+        onNavigate={(section, subView) => {
+          setCurrentSection(section as NavSection);
+          if (subView) {
+            if (section === 'masters') setMasterSubView(subView as MasterSubView);
+            else if (section === 'transactions') setTransSubView(subView as TransactionSubView);
+            else if (section === 'accounts') setAccSubView(subView as AccountSubView);
+            else if (section === 'stock') setStockSubView(subView as StockSubView);
+          }
         }}
       />
     </div>

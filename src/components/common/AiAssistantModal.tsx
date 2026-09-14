@@ -1,0 +1,901 @@
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import {
+  Sparkles,
+  Bot,
+  X,
+  Send,
+  Mic,
+  MicOff,
+  RotateCcw,
+  Maximize2,
+  Minimize2,
+  ArrowRight,
+  ArrowLeft,
+  CheckCircle2,
+  AlertCircle,
+  HelpCircle,
+  ExternalLink,
+  ChevronRight,
+  Calculator,
+  Coins,
+  Receipt,
+  Tag,
+  Boxes,
+  Users,
+  Calendar,
+  Flame,
+  UserPlus,
+  BookOpen,
+  CornerDownLeft,
+  Barcode as BarcodeIcon,
+} from 'lucide-react';
+import {
+  TaskType,
+  TASK_WORKFLOWS,
+  WorkflowStep,
+  ErpContext,
+  ChatMessage,
+  AiChatbotEngine,
+} from '../../services/aiChatbotService';
+import {
+  AccountMaster,
+  NewOrderBookingRecord,
+  RefineryRecord,
+  PurchaseRecord,
+  DayBookEntry,
+  SundryDebtorRow,
+  StockItem,
+} from '../../types/erp';
+import { formatCurrency, formatWeight } from '../../utils/calculations';
+import { useTheme } from '../../context/ThemeContext';
+
+interface AiAssistantModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  context: ErpContext;
+  onSavePurchase: (record: PurchaseRecord) => void;
+  onSaveOrder: (record: NewOrderBookingRecord) => void;
+  onSaveAccount: (account: AccountMaster) => void;
+  onSaveRefinery: (record: RefineryRecord) => void;
+  onAddItemToStock: (item: StockItem) => void;
+  onAddDayBookEntry?: (entry: DayBookEntry) => void;
+  onNavigate: (section: string, subView?: string) => void;
+}
+
+export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
+  isOpen,
+  onClose,
+  context,
+  onSavePurchase,
+  onSaveOrder,
+  onSaveAccount,
+  onSaveRefinery,
+  onAddItemToStock,
+  onAddDayBookEntry,
+  onNavigate,
+}) => {
+  const { currentTheme, isDark } = useTheme();
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [inputVal, setInputVal] = useState('');
+  const [isListening, setIsListening] = useState(false);
+
+  // Active step-by-step workflow state
+  const [activeTask, setActiveTask] = useState<{
+    taskType: TaskType;
+    stepIndex: number;
+    collectedData: Record<string, any>;
+  } | null>(null);
+
+  // Active step input buffer
+  const [stepInputValue, setStepInputValue] = useState<any>('');
+  const [stepError, setStepError] = useState<string | null>(null);
+
+  // Chat message history
+  const [messages, setMessages] = useState<ChatMessage[]>(() => [
+    {
+      id: 'welcome-msg',
+      sender: 'bot',
+      text: `👋 Welcome to **Swarna AI ERP Copilot**!
+
+I can help you **execute showroom tasks step-by-step** or **answer any question** regarding this jewellery ERP system.
+
+### Quick Actions:`,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      quickChips: [
+        { label: '🛒 New Purchase Inward', action: 'start_task', payload: 'purchase_inward' },
+        { label: '🏷️ Generate Barcode & HUID', action: 'start_task', payload: 'barcode_generate' },
+        { label: '💰 Sales POS Counter', action: 'start_task', payload: 'sales_invoice' },
+        { label: '📋 Book Custom Order', action: 'start_task', payload: 'order_booking' },
+        { label: '🔥 Old Gold Refinery', action: 'start_task', payload: 'refinery_melting' },
+        { label: '👤 Add Account Master', action: 'start_task', payload: 'account_create' },
+        { label: '📖 Day Book Voucher', action: 'start_task', payload: 'daybook_expense' },
+        { label: '📦 Live Stock Valuation', action: 'query', payload: 'stock' },
+        { label: '👥 Debtors Ledger', action: 'query', payload: 'debtors' },
+        { label: '⌨️ Hotkeys (F1–F12)', action: 'query', payload: 'hotkeys' },
+        { label: '🧮 Jewellery Formulas', action: 'query', payload: 'formulas' },
+      ],
+    },
+  ]);
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Initialize and keep engine synced with live ERP context
+  const engine = useMemo(() => new AiChatbotEngine(context), []);
+  useEffect(() => {
+    engine.updateContext(context);
+  }, [context, engine]);
+
+  // Auto-scroll chat
+  useEffect(() => {
+    if (isOpen) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isOpen, activeTask]);
+
+  // Focus input on open
+  useEffect(() => {
+    if (isOpen && !activeTask) {
+      setTimeout(() => inputRef.current?.focus(), 150);
+    }
+  }, [isOpen, activeTask]);
+
+  // Initialize step input value when step changes
+  useEffect(() => {
+    if (activeTask) {
+      const workflow = TASK_WORKFLOWS[activeTask.taskType];
+      const step = workflow.steps[activeTask.stepIndex];
+      if (step) {
+        let def: string | number = '';
+        if (typeof step.defaultValue === 'function') {
+          def = step.defaultValue(activeTask.collectedData, context);
+        } else if (step.defaultValue !== undefined) {
+          def = step.defaultValue;
+        }
+        setStepInputValue(activeTask.collectedData[step.field] ?? def);
+        setStepError(null);
+      }
+    }
+  }, [activeTask, context]);
+
+  // Speech recognition setup
+  useEffect(() => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-IN';
+
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setInputVal(transcript);
+      setIsListening(false);
+    };
+
+    recognition.onerror = () => setIsListening(false);
+    recognition.onend = () => setIsListening(false);
+
+    if (isListening) {
+      recognition.start();
+    } else {
+      recognition.stop();
+    }
+
+    return () => recognition.stop();
+  }, [isListening]);
+
+  // Handle start of a task workflow
+  const startWorkflow = (taskType: TaskType) => {
+    const workflow = TASK_WORKFLOWS[taskType];
+    if (!workflow) return;
+
+    const firstStep = workflow.steps[0];
+    let initialDef: string | number = '';
+    if (typeof firstStep.defaultValue === 'function') {
+      initialDef = firstStep.defaultValue({}, context);
+    } else if (firstStep.defaultValue !== undefined) {
+      initialDef = firstStep.defaultValue;
+    }
+
+    setActiveTask({
+      taskType,
+      stepIndex: 0,
+      collectedData: {},
+    });
+    setStepInputValue(initialDef);
+    setStepError(null);
+
+    // Add bot message
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: `msg-${Date.now()}`,
+        sender: 'bot',
+        text: `Starting **${workflow.name}** (${workflow.steps.length} steps).\nI will ask you 1 question at a time. You can change values or accept the defaults:`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      },
+    ]);
+  };
+
+  // Submit current step in active task
+  const handleStepSubmit = (customVal?: any) => {
+    if (!activeTask) return;
+    const workflow = TASK_WORKFLOWS[activeTask.taskType];
+    const currentStep = workflow.steps[activeTask.stepIndex];
+    const val = customVal !== undefined ? customVal : stepInputValue;
+
+    // Validate
+    if (currentStep.validate) {
+      const res = currentStep.validate(val, activeTask.collectedData);
+      if (!res.valid) {
+        setStepError(res.error || 'Invalid value entered.');
+        return;
+      }
+    }
+
+    // Compute derived fields if any
+    let updatedData = { ...activeTask.collectedData, [currentStep.field]: val };
+    if (currentStep.computeDerived) {
+      const derived = currentStep.computeDerived(val, updatedData, context);
+      updatedData = { ...updatedData, ...derived };
+    }
+
+    const nextIndex = activeTask.stepIndex + 1;
+
+    // Log user answer in message feed
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: `user-step-${Date.now()}`,
+        sender: 'user',
+        text: `${currentStep.question}\n**Answer:** ${val}`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      },
+    ]);
+
+    if (nextIndex < workflow.steps.length) {
+      // Proceed to next step
+      setActiveTask({
+        taskType: activeTask.taskType,
+        stepIndex: nextIndex,
+        collectedData: updatedData,
+      });
+    } else {
+      // All steps completed! Execute the task
+      setActiveTask(null);
+      const executionResult = engine.executeTask(
+        activeTask.taskType,
+        updatedData,
+        {
+          onSavePurchase,
+          onSaveOrder,
+          onSaveAccount,
+          onSaveRefinery,
+          onAddItemToStock,
+          onAddDayBookEntry,
+        }
+      );
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-exec-${Date.now()}`,
+          sender: 'bot',
+          text: executionResult.message,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          cardData: executionResult.cardData,
+          quickChips: [
+            { label: '🛒 Another Purchase', action: 'start_task', payload: 'purchase_inward' },
+            { label: '🏷️ Generate Barcode', action: 'start_task', payload: 'barcode_generate' },
+            { label: '💰 Sales POS', action: 'start_task', payload: 'sales_invoice' },
+            { label: '📦 Check Stock', action: 'query', payload: 'stock' },
+          ],
+        },
+      ]);
+    }
+  };
+
+  // Step Back
+  const handleStepBack = () => {
+    if (!activeTask || activeTask.stepIndex === 0) return;
+    setActiveTask({
+      ...activeTask,
+      stepIndex: activeTask.stepIndex - 1,
+    });
+  };
+
+  // Cancel Task
+  const handleCancelTask = () => {
+    setActiveTask(null);
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: `cancel-${Date.now()}`,
+        sender: 'bot',
+        text: 'Workflow cancelled. How else can I assist you?',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        quickChips: [
+          { label: '🛒 New Purchase', action: 'start_task', payload: 'purchase_inward' },
+          { label: '🏷️ Generate Barcode', action: 'start_task', payload: 'barcode_generate' },
+          { label: '💰 Sales POS', action: 'start_task', payload: 'sales_invoice' },
+          { label: '📦 Check Stock', action: 'query', payload: 'stock' },
+        ],
+      },
+    ]);
+  };
+
+  // General text message send
+  const handleSendMessage = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!inputVal.trim()) return;
+
+    const userText = inputVal.trim();
+    setInputVal('');
+
+    // Add user message
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: `user-${Date.now()}`,
+        sender: 'user',
+        text: userText,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      },
+    ]);
+
+    // Process via Engine
+    const result = engine.processUserInput(userText);
+
+    if (result.taskToStart) {
+      startWorkflow(result.taskToStart);
+    } else {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-${Date.now()}`,
+          sender: 'bot',
+          text: result.response,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          cardData: result.cardData,
+          quickChips: result.quickChips,
+        },
+      ]);
+    }
+  };
+
+  // Quick Action Chip Click
+  const handleChipClick = (chip: { label: string; action: string; payload?: any }) => {
+    if (chip.action === 'start_task' && chip.payload) {
+      startWorkflow(chip.payload as TaskType);
+    } else if (chip.action === 'query' && chip.payload) {
+      setInputVal(chip.payload);
+      const result = engine.processUserInput(chip.payload);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `user-${Date.now()}`,
+          sender: 'user',
+          text: chip.label,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        },
+        {
+          id: `bot-${Date.now()}`,
+          sender: 'bot',
+          text: result.response,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          cardData: result.cardData,
+          quickChips: result.quickChips,
+        },
+      ]);
+    } else if (chip.action === 'navigate' && chip.payload) {
+      onNavigate(chip.payload.section, chip.payload.subView);
+    }
+  };
+
+  // Card Action Click
+  const handleCardAction = (actionId: string) => {
+    switch (actionId) {
+      case 'nav_purchase':
+        onNavigate('transactions', 'purchase');
+        break;
+      case 'nav_barcode':
+        onNavigate('masters', 'barcode');
+        break;
+      case 'nav_sales':
+        onNavigate('transactions', 'sales_invoice');
+        break;
+      case 'nav_orders':
+        onNavigate('transactions', 'new_order');
+        break;
+      case 'nav_refinery':
+        onNavigate('transactions', 'refinery_in');
+        break;
+      case 'nav_accounts':
+        onNavigate('masters', 'account_master');
+        break;
+      case 'nav_stock':
+        onNavigate('stock', 'stock_report');
+        break;
+      case 'nav_daybook':
+        onNavigate('accounts', 'day_book');
+        break;
+      case 'nav_debtors':
+        onNavigate('accounts', 'book_display');
+        break;
+      case 'task_barcode':
+        startWorkflow('barcode_generate');
+        break;
+      case 'task_sale':
+        startWorkflow('sales_invoice');
+        break;
+      case 'task_account':
+        startWorkflow('account_create');
+        break;
+      default:
+        break;
+    }
+  };
+
+  if (!isOpen) return null;
+
+  const currentWorkflow = activeTask ? TASK_WORKFLOWS[activeTask.taskType] : null;
+  const currentStep = currentWorkflow ? currentWorkflow.steps[activeTask!.stepIndex] : null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-end p-2 sm:p-6 pointer-events-none">
+      {/* Backdrop for mobile */}
+      <div
+        className="fixed inset-0 bg-black/40 backdrop-blur-xs pointer-events-auto sm:hidden"
+        onClick={onClose}
+      />
+
+      {/* Main Copilot Drawer Container */}
+      <div
+        className={`pointer-events-auto flex flex-col rounded-3xl shadow-2xl border transition-all duration-300 overflow-hidden ${
+          isExpanded
+            ? 'w-full sm:w-[880px] h-[92vh] sm:h-[85vh]'
+            : 'w-full sm:w-[480px] h-[85vh] sm:h-[680px]'
+        } ${
+          isDark
+            ? 'bg-[#0f172a]/95 backdrop-blur-2xl border-white/20 text-white'
+            : 'bg-white/95 backdrop-blur-xl border-sky-200/90 text-slate-800'
+        }`}
+      >
+        {/* Header */}
+        <div
+          className={`px-4 py-3 border-b flex items-center justify-between shrink-0 ${
+            isDark
+              ? 'bg-[#0b1120] border-white/10'
+              : 'bg-gradient-to-r from-blue-700 via-indigo-700 to-indigo-900 text-white border-blue-900'
+          }`}
+        >
+          <div className="flex items-center space-x-3">
+            <div className="p-2 rounded-xl bg-gradient-to-tr from-amber-400 to-amber-600 text-slate-950 shadow-md">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="flex items-center space-x-2">
+                <span className="font-bold text-sm tracking-wide">Swarna AI Copilot</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full font-semibold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                  Online
+                </span>
+              </div>
+              <span className={`text-[11px] block font-medium ${isDark ? 'text-slate-400' : 'text-blue-100'}`}>
+                {activeTask
+                  ? `Task: ${currentWorkflow?.name}`
+                  : 'Instant Jewellery Tasks & ERP Knowledge'}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-1">
+            <button
+              onClick={() => {
+                setActiveTask(null);
+                setMessages([
+                  {
+                    id: 'reset-msg',
+                    sender: 'bot',
+                    text: 'Chat history cleared. How can I help you today?',
+                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    quickChips: [
+                      { label: '🛒 New Purchase', action: 'start_task', payload: 'purchase_inward' },
+                      { label: '🏷️ Generate Barcode', action: 'start_task', payload: 'barcode_generate' },
+                      { label: '💰 Sales POS', action: 'start_task', payload: 'sales_invoice' },
+                      { label: '📋 Book Order', action: 'start_task', payload: 'order_booking' },
+                    ],
+                  },
+                ]);
+              }}
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                isDark ? 'hover:bg-white/10 text-slate-400' : 'hover:bg-white/20 text-white/80'
+              }`}
+              title="Reset / Clear Chat"
+            >
+              <RotateCcw className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer hidden sm:block ${
+                isDark ? 'hover:bg-white/10 text-slate-400' : 'hover:bg-white/20 text-white/80'
+              }`}
+              title={isExpanded ? 'Collapse Drawer' : 'Expand Full Width'}
+            >
+              {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            </button>
+            <button
+              onClick={onClose}
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                isDark ? 'hover:bg-white/10 text-slate-400 hover:text-white' : 'hover:bg-white/20 text-white'
+              }`}
+              title="Close Copilot"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Chat History Body */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 font-sans text-xs scrollbar-thin">
+          {messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`flex flex-col ${
+                msg.sender === 'user' ? 'items-end' : 'items-start'
+              }`}
+            >
+              <div className="flex items-end space-x-2 max-w-[90%] sm:max-w-[85%]">
+                {msg.sender === 'bot' && (
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs mb-1">
+                    <Bot className="w-3.5 h-3.5" />
+                  </div>
+                )}
+                <div
+                  className={`p-3.5 rounded-2xl shadow-xs leading-relaxed whitespace-pre-line ${
+                    msg.sender === 'user'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-br-xs'
+                      : isDark
+                      ? 'bg-white/10 border border-white/15 text-slate-100 rounded-bl-xs'
+                      : 'bg-slate-100 border border-slate-200 text-slate-900 rounded-bl-xs'
+                  }`}
+                >
+                  <div className="space-y-1">
+                    {msg.text}
+                  </div>
+
+                  {/* Summary / Voucher Card */}
+                  {msg.cardData && (
+                    <div className={`mt-3 p-3 rounded-xl border ${
+                      isDark ? 'bg-black/30 border-white/15 text-white' : 'bg-white border-sky-200 text-slate-900 shadow-sm'
+                    }`}>
+                      <div className="flex items-center justify-between font-bold text-[12px] pb-2 border-b border-slate-200/50 mb-2">
+                        <span className="flex items-center space-x-1.5 text-blue-600 dark:text-amber-400">
+                          <CheckCircle2 className="w-4 h-4" />
+                          <span>{msg.cardData.title}</span>
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
+                        {Object.entries(msg.cardData.details).map(([k, v]) => (
+                          <div key={k} className="flex flex-col">
+                            <span className="text-[9px] text-slate-500 font-sans uppercase">{k}</span>
+                            <span className="font-semibold">{String(v)}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {msg.cardData.actions && msg.cardData.actions.length > 0 && (
+                        <div className="mt-3 pt-2 border-t border-slate-200/50 flex flex-wrap gap-1.5">
+                          {msg.cardData.actions.map((act) => (
+                            <button
+                              key={act.actionId}
+                              onClick={() => handleCardAction(act.actionId)}
+                              className={`px-2.5 py-1 rounded-lg text-[11px] font-bold flex items-center space-x-1 transition-all cursor-pointer ${
+                                act.primary
+                                  ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-xs'
+                                  : isDark
+                                  ? 'bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15'
+                                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'
+                              }`}
+                            >
+                              <span>{act.label}</span>
+                              <ExternalLink className="w-3 h-3 ml-0.5" />
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Quick Action Chips inside bubble */}
+                  {msg.quickChips && msg.quickChips.length > 0 && (
+                    <div className="mt-3 pt-2 border-t border-slate-200/30 flex flex-wrap gap-1.5">
+                      {msg.quickChips.map((chip, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => handleChipClick(chip)}
+                          className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer flex items-center space-x-1 ${
+                            isDark
+                              ? 'bg-white/15 hover:bg-white/25 text-amber-300 border border-white/20'
+                              : 'bg-white hover:bg-blue-50 text-blue-900 border border-blue-200 shadow-2xs'
+                          }`}
+                        >
+                          <span>{chip.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <span className="text-[9px] text-slate-400 mt-0.5 px-8 font-mono">
+                {msg.timestamp}
+              </span>
+            </div>
+          ))}
+
+          {/* ACTIVE 1-BY-1 STEP QUESTION CARD */}
+          {activeTask && currentWorkflow && currentStep && (
+            <div
+              className={`p-4 rounded-2xl border shadow-lg animate-in fade-in slide-in-from-bottom-2 duration-200 ${
+                isDark
+                  ? 'bg-[#1e293b]/95 border-amber-400/40 text-white'
+                  : 'bg-gradient-to-br from-amber-50/90 to-sky-50/90 border-amber-300 text-slate-900 shadow-md'
+              }`}
+            >
+              {/* Step Progress Tracker */}
+              <div className="flex items-center justify-between pb-2 mb-3 border-b border-amber-200/60 dark:border-white/10">
+                <div className="flex items-center space-x-2">
+                  <span className="text-base">{currentWorkflow.icon}</span>
+                  <div>
+                    <span className="font-bold text-xs uppercase tracking-wider text-amber-700 dark:text-amber-400 block">
+                      {currentWorkflow.name}
+                    </span>
+                    <span className="text-[10px] text-slate-500 font-mono">
+                      Question {activeTask.stepIndex + 1} of {currentWorkflow.steps.length}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-1.5">
+                  <div className="w-24 bg-slate-200 dark:bg-white/20 rounded-full h-1.5 overflow-hidden">
+                    <div
+                      className="bg-gradient-to-r from-amber-500 to-blue-600 h-full rounded-full transition-all duration-300"
+                      style={{
+                        width: `${((activeTask.stepIndex + 1) / currentWorkflow.steps.length) * 100}%`,
+                      }}
+                    />
+                  </div>
+                  <button
+                    onClick={handleCancelTask}
+                    className="text-[10px] px-1.5 py-0.5 rounded text-rose-600 hover:bg-rose-100 font-medium cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+
+              {/* Step Question Prompt */}
+              <div className="space-y-1 mb-3">
+                <h4 className="font-bold text-sm text-slate-900 dark:text-white flex items-center space-x-1.5">
+                  <span>{currentStep.question}</span>
+                </h4>
+                {currentStep.subtext && (
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    {currentStep.subtext}
+                  </p>
+                )}
+              </div>
+
+              {/* Step Input Field based on type */}
+              <div className="space-y-2 mb-3">
+                {currentStep.type === 'select' ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                    {currentStep.options?.map((opt) => (
+                      <button
+                        key={String(opt.value)}
+                        type="button"
+                        onClick={() => {
+                          setStepInputValue(opt.value);
+                          handleStepSubmit(opt.value);
+                        }}
+                        className={`p-2 rounded-xl text-left border transition-all cursor-pointer flex flex-col justify-between ${
+                          stepInputValue === opt.value
+                            ? 'bg-blue-600 text-white border-blue-700 shadow-xs'
+                            : isDark
+                            ? 'bg-white/10 hover:bg-white/20 border-white/15 text-slate-200'
+                            : 'bg-white hover:bg-amber-50 border-slate-200 text-slate-800'
+                        }`}
+                      >
+                        <span className="font-bold text-xs">{opt.label}</span>
+                        {opt.sub && (
+                          <span
+                            className={`text-[10px] ${
+                              stepInputValue === opt.value
+                                ? 'text-blue-100'
+                                : 'text-slate-400'
+                            }`}
+                          >
+                            {opt.sub}
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex items-center space-x-2">
+                      <div className="relative flex-1">
+                        <input
+                          autoFocus
+                          type={currentStep.type === 'date' ? 'date' : currentStep.type === 'weight' || currentStep.type === 'currency' || currentStep.type === 'number' ? 'number' : 'text'}
+                          step={currentStep.type === 'weight' ? '0.001' : '1'}
+                          placeholder={currentStep.placeholder}
+                          value={stepInputValue}
+                          onChange={(e) => {
+                            setStepInputValue(e.target.value);
+                            setStepError(null);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleStepSubmit();
+                            }
+                          }}
+                          className={`w-full px-3 py-2 rounded-xl border text-xs font-medium outline-hidden transition-all ${
+                            stepError
+                              ? 'border-rose-500 ring-2 ring-rose-300'
+                              : isDark
+                              ? 'bg-black/30 border-white/20 text-white focus:border-amber-400'
+                              : 'bg-white border-slate-300 text-slate-900 focus:border-blue-600'
+                          }`}
+                        />
+                        {currentStep.type === 'weight' && (
+                          <span className="absolute right-3 top-2 text-[10px] text-slate-400 font-mono">
+                            Grams
+                          </span>
+                        )}
+                        {currentStep.type === 'currency' && (
+                          <span className="absolute right-3 top-2 text-[10px] text-slate-400 font-mono">
+                            ₹ INR
+                          </span>
+                        )}
+                      </div>
+
+                      <button
+                        onClick={() => handleStepSubmit()}
+                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold text-xs shadow-xs transition-all flex items-center space-x-1 cursor-pointer"
+                      >
+                        <span>Next</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
+                    {/* Quick Presets Chips */}
+                    {currentStep.quickPresets && currentStep.quickPresets.length > 0 && (
+                      <div className="flex items-center space-x-1.5 mt-2 overflow-x-auto scrollbar-none">
+                        <span className="text-[10px] text-slate-400 font-medium">Presets:</span>
+                        {currentStep.quickPresets.map((p, idx) => (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => {
+                              setStepInputValue(p);
+                              handleStepSubmit(p);
+                            }}
+                            className={`px-2 py-0.5 rounded-lg text-[10px] font-mono border transition-all cursor-pointer ${
+                              isDark
+                                ? 'bg-white/10 hover:bg-white/20 border-white/15 text-slate-200'
+                                : 'bg-white hover:bg-slate-100 border-slate-200 text-slate-700'
+                            }`}
+                          >
+                            {currentStep.type === 'currency' ? `₹${p}` : `${p}g`}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {stepError && (
+                  <div className="flex items-center space-x-1 text-rose-600 text-[11px] font-medium">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    <span>{stepError}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Step Navigation Controls */}
+              <div className="flex items-center justify-between pt-2 border-t border-amber-200/50 dark:border-white/10 text-[11px]">
+                <button
+                  type="button"
+                  disabled={activeTask.stepIndex === 0}
+                  onClick={handleStepBack}
+                  className={`flex items-center space-x-1 px-2 py-1 rounded transition-colors ${
+                    activeTask.stepIndex === 0
+                      ? 'text-slate-400 opacity-50 cursor-not-allowed'
+                      : 'text-slate-600 dark:text-slate-300 hover:bg-white/20 cursor-pointer'
+                  }`}
+                >
+                  <ArrowLeft className="w-3 h-3" />
+                  <span>Previous</span>
+                </button>
+
+                <div className="flex items-center space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => handleStepSubmit()}
+                    className="text-blue-700 dark:text-amber-400 hover:underline font-medium cursor-pointer"
+                  >
+                    Accept Default &rarr;
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Bottom Input Area */}
+        <div
+          className={`p-3 border-t shrink-0 ${
+            isDark ? 'bg-[#0b1120] border-white/10' : 'bg-white border-slate-200'
+          }`}
+        >
+          <form onSubmit={handleSendMessage} className="flex items-center space-x-2">
+            <button
+              type="button"
+              onClick={() => setIsListening(!isListening)}
+              className={`p-2.5 rounded-xl border transition-all cursor-pointer ${
+                isListening
+                  ? 'bg-rose-600 text-white border-rose-700 animate-pulse'
+                  : isDark
+                  ? 'bg-white/10 text-slate-300 hover:bg-white/20 border-white/15'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200'
+              }`}
+              title={isListening ? 'Stop Listening' : 'Voice Dictation'}
+            >
+              {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+            </button>
+
+            <div className="relative flex-1">
+              <input
+                ref={inputRef}
+                type="text"
+                value={inputVal}
+                onChange={(e) => setInputVal(e.target.value)}
+                placeholder={
+                  activeTask
+                    ? 'Workflow in progress above...'
+                    : 'Ask any question or command (e.g. "new purchase", "how much gold", "formula for fine gold")...'
+                }
+                disabled={Boolean(activeTask)}
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium outline-hidden transition-all ${
+                  isDark
+                    ? 'bg-white/10 border-white/15 text-white placeholder:text-slate-500 focus:border-amber-400'
+                    : 'bg-slate-50 border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:bg-white'
+                } disabled:opacity-50`}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={!inputVal.trim() || Boolean(activeTask)}
+              className="p-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 disabled:opacity-50 text-white shadow-xs transition-all cursor-pointer disabled:cursor-not-allowed"
+              title="Send Message"
+            >
+              <Send className="w-4 h-4" />
+            </button>
+          </form>
+
+          {/* Micro Helper Note */}
+          <div className="flex items-center justify-between text-[10px] text-slate-400 mt-2 px-1">
+            <span>Powered by Swarna AI Assistant Engine</span>
+            <span className="font-mono">Press Ctrl+Space to toggle</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

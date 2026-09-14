@@ -39,6 +39,7 @@ interface NavbarProps {
   onLogout: () => void;
   onOpenAnalytics: () => void;
   onOpenBullionRates?: () => void;
+  onOpenAiAssistant?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -51,6 +52,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onLogout,
   onOpenAnalytics,
   onOpenBullionRates,
+  onOpenAiAssistant,
 }) => {
   const { currentTheme, isDark, density, setTheme, setDensity } = useTheme();
   const [showHotkeys, setShowHotkeys] = useState(false);
@@ -176,6 +178,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               Live ↻
             </span>
           </div>
+
+          {/* Swarna AI Copilot Assistant Button */}
+          {onOpenAiAssistant && (
+            <button
+              onClick={onOpenAiAssistant}
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-800 text-slate-950 font-bold text-xs shadow-xs hover:shadow-sm transition-all cursor-pointer group"
+              title="Swarna AI ERP Copilot (Ctrl+Space)"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-slate-950 group-hover:scale-110 transition-transform" />
+              <span className="hidden md:inline">AI Copilot</span>
+              <span className="text-[9px] bg-black/20 text-slate-900 px-1 py-0.2 rounded font-mono font-normal">AI</span>
+            </button>
+          )}
 
           {/* Executive Analytics Button */}
           <button
