@@ -54,6 +54,8 @@ import { GoldSchemeView } from './components/common/GoldSchemeView';
 import { MessengerView } from './components/common/MessengerView';
 import { SettingsView } from './components/common/SettingsView';
 import { AnalyticsModal } from './components/dashboard/AnalyticsModal';
+import { BullionRateModal } from './components/common/BullionRateModal';
+import { bullionRatesService } from './services/bullionRatesService';
 import { useTheme } from './context/ThemeContext';
 
 interface AuthUser {
@@ -71,6 +73,9 @@ export function App() {
   // Executive Analytics Modal State
   const [showAnalytics, setShowAnalytics] = useState(false);
 
+  // Bullion Rates Center Modal State
+  const [showBullionRates, setShowBullionRates] = useState(false);
+
   // Navigation State
   const [currentSection, setCurrentSection] = useState<NavSection>('dashboard');
   const [masterSubView, setMasterSubView] = useState<MasterSubView>('account_master');
@@ -78,10 +83,25 @@ export function App() {
   const [accSubView, setAccSubView] = useState<AccountSubView>('day_book');
   const [stockSubView, setStockSubView] = useState<StockSubView>('stock_report');
 
-  // Bullion Rates State
-  const [gold24kRate, setGold24kRate] = useState(7250);
-  const [gold22kRate, setGold22kRate] = useState(6680);
-  const [silverRate, setSilverRate] = useState(86);
+  // Bullion Rates State (Synced with live bullion service)
+  const initialRates = bullionRatesService.getRates();
+  const [gold24kRate, setGold24kRate] = useState(initialRates.gold24k);
+  const [gold22kRate, setGold22kRate] = useState(initialRates.gold22k);
+  const [silverRate, setSilverRate] = useState(initialRates.silver999);
+
+  // Subscribe to real-time bullion rate updates & initiate background auto-polling
+  useEffect(() => {
+    bullionRatesService.startPolling(60);
+    const unsubscribe = bullionRatesService.subscribe((r) => {
+      setGold24kRate(r.gold24k);
+      setGold22kRate(r.gold22k);
+      setSilverRate(r.silver999);
+    });
+    return () => {
+      bullionRatesService.stopPolling();
+      unsubscribe();
+    };
+  }, []);
 
   // Core Data Stores (Synced with Supabase Cloud DB)
   const [accounts, setAccounts] = useState<AccountMaster[]>(INITIAL_ACCOUNTS);
@@ -372,6 +392,7 @@ export function App() {
         currentUser={currentUser}
         onLogout={() => setCurrentUser(null)}
         onOpenAnalytics={() => setShowAnalytics(true)}
+        onOpenBullionRates={() => setShowBullionRates(true)}
       />
 
       {/* Sub-Header Navigation Tabs for Multi-view Sections */}
@@ -550,6 +571,7 @@ export function App() {
             orders={orders}
             debtors={debtors}
             stockItems={stockItems}
+            onOpenBullionRates={() => setShowBullionRates(true)}
           />
         )}
 
@@ -729,6 +751,17 @@ export function App() {
 
       {/* Global Executive Analytics Modal */}
       <AnalyticsModal isOpen={showAnalytics} onClose={() => setShowAnalytics(false)} />
+
+      {/* Global Bullion Rate Center & Showroom Board Modal */}
+      <BullionRateModal
+        isOpen={showBullionRates}
+        onClose={() => setShowBullionRates(false)}
+        onApplyRates={(g24, g22, sil) => {
+          setGold24kRate(g24);
+          setGold22kRate(g22);
+          setSilverRate(sil);
+        }}
+      />
     </div>
   );
 }

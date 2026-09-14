@@ -45,6 +45,7 @@ interface DashboardViewProps {
   orders: NewOrderBookingRecord[];
   debtors: SundryDebtorRow[];
   stockItems: StockItem[];
+  onOpenBullionRates?: () => void;
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
@@ -55,6 +56,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   orders,
   debtors,
   stockItems,
+  onOpenBullionRates,
 }) => {
   const { currentTheme, isDark } = useTheme();
   const [showAnalytics, setShowAnalytics] = useState(false);
@@ -590,21 +592,40 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <h2 className={`text-xs font-semibold uppercase tracking-wider ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
                   Current Stock Vault Breakdown
                 </h2>
-                <span className={`text-[9.5px] px-2 py-0.2 rounded-full font-medium border ${
-                  isDark
-                    ? 'bg-amber-500/15 text-amber-300 border-amber-400/30 backdrop-blur-sm'
-                    : 'bg-amber-100 text-amber-900 border-amber-300'
-                }`}>
-                  Live Market Rates
-                </span>
+                <button
+                  onClick={onOpenBullionRates}
+                  className={`text-[9.5px] px-2.5 py-0.5 rounded-full font-bold border transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95 ${
+                    isDark
+                      ? 'bg-amber-500/20 text-amber-300 border-amber-400/40 hover:bg-amber-500/30'
+                      : 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200'
+                  }`}
+                  title="Click to view full bullion market board, 18K/22K rates, and showroom premiums"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping shrink-0" />
+                  <span>Live Market Rates ↗</span>
+                </button>
               </div>
               <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-400'}`}>
-                Pure Gold 24K: ₹{goldGramRate}/g • Pure Silver: ₹{silverGramRate}/g • Real-time Fine Metal Accounting
+                Pure Gold 24K: ₹{goldGramRate}/g • 22K (916): ₹{gold22kRate || Math.round(goldGramRate * 0.916)}/g • Pure Silver: ₹{silverGramRate}/g
               </span>
             </div>
           </div>
 
           <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+            {onOpenBullionRates && (
+              <button
+                onClick={onOpenBullionRates}
+                className={`px-3 py-1 rounded-xl border text-[11px] font-bold flex items-center space-x-1.5 shadow-2xs transition-all cursor-pointer ${
+                  isDark
+                    ? 'bg-amber-500/20 border-amber-400/30 text-amber-300 hover:bg-amber-500/30'
+                    : 'bg-amber-50 border-amber-300 text-amber-900 hover:bg-amber-100'
+                }`}
+              >
+                <Coins className="w-3.5 h-3.5 text-amber-500" />
+                <span>Rate Center</span>
+              </button>
+            )}
+
             <div className={`px-2.5 py-1 rounded-xl border text-[11px] font-mono font-medium flex items-center space-x-1.5 shadow-2xs ${
               isDark
                 ? 'bg-white/[0.06] border-white/15 text-slate-200'

@@ -38,6 +38,7 @@ interface NavbarProps {
   currentUser: { code: string; name: string; role: string; branch: string } | null;
   onLogout: () => void;
   onOpenAnalytics: () => void;
+  onOpenBullionRates?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -49,6 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentUser,
   onLogout,
   onOpenAnalytics,
+  onOpenBullionRates,
 }) => {
   const { currentTheme, isDark, density, setTheme, setDensity } = useTheme();
   const [showHotkeys, setShowHotkeys] = useState(false);
@@ -131,20 +133,27 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Live Bullion Ticker & Customization Controls */}
         <div className="flex items-center space-x-3 text-xs">
-          {/* Live Bullion Ticker */}
-          <div className={`hidden sm:flex items-center space-x-2 px-2.5 py-1 rounded-xl shadow-2xs border ${
-            isDark
-              ? 'bg-white/10 backdrop-blur-md border-white/15 text-white'
-              : 'bg-white/80 backdrop-blur-xs border-slate-200/80 text-slate-800'
-          }`}>
-            <div className={`flex items-center space-x-1 pr-1 border-r ${isDark ? 'border-white/15 text-amber-400' : 'border-slate-200 text-slate-500'}`}>
-              <TrendingUp className="w-3.5 h-3.5 text-amber-500 animate-bounce" />
-              <span className={`text-[10px] font-bold uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Live Rates:
+          {/* Live Bullion Ticker (Clickable to open BullionRateModal) */}
+          <div
+            onClick={onOpenBullionRates}
+            role="button"
+            tabIndex={0}
+            className={`hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-xl shadow-xs border cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 group ${
+              isDark
+                ? 'bg-white/10 hover:bg-white/15 backdrop-blur-md border-white/20 text-white'
+                : 'bg-white hover:bg-amber-50/50 backdrop-blur-xs border-amber-300/80 shadow-amber-100/50 text-slate-800'
+            }`}
+            title="Click to open Live Bullion Rates Center & Showroom Board (Real-Time MCX/IBJA Rates)"
+          >
+            <div className={`flex items-center space-x-1.5 pr-1.5 border-r ${isDark ? 'border-white/15 text-amber-400' : 'border-amber-200 text-amber-800'}`}>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
+              <TrendingUp className="w-3.5 h-3.5 text-amber-500 group-hover:scale-110 transition-transform" />
+              <span className={`text-[10px] font-extrabold uppercase tracking-wider ${isDark ? 'text-amber-300' : 'text-amber-800'}`}>
+                Rates:
               </span>
             </div>
 
-            <div className="flex items-center space-x-2 font-mono text-[11px]">
+            <div className="flex items-center space-x-2.5 font-mono text-[11px]">
               <div className="flex items-center space-x-1">
                 <span className={`font-bold ${isDark ? 'text-amber-300' : 'text-amber-700'}`}>24K:</span>
                 <span className={`font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{gold24kRate.toLocaleString('en-IN')}</span>
@@ -156,10 +165,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
               <span className={isDark ? 'text-white/20' : 'text-slate-300'}>•</span>
               <div className="flex items-center space-x-1">
-                <span className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Silver:</span>
+                <span className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Sil:</span>
                 <span className={`font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{silverRate.toLocaleString('en-IN')}/g</span>
               </div>
             </div>
+
+            <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-bold uppercase transition-colors hidden md:inline-block ${
+              isDark ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30 group-hover:bg-amber-400 group-hover:text-slate-950' : 'bg-amber-100 text-amber-900 border border-amber-300 group-hover:bg-amber-400 group-hover:text-slate-950'
+            }`}>
+              Live ↻
+            </span>
           </div>
 
           {/* Executive Analytics Button */}

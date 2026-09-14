@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Settings, Save, Building, Scale, Percent } from 'lucide-react';
+import { bullionRatesService } from '../../services/bullionRatesService';
 
 interface SettingsViewProps {
   gold24kRate: number;
@@ -29,6 +30,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [tcsPct, setTcsPct] = useState(1.0);
 
   const handleSave = () => {
+    bullionRatesService.setCustomRates(rate24k, rateSil);
     onUpdateRates(rate24k, rate22k, rateSil);
     alert('System settings, tax configuration, and bullion rates saved successfully!');
   };
