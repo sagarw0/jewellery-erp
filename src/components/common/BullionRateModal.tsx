@@ -120,7 +120,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
         <div className={`px-6 py-4 border-b flex items-center justify-between ${currentTheme.headerBg}`}>
           <div className="flex items-center space-x-3">
             <div className="p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-600 text-slate-950 shadow-md flex items-center justify-center">
-              <Coins className="w-5 h-5 text-inherit animate-pulse" />
+              <Coins className="w-5 h-5 text-inherit" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
@@ -136,7 +136,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
                 >
                   <span
                     className={`w-1.5 h-1.5 rounded-full ${
-                      rates.isLocked ? 'bg-amber-400' : 'bg-emerald-400 animate-ping'
+                      rates.isLocked ? 'bg-amber-400' : 'bg-emerald-400'
                     }`}
                   />
                   <span>{rates.isLocked ? 'Showroom Locked' : '● Live Feed Active'}</span>

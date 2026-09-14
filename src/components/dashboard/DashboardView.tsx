@@ -554,14 +554,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 </h2>
                 <button
                   onClick={onOpenBullionRates}
-                  className={`text-[9.5px] px-2.5 py-0.5 rounded-full font-bold border transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95 ${
+                  className={`text-[9.5px] px-2.5 py-0.5 rounded-full font-bold border transition-all flex items-center space-x-1.5 cursor-pointer hover:scale-105 active:scale-95 ${
                     isDark
                       ? 'bg-amber-500/20 text-amber-300 border-amber-400/40 hover:bg-amber-500/30'
                       : 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200'
                   }`}
                   title="Click to view full bullion market board, 18K/22K rates, and showroom premiums"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping shrink-0" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
                   <span>Live Market Rates ↗</span>
                 </button>
               </div>

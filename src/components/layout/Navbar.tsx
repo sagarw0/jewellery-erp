@@ -82,7 +82,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2.5">
             <div className={`p-2 rounded-xl ${currentTheme.primaryBtn} flex items-center justify-center shadow-xs`}>
-              <Gem className="w-4 h-4 text-inherit animate-pulse" />
+              <Gem className="w-4 h-4 text-inherit" />
             </div>
             <div>
               <div className="flex items-center space-x-1.5">
@@ -111,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               ? 'bg-emerald-500/15 border-emerald-400/30 text-emerald-300 backdrop-blur-sm'
               : 'bg-emerald-50 border-emerald-300 text-emerald-800'
           }`}>
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
             <Database className="w-3.5 h-3.5 text-emerald-500" />
             <span>Supabase Cloud Sync</span>
           </div>
@@ -146,7 +146,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             title="Click to open Live Bullion Rates Center & Showroom Board (Real-Time MCX/IBJA Rates)"
           >
             <div className={`flex items-center space-x-1.5 pr-1.5 border-r ${isDark ? 'border-white/15 text-amber-400' : 'border-amber-200 text-amber-800'}`}>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
+              <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
               <TrendingUp className="w-3.5 h-3.5 text-amber-500 group-hover:scale-110 transition-transform" />
               <span className={`text-[10px] font-extrabold uppercase tracking-wider ${isDark ? 'text-amber-300' : 'text-amber-800'}`}>
                 Rates:

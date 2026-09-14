@@ -728,7 +728,7 @@ export function App() {
       <footer className="bg-white border-t border-sky-200 px-4 py-2 text-xs text-slate-500 flex flex-wrap items-center justify-between gap-2 no-print">
         <div className="flex items-center space-x-3">
           <span className="flex items-center space-x-1.5 text-emerald-700 font-medium">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
             <span>Cloud Database: Connected (fbmbvnvnfypkkrpslnag.supabase.co)</span>
           </span>
           <span className="text-slate-300">|</span>
