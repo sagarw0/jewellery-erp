@@ -94,7 +94,7 @@ export const FieldDictionaryView: React.FC = () => {
                 <tr key={`${f.screen}-${f.database_field}-${idx}`} className="hover:bg-sky-50/30">
                   <td className="p-2.5 border-r border-slate-200 text-center text-slate-400">{idx + 1}</td>
                   <td className="p-2.5 border-r border-slate-200 font-sans font-semibold text-slate-800">{f.screen}</td>
-                  <td className="p-2.5 border-r border-slate-200 font-sans font-bold text-blue-900 bg-blue-50/30">{f.ui_label}</td>
+                  <td className="p-2.5 border-r border-slate-200 font-sans font-bold text-blue-900">{f.ui_label}</td>
                   <td className="p-2.5 border-r border-slate-200 text-sky-800 font-semibold">{f.database_field}</td>
                   <td className="p-2.5 border-r border-slate-200 text-slate-600">{f.type}</td>
                   <td className="p-2.5 border-r border-slate-200 text-center">

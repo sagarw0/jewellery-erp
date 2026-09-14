@@ -1043,11 +1043,11 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                     <th className="p-2 border-r border-slate-200 w-24 text-right font-bold">GrossWt</th>
                     <th className="p-2 border-r border-slate-200 w-24 text-right text-amber-800">Black.Beats</th>
                     <th className="p-2 border-r border-slate-200 w-20 text-right">StoneWt</th>
-                    <th className="p-2 border-r border-slate-200 w-24 text-right font-bold text-blue-800 bg-sky-50">NetWt</th>
+                    <th className="p-2 border-r border-slate-200 w-24 text-right font-bold text-blue-800">NetWt</th>
                     <th className="p-2 border-r border-slate-200 w-20 text-center">Purity</th>
                     <th className="p-2 border-r border-slate-200 w-20 text-right">Mkg/Gm</th>
                     <th className="p-2 border-r border-slate-200 w-24 text-right">Hallmark</th>
-                    <th className="p-2 border-r border-slate-200 w-28 text-right font-bold text-emerald-700 bg-emerald-50/50">Total.Amt</th>
+                    <th className="p-2 border-r border-slate-200 w-28 text-right font-bold text-emerald-700">Total.Amt</th>
                     <th className="p-2 w-10 text-center">✕</th>
                   </tr>
                 </thead>
@@ -1110,7 +1110,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                           className="w-full bg-slate-50 border border-slate-300 rounded px-1.5 py-1 text-right text-slate-700 text-xs"
                         />
                       </td>
-                      <td className="p-2 border-r border-slate-200 text-right font-bold text-blue-800 bg-sky-50">
+                      <td className="p-2 border-r border-slate-200 text-right font-bold text-blue-800">
                         {formatWeight(it.net_wt)}
                       </td>
                       <td className="p-1.5 border-r border-slate-200">
@@ -1138,7 +1138,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                           className="w-full bg-slate-50 border border-slate-300 rounded px-1 py-1 text-right text-slate-700 text-xs"
                         />
                       </td>
-                      <td className="p-2 border-r border-slate-200 text-right font-bold text-emerald-800 bg-emerald-50/50">
+                      <td className="p-2 border-r border-slate-200 text-right font-bold text-emerald-800">
                         ₹{Math.round(it.item_amt).toLocaleString('en-IN')}
                       </td>
                       <td className="p-1 text-center">
@@ -1953,10 +1953,10 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                       <td className="p-2.5 border-r border-slate-200 text-right text-amber-900 font-bold">
                         {formatCurrency(urdAdv)}
                       </td>
-                      <td className="p-2.5 border-r border-slate-200 text-right font-semibold text-emerald-900 bg-emerald-50/40">
+                      <td className="p-2.5 border-r border-slate-200 text-right font-semibold text-emerald-900">
                         {formatCurrency(totAdv)}
                       </td>
-                      <td className="p-2.5 text-right font-semibold text-rose-900 bg-rose-50/40">
+                      <td className="p-2.5 text-right font-semibold text-rose-900">
                         {formatCurrency(ord.payment.balance_amount)}
                       </td>
                     </tr>

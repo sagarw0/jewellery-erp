@@ -230,9 +230,9 @@ export const StockReportView: React.FC<StockReportViewProps> = ({ stockItems, on
                 <th className="p-2 border-r border-slate-200 min-w-[200px]">Item Name</th>
                 <th className="p-2 border-r border-slate-200 w-16 text-center">Qty</th>
                 <th className="p-2 border-r border-slate-200 w-28 text-right">Gross Wt.</th>
-                <th className="p-2 border-r border-slate-200 w-28 text-right font-bold text-blue-800 bg-sky-50">Net Wt.</th>
+                <th className="p-2 border-r border-slate-200 w-28 text-right font-bold text-blue-800">Net Wt.</th>
                 <th className="p-2 border-r border-slate-200 w-20 text-center">Purity (%)</th>
-                <th className="p-2 border-r border-slate-200 w-28 text-right font-bold text-amber-800 bg-amber-50/50">Fine Wt.</th>
+                <th className="p-2 border-r border-slate-200 w-28 text-right font-bold text-amber-800">Fine Wt.</th>
                 <th className="p-2 text-right w-36 font-bold text-emerald-700">Stock Value</th>
               </tr>
             </thead>
@@ -246,11 +246,11 @@ export const StockReportView: React.FC<StockReportViewProps> = ({ stockItems, on
                   </td>
                   <td className="p-2 border-r border-slate-200 text-center text-slate-800">{item.qty}</td>
                   <td className="p-2 border-r border-slate-200 text-right">{formatWeight(item.gross_wt)}</td>
-                  <td className="p-2 border-r border-slate-200 text-right font-bold text-blue-800 bg-sky-50">
+                  <td className="p-2 border-r border-slate-200 text-right font-bold text-blue-800">
                     {formatWeight(item.net_wt)}
                   </td>
                   <td className="p-2 border-r border-slate-200 text-center">{item.purity}%</td>
-                  <td className="p-2 border-r border-slate-200 text-right font-bold text-amber-800 bg-amber-50/50">
+                  <td className="p-2 border-r border-slate-200 text-right font-bold text-amber-800">
                     {formatWeight(item.fine_wt)}
                   </td>
                   <td className="p-2 text-right font-bold text-emerald-700">{formatCurrency(item.total_value)}</td>
@@ -262,9 +262,9 @@ export const StockReportView: React.FC<StockReportViewProps> = ({ stockItems, on
                 <td colSpan={2} className="p-2 text-right font-sans uppercase">Total Stock Summary:</td>
                 <td className="p-2 text-center text-slate-900">{totalQty}</td>
                 <td className="p-2 text-right text-slate-900">{formatWeight(totalGrossWt)}</td>
-                <td className="p-2 text-right text-blue-800 bg-sky-100/60 font-semibold">{formatWeight(totalNetWt)}</td>
+                <td className="p-2 text-right text-blue-800 font-semibold">{formatWeight(totalNetWt)}</td>
                 <td className="p-2"></td>
-                <td className="p-2 text-right text-amber-800 bg-amber-100/60 font-semibold">{formatWeight(totalFineWt)}</td>
+                <td className="p-2 text-right text-amber-800 font-semibold">{formatWeight(totalFineWt)}</td>
                 <td className="p-2 text-right text-emerald-800 font-semibold">{formatCurrency(totalValuation)}</td>
               </tr>
             </tfoot>

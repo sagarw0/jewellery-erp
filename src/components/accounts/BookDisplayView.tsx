@@ -170,7 +170,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
                 <th className="p-2 border-r border-slate-200 min-w-[200px]">Customer Name</th>
                 <th className="p-2 border-r border-slate-200 w-24">Code</th>
                 <th className="p-2 border-r border-slate-200 w-32 text-right">Balance</th>
-                <th className="p-2 border-r border-slate-200 w-36 text-right font-bold text-rose-800 bg-rose-50/50 flex items-center justify-end space-x-1">
+                <th className="p-2 border-r border-slate-200 w-36 text-right font-bold text-rose-800 flex items-center justify-end space-x-1">
                   <Scale className="w-3 h-3 text-rose-600 inline" />
                   <span>Pending WT (g)</span>
                 </th>
@@ -184,7 +184,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
                   <td className="p-2 border-r border-slate-200 font-sans font-semibold text-slate-900">{row.customer_name}</td>
                   <td className="p-2 border-r border-slate-200 text-blue-700 font-bold">{row.code}</td>
                   <td className="p-2 border-r border-slate-200 text-right font-bold text-slate-800">{formatCurrency(row.balance)}</td>
-                  <td className="p-2 border-r border-slate-200 text-right font-semibold text-rose-700 bg-rose-50/30">
+                  <td className="p-2 border-r border-slate-200 text-right font-semibold text-rose-700">
                     {formatWeight(row.pending_wt)}
                   </td>
                   <td className="p-2 text-slate-600">{row.phone}</td>
@@ -195,7 +195,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
               <tr>
                 <td colSpan={3} className="p-2 text-right font-sans uppercase">Total ({filteredDebtors.length} parties):</td>
                 <td className="p-2 text-right font-semibold text-slate-900">{formatCurrency(totalBalance)}</td>
-                <td className="p-2 text-right font-semibold text-rose-800 bg-rose-50/70">{formatWeight(totalPendingWt)}</td>
+                <td className="p-2 text-right font-semibold text-rose-800">{formatWeight(totalPendingWt)}</td>
                 <td className="p-2"></td>
               </tr>
             </tfoot>

@@ -1182,12 +1182,12 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                       <th className="p-2.5 border-r border-slate-200 w-16 text-center">QTY</th>
                       <th className="p-2.5 border-r border-slate-200 w-24 text-right">GrossWt</th>
                       <th className="p-2.5 border-r border-slate-200 w-20 text-right">StoneWt</th>
-                      <th className="p-2.5 border-r border-slate-200 w-24 text-right font-bold text-blue-800 bg-sky-50/80">NetWt</th>
+                      <th className="p-2.5 border-r border-slate-200 w-24 text-right font-bold text-blue-800">NetWt</th>
                       <th className="p-2.5 border-r border-slate-200 w-20 text-center">Purity</th>
                       <th className="p-2.5 border-r border-slate-200 w-24 text-right">Rate</th>
                       <th className="p-2.5 border-r border-slate-200 w-20 text-right text-indigo-700 font-bold">Wast%</th>
-                      <th className="p-2.5 border-r border-slate-200 w-24 text-right font-semibold text-indigo-900 bg-indigo-50/40">Fin+Wast</th>
-                      <th className="p-2.5 border-r border-slate-200 w-28 text-right font-bold text-emerald-700 bg-emerald-50/40">Total.Amt</th>
+                      <th className="p-2.5 border-r border-slate-200 w-24 text-right font-semibold text-indigo-900">Fin+Wast</th>
+                      <th className="p-2.5 border-r border-slate-200 w-28 text-right font-bold text-emerald-700">Total.Amt</th>
                       <th className="p-2.5 border-r border-slate-200 w-24 text-center font-bold text-amber-700">HUID</th>
                       <th className="p-2.5 w-16 text-center">Actions</th>
                     </tr>
@@ -1242,7 +1242,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                             className="w-full bg-slate-50 border border-slate-300 rounded px-1.5 py-1 text-right text-slate-700 text-xs"
                           />
                         </td>
-                        <td className="p-2 border-r border-slate-200 text-right font-semibold text-blue-800 bg-sky-50/80">
+                        <td className="p-2 border-r border-slate-200 text-right font-semibold text-blue-800">
                           {formatWeight(it.net_wt)}
                         </td>
                         <td className="p-1.5 border-r border-slate-200">
@@ -1271,10 +1271,10 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                             className="w-full bg-indigo-50 border border-indigo-300 rounded px-1 py-1 text-right text-indigo-900 text-xs font-bold"
                           />
                         </td>
-                        <td className="p-2 border-r border-slate-200 text-right font-bold text-indigo-900 bg-indigo-50/40">
+                        <td className="p-2 border-r border-slate-200 text-right font-bold text-indigo-900">
                           {formatWeight(it.fin_plus_wastage)}
                         </td>
-                        <td className="p-2 border-r border-slate-200 text-right font-semibold text-emerald-700 bg-emerald-50/40">
+                        <td className="p-2 border-r border-slate-200 text-right font-semibold text-emerald-700">
                           ₹{Math.round(it.total_amt).toLocaleString('en-IN')}
                         </td>
                         <td className="p-1.5 border-r border-slate-200">
@@ -1318,17 +1318,17 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                       <td className="p-2.5 text-center text-slate-900 font-semibold">{totalQty}</td>
                       <td className="p-2.5 text-right text-slate-900">{formatWeight(totalGrossWt)}</td>
                       <td className="p-2.5 text-right text-slate-500">—</td>
-                      <td className="p-2.5 text-right text-blue-900 font-semibold bg-sky-100/60">
+                      <td className="p-2.5 text-right text-blue-900 font-semibold">
                         {formatWeight(totalNetWt)}
                       </td>
                       <td colSpan={2} className="p-2.5 text-right text-slate-500 font-sans text-[11px]">
                         Fine Gold Eq:
                       </td>
                       <td className="p-2.5 text-right text-indigo-700 font-semibold">—</td>
-                      <td className="p-2.5 text-right text-indigo-950 font-semibold bg-indigo-100/60">
+                      <td className="p-2.5 text-right text-indigo-950 font-semibold">
                         {formatWeight(totalFineWt)}
                       </td>
-                      <td className="p-2.5 text-right text-emerald-800 font-semibold bg-emerald-100/60 text-sm">
+                      <td className="p-2.5 text-right text-emerald-800 font-semibold text-sm">
                         {formatCurrency(totalTaxableAmt)}
                       </td>
                       <td colSpan={2} className="p-2.5 text-center text-slate-500 text-[10px] font-sans">
@@ -1572,7 +1572,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                     <th className="p-2.5 border-r border-slate-200 w-24 text-right text-indigo-700">Metal (g)</th>
                     <th className="p-2.5 border-r border-slate-200 w-28 text-right text-emerald-700">Debit (₹)</th>
                     <th className="p-2.5 border-r border-slate-200 w-28 text-right text-rose-700">Credit (₹)</th>
-                    <th className="p-2.5 w-32 text-right font-semibold text-slate-900 bg-slate-100">Balance (₹)</th>
+                    <th className="p-2.5 w-32 text-right font-semibold text-slate-900">Balance (₹)</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 bg-white font-mono text-[11px]">
@@ -1591,7 +1591,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                       <td className="p-2.5 border-r border-slate-200 text-right text-rose-700 font-medium">
                         {row.credit > 0 ? formatCurrency(row.credit) : '—'}
                       </td>
-                      <td className="p-2.5 text-right font-semibold text-blue-950 bg-slate-50">
+                      <td className="p-2.5 text-right font-semibold text-blue-950">
                         {formatCurrency(row.balance)} Cr
                       </td>
                     </tr>
@@ -1689,7 +1689,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                       <td className="p-2 border-r border-slate-200 text-right font-bold text-indigo-900">
                         {formatWeight(it.fin_plus_wastage)}
                       </td>
-                      <td className="p-2 border-r border-slate-200 text-center font-bold text-amber-800 bg-amber-50/40">
+                      <td className="p-2 border-r border-slate-200 text-center font-bold text-amber-800">
                         {it.huid}
                       </td>
                       <td className="p-2 text-center">

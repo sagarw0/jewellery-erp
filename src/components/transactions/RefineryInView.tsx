@@ -305,11 +305,11 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
                 <th className="p-2 border-r border-slate-200 w-24 text-right">GrossWt</th>
                 <th className="p-2 border-r border-slate-200 w-24 text-right">NetWt</th>
                 <th className="p-2 border-r border-slate-200 w-20 text-center">Purity</th>
-                <th className="p-2 border-r border-slate-200 w-24 text-right font-bold text-amber-800 bg-amber-50/50">FinWt</th>
+                <th className="p-2 border-r border-slate-200 w-24 text-right font-bold text-amber-800">FinWt</th>
                 <th className="p-2 border-r border-slate-200 w-24 text-right">Rate</th>
                 <th className="p-2 border-r border-slate-200 w-24 text-right text-rose-700">RefineryLoss</th>
                 <th className="p-2 border-r border-slate-200 w-24 text-right text-emerald-700">RefineryProfit</th>
-                <th className="p-2 w-28 text-right font-bold text-emerald-700 bg-emerald-50/50">Total.Amt</th>
+                <th className="p-2 w-28 text-right font-bold text-emerald-700">Total.Amt</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 bg-white font-mono text-[11px]">
@@ -321,13 +321,13 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
                   <td className="p-2 border-r border-slate-200 text-right">{formatWeight(it.gross_wt)}</td>
                   <td className="p-2 border-r border-slate-200 text-right font-semibold text-slate-800">{formatWeight(it.net_wt)}</td>
                   <td className="p-2 border-r border-slate-200 text-center">{it.purity}%</td>
-                  <td className="p-2 border-r border-slate-200 text-right font-bold text-amber-800 bg-amber-50/50">
+                  <td className="p-2 border-r border-slate-200 text-right font-bold text-amber-800">
                     {formatWeight(it.fin_wt)}
                   </td>
                   <td className="p-2 border-r border-slate-200 text-right">₹{it.rate}</td>
                   <td className="p-2 border-r border-slate-200 text-right text-rose-700">{it.refinery_loss}g</td>
                   <td className="p-2 border-r border-slate-200 text-right text-emerald-700">{it.refinery_profit}g</td>
-                  <td className="p-2 text-right font-bold text-emerald-700 bg-emerald-50/50">
+                  <td className="p-2 text-right font-bold text-emerald-700">
                     ₹{Math.round(it.total_amt).toLocaleString('en-IN')}
                   </td>
                 </tr>

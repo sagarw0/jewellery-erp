@@ -90,18 +90,9 @@
   color-scheme: dark !important;
 }
 
-/* 1. All Main Glass Card Containers & Panels across all screens */
+/* 1. All Main Glass Card Containers across all screens */
 .theme-apple-glass .bg-white,
-.theme-apple-glass .bg-slate-50,
-.theme-apple-glass .bg-stone-50,
-.theme-apple-glass .bg-gray-50,
-.theme-apple-glass [class*="bg-amber-50"],
-.theme-apple-glass [class*="bg-sky-50"],
-.theme-apple-glass [class*="bg-blue-50"],
-.theme-apple-glass [class*="bg-emerald-50"],
-.theme-apple-glass [class*="bg-rose-50"],
-.theme-apple-glass [class*="bg-purple-50"],
-.theme-apple-glass [class*="bg-zinc-50"] {
+.theme-apple-glass .glass-card {
   background: rgba(255, 255, 255, 0.08) !important;
   backdrop-filter: blur(24px) saturate(190%) !important;
   -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
@@ -110,7 +101,69 @@
   box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25), inset 0 1px 0 0 rgba(255, 255, 255, 0.12) !important;
 }
 
-/* 2. Glass Hover states */
+/* 2. Inner Banners, Info Strips, KPI Cards & Sub-Panels (No milky white stacking or double inset shadows) */
+.theme-apple-glass [class*="bg-sky-50"],
+.theme-apple-glass [class*="bg-blue-50"] {
+  background: rgba(14, 165, 233, 0.08) !important;
+  border-color: rgba(56, 189, 248, 0.20) !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.theme-apple-glass [class*="bg-amber-50"],
+.theme-apple-glass [class*="bg-yellow-50"] {
+  background: rgba(245, 158, 11, 0.08) !important;
+  border-color: rgba(251, 191, 36, 0.20) !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.theme-apple-glass [class*="bg-emerald-50"],
+.theme-apple-glass [class*="bg-teal-50"] {
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-color: rgba(52, 211, 153, 0.20) !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.theme-apple-glass [class*="bg-rose-50"],
+.theme-apple-glass [class*="bg-red-50"] {
+  background: rgba(244, 63, 94, 0.08) !important;
+  border-color: rgba(251, 113, 133, 0.20) !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.theme-apple-glass [class*="bg-purple-50"],
+.theme-apple-glass [class*="bg-indigo-50"] {
+  background: rgba(168, 85, 247, 0.08) !important;
+  border-color: rgba(192, 132, 252, 0.20) !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.theme-apple-glass [class*="bg-slate-50"],
+.theme-apple-glass [class*="bg-gray-50"],
+.theme-apple-glass [class*="bg-stone-50"],
+.theme-apple-glass [class*="bg-zinc-50"] {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: none !important;
+}
+
+.theme-apple-glass [class*="from-amber-50"],
+.theme-apple-glass [class*="from-sky-50"],
+.theme-apple-glass [class*="from-blue-50"],
+.theme-apple-glass [class*="from-indigo-50"],
+.theme-apple-glass [class*="from-emerald-50"],
+.theme-apple-glass [class*="from-rose-50"],
+.theme-apple-glass [class*="from-purple-50"] {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  box-shadow: none !important;
+}
+
+/* 3. Glass Hover states */
 .theme-apple-glass .bg-white:hover,
 .theme-apple-glass .hover\:bg-slate-50:hover,
 .theme-apple-glass .hover\:bg-blue-50:hover,
@@ -120,7 +173,7 @@
   border-color: rgba(255, 255, 255, 0.28) !important;
 }
 
-/* 3. Text Color Contrast on Glass */
+/* 4. Text Color Contrast on Glass */
 .theme-apple-glass h1,
 .theme-apple-glass h2,
 .theme-apple-glass h3,
@@ -157,7 +210,7 @@
   color: #94a3b8 !important;
 }
 
-/* 4. Form Inputs, Selects & Numeric Textboxes */
+/* 5. Form Inputs, Selects & Numeric Textboxes */
 .theme-apple-glass input,
 .theme-apple-glass textarea {
   background: rgba(255, 255, 255, 0.09) !important;
@@ -248,7 +301,7 @@ select optgroup {
   box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3) !important;
 }
 
-/* 5. Glass Tables & Data Grids */
+/* 6. Glass Tables & Data Grids (Zero White Column Striping) */
 .theme-apple-glass table {
   color: #ffffff !important;
 }
@@ -261,19 +314,39 @@ select optgroup {
   color: #7dd3fc !important;
   border-color: rgba(255, 255, 255, 0.18) !important;
   font-weight: 600 !important;
+  box-shadow: none !important;
 }
 
 .theme-apple-glass table tbody tr {
   border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-.theme-apple-glass table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.10) !important;
+.theme-apple-glass table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.08) !important;
 }
 
 .theme-apple-glass table td {
   border-color: rgba(255, 255, 255, 0.08) !important;
   color: #f1f5f9 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.theme-apple-glass table td[class*="bg-"],
+.theme-apple-glass table th[class*="bg-"] {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.theme-apple-glass table tfoot {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-top-color: rgba(255, 255, 255, 0.20) !important;
+}
+
+.theme-apple-glass table tfoot td {
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 /* 6. Tabs, Subnavs & Pill Bars */
