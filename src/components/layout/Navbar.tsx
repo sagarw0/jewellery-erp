@@ -123,7 +123,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className={`hidden xl:flex items-center space-x-2 text-[11px] px-2.5 py-1 rounded-lg border shadow-2xs ${
               isDark
                 ? 'bg-white/10 text-slate-200 border-white/15'
-                : 'bg-white text-slate-800 border-slate-300 font-semibold'
+                : 'bg-white text-slate-950 border-slate-300 font-bold'
             }`}>
               <Building2 className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
               <span className={`font-bold truncate max-w-[200px] ${isDark ? 'text-white' : 'text-slate-950'}`} title={currentUser.branch}>
@@ -143,37 +143,37 @@ export const Navbar: React.FC<NavbarProps> = ({
             className={`hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-xl shadow-xs border cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all duration-150 group ${
               isDark
                 ? 'bg-white/10 hover:bg-white/15 backdrop-blur-md border-white/20 text-white'
-                : 'bg-white hover:bg-amber-50/50 border-amber-300/80 text-slate-800'
+                : 'bg-white hover:bg-amber-50 border-amber-300 text-slate-950 shadow-2xs'
             }`}
             title="Click to open Live Bullion Rates Center & Showroom Board (Real-Time MCX/IBJA Rates)"
           >
-            <div className={`flex items-center space-x-1.5 pr-1.5 border-r ${isDark ? 'border-white/15 text-amber-400' : 'border-amber-200 text-amber-800'}`}>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
-              <TrendingUp className="w-3.5 h-3.5 text-amber-500 group-hover:scale-105 transition-transform" />
-              <span className={`text-[10px] font-semibold uppercase tracking-wider ${isDark ? 'text-amber-300' : 'text-amber-800'}`}>
+            <div className={`flex items-center space-x-1.5 pr-1.5 border-r ${isDark ? 'border-white/15 text-amber-400' : 'border-amber-300 text-amber-900 font-bold'}`}>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+              <TrendingUp className="w-3.5 h-3.5 text-amber-600 group-hover:scale-105 transition-transform" />
+              <span className={`text-[10.5px] font-black uppercase tracking-wider ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
                 Rates:
               </span>
             </div>
 
-            <div className="flex items-center space-x-2.5 font-mono text-[11px]">
+            <div className="flex items-center space-x-2.5 font-mono text-[11.5px]">
               <div className="flex items-center space-x-1">
-                <span className={`font-medium ${isDark ? 'text-amber-300' : 'text-amber-700'}`}>24K:</span>
-                <span className={`font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{gold24kRate.toLocaleString('en-IN')}</span>
+                <span className={`font-bold ${isDark ? 'text-amber-300' : 'text-amber-900'}`}>24K:</span>
+                <span className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>₹{gold24kRate.toLocaleString('en-IN')}</span>
               </div>
-              <span className={isDark ? 'text-white/20' : 'text-slate-300'}>•</span>
+              <span className={isDark ? 'text-white/30' : 'text-slate-400'}>•</span>
               <div className="flex items-center space-x-1">
-                <span className={`font-medium ${isDark ? 'text-amber-300' : 'text-amber-700'}`}>22K 916:</span>
-                <span className={`font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{gold22kRate.toLocaleString('en-IN')}</span>
+                <span className={`font-bold ${isDark ? 'text-amber-300' : 'text-amber-900'}`}>22K 916:</span>
+                <span className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>₹{gold22kRate.toLocaleString('en-IN')}</span>
               </div>
-              <span className={isDark ? 'text-white/20' : 'text-slate-300'}>•</span>
+              <span className={isDark ? 'text-white/30' : 'text-slate-400'}>•</span>
               <div className="flex items-center space-x-1">
-                <span className={`font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Sil:</span>
-                <span className={`font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{silverRate.toLocaleString('en-IN')}/g</span>
+                <span className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>Sil:</span>
+                <span className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>₹{silverRate.toLocaleString('en-IN')}/g</span>
               </div>
             </div>
 
-            <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-semibold uppercase transition-colors hidden md:inline-block ${
-              isDark ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30 group-hover:bg-amber-400 group-hover:text-slate-950' : 'bg-amber-100 text-amber-900 border border-amber-300 group-hover:bg-amber-400 group-hover:text-slate-950'
+            <span className={`text-[9.5px] px-1.5 py-0.5 rounded-md font-black uppercase transition-colors hidden md:inline-block ${
+              isDark ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30 group-hover:bg-amber-400 group-hover:text-slate-950' : 'bg-amber-100 text-amber-950 border border-amber-400 group-hover:bg-amber-400 group-hover:text-slate-950'
             }`}>
               Live ↻
             </span>
@@ -210,55 +210,55 @@ export const Navbar: React.FC<NavbarProps> = ({
               className={`px-2.5 py-1.5 rounded-xl border shadow-2xs flex items-center space-x-1.5 cursor-pointer transition-all ${
                 isDark
                   ? 'bg-white/10 text-white hover:bg-white/20 border-white/15'
-                  : 'bg-white text-slate-700 hover:bg-slate-50 border-slate-200/80'
+                  : 'bg-white text-slate-800 hover:bg-slate-50 border-slate-300 font-bold'
               }`}
               title="Theme, Colors & Density Customizer"
             >
               <Palette className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
-              <span className="hidden lg:inline text-[11px] font-medium">Theme</span>
+              <span className="hidden lg:inline text-[11px] font-bold">Theme</span>
               <div
                 className="w-3 h-3 rounded-full border border-white shadow-2xs"
                 style={{ backgroundColor: currentTheme.swatchPrimary }}
               />
-              <ChevronDown className={`w-3 h-3 ${isDark ? 'text-slate-300' : 'text-slate-400'}`} />
+              <ChevronDown className={`w-3 h-3 ${isDark ? 'text-slate-300' : 'text-slate-600'}`} />
             </button>
 
             {/* Expanded Theme & UI Density Customizer Popup */}
             {showThemePicker && (
-              <div className={`absolute right-0 top-10 border rounded-2xl shadow-lg p-4 w-80 z-50 text-xs animate-in fade-in zoom-in-95 duration-150 ${
+              <div className={`absolute right-0 top-10 border rounded-2xl shadow-xl p-4 w-84 z-50 text-xs animate-in fade-in zoom-in-95 duration-150 ${
                 isDark
                   ? 'bg-[#0f172a]/95 backdrop-blur-2xl border-white/20 text-white'
-                  : 'bg-white border-slate-200/90 text-slate-800'
+                  : 'bg-white border-slate-300 text-slate-950 shadow-2xl'
               }`}>
-                <div className={`flex justify-between items-center pb-2.5 mb-3 border-b ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
+                <div className={`flex justify-between items-center pb-2.5 mb-3 border-b ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
                   <div className="flex items-center space-x-2">
                     <Sparkles className="w-4 h-4 text-amber-500" />
                     <div>
-                      <h4 className={`font-semibold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>Theme & Display Settings</h4>
-                      <p className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-400'}`}>Personalize ERP appearance & layout</p>
+                      <h4 className={`font-bold text-xs ${isDark ? 'text-white' : 'text-slate-950'}`}>Theme & Display Settings</h4>
+                      <p className={`text-[10.5px] font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Personalize ERP appearance & layout</p>
                     </div>
                   </div>
                   <button
                     onClick={() => setShowThemePicker(false)}
-                    className={`p-1 rounded-lg transition-colors ${isDark ? 'text-slate-400 hover:text-white hover:bg-white/10' : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100'}`}
+                    className={`p-1 rounded-lg transition-colors font-bold ${isDark ? 'text-slate-400 hover:text-white hover:bg-white/10' : 'text-slate-500 hover:text-slate-950 hover:bg-slate-100'}`}
                   >
                     ✕
                   </button>
                 </div>
 
                 {/* UI Density Switcher */}
-                <div className={`mb-3.5 p-2.5 rounded-xl border ${isDark ? 'bg-white/[0.06] border-white/10' : 'bg-slate-50 border-slate-200/70'}`}>
-                  <div className={`text-[11px] font-semibold mb-1.5 flex items-center justify-between ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
+                <div className={`mb-3.5 p-2.5 rounded-xl border ${isDark ? 'bg-white/[0.06] border-white/10' : 'bg-slate-50 border-slate-300'}`}>
+                  <div className={`text-[11px] font-bold mb-1.5 flex items-center justify-between ${isDark ? 'text-slate-200' : 'text-slate-900'}`}>
                     <span>UI Spacing & Density</span>
-                    <span className={`text-[10px] font-mono font-medium uppercase ${isDark ? 'text-amber-300' : 'text-blue-700'}`}>{density}</span>
+                    <span className={`text-[10.5px] font-mono font-bold uppercase ${isDark ? 'text-amber-300' : 'text-blue-900'}`}>{density}</span>
                   </div>
                   <div className="grid grid-cols-2 gap-1.5">
                     <button
                       onClick={() => setDensity('compact')}
-                      className={`px-2 py-1.5 rounded-lg flex items-center justify-center space-x-1.5 text-[11px] font-semibold transition-all cursor-pointer ${
+                      className={`px-2 py-1.5 rounded-lg flex items-center justify-center space-x-1.5 text-[11px] font-bold transition-all cursor-pointer ${
                         density === 'compact'
                           ? currentTheme.activePill
-                          : isDark ? 'bg-white/10 text-slate-200 hover:bg-white/15' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
+                          : isDark ? 'bg-white/10 text-slate-200 hover:bg-white/15' : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-100 hover:text-slate-950'
                       }`}
                     >
                       <Minimize2 className="w-3 h-3" />
@@ -266,10 +266,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </button>
                     <button
                       onClick={() => setDensity('comfortable')}
-                      className={`px-2 py-1.5 rounded-lg flex items-center justify-center space-x-1.5 text-[11px] font-semibold transition-all cursor-pointer ${
+                      className={`px-2 py-1.5 rounded-lg flex items-center justify-center space-x-1.5 text-[11px] font-bold transition-all cursor-pointer ${
                         density === 'comfortable'
                           ? currentTheme.activePill
-                          : isDark ? 'bg-white/10 text-slate-200 hover:bg-white/15' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
+                          : isDark ? 'bg-white/10 text-slate-200 hover:bg-white/15' : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-100 hover:text-slate-950'
                       }`}
                     >
                       <Maximize2 className="w-3 h-3" />
@@ -280,7 +280,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 {/* Luxury Themes Palette Grid */}
                 <div className="space-y-1.5 max-h-[300px] overflow-y-auto pr-1">
-                  <div className={`text-[10px] font-semibold uppercase tracking-wider mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  <div className={`text-[10.5px] font-bold uppercase tracking-wider mb-1 ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>
                     Luxury Themes ({Object.keys(THEMES).length} Styles)
                   </div>
                   {(Object.keys(THEMES) as ThemeId[]).map((tId) => {
@@ -295,8 +295,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                         }}
                         className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition-all cursor-pointer border ${
                           isSelected
-                            ? isDark ? 'bg-white/20 text-white font-semibold border-amber-400/50 shadow-xs' : 'bg-blue-50/80 text-blue-950 font-semibold border-blue-300 shadow-xs'
-                            : isDark ? 'hover:bg-white/10 text-slate-200 border-transparent' : 'hover:bg-slate-50 text-slate-700 border-transparent hover:border-slate-200'
+                            ? isDark ? 'bg-white/20 text-white font-bold border-amber-400 shadow-xs' : 'bg-blue-50 text-blue-950 font-bold border-blue-400 shadow-xs'
+                            : isDark ? 'hover:bg-white/10 text-slate-200 border-transparent' : 'hover:bg-slate-100 text-slate-900 border-slate-200 hover:border-slate-300'
                         }`}
                       >
                         <div className="flex items-center space-x-2.5">
@@ -312,8 +312,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                             />
                           </div>
                           <div>
-                            <div className="text-[11px] font-semibold leading-tight">{t.name}</div>
-                            <div className={`text-[9px] leading-tight ${isDark ? 'text-slate-400' : 'text-slate-400'}`}>{t.subtitle}</div>
+                            <div className="text-[11.5px] font-bold leading-tight text-slate-950">{t.name}</div>
+                            <div className={`text-[9.5px] font-medium leading-tight ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{t.subtitle}</div>
                           </div>
                         </div>
                         {isSelected && <Check className={`w-4 h-4 shrink-0 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />}
@@ -360,7 +360,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <nav className={`px-4 py-1.5 flex items-center justify-between overflow-x-auto scrollbar-none border-t ${
         isDark
           ? 'bg-[#070b14]/95 border-white/10'
-          : 'bg-white border-slate-200 shadow-2xs'
+          : 'bg-white/95 backdrop-blur-md border-slate-300 shadow-2xs'
       }`}>
         <div className="flex items-center space-x-1 min-w-max">
           {navItems.map((item) => {
@@ -374,15 +374,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                   isActive
                     ? `${currentTheme.activePill} shadow-xs`
                     : isDark
-                    ? 'text-slate-300 hover:text-white hover:bg-white/10'
-                    : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100'
+                    ? 'text-slate-200 hover:text-white hover:bg-white/10'
+                    : 'text-slate-800 hover:text-slate-950 hover:bg-slate-100 border border-transparent hover:border-slate-200'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-inherit' : isDark ? 'text-slate-400' : 'text-slate-500'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-inherit' : isDark ? 'text-slate-400' : 'text-slate-600'}`} />
                 <span>{item.label}</span>
                 {item.hotkey && (
                   <span className={`text-[9px] px-1 py-0.2 rounded font-mono font-bold ml-0.5 ${
-                    isActive ? 'bg-black/25 text-white' : isDark ? 'bg-white/10 text-slate-300' : 'bg-slate-200 text-slate-700 border border-slate-300'
+                    isActive ? 'bg-black/25 text-white' : isDark ? 'bg-white/10 text-slate-300' : 'bg-slate-200 text-slate-900 border border-slate-400'
                   }`}>
                     {item.hotkey}
                   </span>

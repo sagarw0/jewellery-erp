@@ -292,30 +292,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1.5 min-w-0">
               <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors shrink-0 shadow-2xs ${
-                isDark ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-400/20 group-hover:bg-emerald-500 group-hover:text-white' : 'bg-emerald-100 text-emerald-800 group-hover:bg-emerald-600 group-hover:text-white'
+                isDark ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-400/20 group-hover:bg-emerald-500 group-hover:text-white' : 'bg-emerald-100 text-emerald-950 border border-emerald-300 group-hover:bg-emerald-600 group-hover:text-white'
               }`}>
-                <Wallet className="w-3 h-3" />
+                <Wallet className="w-3.5 h-3.5" />
               </div>
-              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-950'}`}>
                 Today's Cash
               </span>
             </div>
-            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-emerald-400' : 'text-slate-500 group-hover:text-emerald-700'}`} />
+            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-emerald-400' : 'text-slate-600 group-hover:text-emerald-700'}`} />
           </div>
 
           <div className="my-auto">
-            <div className={`text-base font-extrabold font-mono tracking-tight leading-tight ${isDark ? 'text-emerald-400' : 'text-emerald-800'}`}>
+            <div className={`text-base font-black font-mono tracking-tight leading-tight ${isDark ? 'text-emerald-400' : 'text-emerald-950'}`}>
               ₹1,42,600
             </div>
           </div>
 
-          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-300'}`}>
             <span className={`inline-flex items-center px-1.5 py-0.2 rounded-full font-bold text-[9px] ${
-              isDark ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30' : 'bg-emerald-100 text-emerald-900 border border-emerald-300'
+              isDark ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30' : 'bg-emerald-100 text-emerald-950 border border-emerald-400'
             }`}>
               ↑ 8.5%
             </span>
-            <span className={`font-semibold truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>vs yesterday</span>
+            <span className={`font-bold truncate ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>vs yesterday</span>
           </div>
         </div>
 
@@ -329,30 +329,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1.5 min-w-0">
               <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors shrink-0 shadow-2xs ${
-                isDark ? 'bg-sky-500/15 text-sky-300 border border-sky-400/20 group-hover:bg-sky-500 group-hover:text-white' : 'bg-blue-100 text-blue-800 group-hover:bg-blue-600 group-hover:text-white'
+                isDark ? 'bg-sky-500/15 text-sky-300 border border-sky-400/20 group-hover:bg-sky-500 group-hover:text-white' : 'bg-blue-100 text-blue-950 border border-blue-300 group-hover:bg-blue-600 group-hover:text-white'
               }`}>
-                <Building className="w-3 h-3" />
+                <Building className="w-3.5 h-3.5" />
               </div>
-              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-950'}`}>
                 Today's Bank
               </span>
             </div>
-            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-sky-300' : 'text-slate-500 group-hover:text-blue-700'}`} />
+            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-sky-300' : 'text-slate-600 group-hover:text-blue-700'}`} />
           </div>
 
           <div className="my-auto">
-            <div className={`text-base font-extrabold font-mono tracking-tight leading-tight ${isDark ? 'text-sky-300' : 'text-blue-950'}`}>
+            <div className={`text-base font-black font-mono tracking-tight leading-tight ${isDark ? 'text-sky-300' : 'text-blue-950'}`}>
               {formatCurrency(totalBankBalance)}
             </div>
           </div>
 
-          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-300'}`}>
             <span className={`inline-flex items-center px-1.5 py-0.2 rounded-full font-bold text-[9px] ${
-              isDark ? 'bg-sky-500/20 text-sky-300 border border-sky-400/30' : 'bg-blue-100 text-blue-900 border border-blue-300'
+              isDark ? 'bg-sky-500/20 text-sky-300 border border-sky-400/30' : 'bg-blue-100 text-blue-950 border border-blue-400'
             }`}>
               ↑ 4.2%
             </span>
-            <span className={`font-semibold truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>4 Active A/cs</span>
+            <span className={`font-bold truncate ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>4 Active A/cs</span>
           </div>
         </div>
 
@@ -366,30 +366,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1.5 min-w-0">
               <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors shrink-0 shadow-2xs ${
-                isDark ? 'bg-amber-500/15 text-amber-300 border border-amber-400/20 group-hover:bg-amber-500 group-hover:text-slate-950' : 'bg-amber-100 text-amber-800 group-hover:bg-amber-600 group-hover:text-white'
+                isDark ? 'bg-amber-500/15 text-amber-300 border border-amber-400/20 group-hover:bg-amber-500 group-hover:text-slate-950' : 'bg-amber-100 text-amber-950 border border-amber-300 group-hover:bg-amber-600 group-hover:text-white'
               }`}>
-                <TrendingUp className="w-3 h-3" />
+                <TrendingUp className="w-3.5 h-3.5" />
               </div>
-              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-950'}`}>
                 Today's Sales
               </span>
             </div>
-            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-amber-300' : 'text-slate-500 group-hover:text-amber-700'}`} />
+            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-amber-300' : 'text-slate-600 group-hover:text-amber-700'}`} />
           </div>
 
           <div className="my-auto">
-            <div className={`text-base font-extrabold font-mono tracking-tight leading-tight ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
+            <div className={`text-base font-black font-mono tracking-tight leading-tight ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
               ₹2,84,500
             </div>
           </div>
 
-          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-300'}`}>
             <span className={`inline-flex items-center px-1.5 py-0.2 rounded-full font-bold text-[9px] ${
-              isDark ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30' : 'bg-emerald-100 text-emerald-900 border border-emerald-300'
+              isDark ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30' : 'bg-emerald-100 text-emerald-950 border border-emerald-400'
             }`}>
               ↑ 12.4%
             </span>
-            <span className={`font-semibold truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>vs yesterday</span>
+            <span className={`font-bold truncate ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>vs yesterday</span>
           </div>
         </div>
 
@@ -403,30 +403,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1.5 min-w-0">
               <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors shrink-0 shadow-2xs ${
-                isDark ? 'bg-orange-500/15 text-orange-300 border border-orange-400/20 group-hover:bg-orange-500 group-hover:text-slate-950' : 'bg-orange-100 text-orange-800 group-hover:bg-orange-600 group-hover:text-white'
+                isDark ? 'bg-orange-500/15 text-orange-300 border border-orange-400/20 group-hover:bg-orange-500 group-hover:text-slate-950' : 'bg-orange-100 text-orange-950 border border-orange-300 group-hover:bg-orange-600 group-hover:text-white'
               }`}>
-                <ShoppingBag className="w-3 h-3" />
+                <ShoppingBag className="w-3.5 h-3.5" />
               </div>
-              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-950'}`}>
                 Today's Purchase
               </span>
             </div>
-            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-orange-300' : 'text-slate-500 group-hover:text-orange-700'}`} />
+            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-orange-300' : 'text-slate-600 group-hover:text-orange-700'}`} />
           </div>
 
           <div className="my-auto">
-            <div className={`text-base font-extrabold font-mono tracking-tight leading-tight ${isDark ? 'text-orange-300' : 'text-orange-950'}`}>
+            <div className={`text-base font-black font-mono tracking-tight leading-tight ${isDark ? 'text-orange-300' : 'text-orange-950'}`}>
               ₹1,95,000
             </div>
           </div>
 
-          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-300'}`}>
             <span className={`inline-flex items-center px-1.5 py-0.2 rounded-full font-bold text-[9px] ${
-              isDark ? 'bg-rose-500/20 text-rose-300 border border-rose-400/30' : 'bg-rose-100 text-rose-900 border border-rose-300'
+              isDark ? 'bg-rose-500/20 text-rose-300 border border-rose-400/30' : 'bg-rose-100 text-rose-950 border border-rose-400'
             }`}>
               ↓ 6.3%
             </span>
-            <span className={`font-semibold truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Bullion Inward</span>
+            <span className={`font-bold truncate ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Bullion Inward</span>
           </div>
         </div>
 
@@ -440,30 +440,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1.5 min-w-0">
               <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors shrink-0 shadow-2xs ${
-                isDark ? 'bg-rose-500/15 text-rose-300 border border-rose-400/20 group-hover:bg-rose-500 group-hover:text-white' : 'bg-rose-100 text-rose-800 group-hover:bg-rose-600 group-hover:text-white'
+                isDark ? 'bg-rose-500/15 text-rose-300 border border-rose-400/20 group-hover:bg-rose-500 group-hover:text-white' : 'bg-rose-100 text-rose-950 border border-rose-300 group-hover:bg-rose-600 group-hover:text-white'
               }`}>
-                <Clock className="w-3 h-3" />
+                <Clock className="w-3.5 h-3.5" />
               </div>
-              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-950'}`}>
                 Orders Pending
               </span>
             </div>
-            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-rose-400' : 'text-slate-500 group-hover:text-rose-700'}`} />
+            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-rose-400' : 'text-slate-600 group-hover:text-rose-700'}`} />
           </div>
 
           <div className="my-auto">
-            <div className={`text-base font-extrabold font-mono tracking-tight leading-tight ${isDark ? 'text-rose-400' : 'text-rose-900'}`}>
+            <div className={`text-base font-black font-mono tracking-tight leading-tight ${isDark ? 'text-rose-400' : 'text-rose-950'}`}>
               {pendingOrdersCount} Orders
             </div>
           </div>
 
-          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-300'}`}>
             <span className={`inline-flex items-center px-1.5 py-0.2 rounded-full font-bold text-[9px] ${
-              isDark ? 'bg-rose-500/20 text-rose-300 border border-rose-400/30' : 'bg-rose-100 text-rose-900 border border-rose-300'
+              isDark ? 'bg-rose-500/20 text-rose-300 border border-rose-400/30' : 'bg-rose-100 text-rose-950 border border-rose-400'
             }`}>
               2 Due
             </span>
-            <span className={`font-semibold truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Delivery Today</span>
+            <span className={`font-bold truncate ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Delivery Today</span>
           </div>
         </div>
 
@@ -476,30 +476,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1.5 min-w-0">
               <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors shrink-0 shadow-2xs ${
-                isDark ? 'bg-teal-500/15 text-teal-300 border border-teal-400/20 group-hover:bg-teal-500 group-hover:text-white' : 'bg-sky-100 text-sky-800 group-hover:bg-sky-600 group-hover:text-white'
+                isDark ? 'bg-teal-500/15 text-teal-300 border border-teal-400/20 group-hover:bg-teal-500 group-hover:text-white' : 'bg-sky-100 text-sky-950 border border-sky-300 group-hover:bg-sky-600 group-hover:text-white'
               }`}>
-                <UserPlus className="w-3 h-3" />
+                <UserPlus className="w-3.5 h-3.5" />
               </div>
-              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-950'}`}>
                 New Walk-ins
               </span>
             </div>
-            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-teal-300' : 'text-slate-500 group-hover:text-sky-700'}`} />
+            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-teal-300' : 'text-slate-600 group-hover:text-sky-700'}`} />
           </div>
 
           <div className="my-auto">
-            <div className={`text-base font-extrabold font-mono tracking-tight leading-tight ${isDark ? 'text-teal-300' : 'text-sky-950'}`}>
+            <div className={`text-base font-black font-mono tracking-tight leading-tight ${isDark ? 'text-teal-300' : 'text-sky-950'}`}>
               14 Visitors
             </div>
           </div>
 
-          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-300'}`}>
             <span className={`inline-flex items-center px-1.5 py-0.2 rounded-full font-bold text-[9px] ${
-              isDark ? 'bg-teal-500/20 text-teal-300 border border-teal-400/30' : 'bg-emerald-100 text-emerald-900 border border-emerald-300'
+              isDark ? 'bg-teal-500/20 text-teal-300 border border-teal-400/30' : 'bg-emerald-100 text-emerald-950 border border-emerald-400'
             }`}>
               ↑ 27%
             </span>
-            <span className={`font-semibold truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>New Profiles</span>
+            <span className={`font-bold truncate ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>New Profiles</span>
           </div>
         </div>
 
@@ -512,44 +512,44 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1.5 min-w-0">
               <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors shrink-0 shadow-2xs ${
-                isDark ? 'bg-purple-500/15 text-purple-300 border border-purple-400/20 group-hover:bg-purple-500 group-hover:text-white' : 'bg-purple-100 text-purple-800 group-hover:bg-purple-600 group-hover:text-white'
+                isDark ? 'bg-purple-500/15 text-purple-300 border border-purple-400/20 group-hover:bg-purple-500 group-hover:text-white' : 'bg-purple-100 text-purple-950 border border-purple-300 group-hover:bg-purple-600 group-hover:text-white'
               }`}>
-                <Users className="w-3 h-3" />
+                <Users className="w-3.5 h-3.5" />
               </div>
-              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+              <span className={`text-[11px] font-bold tracking-tight font-sans truncate ${isDark ? 'text-slate-200' : 'text-slate-950'}`}>
                 Total Footfall
               </span>
             </div>
-            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-purple-300' : 'text-slate-500 group-hover:text-purple-700'}`} />
+            <ChevronRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-all shrink-0 ${isDark ? 'text-slate-400 group-hover:text-purple-300' : 'text-slate-600 group-hover:text-purple-700'}`} />
           </div>
 
           <div className="my-auto">
-            <div className={`text-base font-extrabold font-mono tracking-tight leading-tight ${isDark ? 'text-purple-300' : 'text-purple-950'}`}>
+            <div className={`text-base font-black font-mono tracking-tight leading-tight ${isDark ? 'text-purple-300' : 'text-purple-950'}`}>
               38 Guests
             </div>
           </div>
 
-          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+          <div className={`pt-1 border-t flex items-center justify-between text-[9.5px] ${isDark ? 'border-white/10' : 'border-slate-300'}`}>
             <span className={`inline-flex items-center px-1.5 py-0.2 rounded-full font-bold text-[9px] ${
-              isDark ? 'bg-purple-500/20 text-purple-300 border border-purple-400/30' : 'bg-emerald-100 text-emerald-900 border border-emerald-300'
+              isDark ? 'bg-purple-500/20 text-purple-300 border border-purple-400/30' : 'bg-emerald-100 text-emerald-950 border border-emerald-400'
             }`}>
               ↑ 16%
             </span>
-            <span className={`font-semibold truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Showroom Total</span>
+            <span className={`font-bold truncate ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Showroom Total</span>
           </div>
         </div>
       </div>
 
       {/* 2. CURRENT STOCK VAULT BREAKDOWN (Executive-Grade Bullion Dashboard with Live Market Valuation) */}
       <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-2xl p-4 sm:p-4.5 shadow-xs space-y-3.5`}>
-        <div className={`flex flex-wrap justify-between items-center border-b pb-2.5 gap-2.5 ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+        <div className={`flex flex-wrap justify-between items-center border-b pb-2.5 gap-2.5 ${isDark ? 'border-white/10' : 'border-slate-300'}`}>
           <div className="flex items-center space-x-2.5">
             <div className="p-1.5 rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 text-white shadow-2xs">
               <Coins className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h2 className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-100' : 'text-slate-950'}`}>
+                <h2 className={`text-xs font-black uppercase tracking-wider ${isDark ? 'text-slate-100' : 'text-slate-950'}`}>
                   Current Stock Vault Breakdown
                 </h2>
                 <button
@@ -557,7 +557,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   className={`text-[9.5px] px-2.5 py-0.5 rounded-full font-bold border transition-all flex items-center space-x-1.5 cursor-pointer hover:scale-105 active:scale-95 ${
                     isDark
                       ? 'bg-amber-500/20 text-amber-300 border-amber-400/40 hover:bg-amber-500/30'
-                      : 'bg-amber-100 text-amber-950 border-amber-400 hover:bg-amber-200'
+                      : 'bg-amber-100 text-amber-950 border border-amber-400 hover:bg-amber-200 shadow-2xs'
                   }`}
                   title="Click to view full bullion market board, 18K/22K rates, and showroom premiums"
                 >
@@ -565,7 +565,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <span>Live Market Rates ↗</span>
                 </button>
               </div>
-              <span className={`text-[10.5px] font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+              <span className={`text-[10.5px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>
                 Pure Gold 24K: ₹{goldGramRate}/g • 22K (916): ₹{gold22kRate || Math.round(goldGramRate * 0.916)}/g • Pure Silver: ₹{silverGramRate}/g
               </span>
             </div>
@@ -581,7 +581,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     : 'bg-amber-100 border-amber-400 text-amber-950 hover:bg-amber-200'
                 }`}
               >
-                <Coins className="w-3.5 h-3.5 text-amber-600" />
+                <Coins className="w-3.5 h-3.5 text-amber-700" />
                 <span>Rate Center</span>
               </button>
             )}
@@ -589,9 +589,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className={`px-2.5 py-1 rounded-xl border text-[11px] font-mono font-bold flex items-center space-x-1.5 shadow-2xs ${
               isDark
                 ? 'bg-white/[0.06] border-white/15 text-slate-200'
-                : 'bg-blue-50 border-blue-300 text-blue-950'
+                : 'bg-blue-50 border-blue-400 text-blue-950'
             }`}>
-              <span className={`font-sans text-[10px] font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Total Fine Bullion:</span>
+              <span className={`font-sans text-[10px] font-bold ${isDark ? 'text-slate-300' : 'text-blue-900'}`}>Total Fine Bullion:</span>
               <span className={`font-black ${isDark ? 'text-sky-300' : 'text-blue-950'}`}>{formatWeight(totalStockFineWt)}</span>
             </div>
 
@@ -600,7 +600,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 ? 'bg-white/[0.06] border-white/15 text-slate-200'
                 : 'bg-emerald-50 border-emerald-400 text-emerald-950'
             }`}>
-              <span className={`font-sans text-[10px] font-semibold ${isDark ? 'text-emerald-300/80' : 'text-emerald-800'}`}>Vault Valuation:</span>
+              <span className={`font-sans text-[10px] font-bold ${isDark ? 'text-emerald-300/80' : 'text-emerald-900'}`}>Vault Valuation:</span>
               <span className={`font-black ${isDark ? 'text-emerald-300' : 'text-emerald-950'}`}>{formatCurrency(totalVaultValuation)}</span>
             </div>
           </div>
@@ -619,14 +619,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               {/* Card Header: Category & Pcs */}
               <div className="flex justify-between items-start">
                 <div className="min-w-0 pr-1">
-                  <div className={`font-bold text-xs truncate font-sans ${isDark ? 'text-slate-100' : 'text-slate-950'}`} title={stk.name}>
+                  <div className={`font-black text-xs truncate font-sans ${isDark ? 'text-slate-100' : 'text-slate-950'}`} title={stk.name}>
                     {stk.name}
                   </div>
-                  <div className={`text-[9.5px] font-semibold flex items-center space-x-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  <div className={`text-[9.5px] font-bold flex items-center space-x-1 ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>
                     <span>{stk.purity_label}</span>
                   </div>
                 </div>
-                <span className={`text-[10px] px-2 py-0.2 rounded-full font-bold border shadow-2xs shrink-0 ${
+                <span className={`text-[10px] px-2 py-0.2 rounded-full font-black border shadow-2xs shrink-0 ${
                   isDark ? 'bg-white/10 text-slate-200 border-white/15 backdrop-blur-sm' : stk.badge
                 }`}>
                   {stk.pcs} Pcs
@@ -637,7 +637,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className={`p-1.5 rounded-lg border flex items-center justify-between text-[10px] shadow-2xs ${
                 isDark ? 'bg-white/[0.06] border-white/10 text-white' : 'bg-white/95 border-slate-300'
               }`}>
-                <span className={`font-sans font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Live Est. Value:</span>
+                <span className={`font-sans font-bold ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>Live Est. Value:</span>
                 <span className={`font-mono font-black ${isDark ? 'text-amber-300' : 'text-slate-950'}`}>
                   {formatCurrency(stk.valuation)}
                 </span>
@@ -645,14 +645,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
               {/* Weights Monospace Breakdown */}
               <div className={`space-y-0.5 font-mono text-[11px] p-2 rounded-xl border ${
-                isDark ? 'bg-white/[0.03] border-white/10' : 'bg-white/90 border-slate-300'
+                isDark ? 'bg-white/[0.03] border-white/10' : 'bg-white/90 border-slate-300 shadow-2xs'
               }`}>
                 <div className="flex justify-between items-center text-[10.5px]">
-                  <span className={`font-sans text-[10px] font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Gross Wt:</span>
+                  <span className={`font-sans text-[10px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>Gross Wt:</span>
                   <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-950'}`}>{formatWeight(stk.gross_wt)}</span>
                 </div>
                 <div className="flex justify-between items-center text-[10.5px]">
-                  <span className={`font-sans text-[10px] font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Net Wt:</span>
+                  <span className={`font-sans text-[10px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>Net Wt:</span>
                   <span className={`font-bold ${isDark ? 'text-sky-300' : 'text-blue-950'}`}>{formatWeight(stk.net_wt)}</span>
                 </div>
                 <div className={`flex justify-between items-center pt-0.5 border-t font-bold text-[10.5px] ${
@@ -665,9 +665,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
               {/* Metallic Purity Bar */}
               <div className="space-y-0.5 pt-0.5">
-                <div className={`flex justify-between text-[9.5px] font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                  <span className="font-semibold font-sans">Purity Equiv</span>
-                  <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-950'}`}>{stk.purity_pct}%</span>
+                <div className={`flex justify-between text-[9.5px] font-mono ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>
+                  <span className="font-bold font-sans">Purity Equiv</span>
+                  <span className={`font-black ${isDark ? 'text-slate-200' : 'text-slate-950'}`}>{stk.purity_pct}%</span>
                 </div>
                 <div className={`w-full h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-slate-300'}`}>
                   <div
