@@ -234,35 +234,6 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
     glassCard: 'bg-white/[0.08] backdrop-blur-xl border border-white/15 shadow-xs text-white',
     glassBorder: 'border-white/15',
   },
-  'apple-glass': {
-    id: 'apple-glass',
-    name: 'Apple iOS Frosted Glass',
-    subtitle: 'Ambient gray blur with translucent glass screen surfaces & crisp high-contrast typography',
-    isDark: false,
-    swatchPrimary: '#0284c7',
-    swatchSecondary: '#38bdf8',
-    bgGradient: 'bg-gradient-to-br from-slate-100 via-sky-50 to-slate-200 text-slate-950',
-    cardBg: 'bg-white/95 backdrop-blur-2xl border border-slate-300 shadow-sm text-slate-950',
-    cardBorder: 'border-slate-300',
-    cardHover: 'hover:border-sky-500 hover:shadow-md hover:-translate-y-0.5',
-    primaryBtn: 'bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white font-bold shadow-xs border border-sky-400 active:scale-[0.98]',
-    secondaryBtn: 'bg-slate-100 hover:bg-slate-200 text-slate-950 border border-slate-400 backdrop-blur-md shadow-2xs font-bold',
-    accentText: 'text-sky-950 font-bold',
-    badgeBg: 'bg-sky-100 text-sky-950 border border-sky-400 font-black backdrop-blur-md',
-    headerBg: 'bg-white/95 backdrop-blur-2xl border-b border-slate-300 text-slate-950',
-    appBg: 'bg-slate-100/80',
-    textPrimary: 'text-slate-950 font-semibold',
-    textSecondary: 'text-slate-800 font-medium',
-    textMuted: 'text-slate-600',
-    subnavBg: 'bg-slate-100/95 backdrop-blur-xl border-b border-slate-300 text-slate-950',
-    activePill: 'bg-gradient-to-r from-sky-600 to-blue-700 text-white font-bold shadow-xs border border-sky-500',
-    inputBorder: 'border-slate-400 focus:border-sky-600 focus:ring-2 focus:ring-sky-300',
-    inputBg: 'bg-white text-slate-950 placeholder-slate-500 shadow-inner font-medium',
-    tableHeaderBg: 'bg-slate-100 backdrop-blur-md text-slate-950 font-bold border-b border-slate-300',
-    tableRowHover: 'hover:bg-sky-50/60',
-    glassCard: 'bg-white/95 backdrop-blur-2xl border border-slate-300 shadow-sm text-slate-950',
-    glassBorder: 'border-slate-300',
-  },
 };
 
 interface ThemeContextType {
@@ -283,7 +254,11 @@ const ThemeContext = createContext<ThemeContextType>({
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [themeId, setThemeId] = useState<ThemeId>(() => {
-    return (localStorage.getItem('swarna_erp_theme') as ThemeId) || 'light-blue';
+    const saved = localStorage.getItem('swarna_erp_theme') as ThemeId;
+    if (saved && THEMES[saved]) {
+      return saved;
+    }
+    return 'light-blue';
   });
 
   const [density, setDensityState] = useState<UiDensity>(() => {

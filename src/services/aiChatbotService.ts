@@ -629,12 +629,12 @@ export const ERP_SCREENS: ErpScreenDefinition[] = [
     section: 'settings',
     shortcut: 'Settings',
     icon: '⚙️',
-    description: 'Showroom name, GSTIN, BIS Hallmark license, thermal printer dimensions, theme switcher (Apple iOS Frosted Glass, Classic Gold, etc.).',
-    descriptionMr: 'शोरूम नाव, पत्ता, जीएसटी नंबर, बीआयएस हॉलमार्क लायसन्स, प्रिंटर साइज आणि ॲपल आयओएस / क्लासिक गोल्ड थीम्स.',
-    descriptionHi: 'दुकान का नाम, पता, जीएसटी नंबर, बीआईएस हॉलमार्क लाइसेंस, प्रिंटर आकार और ऐप्पल आईओएस / क्लासिक गोल्ड थीम्स।',
+    description: 'Showroom name, GSTIN, BIS Hallmark license, thermal printer dimensions, luxury themes (Sapphire Classic Blue, Royal Gold, Obsidian Velvet, etc.).',
+    descriptionMr: 'शोरूम नाव, पत्ता, जीएसटी नंबर, बीआयएस हॉलमार्क लायसन्स, प्रिंटर साइज आणि लक्झरी थीम्स.',
+    descriptionHi: 'दुकान का नाम, पता, जीएसटी नंबर, बीआईएस हॉलमार्क लाइसेंस, प्रिंटर आकार और लक्जरी थीम्स।',
     keywords: [
-      'setting', 'settings', 'theme', 'profile', 'gstin', 'printer', 'apple theme', 'ios theme', 'frosted glass', 'setup', 'preferences',
-      'सेटिंग्ज', 'थीम', 'प्रोफाइल', 'प्रिंटर सेटिंग', 'शोरूम माहिती', 'ॲपल थीम', 'कस्टमायझेशन'
+      'setting', 'settings', 'theme', 'profile', 'gstin', 'printer', 'luxury theme', 'obsidian theme', 'setup', 'preferences',
+      'सेटिंग्ज', 'थीम', 'प्रोफाइल', 'प्रिंटर सेटिंग', 'शोरूम माहिती', 'कस्टमायझेशन'
     ],
     actions: [
       { label: '🚀 Open ERP Settings', action: 'navigate', payload: { section: 'settings' } }
