@@ -699,6 +699,163 @@ export const ERP_SCREENS: ErpScreenDefinition[] = [
   }
 ];
 
+export type QuickTransactionType =
+  | 'quick_sale'
+  | 'quick_order'
+  | 'quick_urd'
+  | 'quick_scheme'
+  | 'quick_karagir'
+  | 'quick_receipt'
+  | 'quick_barcode';
+
+export interface ConfirmationCardBreakdownItem {
+  label: string;
+  value: string;
+  isHighlight?: boolean;
+  isDeduction?: boolean;
+  isTotal?: boolean;
+}
+
+export interface ConfirmationCardData {
+  cardId: string;
+  type: QuickTransactionType;
+  title: string;
+  titleMr?: string;
+  badge: string;
+  status: 'pending' | 'confirmed' | 'cancelled';
+  customerName?: string;
+  customerPhone?: string;
+  itemDescription?: string;
+  grossWt?: number;
+  netWt?: number;
+  purity?: string | number;
+  rate?: number;
+  makingCharges?: number;
+  hallmarkCharges?: number;
+  subtotal?: number;
+  gstAmount?: number;
+  oldGoldAmount?: number;
+  discountAmount?: number;
+  advanceAmount?: number;
+  totalAmount: number;
+  totalAmountLabel: string;
+  breakdown: ConfirmationCardBreakdownItem[];
+  rawData: Record<string, any>;
+  whatsappMessage: string;
+  confirmButtonText?: string;
+  confirmedInvoiceNo?: string;
+  confirmedMessage?: string;
+}
+
+export interface WhatsAppTemplateItem {
+  id: string;
+  type: QuickTransactionType;
+  title: string;
+  titleMr: string;
+  icon: string;
+  description: string;
+  sampleText: string;
+}
+
+export const WHATSAPP_TRANSACTION_TEMPLATES: WhatsAppTemplateItem[] = [
+  {
+    id: 'sale_ornament',
+    type: 'quick_sale',
+    title: 'Sale of Ornament (Mandatory Bill Details)',
+    titleMr: 'दागिने विक्री बिल (अनिवार्य तपशील)',
+    icon: '🛍️',
+    description: 'Enter item, weights, rate, making, customer & old gold for direct payment amount calculation.',
+    sampleText: `*✨ SWARNA JEWELLERS - QUICK SALE ORDER ✨*
+Item: 22K Gold Peacock Necklace
+Gross Wt: 32.500g
+Net Wt: 31.300g
+Purity: 22K (91.6%)
+Rate: 7450
+Making: 450
+Customer: Rahul Sharma
+Mobile: 9820123456
+Payment: UPI
+Old Gold: 15000
+Discount: 1000`,
+  },
+  {
+    id: 'order_booking',
+    type: 'quick_order',
+    title: 'Custom Order Booking',
+    titleMr: 'कस्टम ऑर्डर बुकिंग',
+    icon: '📋',
+    description: 'Book custom bridal/temple jewellery order with advance and promise date.',
+    sampleText: `*📋 NEW CUSTOM ORDER BOOKING*
+Item: 22K Bridal Mangalsutra
+Approx Wt: 35.000g
+Purity: 22K
+Advance: 50000
+Delivery Date: 2026-09-30
+Karagir: Santosh Zariwala
+Customer: Pooja Mehta
+Mobile: 9819033445`,
+  },
+  {
+    id: 'urd_purchase',
+    type: 'quick_urd',
+    title: 'Old Gold (URD Scrap) Purchase',
+    titleMr: 'जुने सोने (URD) खरेदी व कॅश पावती',
+    icon: '🔥',
+    description: 'Purchase old gold scrap, calculate melt purity recovery and direct payout to customer.',
+    sampleText: `*🔥 OLD GOLD (URD) PURCHASE*
+Item: Old Broken Gold Bangles
+Gross Wt: 15.500g
+Stones/Dust: 0.500g
+Touch/Purity: 84%
+Rate: 7450
+Customer: Ramesh Kadam
+Mobile: 9820991122
+Payment Mode: Cash`,
+  },
+  {
+    id: 'scheme_deposit',
+    type: 'quick_scheme',
+    title: 'Swarna Nidhi Gold Scheme Deposit',
+    titleMr: 'सुवर्ण निधी भिशी हप्ता पावती',
+    icon: '🪙',
+    description: 'Record monthly gold savings deposit, credit fine gold weight and issue WhatsApp receipt.',
+    sampleText: `*🪙 SWARNA NIDHI SCHEME DEPOSIT*
+Member No: SN-2026-081
+Customer: Sunita Patil
+Mobile: 9820556677
+Installment: 5000
+Payment Mode: UPI`,
+  },
+  {
+    id: 'karagir_challan',
+    type: 'quick_karagir',
+    title: 'Karagir Metal Issue Challan',
+    titleMr: 'कारागीर माल देणे व जॉब चालान',
+    icon: '⚖️',
+    description: 'Issue pure gold/alloy to Karagir artisan with target purity and labor rate.',
+    sampleText: `*⚖️ KARAGIR JOB WORK CHALLAN*
+Karagir: Santosh Zariwala (KG-101)
+Ornament: 22K Antique Necklace
+Fine Gold Issued: 50.000g
+Alloy Issued: 4.500g
+Making Rate: 450
+Due Date: 2026-09-25`,
+  },
+  {
+    id: 'customer_receipt',
+    type: 'quick_receipt',
+    title: 'Customer Payment Receipt',
+    titleMr: 'ग्राहक उधारी जमा पावती',
+    icon: '👥',
+    description: 'Record credit settlement, adjust debtors ledger and generate WhatsApp receipt.',
+    sampleText: `*👥 CUSTOMER PAYMENT RECEIPT*
+Customer: Rajesh Sharma
+Mobile: 9820199887
+Amount Paid: 25000
+Payment Mode: Cash`,
+  },
+];
+
 export interface ChatMessage {
   id: string;
   sender: 'bot' | 'user';
@@ -718,6 +875,7 @@ export interface ChatMessage {
     details: Record<string, any>;
     actions?: { label: string; actionId: string; primary?: boolean }[];
   };
+  confirmationCard?: ConfirmationCardData;
   quickChips?: { label: string; action: string; payload?: any }[];
 }
 
@@ -1461,6 +1619,957 @@ export class AiChatbotEngine {
     return null;
   }
 
+  // Helper to extract value by multiple possible keys from multiline / text input
+  private extractKeyValue(text: string, keys: string[]): string | null {
+    for (const k of keys) {
+      // Look for Key: Value or Key - Value or Key = Value or *Key*: Value
+      const escapedKey = k.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const regex = new RegExp(`(?:\\*?${escapedKey}\\*?)\\s*[:=\\-]\\s*([^\\n\\r,;]+)`, 'i');
+      const match = text.match(regex);
+      if (match && match[1]?.trim()) {
+        return match[1].replace(/[*_]/g, '').trim();
+      }
+    }
+    return null;
+  }
+
+  // Retrieve predefined WhatsApp business message templates
+  public getWhatsAppTemplates(): WhatsAppTemplateItem[] {
+    return WHATSAPP_TRANSACTION_TEMPLATES;
+  }
+
+  // Parse structured WhatsApp message or quick chat action for instant billing calculation
+  public parseStructuredTransactionMessage(
+    raw: string,
+    lang: 'en' | 'mr' | 'hi'
+  ): {
+    response: string;
+    language: 'en' | 'mr' | 'hi';
+    confirmationCard?: ConfirmationCardData;
+    screenDirection?: ScreenDirectionData;
+    quickChips?: ChatMessage['quickChips'];
+  } | null {
+    const text = raw.toLowerCase();
+
+    // Check if user is asking for WhatsApp templates or format
+    const isAskingForTemplate =
+      (text.includes('whatsapp') || text.includes('whats app') || text.includes('format') || text.includes('template') || text.includes('मेसेज') || text.includes('फॉर्मेट')) &&
+      (text.includes('sale') || text.includes('mandatory') || text.includes('detail') || text.includes('ornament') || text.includes('bill') || text.includes('विक्री') || text.includes('तपशील') || text.includes('दागिने') || text.includes('ऑर्डर') || text.includes('योजना'));
+
+    if (isAskingForTemplate && !text.includes('gross wt') && !text.includes('net wt') && !text.includes('customer:')) {
+      const resp = lang === 'mr'
+        ? `### 📲 दागिने विक्रीसाठी व्हॉट्सअॅप मेसेज अनिवार्य तपशील (WhatsApp Sale Format)\n\nखालील फॉरमॅट कॉपी करून ग्राहक किंवा स्टाफ चॅटमध्ये पाठवू शकतात. सिस्टम त्वरित सर्व कर व मजुरीसह **ग्राहकाने भरायची एकूण रक्कम** काढेल व **[✅ विक्री निश्चित करा]** बटण देईल:\n\n\`\`\`text
+*✨ SWARNA JEWELLERS - QUICK SALE ORDER ✨*
+Item: 22K Gold Peacock Necklace
+Gross Wt: 32.500g
+Net Wt: 31.300g
+Purity: 22K (91.6%)
+Rate: ${this.context.gold22kRate}
+Making: 450
+Customer: Rahul Sharma
+Mobile: 9820123456
+Payment: UPI
+Old Gold: 15000
+Discount: 1000
+\`\`\`\n\n📌 **इतर स्क्रीनसाठी देखील फॉरमॅट उपलब्ध आहेत:**\n- 📋 **कस्टम ऑर्डर बुकिंग** (Custom Order Booking)\n- 🔥 **जुने सोने (URD) खरेदी** (Old Gold URD Cash Payout)\n- 🪙 **सुवर्ण निधी भिशी हप्ता** (Gold Scheme Installment)\n- ⚖️ **कारागीर माल चालान** (Karagir Job Challan)\n- 👥 **ग्राहक उधारी पावती** (Customer Payment Receipt)`
+        : lang === 'hi'
+        ? `### 📲 आभूषण बिक्री के लिए व्हाट्सएप अनिवार्य विवरण प्रारूप (WhatsApp Sale Format)\n\nनीचे दिया गया प्रारूप कॉपी करके चैट में दर्ज करें। सिस्टम तुरंत ३% जीएसटी और मेकिंग चार्ज जोड़कर **ग्राहक द्वारा भुगतान योग्य राशि** प्रदर्शित करेगा:\n\n\`\`\`text
+*✨ SWARNA JEWELLERS - QUICK SALE ORDER ✨*
+Item: 22K Gold Peacock Necklace
+Gross Wt: 32.500g
+Net Wt: 31.300g
+Purity: 22K (91.6%)
+Rate: ${this.context.gold22kRate}
+Making: 450
+Customer: Rahul Sharma
+Mobile: 9820123456
+Payment: UPI
+Old Gold: 15000
+Discount: 1000
+\`\`\`\n\n📌 **अन्य स्क्रीन हेतु उपलब्ध प्रारूप:**\n- 📋 कस्टम ऑर्डर बुकिंग\n- 🔥 पुराना सोना (URD) खरीद\n- 🪙 सुवर्ण निधि भिशी जमा\n- ⚖️ कारीगर जॉब वर्क चालान\n- 👥 ग्राहक भुगतान रसीद`
+        : `### 📲 WhatsApp Message Format for Mandatory Sale Details\n\nCopy and paste this structured format into the chat. The AI Copilot will instantly compute the live gold value, making charges, 3% GST, deductions, and display the **Total Amount to Pay by Customer** with a 1-click **Confirm & Complete Sale** action:\n\n\`\`\`text
+*✨ SWARNA JEWELLERS - QUICK SALE ORDER ✨*
+Item: 22K Gold Peacock Necklace
+Gross Wt: 32.500g
+Net Wt: 31.300g
+Purity: 22K (91.6%)
+Rate: ${this.context.gold22kRate}
+Making: 450
+Customer: Rahul Sharma
+Mobile: 9820123456
+Payment: UPI
+Old Gold: 15000
+Discount: 1000
+\`\`\`\n\n📌 **Supported Quick-Action Screens:**\n- 🛍️ **Sale of Ornaments** (POS Billing)\n- 📋 **Custom Order Booking** (Advance & Promise Date)\n- 🔥 **Old Gold (URD Scrap) Purchase** (Cash Payout)\n- 🪙 **Swarna Nidhi Gold Scheme** (Monthly Deposit)\n- ⚖️ **Karagir Metal Issue** (Job Work Challan)\n- 👥 **Customer Payment** (Ledger Clearance)`;
+
+      return {
+        response: resp,
+        language: lang,
+        quickChips: [
+          { label: '🛍️ Sample Quick Sale', action: 'query', payload: WHATSAPP_TRANSACTION_TEMPLATES[0].sampleText },
+          { label: '📋 Sample Custom Order', action: 'query', payload: WHATSAPP_TRANSACTION_TEMPLATES[1].sampleText },
+          { label: '🔥 Sample Old Gold (URD)', action: 'query', payload: WHATSAPP_TRANSACTION_TEMPLATES[2].sampleText },
+          { label: '🪙 Sample Scheme Deposit', action: 'query', payload: WHATSAPP_TRANSACTION_TEMPLATES[3].sampleText },
+          { label: '⚖️ Sample Karagir Challan', action: 'query', payload: WHATSAPP_TRANSACTION_TEMPLATES[4].sampleText },
+          { label: '👥 Sample Customer Receipt', action: 'query', payload: WHATSAPP_TRANSACTION_TEMPLATES[5].sampleText },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // DETECTION A: QUICK SALE OF ORNAMENTS (POS BILLING)
+    // ----------------------------------------------------
+    const isSaleIntent =
+      text.includes('quick sale') ||
+      text.includes('sale order') ||
+      text.includes('sale ornament') ||
+      text.includes('sell ornament') ||
+      text.includes('विक्री बिल') ||
+      text.includes('दागिने विक्री') ||
+      text.includes('बिक्री') ||
+      (text.includes('sale') && (text.includes('wt') || text.includes('weight') || text.includes('gm') || text.includes('gram') || text.includes('customer') || text.includes('rate'))) ||
+      (text.includes('sell') && (text.includes('wt') || text.includes('necklace') || text.includes('ring') || text.includes('bangle') || text.includes('chain') || text.includes('gold'))) ||
+      (text.includes('विक्री') && (text.includes('ग्रॅम') || text.includes('वजन') || text.includes('अंगठी') || text.includes('हार') || text.includes('सोने'))) ||
+      (text.includes('item:') && (text.includes('gross wt:') || text.includes('net wt:') || text.includes('customer:')));
+
+    if (isSaleIntent && !text.includes('order booking') && !text.includes('urd purchase') && !text.includes('scheme deposit')) {
+      // 1. Extract Tag No if referenced (e.g. TAG-GLD-8801)
+      const tagMatch = raw.match(/TAG-[A-Z0-9\-]+/i) || raw.match(/stk-[a-z0-9\-]+/i);
+      let matchedStockItem: StockItem | undefined;
+      if (tagMatch) {
+        const searchedTag = tagMatch[0].toUpperCase();
+        matchedStockItem = this.context.stockItems.find(
+          (s) => (s.tag_no && s.tag_no.toUpperCase() === searchedTag) || s.id.toUpperCase() === searchedTag
+        );
+      }
+
+      // 2. Extract Key Fields
+      const rawItem =
+        this.extractKeyValue(raw, ['Item', 'Ornament', 'Product', 'दागिना', 'आयटम', 'सामान', 'Name', 'Description']) ||
+        matchedStockItem?.item_name ||
+        '22K Hallmarked Gold Ornament';
+
+      const rawGross =
+        this.extractKeyValue(raw, ['Gross Wt', 'Gross Weight', 'Gross', 'एकूण वजन', 'ग्रॉस', 'GW']) ||
+        (matchedStockItem ? String(matchedStockItem.gross_wt) : null);
+
+      const rawNet =
+        this.extractKeyValue(raw, ['Net Wt', 'Net Weight', 'Net', 'निव्वळ वजन', 'नेट वजन', 'NW']) ||
+        (matchedStockItem ? String(matchedStockItem.net_wt) : null);
+
+      const rawPurity =
+        this.extractKeyValue(raw, ['Purity', 'Karat', 'Carat', 'कॅरेट', 'टंच', 'प्युरिटी', 'Gold Purity']) ||
+        (matchedStockItem ? String(matchedStockItem.purity) : '22K (91.6%)');
+
+      const rawRate =
+        this.extractKeyValue(raw, ['Gold Rate', 'Rate', 'भाव', 'दर', 'Rate/Gm', 'Rate / Gm', 'Price']) ||
+        (matchedStockItem?.rate_per_gm ? String(matchedStockItem.rate_per_gm) : null);
+
+      const rawMaking =
+        this.extractKeyValue(raw, ['Making Charges', 'Making', 'मजुरी', 'घडी', 'Mkg', 'Making/Gm', 'Making / Gm']) ||
+        '450';
+
+      const rawCustomer =
+        this.extractKeyValue(raw, ['Customer Name', 'Customer', 'ग्राहक', 'Party', 'Client', 'Name']) ||
+        'Rahul Sharma';
+
+      const rawMobile =
+        this.extractKeyValue(raw, ['Mobile No', 'Mobile', 'Phone', 'मोबाईल', 'फोन', 'Contact', 'WhatsApp']) ||
+        '9820123456';
+
+      const rawPayment =
+        this.extractKeyValue(raw, ['Payment Mode', 'Payment', 'पेमेंट', 'Mode', 'Tender']) ||
+        'UPI';
+
+      const rawOldGold =
+        this.extractKeyValue(raw, ['Old Gold Credit', 'Old Gold', 'URD Credit', 'URD', 'जुने सोने', 'मोड', 'Old Gold Adj']) ||
+        '0';
+
+      const rawDiscount =
+        this.extractKeyValue(raw, ['Discount', 'सूट', 'Disc', 'कमी', 'Discount (₹)']) ||
+        '0';
+
+      const rawHuid =
+        this.extractKeyValue(raw, ['Hallmark', 'HUID', 'BIS HUID', 'हॉलमार्क']) ||
+        matchedStockItem?.huid ||
+        'HUID-99214';
+
+      // 3. Fallback Regex Parsing for Natural Language Input
+      let grossWt = rawGross ? parseFloat(rawGross.replace(/[^0-9.]/g, '')) : 0;
+      let netWt = rawNet ? parseFloat(rawNet.replace(/[^0-9.]/g, '')) : 0;
+
+      if (!grossWt && !netWt) {
+        const wtMatch = raw.match(/(\d+(\.\d+)?)\s*(?:g|gm|gms|gram|grams|ग्रॅम)/i);
+        if (wtMatch) {
+          grossWt = parseFloat(wtMatch[1]);
+          netWt = grossWt;
+        }
+      }
+      if (!grossWt && netWt) grossWt = netWt;
+      if (!netWt && grossWt) netWt = grossWt;
+      if (!netWt) netWt = 15.0;
+      if (!grossWt) grossWt = netWt;
+
+      // Extract Rate
+      let rate = rawRate ? parseFloat(rawRate.replace(/[^0-9.]/g, '')) : 0;
+      if (!rate) {
+        const rateMatch = raw.match(/(?:rate|भाव|दर|@)\s*[:=\-]?\s*(\d{4,6})/i);
+        if (rateMatch) rate = parseFloat(rateMatch[1]);
+      }
+      if (!rate) {
+        if (text.includes('18k') || text.includes('750')) rate = Math.round(this.context.gold22kRate * 0.82);
+        else if (text.includes('24k') || text.includes('999')) rate = this.context.gold24kRate;
+        else if (text.includes('silver') || text.includes('चांदी')) rate = this.context.silverRate;
+        else rate = this.context.gold22kRate;
+      }
+
+      // Extract Making
+      let makingPerGm = rawMaking ? parseFloat(rawMaking.replace(/[^0-9.]/g, '')) : 450;
+      if (!makingPerGm) {
+        const mkgMatch = raw.match(/(?:making|mkg|मजुरी)\s*[:=\-]?\s*(\d{2,5})/i);
+        if (mkgMatch) makingPerGm = parseFloat(mkgMatch[1]);
+      }
+
+      // Extract Old Gold & Discount
+      const oldGoldAmount = rawOldGold ? parseFloat(rawOldGold.replace(/[^0-9.]/g, '')) || 0 : 0;
+      const discountAmount = rawDiscount ? parseFloat(rawDiscount.replace(/[^0-9.]/g, '')) || 0 : 0;
+
+      // Extract Customer Name & Mobile
+      let customerName = rawCustomer;
+      let customerPhone = rawMobile.replace(/[^0-9]/g, '');
+      if (customerPhone.length > 10) customerPhone = customerPhone.slice(-10);
+      if (!customerPhone) customerPhone = '9820123456';
+
+      // 4. Complete Jewellery Billing Calculations
+      const metalVal = roundTo(netWt * rate, 2);
+      const makingVal = roundTo(netWt * makingPerGm, 2);
+      const hallmarkFee = 45;
+      const taxableSubtotal = Math.max(0, metalVal + makingVal + hallmarkFee - discountAmount);
+      const gstAmount = Math.round(taxableSubtotal * 0.03); // 3% GST (1.5% CGST + 1.5% SGST)
+      const grossInvoiceTotal = taxableSubtotal + gstAmount;
+      const totalAmountToPay = Math.max(0, grossInvoiceTotal - oldGoldAmount);
+
+      const invTempNo = `INV-2026-${Math.floor(100 + Math.random() * 900)}`;
+      const cardId = `card-sale-${Date.now()}`;
+
+      // 5. Pre-compose WhatsApp Receipt Message
+      const todayStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      const waMsg = `*✨ SWARNA JEWELLERS - TAX INVOICE RECEIPT ✨*
+------------------------------------------------
+📄 *Invoice No:* ${invTempNo}
+📅 *Date:* ${todayStr}
+👤 *Customer:* ${customerName}
+📱 *Mobile:* ${customerPhone}
+------------------------------------------------
+🏷️ *Item:* ${rawItem}
+⚖️ *Gross Wt:* ${formatWeight(grossWt)}g | *Net Wt:* ${formatWeight(netWt)}g
+🌟 *Purity:* ${rawPurity}
+🪙 *Gold Rate:* ₹${rate.toLocaleString('en-IN')}/g
+🔨 *Making Charges:* ₹${makingPerGm}/g (₹${formatCurrency(makingVal)})
+💎 *BIS Hallmark HUID:* ${rawHuid} (₹${hallmarkFee})
+------------------------------------------------
+💵 *Taxable Value:* ₹${formatCurrency(taxableSubtotal)}
+📊 *GST @ 3% (1.5% CGST + 1.5% SGST):* ₹${formatCurrency(gstAmount)}
+${oldGoldAmount > 0 ? `🪙 *Old Gold (URD) Adjustment:* -₹${formatCurrency(oldGoldAmount)}\n` : ''}${discountAmount > 0 ? `🏷️ *Discount Given:* -₹${formatCurrency(discountAmount)}\n` : ''}------------------------------------------------
+💰 *TOTAL AMOUNT TO PAY: ₹${formatCurrency(totalAmountToPay)}*
+💳 *Payment Mode:* ${rawPayment}
+------------------------------------------------
+🙏 *Thank you for choosing Swarna Jewellers!*
+🏬 Main Market Showroom | 📞 +91 9820556677`;
+
+      const breakdown: ConfirmationCardBreakdownItem[] = [
+        { label: 'Ornament & Purity', value: `${rawItem} (${rawPurity})` },
+        { label: 'Gross & Net Weight', value: `Gross: ${formatWeight(grossWt)}g | Net: ${formatWeight(netWt)}g` },
+        { label: 'Gold Bullion Value', value: `₹${formatCurrency(metalVal)} (${formatWeight(netWt)}g @ ₹${rate.toLocaleString('en-IN')}/g)` },
+        { label: 'Making Charges', value: `+ ₹${formatCurrency(makingVal)} (@ ₹${makingPerGm}/g)` },
+        { label: 'Hallmark & HUID Fee', value: `+ ₹${hallmarkFee}` },
+        { label: 'Taxable Subtotal', value: `₹${formatCurrency(taxableSubtotal)}` },
+        { label: 'GST @ 3% (1.5% CGST + 1.5% SGST)', value: `+ ₹${formatCurrency(gstAmount)}` },
+        ...(oldGoldAmount > 0
+          ? [{ label: 'Old Gold (URD) Credit', value: `- ₹${formatCurrency(oldGoldAmount)}`, isDeduction: true }]
+          : []),
+        ...(discountAmount > 0
+          ? [{ label: 'Special Bill Discount', value: `- ₹${formatCurrency(discountAmount)}`, isDeduction: true }]
+          : []),
+        {
+          label: 'TOTAL AMOUNT TO PAY BY CUSTOMER',
+          value: `₹${formatCurrency(totalAmountToPay)}`,
+          isHighlight: true,
+          isTotal: true,
+        },
+      ];
+
+      const confirmationCard: ConfirmationCardData = {
+        cardId,
+        type: 'quick_sale',
+        title: `Quick Sale Order • ${rawItem}`,
+        titleMr: `झटपट दागिने विक्री बिल • ${rawItem}`,
+        badge: `${rawPurity} • ${formatWeight(netWt)}g`,
+        status: 'pending',
+        customerName,
+        customerPhone,
+        itemDescription: rawItem,
+        grossWt,
+        netWt,
+        purity: rawPurity,
+        rate,
+        makingCharges: makingVal,
+        hallmarkCharges: hallmarkFee,
+        subtotal: taxableSubtotal,
+        gstAmount,
+        oldGoldAmount,
+        discountAmount,
+        totalAmount: totalAmountToPay,
+        totalAmountLabel: 'AMOUNT TO PAY BY CUSTOMER',
+        breakdown,
+        rawData: {
+          itemName: rawItem,
+          grossWt,
+          netWt,
+          purity: rawPurity,
+          rate,
+          makingPerGm,
+          makingVal,
+          customerName,
+          customerPhone,
+          paymentMode: rawPayment,
+          oldGoldAmount,
+          discountAmount,
+          taxableSubtotal,
+          gstAmount,
+          totalAmountToPay,
+          huid: rawHuid,
+          stockItemId: matchedStockItem?.id,
+          tagNo: matchedStockItem?.tag_no,
+        },
+        whatsappMessage: waMsg,
+        confirmButtonText: '✅ Confirm & Complete Sale',
+      };
+
+      const resp = lang === 'mr'
+        ? `### 🛍️ ग्राहक बिलिंग व देय रक्कम हिशोब (Live Sale Calculation)\n\nग्राहक **${customerName}** यांच्या **${rawItem}** साठी ३% जीएसटी, मजुरी व जुने सोने वजावटीसह **ग्राहकाने भरायची एकूण रक्कम: ₹${formatCurrency(totalAmountToPay)}** निश्चित झाली आहे.\n\nखालील तपशील तपासून **"✅ विक्री निश्चित करा (Confirm & Complete Sale)"** बटणावर क्लिक करा:`
+        : lang === 'hi'
+        ? `### 🛍️ ग्राहक बिलिंग व भुगतान राशि (Live Sale Calculation)\n\nग्राहक **${customerName}** के **${rawItem}** हेतु ३% जीएसटी और मेकिंग चार्ज जोड़कर **ग्राहक द्वारा कुल भुगतान योग्य राशि: ₹${formatCurrency(totalAmountToPay)}** तय की गई है।\n\nकृपया नीचे दिए विवरण की जांच कर **"✅ बिक्री पूर्ण करें (Confirm & Complete Sale)"** बटन दबाएं:`
+        : `### 🛍️ Instant Sale Bill Calculation\n\nLive billing breakdown for **${customerName}** (${rawItem}) including metal rate, making charges, 3% GST, and deductions:\n\n👉 **TOTAL AMOUNT TO PAY BY CUSTOMER: ₹${formatCurrency(totalAmountToPay)}**\n\nClick **"✅ Confirm & Complete Sale"** below to record this invoice, update stock and Day Book, and generate the official WhatsApp bill receipt:`;
+
+      return {
+        response: resp,
+        language: lang,
+        confirmationCard,
+        quickChips: [
+          { label: '✅ Confirm Sale', action: 'confirm_card', payload: cardId },
+          { label: '📲 Share WhatsApp Bill', action: 'share_whatsapp', payload: cardId },
+          { label: '🖨️ View Sales POS (F4)', action: 'navigate', payload: { section: 'transactions', subView: 'sales_invoice' } },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // DETECTION B: CUSTOM ORDER BOOKING
+    // ----------------------------------------------------
+    const isOrderIntent =
+      text.includes('custom order') ||
+      text.includes('order booking') ||
+      text.includes('book order') ||
+      text.includes('ऑर्डर बुकिंग') ||
+      (text.includes('order') && (text.includes('advance') || text.includes('delivery') || text.includes('approx wt') || text.includes('karagir')));
+
+    if (isOrderIntent) {
+      const rawItem = this.extractKeyValue(raw, ['Item', 'Ornament', 'Design', 'दागिना']) || '22K Custom Bridal Jewellery';
+      const rawApprox = this.extractKeyValue(raw, ['Approx Wt', 'Approx Weight', 'Weight', 'वजन']) || '35.0';
+      const rawPurity = this.extractKeyValue(raw, ['Purity', 'Karat', 'कॅरेट']) || '22K (91.6%)';
+      const rawAdvance = this.extractKeyValue(raw, ['Advance', 'Advance Paid', 'ॲडव्हान्स', 'अगाऊ']) || '50000';
+      const rawDelivery = this.extractKeyValue(raw, ['Delivery Date', 'Delivery', 'तारीख', 'Due Date']) || new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0];
+      const rawKaragir = this.extractKeyValue(raw, ['Karagir', 'Artisan', 'कारागीर']) || 'Santosh Zariwala';
+      const rawCustomer = this.extractKeyValue(raw, ['Customer', 'Name', 'ग्राहक']) || 'Pooja Mehta';
+      const rawMobile = this.extractKeyValue(raw, ['Mobile', 'Phone', 'मोबाईल']) || '9819033445';
+
+      const approxWt = parseFloat(rawApprox.replace(/[^0-9.]/g, '')) || 35.0;
+      const advance = parseFloat(rawAdvance.replace(/[^0-9.]/g, '')) || 50000;
+      const rate = this.context.gold22kRate;
+      const estMetal = Math.round(approxWt * rate);
+      const estMaking = Math.round(approxWt * 500);
+      const estTaxable = estMetal + estMaking;
+      const estGst = Math.round(estTaxable * 0.03);
+      const estTotal = estTaxable + estGst;
+      const balanceDue = Math.max(0, estTotal - advance);
+
+      const orderTempNo = `ORD-2026-${Math.floor(100 + Math.random() * 900)}`;
+      const cardId = `card-ord-${Date.now()}`;
+
+      const waMsg = `*✨ SWARNA JEWELLERS - CUSTOM ORDER CONFIRMATION ✨*
+------------------------------------------------
+📋 *Order No:* ${orderTempNo}
+👤 *Customer:* ${rawCustomer} | 📱 *Mobile:* ${rawMobile}
+🏷️ *Ornament Spec:* ${rawItem} (${rawPurity})
+⚖️ *Approx Weight:* ${formatWeight(approxWt)}g
+📅 *Promise Delivery Date:* ${rawDelivery}
+👨‍🏭 *Artisan / Karagir:* ${rawKaragir}
+------------------------------------------------
+💵 *Estimated Order Value:* ₹${formatCurrency(estTotal)}
+💰 *Advance Received Today:* ₹${formatCurrency(advance)}
+⏳ *Balance Due on Delivery:* ₹${formatCurrency(balanceDue)}
+------------------------------------------------
+🙏 *Your handcrafted order is in production!*
+🏬 Swarna Jewellers Showroom`;
+
+      const breakdown: ConfirmationCardBreakdownItem[] = [
+        { label: 'Custom Design', value: `${rawItem} (${rawPurity})` },
+        { label: 'Approx Weight', value: `${formatWeight(approxWt)}g` },
+        { label: 'Estimated Total Value', value: `₹${formatCurrency(estTotal)} (Gold + Making + GST)` },
+        { label: 'Advance Payment Received', value: `₹${formatCurrency(advance)}`, isHighlight: true },
+        { label: 'Estimated Balance on Delivery', value: `₹${formatCurrency(balanceDue)}`, isDeduction: true },
+        { label: 'Delivery Commitment Date', value: `${rawDelivery}` },
+      ];
+
+      const confirmationCard: ConfirmationCardData = {
+        cardId,
+        type: 'quick_order',
+        title: `Custom Order Booking • ${rawItem}`,
+        titleMr: `कस्टम ऑर्डर बुकिंग • ${rawItem}`,
+        badge: `Adv: ₹${formatCurrency(advance)} • Due: ${rawDelivery}`,
+        status: 'pending',
+        customerName: rawCustomer,
+        customerPhone: rawMobile,
+        itemDescription: rawItem,
+        grossWt: approxWt,
+        netWt: approxWt,
+        purity: rawPurity,
+        rate,
+        advanceAmount: advance,
+        totalAmount: advance,
+        totalAmountLabel: 'ADVANCE TO RECEIVE NOW',
+        breakdown,
+        rawData: {
+          orderNo: orderTempNo,
+          customerName: rawCustomer,
+          customerPhone: rawMobile,
+          itemName: rawItem,
+          approxWt,
+          purity: rawPurity,
+          advance,
+          deliveryDate: rawDelivery,
+          karagir: rawKaragir,
+          estTotal,
+          balanceDue,
+        },
+        whatsappMessage: waMsg,
+        confirmButtonText: '✅ Confirm & Book Order',
+      };
+
+      const resp = `### 📋 Custom Order Booking Confirmation\nOrder calculation for **${rawCustomer}** (${rawItem}, ~${formatWeight(approxWt)}g):\n- **Advance Amount to Collect Now: ₹${formatCurrency(advance)}**\n- **Promise Delivery Date: ${rawDelivery}**\n- **Estimated Balance on Delivery: ₹${formatCurrency(balanceDue)}**\n\nClick **"✅ Confirm & Book Order"** below to save to workshop schedule:`;
+
+      return {
+        response: resp,
+        language: lang,
+        confirmationCard,
+        quickChips: [
+          { label: '✅ Confirm Order', action: 'confirm_card', payload: cardId },
+          { label: '📲 WhatsApp Order Slip', action: 'share_whatsapp', payload: cardId },
+          { label: '📋 View Orders (F7)', action: 'navigate', payload: { section: 'transactions', subView: 'new_order' } },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // DETECTION C: OLD GOLD (URD SCRAP) PURCHASE / REFINERY
+    // ----------------------------------------------------
+    const isUrdIntent =
+      text.includes('urd purchase') ||
+      text.includes('old gold purchase') ||
+      text.includes('scrap gold') ||
+      text.includes('जुने सोने खरेदी') ||
+      text.includes('मोड खरेदी') ||
+      (text.includes('urd') && (text.includes('touch') || text.includes('melt') || text.includes('payout')));
+
+    if (isUrdIntent) {
+      const rawItem = this.extractKeyValue(raw, ['Item', 'Scrap', 'दागिना']) || 'Old Scrap Gold Ornaments';
+      const rawGross = this.extractKeyValue(raw, ['Gross Wt', 'Gross', 'एकूण वजन']) || '15.5';
+      const rawStones = this.extractKeyValue(raw, ['Stones/Dust', 'Stone Wt', 'कचरा']) || '0.5';
+      const rawTouch = this.extractKeyValue(raw, ['Touch/Purity', 'Touch', 'टंच', 'Purity']) || '84';
+      const rawRate = this.extractKeyValue(raw, ['Rate', 'भाव']) || String(this.context.gold24kRate);
+      const rawCustomer = this.extractKeyValue(raw, ['Customer', 'Name', 'ग्राहक']) || 'Ramesh Kadam';
+      const rawMobile = this.extractKeyValue(raw, ['Mobile', 'Phone', 'मोबाईल']) || '9820991122';
+      const rawMode = this.extractKeyValue(raw, ['Payment Mode', 'Payment', 'पेमेंट']) || 'Cash';
+
+      const grossWt = parseFloat(rawGross.replace(/[^0-9.]/g, '')) || 15.5;
+      const stoneWt = parseFloat(rawStones.replace(/[^0-9.]/g, '')) || 0.5;
+      const netScrapWt = Math.max(0, grossWt - stoneWt);
+      const touchPurity = parseFloat(rawTouch.replace(/[^0-9.]/g, '')) || 84.0;
+      const fineGoldRecovered = roundTo((netScrapWt * touchPurity) / 100, 3);
+      const fineRate = parseFloat(rawRate.replace(/[^0-9.]/g, '')) || this.context.gold24kRate;
+      const cashPayout = Math.round(fineGoldRecovered * fineRate);
+
+      const urdTempNo = `URD-2026-${Math.floor(100 + Math.random() * 900)}`;
+      const cardId = `card-urd-${Date.now()}`;
+
+      const waMsg = `*🔥 SWARNA JEWELLERS - OLD GOLD (URD) PURCHASE VOUCHER 🔥*
+------------------------------------------------
+📄 *Voucher No:* ${urdTempNo}
+👤 *Seller / Customer:* ${rawCustomer} | 📱 *Mobile:* ${rawMobile}
+🏷️ *Old Metal Description:* ${rawItem}
+⚖️ *Gross Wt:* ${formatWeight(grossWt)}g | *Stones/Dust:* ${formatWeight(stoneWt)}g
+⚖️ *Net Scrap Wt:* ${formatWeight(netScrapWt)}g
+🔬 *Assay Touch / Purity:* ${touchPurity}%
+🌟 *Fine Gold Recovered (24K):* ${formatWeight(fineGoldRecovered)}g
+🪙 *24K Pure Rate Applied:* ₹${fineRate.toLocaleString('en-IN')}/g
+------------------------------------------------
+💰 *TOTAL CASH PAYOUT TO CUSTOMER: ₹${formatCurrency(cashPayout)}*
+💳 *Payout Settlement:* ${rawMode}
+------------------------------------------------
+🏬 Swarna Jewellers Metal Purchase Desk`;
+
+      const breakdown: ConfirmationCardBreakdownItem[] = [
+        { label: 'Old Scrap Description', value: `${rawItem}` },
+        { label: 'Gross & Net Scrap Wt', value: `Gross: ${formatWeight(grossWt)}g | Net: ${formatWeight(netScrapWt)}g` },
+        { label: 'Assayed Touch / Purity', value: `${touchPurity}%` },
+        { label: 'Fine Gold (24K Equivalent)', value: `${formatWeight(fineGoldRecovered)}g Fine Au` },
+        { label: 'Fine Gold Valuation Rate', value: `₹${fineRate.toLocaleString('en-IN')}/g` },
+        {
+          label: 'TOTAL PAYOUT AMOUNT TO CUSTOMER',
+          value: `₹${formatCurrency(cashPayout)}`,
+          isHighlight: true,
+          isTotal: true,
+        },
+      ];
+
+      const confirmationCard: ConfirmationCardData = {
+        cardId,
+        type: 'quick_urd',
+        title: `Old Gold (URD) Purchase Voucher`,
+        titleMr: `जुने सोने खरेदी व कॅश पावती`,
+        badge: `${formatWeight(fineGoldRecovered)}g Fine • ₹${formatCurrency(cashPayout)}`,
+        status: 'pending',
+        customerName: rawCustomer,
+        customerPhone: rawMobile,
+        itemDescription: rawItem,
+        grossWt,
+        netWt: netScrapWt,
+        purity: touchPurity,
+        rate: fineRate,
+        totalAmount: cashPayout,
+        totalAmountLabel: 'CASH PAYOUT TO CUSTOMER',
+        breakdown,
+        rawData: {
+          voucherNo: urdTempNo,
+          customerName: rawCustomer,
+          customerPhone: rawMobile,
+          itemName: rawItem,
+          grossWt,
+          stoneWt,
+          netScrapWt,
+          touchPurity,
+          fineGoldRecovered,
+          fineRate,
+          cashPayout,
+          paymentMode: rawMode,
+        },
+        whatsappMessage: waMsg,
+        confirmButtonText: '✅ Confirm & Payout Cash',
+      };
+
+      const resp = `### 🔥 Old Gold (URD Scrap) Valuation\nCalculated scrap fine gold recovery for **${rawCustomer}** (${rawItem}):\n- **Net Scrap Wt:** ${formatWeight(netScrapWt)}g @ **${touchPurity}% Touch**\n- **Pure Gold Recovered:** **${formatWeight(fineGoldRecovered)}g 24K**\n👉 **DIRECT CASH PAYOUT TO CUSTOMER: ₹${formatCurrency(cashPayout)}**\n\nClick **"✅ Confirm & Payout Cash"** to issue voucher:`;
+
+      return {
+        response: resp,
+        language: lang,
+        confirmationCard,
+        quickChips: [
+          { label: '✅ Confirm Payout', action: 'confirm_card', payload: cardId },
+          { label: '📲 WhatsApp Payout Slip', action: 'share_whatsapp', payload: cardId },
+          { label: '🔥 View Refinery (F8)', action: 'navigate', payload: { section: 'transactions', subView: 'refinery_in' } },
+        ],
+      };
+    }
+
+    // ----------------------------------------------------
+    // DETECTION D: SWARNA NIDHI GOLD SCHEME (BHISHI) DEPOSIT
+    // ----------------------------------------------------
+    const isSchemeIntent =
+      text.includes('scheme deposit') ||
+      text.includes('bhishi installment') ||
+      text.includes('swarna nidhi deposit') ||
+      text.includes('भिशी हप्ता') ||
+      (text.includes('bhishi') && (text.includes('installment') || text.includes('deposit') || text.includes('5000') || text.includes('10000')));
+
+    if (isSchemeIntent) {
+      const rawMember = this.extractKeyValue(raw, ['Member No', 'Member', 'सदस्य क्र']) || 'SN-2026-081';
+      const rawCustomer = this.extractKeyValue(raw, ['Customer', 'Name', 'नाव']) || 'Sunita Patil';
+      const rawMobile = this.extractKeyValue(raw, ['Mobile', 'Phone', 'मोबाईल']) || '9820556677';
+      const rawAmount = this.extractKeyValue(raw, ['Installment', 'Amount', 'रक्कम']) || '5000';
+      const rawMode = this.extractKeyValue(raw, ['Payment Mode', 'Payment', 'पेमेंट']) || 'UPI';
+
+      const amount = parseFloat(rawAmount.replace(/[^0-9.]/g, '')) || 5000;
+      const goldCredited = roundTo(amount / this.context.gold22kRate, 3);
+      const cardId = `card-sch-${Date.now()}`;
+
+      const waMsg = `*🪙 SWARNA JEWELLERS - SWARNA NIDHI GOLD SAVINGS RECEIPT 🪙*
+------------------------------------------------
+📄 *Receipt No:* SCH-REC-${Math.floor(100 + Math.random() * 900)}
+👤 *Member Name:* ${rawCustomer} (ID: ${rawMember})
+📱 *Mobile:* ${rawMobile}
+📅 *Date:* ${new Date().toLocaleDateString('en-GB')}
+------------------------------------------------
+💵 *Installment Paid:* ₹${formatCurrency(amount)}
+🪙 *Today's 22K Rate:* ₹${this.context.gold22kRate.toLocaleString('en-IN')}/g
+🌟 *Fine Gold Credited Today:* ${formatWeight(goldCredited)}g
+💳 *Payment Mode:* ${rawMode}
+------------------------------------------------
+🎁 *Maturity Bonus:* 100% of 1 Month Installment upon maturity
+🏬 Swarna Nidhi Savings Scheme Desk`;
+
+      const breakdown: ConfirmationCardBreakdownItem[] = [
+        { label: 'Scheme Member ID', value: `${rawMember} (${rawCustomer})` },
+        { label: 'Monthly Installment Deposited', value: `₹${formatCurrency(amount)}`, isHighlight: true },
+        { label: '22K Gold Rate Applied', value: `₹${this.context.gold22kRate.toLocaleString('en-IN')}/g` },
+        { label: 'Gold Weight Accrued Today', value: `+ ${formatWeight(goldCredited)}g Gold` },
+        { label: 'Payment Method', value: `${rawMode}` },
+      ];
+
+      const confirmationCard: ConfirmationCardData = {
+        cardId,
+        type: 'quick_scheme',
+        title: `Gold Scheme Deposit • ${rawMember}`,
+        titleMr: `सुवर्ण निधी भिशी हप्ता जमा • ${rawMember}`,
+        badge: `₹${formatCurrency(amount)} • +${formatWeight(goldCredited)}g`,
+        status: 'pending',
+        customerName: rawCustomer,
+        customerPhone: rawMobile,
+        totalAmount: amount,
+        totalAmountLabel: 'SCHEME INSTALLMENT RECEIVED',
+        breakdown,
+        rawData: {
+          memberNo: rawMember,
+          customerName: rawCustomer,
+          customerPhone: rawMobile,
+          amount,
+          goldCredited,
+          paymentMode: rawMode,
+        },
+        whatsappMessage: waMsg,
+        confirmButtonText: '✅ Confirm Scheme Deposit',
+      };
+
+      const resp = `### 🪙 Swarna Nidhi Scheme Deposit\nDeposit logged for member **${rawCustomer}** (${rawMember}):\n- **Installment Collected: ₹${formatCurrency(amount)}**\n- **Gold Weight Credited: +${formatWeight(goldCredited)}g 22K Gold**\n\nClick **"✅ Confirm Scheme Deposit"** to issue voucher and Day Book credit:`;
+
+      return {
+        response: resp,
+        language: lang,
+        confirmationCard,
+        quickChips: [
+          { label: '✅ Confirm Deposit', action: 'confirm_card', payload: cardId },
+          { label: '📲 WhatsApp Deposit Receipt', action: 'share_whatsapp', payload: cardId },
+          { label: '🪙 View Scheme Hub', action: 'navigate', payload: { section: 'gold_scheme' } },
+        ],
+      };
+    }
+
+    return null;
+  }
+
+  // Execute confirmation card action and persist to state/daybook/records
+  public executeConfirmationCard(
+    card: ConfirmationCardData,
+    callbacks: {
+      onSavePurchase: (record: PurchaseRecord) => void;
+      onSaveOrder: (record: NewOrderBookingRecord) => void;
+      onSaveAccount: (account: AccountMaster) => void;
+      onSaveRefinery: (record: RefineryRecord) => void;
+      onAddItemToStock: (item: StockItem) => void;
+      onAddDayBookEntry?: (entry: DayBookEntry) => void;
+    }
+  ): {
+    success: boolean;
+    message: string;
+    updatedCard: ConfirmationCardData;
+  } {
+    const today = new Date().toISOString().split('T')[0];
+
+    switch (card.type) {
+      case 'quick_sale': {
+        const d = card.rawData;
+        const invNo = `INV-2026-${Math.floor(100 + Math.random() * 900)}`;
+
+        if (callbacks.onAddDayBookEntry) {
+          const isCash = d.paymentMode === 'Cash';
+          const isSplit = d.paymentMode === 'Split';
+          const isBank = !isCash;
+
+          callbacks.onAddDayBookEntry({
+            id: `db-sale-${Date.now()}`,
+            invoice_type: 'Sales Tax Invoice',
+            invoice_no: invNo,
+            total_amt: d.taxableSubtotal,
+            urd_amt: d.oldGoldAmount || 0,
+            net_amt: d.totalAmountToPay,
+            cash_received: isCash ? d.totalAmountToPay : (isSplit ? Math.round(d.totalAmountToPay / 2) : 0),
+            cash_payment: 0,
+            bank_received: isBank ? d.totalAmountToPay : (isSplit ? Math.round(d.totalAmountToPay / 2) : 0),
+            bank_payment: 0,
+            date: today,
+            details: `Customer: ${d.customerName} (${d.itemName}, ${formatWeight(d.netWt)}g)`,
+            total_amt_without_disc: d.taxableSubtotal,
+          });
+        }
+
+        const confirmedCard: ConfirmationCardData = {
+          ...card,
+          status: 'confirmed',
+          confirmedInvoiceNo: invNo,
+          confirmedMessage: `Sale completed! Tax Invoice #${invNo} generated for ₹${formatCurrency(d.totalAmountToPay)}. Day Book & sales ledger updated.`,
+          whatsappMessage: card.whatsappMessage.replace(/INV-2026-\d+/, invNo),
+        };
+
+        return {
+          success: true,
+          message: `✅ **विक्री पूर्ण झाली! विक्री पावती #${invNo} (Sales Tax Invoice Generated)**\n- ग्राहक: **${d.customerName}** (📱 ${d.customerPhone})\n- एकूण मिळालेली रक्कम: **₹${formatCurrency(d.totalAmountToPay)}** (${d.paymentMode})\n- डे बुक व विक्री लेजर मध्ये नोंद झाली आहे. ग्राहकाला व्हॉट्सअॅप बिल पाठवण्यासाठी खालील बटण वापरा!`,
+          updatedCard: confirmedCard,
+        };
+      }
+
+      case 'quick_order': {
+        const d = card.rawData;
+        const orderNo = d.orderNo || `ORD-2026-${Math.floor(100 + Math.random() * 900)}`;
+
+        const orderRecord: NewOrderBookingRecord = {
+          id: `ord-${Date.now()}`,
+          order_no: orderNo,
+          header: {
+            customer_n: d.customerName || 'Customer',
+            address: 'Showroom Area',
+            ph_no: d.customerPhone || '9822334455',
+            remark: 'Booked via Swarna WhatsApp Quick Action',
+            area: 'Main City',
+            aadhar_no: '',
+            pan_card: '',
+            bill_type: 'Order Booking',
+            n5: 'N5',
+            bill_date: today,
+            delivery_date: d.deliveryDate || today,
+            manual_no: orderNo,
+            state: 'Maharashtra',
+            salesman: 'Pooja Sharma (EMP-204)',
+            gst_not_required: false,
+            close_order: false,
+          },
+          items: [
+            {
+              id: `it-${Date.now()}`,
+              trans_type: 'Order',
+              item_name: d.itemName,
+              description: d.itemName,
+              qty: 1,
+              gross_wt: d.approxWt,
+              black_beats: 0,
+              stone_wt: 0,
+              stone_amt: 0,
+              net_wt: d.approxWt,
+              purity: 91.6,
+              mkg_per_gm: 500,
+              mkg_amt: d.approxWt * 500,
+              hallm_charges: 45,
+              making_pct: 0,
+              item_amt: d.estTotal,
+            },
+          ],
+          payment: {
+            amount: d.estTotal,
+            bill_discount: 0,
+            purchase_amt: d.estTotal,
+            balance_amount: d.balanceDue,
+            gst_pct: 3.0,
+            gst_amt: Math.round(d.estTotal * 0.03),
+            advance_amt: d.advance,
+            other_amt: 0,
+            cash_received: d.advance,
+          },
+          status: 'In Workshop Queue',
+          created_at: new Date().toISOString(),
+        };
+
+        callbacks.onSaveOrder(orderRecord);
+
+        if (callbacks.onAddDayBookEntry && d.advance > 0) {
+          callbacks.onAddDayBookEntry({
+            id: `db-ord-${Date.now()}`,
+            invoice_type: 'Order Advance',
+            invoice_no: orderNo,
+            total_amt: d.advance,
+            urd_amt: 0,
+            net_amt: d.advance,
+            cash_received: d.advance,
+            cash_payment: 0,
+            bank_received: 0,
+            bank_payment: 0,
+            date: today,
+            details: `Order Advance: ${d.customerName} (${d.itemName})`,
+            total_amt_without_disc: d.advance,
+          });
+        }
+
+        const confirmedCard: ConfirmationCardData = {
+          ...card,
+          status: 'confirmed',
+          confirmedInvoiceNo: orderNo,
+          confirmedMessage: `Order #${orderNo} confirmed with ₹${formatCurrency(d.advance)} advance. Delivery date: ${d.deliveryDate}.`,
+        };
+
+        return {
+          success: true,
+          message: `✅ **ऑर्डर #${orderNo} नोंदवली गेली! (Custom Order Confirmed)**\n- ग्राहक: **${d.customerName}**\n- ॲडव्हान्स जमा: **₹${formatCurrency(d.advance)}**\n- देण्याची तारीख: **${d.deliveryDate}**`,
+          updatedCard: confirmedCard,
+        };
+      }
+
+      case 'quick_urd': {
+        const d = card.rawData;
+        const refNo = d.voucherNo || `URD-2026-${Math.floor(100 + Math.random() * 900)}`;
+
+        const refRecord: RefineryRecord = {
+          id: `ref-${Date.now()}`,
+          header: {
+            refinery_name: 'Showroom Inward Scrap Vault',
+            remark: `URD Scrap Purchase from ${d.customerName}`,
+            payment_mode: d.paymentMode === 'Cash' ? 'Cash' : 'Credit',
+            invoice_prefix: 'URD',
+            manual_no: refNo,
+            invoice_date: today,
+            invoice_no: refNo,
+            state: 'Maharashtra',
+            gst_not_required: false,
+          },
+          items: [
+            {
+              id: `it-${Date.now()}`,
+              no: 1,
+              trans_type: 'Scrap Purchase',
+              item_name: d.itemName,
+              gross_wt: d.grossWt,
+              net_wt: d.netScrapWt,
+              purity: d.touchPurity,
+              fin_wt: d.fineGoldRecovered,
+              rate: d.fineRate,
+              amount: d.cashPayout,
+              refinery_loss: d.stoneWt || 0,
+              refinery_profit: 0,
+              total_amt: d.cashPayout,
+              making_on_qty: 0,
+            },
+          ],
+          weight_summary: {
+            balance_wgt_grswt: d.grossWt,
+            net_wgt: d.netScrapWt,
+            fin_wgt: d.fineGoldRecovered,
+          },
+          calculation: {
+            against_refout_bill_no: '',
+            by_cash: d.paymentMode === 'Cash' ? d.cashPayout : 0,
+            payment_type: d.paymentMode || 'Cash',
+            by_cheque: d.paymentMode !== 'Cash' ? d.cashPayout : 0,
+            bank_name: '',
+            cheque_no: '',
+            cheque_date: today,
+            details: `URD Scrap Purchase: ${d.customerName}`,
+            gst_pct: 0,
+            hgst_pct: 0,
+            mgst_pct: 0,
+            tds_pct: 0,
+            gst_amt: 0,
+            hgst_amt: 0,
+            mgst_amt: 0,
+            tds_amt: 0,
+            purchase_amt: d.cashPayout,
+            discount: 0,
+            sales_amt: d.cashPayout,
+            bill_amount: d.cashPayout,
+            sub_tax: 0,
+            tcs_tax_pct: 0,
+            tcs_tax_amt: 0,
+            paid_amount: d.cashPayout,
+            net_balance: 0,
+          },
+          created_at: new Date().toISOString(),
+        };
+
+        callbacks.onSaveRefinery(refRecord);
+
+        if (callbacks.onAddDayBookEntry) {
+          callbacks.onAddDayBookEntry({
+            id: `db-urd-${Date.now()}`,
+            invoice_type: 'Old Gold URD Purchase',
+            invoice_no: refNo,
+            total_amt: d.cashPayout,
+            urd_amt: d.cashPayout,
+            net_amt: d.cashPayout,
+            cash_received: 0,
+            cash_payment: d.paymentMode === 'Cash' ? d.cashPayout : 0,
+            bank_received: 0,
+            bank_payment: d.paymentMode !== 'Cash' ? d.cashPayout : 0,
+            date: today,
+            details: `URD Scrap Purchase: ${d.customerName} (${formatWeight(d.fineGoldRecovered)}g Fine Au)`,
+            total_amt_without_disc: d.cashPayout,
+          });
+        }
+
+        const confirmedCard: ConfirmationCardData = {
+          ...card,
+          status: 'confirmed',
+          confirmedInvoiceNo: refNo,
+          confirmedMessage: `Old gold scrap voucher #${refNo} recorded. Cash payout of ₹${formatCurrency(d.cashPayout)} settled.`,
+        };
+
+        return {
+          success: true,
+          message: `✅ **जुने सोने खरेदी पावती #${refNo} तयार झाली! (Old Gold Voucher Recorded)**\n- ग्राहक: **${d.customerName}**\n- शुद्ध सोने जमा: **${formatWeight(d.fineGoldRecovered)}g (24K)**\n- दिलेली रोख रक्कम: **₹${formatCurrency(d.cashPayout)}**`,
+          updatedCard: confirmedCard,
+        };
+      }
+
+      case 'quick_scheme': {
+        const d = card.rawData;
+        const recNo = `SCH-${Math.floor(1000 + Math.random() * 9000)}`;
+
+        if (callbacks.onAddDayBookEntry) {
+          callbacks.onAddDayBookEntry({
+            id: `db-sch-${Date.now()}`,
+            invoice_type: 'Swarna Nidhi Scheme Deposit',
+            invoice_no: recNo,
+            total_amt: d.amount,
+            urd_amt: 0,
+            net_amt: d.amount,
+            cash_received: d.paymentMode === 'Cash' ? d.amount : 0,
+            cash_payment: 0,
+            bank_received: d.paymentMode !== 'Cash' ? d.amount : 0,
+            bank_payment: 0,
+            date: today,
+            details: `Scheme Deposit: ${d.customerName} (${d.memberNo})`,
+            total_amt_without_disc: d.amount,
+          });
+        }
+
+        const confirmedCard: ConfirmationCardData = {
+          ...card,
+          status: 'confirmed',
+          confirmedInvoiceNo: recNo,
+          confirmedMessage: `Scheme installment #${recNo} recorded for member ${d.memberNo}. ₹${formatCurrency(d.amount)} credited with ${formatWeight(d.goldCredited)}g gold.`,
+        };
+
+        return {
+          success: true,
+          message: `✅ **सुवर्ण निधी हप्ता पावती #${recNo} नोंदवली गेली!**\n- सदस्य: **${d.customerName}** (${d.memberNo})\n- जमा रक्कम: **₹${formatCurrency(d.amount)}**\n- खात्यात जमा सोने: **+${formatWeight(d.goldCredited)}g 22K**`,
+          updatedCard: confirmedCard,
+        };
+      }
+
+      default:
+        return {
+          success: true,
+          message: 'Transaction successfully processed!',
+          updatedCard: { ...card, status: 'confirmed' },
+        };
+    }
+  }
+
   // Process User Input with Multi-lingual capability, table generation, screen detection & calculations
   public processUserInput(
     input: string,
@@ -1471,12 +2580,22 @@ export class AiChatbotEngine {
     taskToStart?: TaskType;
     tableData?: ChatTableData;
     cardData?: ChatMessage['cardData'];
+    confirmationCard?: ConfirmationCardData;
     screenDirection?: ScreenDirectionData;
     quickChips?: ChatMessage['quickChips'];
   } {
     const raw = input.trim();
     const text = raw.toLowerCase().replace(/[?'"!.,]/g, '');
     const lang = this.detectLanguage(raw, forcedLang);
+
+    // ----------------------------------------------------
+    // 0. CHECK FOR STRUCTURED WHATSAPP / QUICK CHAT ACTION FIRST
+    // Allows user to paste/enter sale details & directly calculate amount to pay with 1-click confirmation!
+    // ----------------------------------------------------
+    const structuredMatch = this.parseStructuredTransactionMessage(raw, lang);
+    if (structuredMatch) {
+      return structuredMatch;
+    }
 
     // ----------------------------------------------------
     // 1. TODAY'S VISITED CUSTOMERS & FOOTFALL LOG QUERY
