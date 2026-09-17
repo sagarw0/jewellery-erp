@@ -106,7 +106,8 @@ select optgroup {
 .theme-rose-gold select,
 .theme-velvet-purple select,
 .theme-platinum-ice select,
-.theme-ruby-regal select {
+.theme-ruby-regal select,
+.theme-apple-glass select {
   color-scheme: light !important;
 }
 
@@ -123,10 +124,94 @@ select optgroup {
 .theme-platinum-ice select option,
 .theme-platinum-ice option,
 .theme-ruby-regal select option,
-.theme-ruby-regal option {
+.theme-ruby-regal option,
+.theme-apple-glass select option,
+.theme-apple-glass option {
   background-color: #ffffff !important;
   color: #0f172a !important;
   font-weight: 600 !important;
+}
+
+/* ==========================================================================
+   Apple iOS Frosted Glass Theme Screen Effect
+   Authentic Apple iOS Frosted Glass with ambient lighting, specular borders,
+   and crisp high-contrast typography across all ERP screens
+   ========================================================================== */
+
+.theme-apple-glass {
+  background: radial-gradient(circle at 15% 15%, rgba(199, 222, 255, 0.45) 0%, rgba(240, 244, 249, 0.85) 45%, rgba(254, 240, 199, 0.25) 100%),
+              linear-gradient(135deg, #eef4fb 0%, #e2edfb 40%, #f8fafc 100%) fixed !important;
+  color: #0f172a !important;
+  color-scheme: light !important;
+}
+
+/* 1. Frosted Glass Cards with authentic Apple Specular Highlights */
+.theme-apple-glass .bg-white,
+.theme-apple-glass .glass-card {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02) !important;
+  color: #0f172a !important;
+}
+
+/* 2. Top Header & Navbars in Apple Glass */
+.theme-apple-glass header,
+.theme-apple-glass nav {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 3. Inputs, Selects, and Textareas */
+.theme-apple-glass input,
+.theme-apple-glass select,
+.theme-apple-glass textarea {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+.theme-apple-glass input:focus,
+.theme-apple-glass select:focus,
+.theme-apple-glass textarea:focus {
+  border-color: #007aff !important;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.22) !important;
+}
+
+/* 4. Glass Tables & Data Grids */
+.theme-apple-glass table {
+  color: #0f172a !important;
+}
+
+.theme-apple-glass table thead th,
+.theme-apple-glass table th {
+  background: rgba(241, 245, 249, 0.85) !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+  font-weight: 700 !important;
+}
+
+.theme-apple-glass table tbody tr:hover td {
+  background: rgba(239, 246, 255, 0.6) !important;
+}
+
+.theme-apple-glass table td {
+  border-color: #f1f5f9 !important;
+  color: #1e293b !important;
+}
+
+/* 5. Modals & Dialogs */
+.theme-apple-glass [role="dialog"],
+.theme-apple-glass .fixed .bg-white {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(36px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
 }
 
 /* Smooth Focus Rings */

@@ -666,6 +666,7 @@ export function App() {
             orders={orders}
             debtors={debtors}
             stockItems={stockItems}
+            currentUser={currentUser}
             onOpenBullionRates={() => setShowBullionRates(true)}
           />
         )}
