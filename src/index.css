@@ -70,97 +70,78 @@
 }
 
 :root.dark,
-:root.theme-apple-glass,
 :root.theme-obsidian-velvet,
 .dark,
-.theme-apple-glass,
 .theme-obsidian-velvet {
   color-scheme: dark !important;
 }
 
 /* ==========================================================================
    Apple iOS Frosted Glass Theme Global Screen Transformer
-   Applies true iPhone glass screens, gray ambient blur, and specular highlights
-   across all ERP modules (Transactions, Masters, Accounts, Stock, Schemes, etc.)
+   Authentic Apple iOS Frosted Glass with high-contrast text, sharp borders,
+   and specular translucent highlights across all ERP screens
    ========================================================================== */
 
 .theme-apple-glass {
-  background: radial-gradient(circle at 50% -10%, #374151 0%, #1f2937 40%, #111827 100%) fixed !important;
-  color: #ffffff !important;
-  color-scheme: dark !important;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e0f2fe 45%, #f8fafc 100%) fixed !important;
+  color: #020617 !important;
+  color-scheme: light !important;
 }
 
 /* 1. All Main Glass Card Containers across all screens */
 .theme-apple-glass .bg-white,
 .theme-apple-glass .glass-card {
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(24px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
-  border-color: rgba(255, 255, 255, 0.18) !important;
-  color: #ffffff !important;
-  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25), inset 0 1px 0 0 rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border-color: #cbd5e1 !important;
+  color: #020617 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.04) !important;
 }
 
-/* 2. Inner Banners, Info Strips, KPI Cards & Sub-Panels (No milky white stacking or double inset shadows) */
+/* 2. Inner Banners, Info Strips, KPI Cards & Sub-Panels */
 .theme-apple-glass [class*="bg-sky-50"],
 .theme-apple-glass [class*="bg-blue-50"] {
-  background: rgba(14, 165, 233, 0.08) !important;
-  border-color: rgba(56, 189, 248, 0.20) !important;
-  box-shadow: none !important;
-  color: #ffffff !important;
+  background: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1e3a8a !important;
 }
 
 .theme-apple-glass [class*="bg-amber-50"],
 .theme-apple-glass [class*="bg-yellow-50"] {
-  background: rgba(245, 158, 11, 0.08) !important;
-  border-color: rgba(251, 191, 36, 0.20) !important;
-  box-shadow: none !important;
-  color: #ffffff !important;
+  background: #fffbeb !important;
+  border-color: #fcd34d !important;
+  color: #78350f !important;
 }
 
 .theme-apple-glass [class*="bg-emerald-50"],
 .theme-apple-glass [class*="bg-teal-50"] {
-  background: rgba(16, 185, 129, 0.08) !important;
-  border-color: rgba(52, 211, 153, 0.20) !important;
-  box-shadow: none !important;
-  color: #ffffff !important;
+  background: #ecfdf5 !important;
+  border-color: #6ee7b7 !important;
+  color: #064e3b !important;
 }
 
 .theme-apple-glass [class*="bg-rose-50"],
 .theme-apple-glass [class*="bg-red-50"] {
-  background: rgba(244, 63, 94, 0.08) !important;
-  border-color: rgba(251, 113, 133, 0.20) !important;
-  box-shadow: none !important;
-  color: #ffffff !important;
+  background: #fff1f2 !important;
+  border-color: #fda4af !important;
+  color: #881337 !important;
 }
 
 .theme-apple-glass [class*="bg-purple-50"],
 .theme-apple-glass [class*="bg-indigo-50"] {
-  background: rgba(168, 85, 247, 0.08) !important;
-  border-color: rgba(192, 132, 252, 0.20) !important;
-  box-shadow: none !important;
-  color: #ffffff !important;
+  background: #faf5ff !important;
+  border-color: #d8b4fe !important;
+  color: #581c87 !important;
 }
 
 .theme-apple-glass [class*="bg-slate-50"],
 .theme-apple-glass [class*="bg-gray-50"],
 .theme-apple-glass [class*="bg-stone-50"],
 .theme-apple-glass [class*="bg-zinc-50"] {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-  box-shadow: none !important;
-}
-
-.theme-apple-glass [class*="from-amber-50"],
-.theme-apple-glass [class*="from-sky-50"],
-.theme-apple-glass [class*="from-blue-50"],
-.theme-apple-glass [class*="from-indigo-50"],
-.theme-apple-glass [class*="from-emerald-50"],
-.theme-apple-glass [class*="from-rose-50"],
-.theme-apple-glass [class*="from-purple-50"] {
-  background: rgba(255, 255, 255, 0.05) !important;
-  border-color: rgba(255, 255, 255, 0.16) !important;
-  box-shadow: none !important;
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
 }
 
 /* 3. Glass Hover states */
@@ -169,8 +150,8 @@
 .theme-apple-glass .hover\:bg-blue-50:hover,
 .theme-apple-glass .hover\:bg-amber-50:hover,
 .theme-apple-glass .hover\:bg-emerald-50:hover {
-  background: rgba(255, 255, 255, 0.12) !important;
-  border-color: rgba(255, 255, 255, 0.28) !important;
+  background: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
 }
 
 /* 4. Text Color Contrast on Glass */
@@ -187,7 +168,8 @@
 .theme-apple-glass .text-blue-950,
 .theme-apple-glass .text-amber-950,
 .theme-apple-glass .text-emerald-950 {
-  color: #ffffff !important;
+  color: #020617 !important;
+  font-weight: 700 !important;
 }
 
 .theme-apple-glass .text-slate-700,
@@ -200,34 +182,38 @@
 .theme-apple-glass .text-blue-800,
 .theme-apple-glass .text-amber-900,
 .theme-apple-glass .text-amber-800 {
-  color: #e2e8f0 !important;
+  color: #1e293b !important;
+  font-weight: 600 !important;
 }
 
 .theme-apple-glass .text-slate-500,
 .theme-apple-glass .text-slate-400,
 .theme-apple-glass .text-stone-500,
 .theme-apple-glass .text-stone-400 {
-  color: #94a3b8 !important;
+  color: #475569 !important;
+  font-weight: 500 !important;
 }
 
 /* 5. Form Inputs, Selects & Numeric Textboxes */
 .theme-apple-glass input,
+.theme-apple-glass select,
 .theme-apple-glass textarea {
-  background: rgba(255, 255, 255, 0.09) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border-color: rgba(255, 255, 255, 0.22) !important;
-  color: #ffffff !important;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+  background: #ffffff !important;
+  border: 1px solid #94a3b8 !important;
+  color: #020617 !important;
+  font-weight: 600 !important;
 }
 
-.theme-apple-glass select,
-.theme-obsidian-velvet select,
-.dark select {
-  color-scheme: dark !important;
-  background-color: rgba(30, 41, 59, 0.92) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  color: #ffffff !important;
+.theme-apple-glass input::placeholder,
+.theme-apple-glass textarea::placeholder {
+  color: #64748b !important;
+}
+
+.theme-apple-glass input:focus,
+.theme-apple-glass select:focus,
+.theme-apple-glass textarea:focus {
+  border-color: #0284c7 !important;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25) !important;
 }
 
 /* Native select options & dropdown menus */
@@ -236,9 +222,6 @@ select optgroup {
   font-family: inherit;
 }
 
-.theme-apple-glass select option,
-.theme-apple-glass option,
-.theme-apple-glass optgroup,
 .theme-obsidian-velvet select option,
 .theme-obsidian-velvet option,
 .theme-obsidian-velvet optgroup,
@@ -250,8 +233,6 @@ select optgroup {
   font-weight: 500 !important;
 }
 
-.theme-apple-glass select option:checked,
-.theme-apple-glass option:checked,
 .theme-obsidian-velvet select option:checked,
 .theme-obsidian-velvet option:checked,
 .dark select option:checked,
@@ -267,7 +248,8 @@ select optgroup {
 .theme-rose-gold select,
 .theme-velvet-purple select,
 .theme-platinum-ice select,
-.theme-ruby-regal select {
+.theme-ruby-regal select,
+.theme-apple-glass select {
   color-scheme: light !important;
 }
 
@@ -284,123 +266,115 @@ select optgroup {
 .theme-platinum-ice select option,
 .theme-platinum-ice option,
 .theme-ruby-regal select option,
-.theme-ruby-regal option {
+.theme-ruby-regal option,
+.theme-apple-glass select option,
+.theme-apple-glass option {
   background-color: #ffffff !important;
   color: #0f172a !important;
+  font-weight: 600 !important;
 }
 
-.theme-apple-glass input::placeholder,
-.theme-apple-glass textarea::placeholder {
-  color: #94a3b8 !important;
-}
-
-.theme-apple-glass input:focus,
-.theme-apple-glass select:focus,
-.theme-apple-glass textarea:focus {
-  border-color: #38bdf8 !important;
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3) !important;
-}
-
-/* 6. Glass Tables & Data Grids (Zero White Column Striping) */
+/* 6. Glass Tables & Data Grids */
 .theme-apple-glass table {
-  color: #ffffff !important;
+  color: #020617 !important;
 }
 
 .theme-apple-glass table thead th,
 .theme-apple-glass table th {
-  background: rgba(255, 255, 255, 0.12) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  color: #7dd3fc !important;
-  border-color: rgba(255, 255, 255, 0.18) !important;
-  font-weight: 600 !important;
-  box-shadow: none !important;
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+  border-bottom: 2px solid #94a3b8 !important;
+  font-weight: 700 !important;
 }
 
 .theme-apple-glass table tbody tr {
-  border-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: #e2e8f0 !important;
 }
 
 .theme-apple-glass table tbody tr:hover td {
-  background: rgba(255, 255, 255, 0.08) !important;
+  background: #f0f9ff !important;
 }
 
 .theme-apple-glass table td {
-  border-color: rgba(255, 255, 255, 0.08) !important;
-  color: #f1f5f9 !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-.theme-apple-glass table td[class*="bg-"],
-.theme-apple-glass table th[class*="bg-"] {
-  background: transparent !important;
-  box-shadow: none !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  font-weight: 500 !important;
 }
 
 .theme-apple-glass table tfoot {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border-top-color: rgba(255, 255, 255, 0.20) !important;
+  background: #f8fafc !important;
+  border-top: 2px solid #cbd5e1 !important;
+  font-weight: 700 !important;
+  color: #020617 !important;
 }
 
-.theme-apple-glass table tfoot td {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-/* 6. Tabs, Subnavs & Pill Bars */
+/* 7. Tabs, Subnavs & Pill Bars */
 .theme-apple-glass [class*="subnavBg"],
 .theme-apple-glass .bg-slate-100\/90,
 .theme-apple-glass .bg-slate-100\/80,
-.theme-apple-glass .bg-slate-200\/60,
-.theme-apple-glass .bg-amber-100\/60,
-.theme-apple-glass .bg-emerald-100\/50,
-.theme-apple-glass .bg-rose-100\/50,
-.theme-apple-glass .bg-purple-100\/50 {
-  background: rgba(31, 41, 55, 0.65) !important;
+.theme-apple-glass .bg-slate-200\/60 {
+  background: rgba(241, 245, 249, 0.95) !important;
   backdrop-filter: blur(24px) !important;
   -webkit-backdrop-filter: blur(24px) !important;
-  border-color: rgba(255, 255, 255, 0.14) !important;
+  border-color: #cbd5e1 !important;
 }
 
-.theme-apple-glass button:not([class*="bg-gradient"]):not([class*="bg-blue-600"]):not([class*="bg-emerald"]):not([class*="bg-amber"]):not([class*="bg-red"]):not([class*="bg-rose"]) {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.18);
-  color: #ffffff;
-}
-
-/* 7. Modal Overlays & Drawers */
+/* 8. Modal Overlays & Drawers */
 .theme-apple-glass [role="dialog"],
 .theme-apple-glass .fixed .bg-white,
 .theme-apple-glass .absolute .bg-white {
-  background: rgba(24, 32, 47, 0.92) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
   backdrop-filter: blur(32px) saturate(190%) !important;
   -webkit-backdrop-filter: blur(32px) saturate(190%) !important;
-  border-color: rgba(255, 255, 255, 0.22) !important;
-  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.18) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+  color: #020617 !important;
 }
 
-/* 8. Glass Badges & Tags */
-.theme-apple-glass .badge,
-.theme-apple-glass [class*="bg-amber-100"],
+/* 9. Glass Badges & Tags */
+.theme-apple-glass [class*="bg-amber-100"] {
+  background: #fef3c7 !important;
+  color: #78350f !important;
+  border: 1px solid #f59e0b !important;
+  font-weight: 700 !important;
+}
+
 .theme-apple-glass [class*="bg-sky-100"],
-.theme-apple-glass [class*="bg-blue-100"],
-.theme-apple-glass [class*="bg-emerald-100"],
-.theme-apple-glass [class*="bg-rose-100"],
-.theme-apple-glass [class*="bg-purple-100"] {
-  background: rgba(255, 255, 255, 0.14) !important;
-  backdrop-filter: blur(12px) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  color: #ffffff !important;
+.theme-apple-glass [class*="bg-blue-100"] {
+  background: #e0f2fe !important;
+  color: #0c4a6e !important;
+  border: 1px solid #0284c7 !important;
+  font-weight: 700 !important;
 }
 
-/* 9. Footers & Bottom Bars */
-.theme-apple-glass footer {
-  background: rgba(17, 24, 39, 0.85) !important;
-  backdrop-filter: blur(20px) !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-  color: #94a3b8 !important;
+.theme-apple-glass [class*="bg-emerald-100"] {
+  background: #d1fae5 !important;
+  color: #064e3b !important;
+  border: 1px solid #10b981 !important;
+  font-weight: 700 !important;
+}
+
+.theme-apple-glass [class*="bg-rose-100"] {
+  background: #ffe4e6 !important;
+  color: #881337 !important;
+  border: 1px solid #f43f5e !important;
+  font-weight: 700 !important;
+}
+
+.theme-apple-glass [class*="bg-purple-100"] {
+  background: #f3e8ff !important;
+  color: #581c87 !important;
+  border: 1px solid #a855f7 !important;
+  font-weight: 700 !important;
+}
+
+.theme-apple-glass [class*="bg-slate-100"],
+.theme-apple-glass [class*="bg-slate-200"] {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  font-weight: 700 !important;
 }
 
 /* Smooth Focus Rings */

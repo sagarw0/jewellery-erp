@@ -88,45 +88,45 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div>
               <div className="flex items-center space-x-1.5">
-                <span className={`font-bold tracking-wider uppercase text-sm font-sans ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                <span className={`font-extrabold tracking-wider uppercase text-sm font-sans ${isDark ? 'text-white' : 'text-slate-950'}`}>
                   SWARNA ERP
                 </span>
-                <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border hidden sm:inline-block ${
+                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full border hidden sm:inline-block ${
                   isDark
                     ? 'bg-amber-500/20 text-amber-300 border-amber-400/40 backdrop-blur-sm'
-                    : 'bg-amber-100 text-amber-900 border border-amber-300'
+                    : 'bg-amber-100 text-amber-950 border border-amber-400'
                 }`}>
                   v2.6 Luxury
                 </span>
               </div>
-              <span className={`text-[10px] font-normal block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+              <span className={`text-[10.5px] font-semibold block ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                 ogaworld.in • Showroom Cloud Edition
               </span>
             </div>
           </div>
 
-          <span className={`${isDark ? 'text-white/20' : 'text-slate-300'} hidden md:inline`}>|</span>
+          <span className={`${isDark ? 'text-white/20' : 'text-slate-400'} hidden md:inline`}>|</span>
 
           {/* Cloud Database Connected Badge */}
-          <div className={`hidden lg:flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${
+          <div className={`hidden lg:flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border ${
             isDark
               ? 'bg-emerald-500/15 border-emerald-400/30 text-emerald-300 backdrop-blur-sm'
-              : 'bg-emerald-50 border-emerald-300 text-emerald-800'
+              : 'bg-emerald-100 border-emerald-400 text-emerald-950'
           }`}>
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <Database className="w-3.5 h-3.5 text-emerald-500" />
+            <Database className="w-3.5 h-3.5 text-emerald-600" />
             <span>Supabase Cloud Sync</span>
           </div>
 
           {/* Showroom Branch context */}
           {currentUser && (
-            <div className={`hidden xl:flex items-center space-x-2 text-[11px] px-2.5 py-0.5 rounded-lg border shadow-2xs ${
+            <div className={`hidden xl:flex items-center space-x-2 text-[11px] px-2.5 py-1 rounded-lg border shadow-2xs ${
               isDark
                 ? 'bg-white/10 text-slate-200 border-white/15'
-                : 'bg-white/70 text-slate-600 border-slate-200/60'
+                : 'bg-white text-slate-800 border-slate-300 font-semibold'
             }`}>
               <Building2 className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
-              <span className={`font-semibold truncate max-w-[200px] ${isDark ? 'text-white' : 'text-slate-800'}`} title={currentUser.branch}>
+              <span className={`font-bold truncate max-w-[200px] ${isDark ? 'text-white' : 'text-slate-950'}`} title={currentUser.branch}>
                 {currentUser.branch.split(' - ')[0]}
               </span>
             </div>
@@ -360,7 +360,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <nav className={`px-4 py-1.5 flex items-center justify-between overflow-x-auto scrollbar-none border-t ${
         isDark
           ? 'bg-[#070b14]/95 border-white/10'
-          : 'bg-white border-slate-100'
+          : 'bg-white border-slate-200 shadow-2xs'
       }`}>
         <div className="flex items-center space-x-1 min-w-max">
           {navItems.map((item) => {
@@ -370,19 +370,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 key={item.id}
                 onClick={() => onSelectSection(item.id)}
-                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all duration-150 cursor-pointer ${
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-150 cursor-pointer ${
                   isActive
                     ? `${currentTheme.activePill} shadow-xs`
                     : isDark
                     ? 'text-slate-300 hover:text-white hover:bg-white/10'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                    : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-inherit' : isDark ? 'text-slate-400' : 'text-slate-400'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-inherit' : isDark ? 'text-slate-400' : 'text-slate-500'}`} />
                 <span>{item.label}</span>
                 {item.hotkey && (
-                  <span className={`text-[9px] px-1 py-0.2 rounded font-mono font-normal ml-0.5 ${
-                    isActive ? 'bg-black/20 text-white' : isDark ? 'bg-white/10 text-slate-300' : 'bg-slate-100 text-slate-400'
+                  <span className={`text-[9px] px-1 py-0.2 rounded font-mono font-bold ml-0.5 ${
+                    isActive ? 'bg-black/25 text-white' : isDark ? 'bg-white/10 text-slate-300' : 'bg-slate-200 text-slate-700 border border-slate-300'
                   }`}>
                     {item.hotkey}
                   </span>
