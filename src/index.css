@@ -139,30 +139,30 @@ select optgroup {
    ========================================================================== */
 
 .theme-apple-glass {
-  background: radial-gradient(circle at 15% 15%, rgba(165, 195, 235, 0.65) 0%, rgba(205, 218, 232, 0.95) 45%, rgba(235, 215, 175, 0.40) 100%),
-              linear-gradient(135deg, #cbd8e8 0%, #bfd2e8 40%, #d8e2ed 100%) fixed !important;
+  background: radial-gradient(circle at 15% 15%, rgba(150, 185, 228, 0.75) 0%, rgba(195, 210, 228, 0.98) 45%, rgba(228, 208, 165, 0.45) 100%),
+              linear-gradient(135deg, #b8cadc 0%, #acc0d8 40%, #c4d2e0 100%) fixed !important;
   color: #0f172a !important;
   color-scheme: light !important;
 }
 
-/* 1. Frosted Glass Cards with authentic Apple Specular Highlights & High-Contrast Shadow */
+/* 1. Frosted Glass Cards with authentic Apple Specular Highlights & High-Contrast Shadow (20% Lighter) */
 .theme-apple-glass .bg-white,
 .theme-apple-glass .glass-card {
-  background: rgba(255, 255, 255, 0.88) !important;
-  backdrop-filter: blur(26px) saturate(200%) !important;
-  -webkit-backdrop-filter: blur(26px) saturate(200%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.95) !important;
-  box-shadow: 0 10px 35px 0 rgba(15, 23, 42, 0.07), 0 1px 3px 0 rgba(0, 0, 0, 0.03) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(28px) saturate(210%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(210%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 12px 40px 0 rgba(15, 23, 42, 0.09), 0 1px 3px 0 rgba(0, 0, 0, 0.03) !important;
   color: #0f172a !important;
 }
 
 /* 2. Top Header & Navbars in Apple Glass */
 .theme-apple-glass header,
 .theme-apple-glass nav {
-  background: rgba(255, 255, 255, 0.85) !important;
-  backdrop-filter: blur(28px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
-  border-color: rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(30px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
 }
 
 /* 3. Inputs, Selects, and Textareas */

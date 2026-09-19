@@ -120,10 +120,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       pcs: 148,
       valuation: 18195688.30,
       visual: <GoldBars3DVisual className="w-full h-24 sm:h-28 transition-transform group-hover:scale-110 duration-300 drop-shadow-xl" />,
-      cardBg: 'bg-gradient-to-br from-amber-500/12 via-white/95 to-yellow-500/8 dark:from-amber-950/80 dark:to-slate-900',
-      glowGrad: 'from-amber-400/30 via-yellow-300/15 to-transparent',
-      borderColor: 'border-amber-300/90 hover:border-amber-500 hover:shadow-[0_15px_35px_rgba(245,158,11,0.25)]',
-      badge: 'bg-amber-500/20 text-amber-950 dark:text-amber-200 border-amber-400/90 font-black',
+      cardBg: 'bg-gradient-to-br from-amber-500/8 via-white/98 to-yellow-500/4 dark:from-amber-950/70 dark:to-slate-900',
+      glowGrad: 'from-amber-400/20 via-yellow-300/10 to-transparent',
+      borderColor: 'border-amber-200/90 hover:border-amber-400 hover:shadow-[0_15px_35px_rgba(245,158,11,0.20)]',
+      badge: 'bg-amber-500/15 text-amber-950 dark:text-amber-200 border-amber-300/90 font-black',
       barColor: 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-600 shadow-[0_0_12px_rgba(245,158,11,0.6)]',
     },
     {
@@ -137,10 +137,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       pcs: 84,
       valuation: 2755171.35,
       visual: <SilverBars3DVisual className="w-full h-24 sm:h-28 transition-transform group-hover:scale-110 duration-300 drop-shadow-xl" />,
-      cardBg: 'bg-gradient-to-br from-sky-500/12 via-white/95 to-blue-500/8 dark:from-sky-950/80 dark:to-slate-900',
-      glowGrad: 'from-sky-400/30 via-slate-300/15 to-transparent',
-      borderColor: 'border-sky-300/90 hover:border-sky-500 hover:shadow-[0_15px_35px_rgba(14,165,233,0.25)]',
-      badge: 'bg-sky-500/20 text-sky-950 dark:text-sky-200 border-sky-400/90 font-black',
+      cardBg: 'bg-gradient-to-br from-sky-500/8 via-white/98 to-blue-500/4 dark:from-sky-950/70 dark:to-slate-900',
+      glowGrad: 'from-sky-400/20 via-slate-300/10 to-transparent',
+      borderColor: 'border-sky-200/90 hover:border-sky-400 hover:shadow-[0_15px_35px_rgba(14,165,233,0.20)]',
+      badge: 'bg-sky-500/15 text-sky-950 dark:text-sky-200 border-sky-300/90 font-black',
       barColor: 'bg-gradient-to-r from-slate-400 via-sky-300 to-sky-500 shadow-[0_0_12px_rgba(56,189,248,0.6)]',
     },
     {
@@ -154,10 +154,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       pcs: 22,
       valuation: 2088986.42,
       visual: <GoldScrap3DVisual className="w-full h-24 sm:h-28 transition-transform group-hover:scale-110 duration-300 drop-shadow-xl" />,
-      cardBg: 'bg-gradient-to-br from-orange-500/12 via-white/95 to-amber-600/8 dark:from-orange-950/80 dark:to-slate-900',
-      glowGrad: 'from-amber-600/30 via-orange-300/15 to-transparent',
-      borderColor: 'border-amber-400/90 hover:border-amber-600 hover:shadow-[0_15px_35px_rgba(217,119,6,0.25)]',
-      badge: 'bg-amber-600/20 text-amber-950 dark:text-amber-200 border-amber-500/90 font-black',
+      cardBg: 'bg-gradient-to-br from-orange-500/8 via-white/98 to-amber-600/4 dark:from-orange-950/70 dark:to-slate-900',
+      glowGrad: 'from-amber-600/20 via-orange-300/10 to-transparent',
+      borderColor: 'border-amber-300/90 hover:border-amber-500 hover:shadow-[0_15px_35px_rgba(217,119,6,0.20)]',
+      badge: 'bg-amber-600/15 text-amber-950 dark:text-amber-200 border-amber-400/90 font-black',
       barColor: 'bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-600 shadow-[0_0_12px_rgba(217,119,6,0.6)]',
     },
     {
@@ -171,10 +171,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       pcs: 16,
       valuation: 380752.40,
       visual: <SilverScrap3DVisual className="w-full h-24 sm:h-28 transition-transform group-hover:scale-110 duration-300 drop-shadow-xl" />,
-      cardBg: 'bg-gradient-to-br from-slate-400/12 via-white/95 to-zinc-500/8 dark:from-slate-950/80 dark:to-slate-900',
-      glowGrad: 'from-zinc-400/30 via-slate-300/15 to-transparent',
-      borderColor: 'border-slate-300/90 hover:border-slate-500 hover:shadow-[0_15px_35px_rgba(100,116,139,0.25)]',
-      badge: 'bg-slate-500/20 text-slate-900 dark:text-slate-200 border-slate-400 font-black',
+      cardBg: 'bg-gradient-to-br from-slate-400/8 via-white/98 to-zinc-500/4 dark:from-slate-950/70 dark:to-slate-900',
+      glowGrad: 'from-zinc-400/20 via-slate-300/10 to-transparent',
+      borderColor: 'border-slate-200/90 hover:border-slate-400 hover:shadow-[0_15px_35px_rgba(100,116,139,0.20)]',
+      badge: 'bg-slate-500/15 text-slate-900 dark:text-slate-200 border-slate-300 font-black',
       barColor: 'bg-gradient-to-r from-slate-400 via-zinc-400 to-slate-600 shadow-[0_0_12px_rgba(148,163,184,0.6)]',
     },
     {
@@ -188,10 +188,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       pcs: 420,
       valuation: 189000.00,
       visual: <ImitationBar3DVisual className="w-full h-24 sm:h-28 transition-transform group-hover:scale-110 duration-300 drop-shadow-xl" />,
-      cardBg: 'bg-gradient-to-br from-pink-500/12 via-white/95 to-rose-500/8 dark:from-pink-950/80 dark:to-slate-900',
-      glowGrad: 'from-pink-400/30 via-rose-300/15 to-transparent',
-      borderColor: 'border-pink-300/90 hover:border-pink-500 hover:shadow-[0_15px_35px_rgba(244,114,182,0.25)]',
-      badge: 'bg-pink-500/20 text-pink-950 dark:text-pink-200 border-pink-400/90 font-black',
+      cardBg: 'bg-gradient-to-br from-pink-500/8 via-white/98 to-rose-500/4 dark:from-pink-950/70 dark:to-slate-900',
+      glowGrad: 'from-pink-400/20 via-rose-300/10 to-transparent',
+      borderColor: 'border-pink-200/90 hover:border-pink-400 hover:shadow-[0_15px_35px_rgba(244,114,182,0.20)]',
+      badge: 'bg-pink-500/15 text-pink-950 dark:text-pink-200 border-pink-300/90 font-black',
       barColor: 'bg-gradient-to-r from-pink-400 via-rose-400 to-pink-600 shadow-[0_0_12px_rgba(244,114,182,0.6)]',
     },
   ];
@@ -315,15 +315,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Card 1: Today's Cash */}
         <div
           onClick={() => onQuickAction('day_book')}
-          className="relative overflow-hidden bg-gradient-to-br from-emerald-500/14 via-white/95 to-teal-500/8 dark:from-emerald-950/80 dark:to-slate-900 backdrop-blur-2xl border border-emerald-300/80 dark:border-emerald-700/80 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(16,185,129,0.10),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(16,185,129,0.22)] hover:-translate-y-1.5 hover:border-emerald-500 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[134px] group"
+          className="relative overflow-hidden bg-gradient-to-br from-emerald-500/10 via-white/98 to-teal-500/5 dark:from-emerald-950/70 dark:to-slate-900 backdrop-blur-2xl border border-white/98 dark:border-emerald-700/70 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(16,185,129,0.08),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(16,185,129,0.20)] hover:-translate-y-1.5 hover:border-emerald-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[134px] group"
         >
           {/* Ambient Corner Flare */}
-          <div className="absolute -top-12 -right-12 w-28 h-28 bg-emerald-400/20 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-600 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+          <div className="absolute -top-12 -right-12 w-28 h-28 bg-emerald-400/15 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-600 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-600/30 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-600/25 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
                 <Wallet className="w-4 h-4" />
               </div>
               <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
@@ -340,7 +340,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/20 text-emerald-900 dark:text-emerald-200 border border-emerald-400/80 text-[10px] shadow-2xs">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/15 text-emerald-900 dark:text-emerald-200 border border-emerald-300/80 text-[10px] shadow-2xs">
               ↑ 8.5%
             </span>
             <span className="text-slate-600 dark:text-slate-400 font-semibold truncate">vs yesterday</span>
@@ -350,14 +350,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Card 2: Today's Bank */}
         <div
           onClick={() => onQuickAction('day_book')}
-          className="relative overflow-hidden bg-gradient-to-br from-sky-500/14 via-white/95 to-blue-500/8 dark:from-sky-950/80 dark:to-slate-900 backdrop-blur-2xl border border-sky-300/80 dark:border-sky-700/80 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(14,165,233,0.10),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(14,165,233,0.22)] hover:-translate-y-1.5 hover:border-sky-500 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[134px] group"
+          className="relative overflow-hidden bg-gradient-to-br from-sky-500/10 via-white/98 to-blue-500/5 dark:from-sky-950/70 dark:to-slate-900 backdrop-blur-2xl border border-white/98 dark:border-sky-700/70 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(14,165,233,0.08),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(14,165,233,0.20)] hover:-translate-y-1.5 hover:border-sky-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[134px] group"
         >
-          <div className="absolute -top-12 -right-12 w-28 h-28 bg-sky-400/20 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-sky-400 via-blue-400 to-sky-600 shadow-[0_0_8px_rgba(14,165,233,0.5)]" />
+          <div className="absolute -top-12 -right-12 w-28 h-28 bg-sky-400/15 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-sky-400 via-blue-400 to-sky-600 shadow-[0_0_8px_rgba(14,165,233,0.4)]" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-sky-500 to-blue-600 text-white shadow-md shadow-sky-600/30 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-sky-500 to-blue-600 text-white shadow-md shadow-sky-600/25 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
                 <Building className="w-4 h-4" />
               </div>
               <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
@@ -374,7 +374,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-sky-500/20 text-sky-900 dark:text-sky-200 border border-sky-400/80 text-[10px] shadow-2xs">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-sky-500/15 text-sky-900 dark:text-sky-200 border border-sky-300/80 text-[10px] shadow-2xs">
               ↑ 4.2%
             </span>
             <span className="text-slate-600 dark:text-slate-400 font-semibold truncate">4 Active A/cs</span>
@@ -384,14 +384,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Card 3: Today's Sales */}
         <div
           onClick={() => onQuickAction('sales_invoice')}
-          className="relative overflow-hidden bg-gradient-to-br from-amber-500/16 via-white/95 to-yellow-500/8 dark:from-amber-950/80 dark:to-slate-900 backdrop-blur-2xl border border-amber-300/80 dark:border-amber-700/80 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(245,158,11,0.12),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(245,158,11,0.25)] hover:-translate-y-1.5 hover:border-amber-500 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[134px] group"
+          className="relative overflow-hidden bg-gradient-to-br from-amber-500/12 via-white/98 to-yellow-500/5 dark:from-amber-950/70 dark:to-slate-900 backdrop-blur-2xl border border-white/98 dark:border-amber-700/70 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(245,158,11,0.08),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(245,158,11,0.20)] hover:-translate-y-1.5 hover:border-amber-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[134px] group"
         >
-          <div className="absolute -top-12 -right-12 w-28 h-28 bg-amber-400/20 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-600 shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
+          <div className="absolute -top-12 -right-12 w-28 h-28 bg-amber-400/15 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-600 shadow-[0_0_8px_rgba(245,158,11,0.4)]" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-amber-500 to-yellow-600 text-white shadow-md shadow-amber-600/30 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-amber-500 to-yellow-600 text-white shadow-md shadow-amber-600/25 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
                 <TrendingUp className="w-4 h-4" />
               </div>
               <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
@@ -408,7 +408,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/20 text-emerald-900 dark:text-emerald-200 border border-emerald-400/80 text-[10px] shadow-2xs">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/15 text-emerald-900 dark:text-emerald-200 border border-emerald-300/80 text-[10px] shadow-2xs">
               ↑ 12.4%
             </span>
             <span className="text-slate-600 dark:text-slate-400 font-semibold truncate">vs yesterday</span>
@@ -418,14 +418,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Card 4: Today's Purchase */}
         <div
           onClick={() => onQuickAction('purchase')}
-          className="relative overflow-hidden bg-gradient-to-br from-rose-500/14 via-white/95 to-pink-500/8 dark:from-rose-950/80 dark:to-slate-900 backdrop-blur-2xl border border-rose-300/80 dark:border-rose-700/80 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(244,63,94,0.10),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(244,63,94,0.22)] hover:-translate-y-1.5 hover:border-rose-500 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[134px] group"
+          className="relative overflow-hidden bg-gradient-to-br from-rose-500/10 via-white/98 to-pink-500/5 dark:from-rose-950/70 dark:to-slate-900 backdrop-blur-2xl border border-white/98 dark:border-rose-700/70 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(244,63,94,0.08),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(244,63,94,0.20)] hover:-translate-y-1.5 hover:border-rose-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[134px] group"
         >
-          <div className="absolute -top-12 -right-12 w-28 h-28 bg-rose-400/20 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-rose-400 via-pink-400 to-rose-600 shadow-[0_0_8px_rgba(244,63,94,0.5)]" />
+          <div className="absolute -top-12 -right-12 w-28 h-28 bg-rose-400/15 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-rose-400 via-pink-400 to-rose-600 shadow-[0_0_8px_rgba(244,63,94,0.4)]" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-rose-500 to-pink-600 text-white shadow-md shadow-rose-600/30 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-rose-500 to-pink-600 text-white shadow-md shadow-rose-600/25 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
                 <ShoppingBag className="w-4 h-4" />
               </div>
               <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
@@ -442,7 +442,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-rose-500/20 text-rose-900 dark:text-rose-200 border border-rose-400/80 text-[10px] shadow-2xs">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-rose-500/15 text-rose-900 dark:text-rose-200 border border-rose-300/80 text-[10px] shadow-2xs">
               ↓ 6.3%
             </span>
             <span className="text-slate-600 dark:text-slate-400 font-semibold truncate">Bullion Inward</span>
@@ -452,14 +452,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Card 5: Orders Pending */}
         <div
           onClick={() => onQuickAction('new_order')}
-          className="relative overflow-hidden bg-gradient-to-br from-indigo-500/14 via-white/95 to-purple-500/8 dark:from-indigo-950/80 dark:to-slate-900 backdrop-blur-2xl border border-indigo-300/80 dark:border-indigo-700/80 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(99,102,241,0.10),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(99,102,241,0.22)] hover:-translate-y-1.5 hover:border-indigo-500 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[134px] group"
+          className="relative overflow-hidden bg-gradient-to-br from-indigo-500/10 via-white/98 to-purple-500/5 dark:from-indigo-950/70 dark:to-slate-900 backdrop-blur-2xl border border-white/98 dark:border-indigo-700/70 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(99,102,241,0.08),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(99,102,241,0.20)] hover:-translate-y-1.5 hover:border-indigo-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[134px] group"
         >
-          <div className="absolute -top-12 -right-12 w-28 h-28 bg-indigo-400/20 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-600 shadow-[0_0_8px_rgba(99,102,241,0.5)]" />
+          <div className="absolute -top-12 -right-12 w-28 h-28 bg-indigo-400/15 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-600 shadow-[0_0_8px_rgba(99,102,241,0.4)]" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-md shadow-indigo-600/30 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-md shadow-indigo-600/25 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
                 <Package className="w-4 h-4" />
               </div>
               <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
@@ -476,7 +476,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-indigo-500/20 text-indigo-900 dark:text-indigo-200 border border-indigo-400/80 text-[10px] shadow-2xs">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-indigo-500/15 text-indigo-900 dark:text-indigo-200 border border-indigo-300/80 text-[10px] shadow-2xs">
               2 Due Today
             </span>
             <span className="text-slate-600 dark:text-slate-400 font-semibold truncate">Delivery</span>
@@ -484,13 +484,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
 
         {/* Card 6: New Walk-Ins */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-teal-500/14 via-white/95 to-cyan-500/8 dark:from-teal-950/80 dark:to-slate-900 backdrop-blur-2xl border border-teal-300/80 dark:border-teal-700/80 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(20,184,166,0.10),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(20,184,166,0.22)] hover:-translate-y-1.5 hover:border-teal-500 transition-all duration-300 flex flex-col justify-between h-[134px] group">
-          <div className="absolute -top-12 -right-12 w-28 h-28 bg-teal-400/20 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-teal-400 via-cyan-400 to-teal-600 shadow-[0_0_8px_rgba(20,184,166,0.5)]" />
+        <div className="relative overflow-hidden bg-gradient-to-br from-teal-500/10 via-white/98 to-cyan-500/5 dark:from-teal-950/70 dark:to-slate-900 backdrop-blur-2xl border border-white/98 dark:border-teal-700/70 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(20,184,166,0.08),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(20,184,166,0.20)] hover:-translate-y-1.5 hover:border-teal-400 transition-all duration-300 flex flex-col justify-between h-[134px] group">
+          <div className="absolute -top-12 -right-12 w-28 h-28 bg-teal-400/15 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-teal-400 via-cyan-400 to-teal-600 shadow-[0_0_8px_rgba(20,184,166,0.4)]" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-teal-500 to-cyan-600 text-white shadow-md shadow-teal-600/30 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-teal-500 to-cyan-600 text-white shadow-md shadow-teal-600/25 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
                 <UserPlus className="w-4 h-4" />
               </div>
               <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
@@ -507,7 +507,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/20 text-emerald-900 dark:text-emerald-200 border border-emerald-400/80 text-[10px] shadow-2xs">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/15 text-emerald-900 dark:text-emerald-200 border border-emerald-300/80 text-[10px] shadow-2xs">
               ↑ 27%
             </span>
             <span className="text-slate-600 dark:text-slate-400 font-semibold truncate">New Profiles</span>
@@ -515,13 +515,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
 
         {/* Card 7: Total Footfall */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-violet-500/14 via-white/95 to-purple-500/8 dark:from-violet-950/80 dark:to-slate-900 backdrop-blur-2xl border border-violet-300/80 dark:border-violet-700/80 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(139,92,246,0.10),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(139,92,246,0.22)] hover:-translate-y-1.5 hover:border-violet-500 transition-all duration-300 flex flex-col justify-between h-[134px] group">
-          <div className="absolute -top-12 -right-12 w-28 h-28 bg-violet-400/20 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-violet-400 via-purple-400 to-violet-600 shadow-[0_0_8px_rgba(139,92,246,0.5)]" />
+        <div className="relative overflow-hidden bg-gradient-to-br from-violet-500/10 via-white/98 to-purple-500/5 dark:from-violet-950/70 dark:to-slate-900 backdrop-blur-2xl border border-white/98 dark:border-violet-700/70 p-3.5 rounded-2xl shadow-[0_12px_32px_rgba(139,92,246,0.08),0_2px_6px_rgba(0,0,0,0.02),inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_18px_45px_rgba(139,92,246,0.20)] hover:-translate-y-1.5 hover:border-violet-400 transition-all duration-300 flex flex-col justify-between h-[134px] group">
+          <div className="absolute -top-12 -right-12 w-28 h-28 bg-violet-400/15 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-violet-400 via-purple-400 to-violet-600 shadow-[0_0_8px_rgba(139,92,246,0.4)]" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-md shadow-violet-600/30 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-md shadow-violet-600/25 group-hover:scale-110 group-hover:rotate-6 transition-all shrink-0">
                 <Users className="w-4 h-4" />
               </div>
               <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
@@ -538,7 +538,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/20 text-emerald-900 dark:text-emerald-200 border border-emerald-400/80 text-[10px] shadow-2xs">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/15 text-emerald-900 dark:text-emerald-200 border border-emerald-300/80 text-[10px] shadow-2xs">
               ↑ 16%
             </span>
             <span className="text-slate-600 dark:text-slate-400 font-semibold truncate">Showroom Total</span>
