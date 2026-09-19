@@ -22,6 +22,7 @@ export type StockSubView = 'stock_report' | 'audit';
 // Theme Types & Customization
 // ----------------------------------------------------
 export type ThemeId =
+  | 'apple-glass'
   | 'light-blue'
   | 'royal-gold'
   | 'emerald-luxury'
@@ -30,9 +31,19 @@ export type ThemeId =
   | 'platinum-ice'
   | 'ruby-regal'
   | 'obsidian-velvet'
-  | 'apple-glass';
+  | 'midnight-blue'
+  | 'high-contrast'
+  | 'custom';
 
 export type UiDensity = 'compact' | 'comfortable';
+
+export interface CustomThemeConfig {
+  presetId: ThemeId;
+  bgBaseHex: string;
+  accentHex: string;
+  brightness: number; // -50 to +50
+  isCustom: boolean;
+}
 
 export interface ThemeConfig {
   id: ThemeId;
@@ -41,6 +52,7 @@ export interface ThemeConfig {
   isDark: boolean;
   swatchPrimary: string;
   swatchSecondary: string;
+  bgBaseHex?: string;
   bgGradient: string;
   cardBg: string;
   cardBorder: string;

@@ -54,88 +54,78 @@
 }
 
 /* Dark mode scrollbars */
-.theme-obsidian-velvet ::-webkit-scrollbar-thumb {
+.dark ::-webkit-scrollbar-thumb,
+.theme-obsidian-velvet ::-webkit-scrollbar-thumb,
+.theme-midnight-blue ::-webkit-scrollbar-thumb,
+.theme-high-contrast ::-webkit-scrollbar-thumb {
   background: #334155;
 }
 
-.theme-obsidian-velvet ::-webkit-scrollbar-thumb:hover {
+.dark ::-webkit-scrollbar-thumb:hover,
+.theme-obsidian-velvet ::-webkit-scrollbar-thumb:hover,
+.theme-midnight-blue ::-webkit-scrollbar-thumb:hover,
+.theme-high-contrast ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
 
 /* Color scheme management for native browser UI controls & select popups */
 :root {
   color-scheme: light;
+  --color-bg: #b8cadc;
+  --color-bg-gradient: linear-gradient(135deg, #b8cadc 0%, #acc0d8 50%, #c4d2e0 100%);
+  --color-surface: rgba(255, 255, 255, 0.96);
+  --color-surface-glass: rgba(255, 255, 255, 0.88);
+  --color-header-bg: rgba(255, 255, 255, 0.94);
+  --color-primary: #007aff;
+  --color-primary-hover: #0062cc;
+  --color-primary-text: #ffffff;
+  --color-accent: #007aff;
+  --color-accent-bg: rgba(0, 122, 255, 0.12);
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #334155;
+  --color-text-muted: #64748b;
+  --color-border: rgba(15, 23, 42, 0.12);
+  --color-card-border: rgba(255, 255, 255, 0.98);
+  --color-card-shadow: 0 12px 40px 0 rgba(15, 23, 42, 0.08), 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+  --color-input-bg: rgba(255, 255, 255, 0.98);
+  --color-input-border: #cbd5e1;
+  --color-table-header-bg: rgba(241, 245, 249, 0.90);
 }
 
 :root.dark,
-:root.theme-obsidian-velvet,
-.dark,
-.theme-obsidian-velvet {
+.dark {
   color-scheme: dark !important;
 }
 
-/* Native select options & dropdown menus */
-select option,
-select optgroup {
-  font-family: inherit;
-}
-
-.theme-obsidian-velvet select option,
-.theme-obsidian-velvet option,
-.theme-obsidian-velvet optgroup,
+/* Native select options & dropdown menus in Dark Mode */
 .dark select option,
 .dark option,
-.dark optgroup {
+.dark optgroup,
+.theme-obsidian-velvet select option,
+.theme-midnight-blue select option,
+.theme-high-contrast select option {
   background-color: #0f172a !important;
   color: #ffffff !important;
   font-weight: 500 !important;
 }
 
-.theme-obsidian-velvet select option:checked,
-.theme-obsidian-velvet option:checked,
 .dark select option:checked,
 .dark option:checked {
   background-color: #0284c7 !important;
   color: #ffffff !important;
 }
 
-/* Light Theme native dropdown menu & options */
-.theme-light-blue select,
-.theme-royal-gold select,
-.theme-emerald-luxury select,
-.theme-rose-gold select,
-.theme-velvet-purple select,
-.theme-platinum-ice select,
-.theme-ruby-regal select,
-.theme-apple-glass select {
-  color-scheme: light !important;
-}
-
-.theme-light-blue select option,
-.theme-light-blue option,
-.theme-royal-gold select option,
-.theme-royal-gold option,
-.theme-emerald-luxury select option,
-.theme-emerald-luxury option,
-.theme-rose-gold select option,
-.theme-rose-gold option,
-.theme-velvet-purple select option,
-.theme-velvet-purple option,
-.theme-platinum-ice select option,
-.theme-platinum-ice option,
-.theme-ruby-regal select option,
-.theme-ruby-regal option,
-.theme-apple-glass select option,
-.theme-apple-glass option {
+/* Light Mode native dropdown menu & options */
+:root:not(.dark) select option,
+:root:not(.dark) option,
+:root:not(.dark) optgroup {
   background-color: #ffffff !important;
   color: #0f172a !important;
   font-weight: 600 !important;
 }
 
 /* ==========================================================================
-   Apple iOS Frosted Glass Theme Screen Effect
-   Authentic Apple iOS Frosted Glass with ambient lighting, specular borders,
-   and crisp high-contrast typography across all ERP screens
+   Apple iOS Frosted Glass & Dynamic Token Screen Effect
    ========================================================================== */
 
 .theme-apple-glass {
@@ -145,9 +135,16 @@ select optgroup {
   color-scheme: light !important;
 }
 
-/* 1. Frosted Glass Cards with authentic Apple Specular Highlights & High-Contrast Shadow (20% Lighter) */
+.theme-custom {
+  background: var(--color-bg-gradient) fixed !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* 1. Frosted Glass Cards with authentic Apple Specular Highlights */
 .theme-apple-glass .bg-white,
-.theme-apple-glass .glass-card {
+.theme-apple-glass .glass-card,
+.theme-custom:not(.dark) .bg-white,
+.theme-custom:not(.dark) .glass-card {
   background: rgba(255, 255, 255, 0.96) !important;
   backdrop-filter: blur(28px) saturate(210%) !important;
   -webkit-backdrop-filter: blur(28px) saturate(210%) !important;
@@ -156,9 +153,11 @@ select optgroup {
   color: #0f172a !important;
 }
 
-/* 2. Top Header & Navbars in Apple Glass */
+/* 2. Top Header & Navbars */
 .theme-apple-glass header,
-.theme-apple-glass nav {
+.theme-apple-glass nav,
+.theme-custom:not(.dark) header,
+.theme-custom:not(.dark) nav {
   background: rgba(255, 255, 255, 0.92) !important;
   backdrop-filter: blur(30px) saturate(200%) !important;
   -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
@@ -168,7 +167,10 @@ select optgroup {
 /* 3. Inputs, Selects, and Textareas */
 .theme-apple-glass input,
 .theme-apple-glass select,
-.theme-apple-glass textarea {
+.theme-apple-glass textarea,
+.theme-custom:not(.dark) input,
+.theme-custom:not(.dark) select,
+.theme-custom:not(.dark) textarea {
   background: rgba(255, 255, 255, 0.92) !important;
   border: 1px solid #cbd5e1 !important;
   color: #0f172a !important;
@@ -177,36 +179,46 @@ select optgroup {
 
 .theme-apple-glass input:focus,
 .theme-apple-glass select:focus,
-.theme-apple-glass textarea:focus {
-  border-color: #007aff !important;
+.theme-apple-glass textarea:focus,
+.theme-custom:not(.dark) input:focus,
+.theme-custom:not(.dark) select:focus,
+.theme-custom:not(.dark) textarea:focus {
+  border-color: var(--color-primary, #007aff) !important;
   box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.22) !important;
 }
 
 /* 4. Glass Tables & Data Grids */
-.theme-apple-glass table {
+.theme-apple-glass table,
+.theme-custom:not(.dark) table {
   color: #0f172a !important;
 }
 
 .theme-apple-glass table thead th,
-.theme-apple-glass table th {
+.theme-apple-glass table th,
+.theme-custom:not(.dark) table thead th,
+.theme-custom:not(.dark) table th {
   background: rgba(241, 245, 249, 0.85) !important;
   color: #0f172a !important;
   border-color: #e2e8f0 !important;
   font-weight: 700 !important;
 }
 
-.theme-apple-glass table tbody tr:hover td {
+.theme-apple-glass table tbody tr:hover td,
+.theme-custom:not(.dark) table tbody tr:hover td {
   background: rgba(239, 246, 255, 0.6) !important;
 }
 
-.theme-apple-glass table td {
+.theme-apple-glass table td,
+.theme-custom:not(.dark) table td {
   border-color: #f1f5f9 !important;
   color: #1e293b !important;
 }
 
 /* 5. Modals & Dialogs */
 .theme-apple-glass [role="dialog"],
-.theme-apple-glass .fixed .bg-white {
+.theme-apple-glass .fixed .bg-white,
+.theme-custom:not(.dark) [role="dialog"],
+.theme-custom:not(.dark) .fixed .bg-white {
   background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(36px) saturate(200%) !important;
   -webkit-backdrop-filter: blur(36px) saturate(200%) !important;
@@ -233,4 +245,3 @@ input:focus, select:focus, textarea:focus {
     display: block !important;
   }
 }
-

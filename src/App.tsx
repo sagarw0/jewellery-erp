@@ -63,6 +63,7 @@ import { AnalyticsModal } from './components/dashboard/AnalyticsModal';
 import { BullionRateModal } from './components/common/BullionRateModal';
 import { AiAssistantModal } from './components/common/AiAssistantModal';
 import { bullionRatesService } from './services/bullionRatesService';
+import { ThemeCustomizerModal } from './components/common/ThemeCustomizerModal';
 import { useTheme } from './context/ThemeContext';
 import { Sparkles } from 'lucide-react';
 
@@ -74,7 +75,7 @@ interface AuthUser {
 }
 
 export function App() {
-  const { currentTheme } = useTheme();
+  const { currentTheme, isCustomizerOpen, setIsCustomizerOpen } = useTheme();
   // Authentication State (Starts with Login Page)
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
 
@@ -930,6 +931,12 @@ export function App() {
             else if (section === 'stock') setStockSubView(subView as StockSubView);
           }
         }}
+      />
+
+      {/* Global Theme & UI Customizer Modal */}
+      <ThemeCustomizerModal
+        isOpen={isCustomizerOpen}
+        onClose={() => setIsCustomizerOpen(false)}
       />
     </div>
   );

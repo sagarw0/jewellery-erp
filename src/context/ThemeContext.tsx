@@ -1,332 +1,397 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { ThemeId, ThemeConfig, UiDensity } from '../types/erp';
+import { ThemeId, ThemeConfig, UiDensity, CustomThemeConfig } from '../types/erp';
+import {
+  computeThemeTokens,
+  applyCssTokensToDocument,
+  ThemeTokens,
+  adjustColorLightness,
+} from '../utils/colorUtils';
 
-export const THEMES: Record<ThemeId, ThemeConfig> = {
+export const THEME_PRESETS: Record<ThemeId, {
+  id: ThemeId;
+  name: string;
+  subtitle: string;
+  isDark: boolean;
+  bgBaseHex: string;
+  accentHex: string;
+  swatchPrimary: string;
+  swatchSecondary: string;
+}> = {
+  'apple-glass': {
+    id: 'apple-glass',
+    name: 'Apple iOS Frosted Glass',
+    subtitle: 'Liquid ambient glass with frosted clarity & crystal typography',
+    isDark: false,
+    bgBaseHex: '#b8cadc',
+    accentHex: '#007aff',
+    swatchPrimary: '#007aff',
+    swatchSecondary: '#38bdf8',
+  },
   'light-blue': {
     id: 'light-blue',
     name: 'Sapphire Classic Blue',
     subtitle: 'Crisp corporate clarity & modern contrast',
     isDark: false,
+    bgBaseHex: '#cbd8e8',
+    accentHex: '#2563eb',
     swatchPrimary: '#2563eb',
     swatchSecondary: '#0284c7',
-    bgGradient: 'bg-gradient-to-br from-sky-200/90 via-blue-100 to-slate-200',
-    cardBg: 'bg-white',
-    cardBorder: 'border-slate-300',
-    cardHover: 'hover:border-blue-400 hover:shadow-xs',
-    primaryBtn: 'bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white font-semibold shadow-xs',
-    secondaryBtn: 'bg-sky-50 text-blue-800 hover:bg-sky-100 border border-sky-200 font-medium',
-    accentText: 'text-blue-900',
-    badgeBg: 'bg-sky-100 text-blue-900 border-sky-300 font-medium',
-    headerBg: 'bg-white/95 border-b border-slate-200',
-    appBg: 'bg-slate-200/70',
-    textPrimary: 'text-slate-800',
-    textSecondary: 'text-slate-600',
-    textMuted: 'text-slate-400',
-    subnavBg: 'bg-slate-100/90 border-b border-slate-200',
-    activePill: 'bg-blue-600 text-white font-semibold shadow-xs',
-    inputBorder: 'border-slate-300 focus:border-blue-500 focus:ring-blue-200',
-    inputBg: 'bg-white text-slate-900',
-    tableHeaderBg: 'bg-slate-50 text-slate-700 border-b border-slate-200',
-    tableRowHover: 'hover:bg-sky-50/40',
-    glassCard: 'bg-white/95 border border-slate-200/90 shadow-xs',
-    glassBorder: 'border-slate-200/90',
   },
   'royal-gold': {
     id: 'royal-gold',
-    name: 'Royal 24K Gold & Silk Cream',
-    subtitle: 'Warm luxury aesthetic tailored for premium showrooms',
+    name: 'Royal 24K Gold & Champagne',
+    subtitle: 'Warm luxury aesthetic tailored for premium bullion showrooms',
     isDark: false,
+    bgBaseHex: '#f1e6cd',
+    accentHex: '#d97706',
     swatchPrimary: '#d97706',
     swatchSecondary: '#eab308',
-    bgGradient: 'bg-gradient-to-br from-amber-200/90 via-yellow-100 to-stone-200',
-    cardBg: 'bg-white',
-    cardBorder: 'border-amber-300',
-    cardHover: 'hover:border-amber-400 hover:shadow-xs',
-    primaryBtn: 'bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold shadow-xs',
-    secondaryBtn: 'bg-amber-50 text-amber-950 hover:bg-amber-100 border border-amber-300 font-medium',
-    accentText: 'text-amber-950',
-    badgeBg: 'bg-amber-100 text-amber-950 border-amber-300 font-medium',
-    headerBg: 'bg-amber-50/90 border-b border-amber-200',
-    appBg: 'bg-amber-100/50',
-    textPrimary: 'text-stone-900',
-    textSecondary: 'text-stone-600',
-    textMuted: 'text-stone-400',
-    subnavBg: 'bg-amber-100/60 border-b border-amber-200',
-    activePill: 'bg-amber-600 text-white font-semibold shadow-xs',
-    inputBorder: 'border-amber-300 focus:border-amber-500 focus:ring-amber-200',
-    inputBg: 'bg-white text-stone-900',
-    tableHeaderBg: 'bg-amber-50/70 text-amber-950 border-b border-amber-200',
-    tableRowHover: 'hover:bg-amber-50/40',
-    glassCard: 'bg-white/95 border border-amber-200/90 shadow-xs',
-    glassBorder: 'border-amber-200/90',
   },
   'emerald-luxury': {
     id: 'emerald-luxury',
-    name: 'Emerald Gemstone & Mint Pearl',
+    name: 'Emerald Gemstone & Pearl',
     subtitle: 'Regal gemstone emerald tones with crisp contrast',
     isDark: false,
+    bgBaseHex: '#cfeee0',
+    accentHex: '#059669',
     swatchPrimary: '#059669',
     swatchSecondary: '#10b981',
-    bgGradient: 'bg-gradient-to-br from-emerald-200/90 via-teal-100 to-slate-200',
-    cardBg: 'bg-white',
-    cardBorder: 'border-emerald-300',
-    cardHover: 'hover:border-emerald-400 hover:shadow-xs',
-    primaryBtn: 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold shadow-xs',
-    secondaryBtn: 'bg-emerald-50 text-emerald-950 hover:bg-emerald-100 border border-emerald-300 font-medium',
-    accentText: 'text-emerald-950',
-    badgeBg: 'bg-emerald-100 text-emerald-950 border-emerald-300 font-medium',
-    headerBg: 'bg-emerald-50/80 border-b border-emerald-200',
-    appBg: 'bg-emerald-100/40',
-    textPrimary: 'text-slate-900',
-    textSecondary: 'text-slate-600',
-    textMuted: 'text-slate-400',
-    subnavBg: 'bg-emerald-100/50 border-b border-emerald-200',
-    activePill: 'bg-emerald-600 text-white font-semibold shadow-xs',
-    inputBorder: 'border-emerald-300 focus:border-emerald-500 focus:ring-emerald-200',
-    inputBg: 'bg-white text-slate-900',
-    tableHeaderBg: 'bg-emerald-50/60 text-emerald-950 border-b border-emerald-200',
-    tableRowHover: 'hover:bg-emerald-50/30',
-    glassCard: 'bg-white/95 border border-emerald-200/90 shadow-xs',
-    glassBorder: 'border-emerald-200/90',
   },
   'rose-gold': {
     id: 'rose-gold',
     name: 'Rose Gold & Champagne Silk',
-    subtitle: 'Blush rose gold with refined warm accents',
+    subtitle: 'Blush rose gold with refined warm luxury accents',
     isDark: false,
+    bgBaseHex: '#fce4e8',
+    accentHex: '#e11d48',
     swatchPrimary: '#e11d48',
     swatchSecondary: '#fb7185',
-    bgGradient: 'bg-gradient-to-br from-rose-200/90 via-pink-100 to-stone-200',
-    cardBg: 'bg-white',
-    cardBorder: 'border-rose-300',
-    cardHover: 'hover:border-rose-400 hover:shadow-xs',
-    primaryBtn: 'bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white font-semibold shadow-xs',
-    secondaryBtn: 'bg-rose-50 text-rose-950 hover:bg-rose-100 border border-rose-300 font-medium',
-    accentText: 'text-rose-950',
-    badgeBg: 'bg-rose-100 text-rose-950 border-rose-300 font-medium',
-    headerBg: 'bg-rose-50/80 border-b border-rose-200',
-    appBg: 'bg-rose-100/40',
-    textPrimary: 'text-stone-900',
-    textSecondary: 'text-stone-600',
-    textMuted: 'text-stone-400',
-    subnavBg: 'bg-rose-100/50 border-b border-rose-200',
-    activePill: 'bg-rose-600 text-white font-semibold shadow-xs',
-    inputBorder: 'border-rose-300 focus:border-rose-500 focus:ring-rose-200',
-    inputBg: 'bg-white text-stone-900',
-    tableHeaderBg: 'bg-rose-50/60 text-rose-950 border-b border-rose-200',
-    tableRowHover: 'hover:bg-rose-50/30',
-    glassCard: 'bg-white/95 border border-rose-200/90 shadow-xs',
-    glassBorder: 'border-rose-200/90',
   },
   'velvet-purple': {
     id: 'velvet-purple',
     name: 'Amethyst Velvet & Lavender',
     subtitle: 'Royal amethyst purple with subtle silver radiance',
     isDark: false,
+    bgBaseHex: '#e9e3f8',
+    accentHex: '#7c3aed',
     swatchPrimary: '#7c3aed',
     swatchSecondary: '#a855f7',
-    bgGradient: 'bg-gradient-to-br from-purple-200/90 via-violet-100 to-slate-200',
-    cardBg: 'bg-white',
-    cardBorder: 'border-purple-300',
-    cardHover: 'hover:border-purple-400 hover:shadow-xs',
-    primaryBtn: 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold shadow-xs',
-    secondaryBtn: 'bg-purple-50 text-purple-950 hover:bg-purple-100 border border-purple-300 font-medium',
-    accentText: 'text-purple-950',
-    badgeBg: 'bg-purple-100 text-purple-950 border-purple-300 font-medium',
-    headerBg: 'bg-purple-50/80 border-b border-purple-200',
-    appBg: 'bg-purple-100/40',
-    textPrimary: 'text-slate-900',
-    textSecondary: 'text-slate-600',
-    textMuted: 'text-slate-400',
-    subnavBg: 'bg-purple-100/50 border-b border-purple-200',
-    activePill: 'bg-purple-600 text-white font-semibold shadow-xs',
-    inputBorder: 'border-purple-300 focus:border-purple-500 focus:ring-purple-200',
-    inputBg: 'bg-white text-slate-900',
-    tableHeaderBg: 'bg-purple-50/60 text-purple-950 border-b border-purple-200',
-    tableRowHover: 'hover:bg-purple-50/30',
-    glassCard: 'bg-white/95 border border-purple-200/90 shadow-xs',
-    glassBorder: 'border-purple-200/90',
   },
   'platinum-ice': {
     id: 'platinum-ice',
     name: 'Platinum Titanium & Ice Glass',
     subtitle: 'Ultra-modern minimalist monochrome platinum',
     isDark: false,
+    bgBaseHex: '#d8dfe6',
+    accentHex: '#334155',
     swatchPrimary: '#475569',
     swatchSecondary: '#64748b',
-    bgGradient: 'bg-gradient-to-br from-slate-300 via-gray-200 to-zinc-300',
-    cardBg: 'bg-white',
-    cardBorder: 'border-slate-300',
-    cardHover: 'hover:border-slate-500 hover:shadow-xs',
-    primaryBtn: 'bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-white font-semibold shadow-xs',
-    secondaryBtn: 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300 font-medium',
-    accentText: 'text-slate-900',
-    badgeBg: 'bg-slate-200 text-slate-900 border-slate-400 font-medium',
-    headerBg: 'bg-slate-100/90 border-b border-slate-300',
-    appBg: 'bg-slate-300/60',
-    textPrimary: 'text-slate-900',
-    textSecondary: 'text-slate-600',
-    textMuted: 'text-slate-400',
-    subnavBg: 'bg-slate-200/60 border-b border-slate-300',
-    activePill: 'bg-slate-900 text-white font-semibold shadow-xs',
-    inputBorder: 'border-slate-400 focus:border-slate-700 focus:ring-slate-300',
-    inputBg: 'bg-white text-slate-900',
-    tableHeaderBg: 'bg-slate-100 text-slate-800 border-b border-slate-300',
-    tableRowHover: 'hover:bg-slate-100',
-    glassCard: 'bg-white/95 border border-slate-300 shadow-xs',
-    glassBorder: 'border-slate-300',
   },
   'ruby-regal': {
     id: 'ruby-regal',
     name: 'Regal Ruby & Crimson Gold',
     subtitle: 'Deep ceremonial crimson with golden jewel highlights',
     isDark: false,
+    bgBaseHex: '#fbdcdc',
+    accentHex: '#be123c',
     swatchPrimary: '#be123c',
     swatchSecondary: '#dc2626',
-    bgGradient: 'bg-gradient-to-br from-red-200/90 via-rose-100 to-amber-100',
-    cardBg: 'bg-white',
-    cardBorder: 'border-red-300',
-    cardHover: 'hover:border-red-400 hover:shadow-xs',
-    primaryBtn: 'bg-gradient-to-r from-red-700 to-rose-700 hover:from-red-800 hover:to-rose-800 text-white font-semibold shadow-xs',
-    secondaryBtn: 'bg-red-50 text-red-950 hover:bg-red-100 border border-red-300 font-medium',
-    accentText: 'text-red-950',
-    badgeBg: 'bg-red-100 text-red-950 border-red-300 font-medium',
-    headerBg: 'bg-red-50/80 border-b border-red-200',
-    appBg: 'bg-red-100/40',
-    textPrimary: 'text-stone-900',
-    textSecondary: 'text-stone-600',
-    textMuted: 'text-stone-400',
-    subnavBg: 'bg-red-100/50 border-b border-red-200',
-    activePill: 'bg-red-700 text-white font-semibold shadow-xs',
-    inputBorder: 'border-red-300 focus:border-red-500 focus:ring-red-200',
-    inputBg: 'bg-white text-stone-900',
-    tableHeaderBg: 'bg-red-50/60 text-red-950 border-b border-red-200',
-    tableRowHover: 'hover:bg-red-50/30',
-    glassCard: 'bg-white/95 border border-red-200/90 shadow-xs',
-    glassBorder: 'border-red-200/90',
   },
   'obsidian-velvet': {
     id: 'obsidian-velvet',
-    name: 'Obsidian Midnight & Glass White',
-    subtitle: 'Ultra-clear frosted glass white with luminous accents & OLED contrast',
+    name: 'Obsidian Midnight & Slate',
+    subtitle: 'Ultra-clear frosted glass with luminous gold accents & OLED contrast',
     isDark: true,
+    bgBaseHex: '#070b14',
+    accentHex: '#f59e0b',
     swatchPrimary: '#0f172a',
     swatchSecondary: '#f59e0b',
-    bgGradient: 'bg-gradient-to-br from-[#070b14] via-[#0b1120] to-[#030712] text-white',
-    cardBg: 'bg-white/[0.08] backdrop-blur-xl text-white',
-    cardBorder: 'border-white/15',
-    cardHover: 'hover:border-white/35 hover:bg-white/[0.12] hover:shadow-xs',
-    primaryBtn: 'bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-semibold shadow-xs',
-    secondaryBtn: 'bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm font-medium',
-    accentText: 'text-amber-300',
-    badgeBg: 'bg-white/15 text-white border-white/25 font-semibold backdrop-blur-sm',
-    headerBg: 'bg-[#070b14]/90 backdrop-blur-xl border-b border-white/10 text-white',
-    appBg: 'bg-[#070b14]',
-    textPrimary: 'text-white',
-    textSecondary: 'text-slate-200',
-    textMuted: 'text-slate-400',
-    subnavBg: 'bg-white/[0.04] backdrop-blur-md border-b border-white/10 text-white',
-    activePill: 'bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-semibold shadow-xs',
-    inputBorder: 'border-white/20 focus:border-amber-400 focus:ring-amber-400/20',
-    inputBg: 'bg-white/[0.08] text-white placeholder-slate-400',
-    tableHeaderBg: 'bg-white/[0.08] text-slate-200 border-b border-white/15',
-    tableRowHover: 'hover:bg-white/[0.06]',
-    glassCard: 'bg-white/[0.08] backdrop-blur-xl border border-white/15 shadow-xs text-white',
-    glassBorder: 'border-white/15',
   },
-  'apple-glass': {
-    id: 'apple-glass',
-    name: 'Apple iOS Frosted Glass',
-    subtitle: 'Liquid ambient glass with iOS frosted surfaces & crystal typography',
+  'midnight-blue': {
+    id: 'midnight-blue',
+    name: 'Midnight Blue Studio',
+    subtitle: 'Deep oceanic navy with futuristic cyan luminescence',
+    isDark: true,
+    bgBaseHex: '#081326',
+    accentHex: '#06b6d4',
+    swatchPrimary: '#081326',
+    swatchSecondary: '#06b6d4',
+  },
+  'high-contrast': {
+    id: 'high-contrast',
+    name: 'High Contrast OLED Gold',
+    subtitle: 'Pure OLED black, neon gold, and ultra-high legibility typography',
+    isDark: true,
+    bgBaseHex: '#000000',
+    accentHex: '#fbbf24',
+    swatchPrimary: '#000000',
+    swatchSecondary: '#fbbf24',
+  },
+  'custom': {
+    id: 'custom',
+    name: 'Custom Studio Palette',
+    subtitle: 'User personalized background, accent, and fine-tuned brightness',
     isDark: false,
+    bgBaseHex: '#b8cadc',
+    accentHex: '#007aff',
     swatchPrimary: '#007aff',
-    swatchSecondary: '#38bdf8',
-    bgGradient: 'bg-gradient-to-br from-[#b8cadc] via-[#acc0d8] to-[#c4d2e0] text-slate-950',
-    cardBg: 'bg-white/96 backdrop-blur-2xl border border-white/98 shadow-[0_12px_40px_rgba(15,23,42,0.10)] text-slate-950',
-    cardBorder: 'border-white/98',
-    cardHover: 'hover:border-blue-400 hover:shadow-[0_18px_50px_rgba(0,0,0,0.14)] hover:-translate-y-0.5',
-    primaryBtn: 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold shadow-sm border border-blue-400/40 active:scale-[0.98]',
-    secondaryBtn: 'bg-white/95 hover:bg-white text-slate-800 border border-slate-200/90 backdrop-blur-md shadow-2xs font-bold',
-    accentText: 'text-blue-900 font-bold',
-    badgeBg: 'bg-blue-100 text-blue-950 border border-blue-300 font-bold backdrop-blur-md',
-    headerBg: 'bg-white/95 backdrop-blur-2xl border-b border-white/90 text-slate-950 shadow-[0_4px_20px_rgba(0,0,0,0.06)]',
-    appBg: 'bg-[#b8cadc]',
-    textPrimary: 'text-slate-950 font-bold',
-    textSecondary: 'text-slate-700 font-medium',
-    textMuted: 'text-slate-500',
-    subnavBg: 'bg-white/92 backdrop-blur-xl border-b border-white/90 text-slate-900',
-    activePill: 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-xs border border-blue-400/50',
-    inputBorder: 'border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200',
-    inputBg: 'bg-white text-slate-950 placeholder-slate-400 shadow-inner font-medium',
-    tableHeaderBg: 'bg-slate-100/95 backdrop-blur-md text-slate-900 font-bold border-b border-slate-200',
-    tableRowHover: 'hover:bg-blue-50/70',
-    glassCard: 'bg-white/96 backdrop-blur-2xl border border-white/98 shadow-[0_12px_40px_rgba(15,23,42,0.10)] text-slate-950',
-    glassBorder: 'border-white/98',
+    swatchSecondary: '#b8cadc',
   },
 };
 
-interface ThemeContextType {
-  currentTheme: ThemeConfig;
-  isDark: boolean;
-  density: UiDensity;
-  setTheme: (themeId: ThemeId) => void;
-  setDensity: (density: UiDensity) => void;
+export function buildThemeConfig(presetId: ThemeId, tokens: ThemeTokens): ThemeConfig {
+  const preset = THEME_PRESETS[presetId] || THEME_PRESETS['apple-glass'];
+  const isDark = tokens.isDark;
+
+  return {
+    id: presetId,
+    name: preset.name,
+    subtitle: preset.subtitle,
+    isDark,
+    swatchPrimary: preset.swatchPrimary,
+    swatchSecondary: preset.swatchSecondary,
+    bgBaseHex: preset.bgBaseHex,
+    bgGradient: isDark
+      ? 'bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white'
+      : 'bg-gradient-to-br from-[#b8cadc] via-[#acc0d8] to-[#c4d2e0] text-slate-950',
+    cardBg: isDark
+      ? 'bg-white/[0.08] backdrop-blur-xl border border-white/15 text-white'
+      : 'bg-white/96 backdrop-blur-2xl border border-white/98 shadow-[0_12px_40px_rgba(15,23,42,0.10)] text-slate-950',
+    cardBorder: isDark ? 'border-white/15' : 'border-white/98',
+    cardHover: isDark
+      ? 'hover:border-white/35 hover:bg-white/[0.12] hover:shadow-xs'
+      : 'hover:border-blue-400 hover:shadow-[0_18px_50px_rgba(0,0,0,0.14)] hover:-translate-y-0.5',
+    primaryBtn: isDark
+      ? 'bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-semibold shadow-xs'
+      : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold shadow-sm border border-blue-400/40 active:scale-[0.98]',
+    secondaryBtn: isDark
+      ? 'bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm font-medium'
+      : 'bg-white/95 hover:bg-white text-slate-800 border border-slate-200/90 backdrop-blur-md shadow-2xs font-bold',
+    accentText: isDark ? 'text-amber-300 font-bold' : 'text-blue-900 font-bold',
+    badgeBg: isDark
+      ? 'bg-white/15 text-white border-white/25 font-semibold backdrop-blur-sm'
+      : 'bg-blue-100 text-blue-950 border border-blue-300 font-bold backdrop-blur-md',
+    headerBg: isDark
+      ? 'bg-[#070b14]/90 backdrop-blur-xl border-b border-white/10 text-white'
+      : 'bg-white/95 backdrop-blur-2xl border-b border-white/90 text-slate-950 shadow-[0_4px_20px_rgba(0,0,0,0.06)]',
+    appBg: tokens.appBg,
+    textPrimary: isDark ? 'text-white' : 'text-slate-950 font-bold',
+    textSecondary: isDark ? 'text-slate-200 font-medium' : 'text-slate-700 font-medium',
+    textMuted: isDark ? 'text-slate-400' : 'text-slate-500',
+    subnavBg: isDark
+      ? 'bg-white/[0.04] backdrop-blur-md border-b border-white/10 text-white'
+      : 'bg-white/92 backdrop-blur-xl border-b border-white/90 text-slate-900',
+    activePill: isDark
+      ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-semibold shadow-xs'
+      : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-xs border border-blue-400/50',
+    inputBorder: isDark
+      ? 'border-white/20 focus:border-amber-400 focus:ring-amber-400/20'
+      : 'border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200',
+    inputBg: isDark
+      ? 'bg-white/[0.08] text-white placeholder-slate-400'
+      : 'bg-white text-slate-950 placeholder-slate-400 shadow-inner font-medium',
+    tableHeaderBg: isDark
+      ? 'bg-white/[0.08] text-slate-200 border-b border-white/15'
+      : 'bg-slate-100/95 backdrop-blur-md text-slate-900 font-bold border-b border-slate-200',
+    tableRowHover: isDark ? 'hover:bg-white/[0.06]' : 'hover:bg-blue-50/70',
+    glassCard: isDark
+      ? 'bg-white/[0.08] backdrop-blur-xl border border-white/15 shadow-xs text-white'
+      : 'bg-white/96 backdrop-blur-2xl border border-white/98 shadow-[0_12px_40px_rgba(15,23,42,0.10)] text-slate-950',
+    glassBorder: isDark ? 'border-white/15' : 'border-white/98',
+  };
 }
 
+export const THEMES: Record<ThemeId, ThemeConfig> = Object.keys(THEME_PRESETS).reduce((acc, key) => {
+  const p = THEME_PRESETS[key as ThemeId];
+  const tokens = computeThemeTokens(p.bgBaseHex, p.accentHex, 0);
+  acc[key as ThemeId] = buildThemeConfig(key as ThemeId, tokens);
+  return acc;
+}, {} as Record<ThemeId, ThemeConfig>);
+
+interface ThemeContextType {
+  currentTheme: ThemeConfig;
+  customConfig: CustomThemeConfig;
+  computedTokens: ThemeTokens;
+  isDark: boolean;
+  density: UiDensity;
+  isCustomizerOpen: boolean;
+  setIsCustomizerOpen: (open: boolean) => void;
+  setTheme: (themeId: ThemeId) => void;
+  setDensity: (density: UiDensity) => void;
+  applyPreset: (themeId: ThemeId) => void;
+  updateBrightness: (brightness: number) => void;
+  updateBgColor: (hex: string) => void;
+  updateAccentColor: (hex: string) => void;
+  resetToDefault: () => void;
+}
+
+const DEFAULT_CUSTOM_CONFIG: CustomThemeConfig = {
+  presetId: 'apple-glass',
+  bgBaseHex: '#b8cadc',
+  accentHex: '#007aff',
+  brightness: 0,
+  isCustom: false,
+};
+
 const ThemeContext = createContext<ThemeContextType>({
-  currentTheme: THEMES['light-blue'],
+  currentTheme: THEMES['apple-glass'],
+  customConfig: DEFAULT_CUSTOM_CONFIG,
+  computedTokens: computeThemeTokens('#b8cadc', '#007aff', 0),
   isDark: false,
   density: 'comfortable',
+  isCustomizerOpen: false,
+  setIsCustomizerOpen: () => {},
   setTheme: () => {},
   setDensity: () => {},
+  applyPreset: () => {},
+  updateBrightness: () => {},
+  updateBgColor: () => {},
+  updateAccentColor: () => {},
+  resetToDefault: () => {},
 });
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [themeId, setThemeId] = useState<ThemeId>(() => {
-    const saved = localStorage.getItem('swarna_erp_theme') as ThemeId;
-    if (saved && THEMES[saved]) {
-      return saved;
+  // 1. Initialize Custom Theme Config from localStorage
+  const [customConfig, setCustomConfig] = useState<CustomThemeConfig>(() => {
+    try {
+      const savedConfig = localStorage.getItem('swarna_erp_theme_customizer');
+      if (savedConfig) {
+        const parsed = JSON.parse(savedConfig) as CustomThemeConfig;
+        if (parsed.presetId && THEME_PRESETS[parsed.presetId]) {
+          return parsed;
+        }
+      }
+      const legacyTheme = localStorage.getItem('swarna_erp_theme') as ThemeId;
+      if (legacyTheme && THEME_PRESETS[legacyTheme]) {
+        const preset = THEME_PRESETS[legacyTheme];
+        return {
+          presetId: legacyTheme,
+          bgBaseHex: preset.bgBaseHex,
+          accentHex: preset.accentHex,
+          brightness: 0,
+          isCustom: false,
+        };
+      }
+    } catch {
+      // ignore
     }
-    return 'light-blue';
+    return DEFAULT_CUSTOM_CONFIG;
   });
 
   const [density, setDensityState] = useState<UiDensity>(() => {
     return (localStorage.getItem('swarna_erp_density') as UiDensity) || 'comfortable';
   });
 
-  const setTheme = (id: ThemeId) => {
-    setThemeId(id);
-    localStorage.setItem('swarna_erp_theme', id);
-  };
+  const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
+
+  // 2. Dynamically calculate design tokens based on current config
+  const computedTokens = computeThemeTokens(
+    customConfig.bgBaseHex,
+    customConfig.accentHex,
+    customConfig.brightness
+  );
+
+  const isDark = computedTokens.isDark;
+  const currentTheme = buildThemeConfig(customConfig.presetId, computedTokens);
+
+  // 3. Inject CSS Variables and update DOM attributes on state changes
+  useEffect(() => {
+    applyCssTokensToDocument(computedTokens);
+
+    // Sync theme classes directly on documentElement and body
+    const allThemeClasses = Object.keys(THEME_PRESETS).map((k) => `theme-${k}`);
+    document.documentElement.classList.remove(...allThemeClasses);
+    document.body.classList.remove(...allThemeClasses);
+
+    const activeThemeClass = `theme-${customConfig.presetId}`;
+    document.documentElement.classList.add(activeThemeClass);
+    document.body.classList.add(activeThemeClass);
+
+    // Save to localStorage
+    localStorage.setItem('swarna_erp_theme', customConfig.presetId);
+    localStorage.setItem('swarna_erp_theme_customizer', JSON.stringify(customConfig));
+  }, [customConfig, computedTokens]);
 
   const setDensity = (d: UiDensity) => {
     setDensityState(d);
     localStorage.setItem('swarna_erp_density', d);
   };
 
-  const currentTheme = THEMES[themeId] || THEMES['light-blue'];
-  const isDark = !!currentTheme.isDark;
+  const applyPreset = (id: ThemeId) => {
+    const preset = THEME_PRESETS[id] || THEME_PRESETS['apple-glass'];
+    setCustomConfig({
+      presetId: id,
+      bgBaseHex: preset.bgBaseHex,
+      accentHex: preset.accentHex,
+      brightness: 0,
+      isCustom: false,
+    });
+  };
 
-  useEffect(() => {
-    // 1. Set standard browser color-scheme on root document to inform OS/Chromium native controls & dropdowns
-    document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+  const setTheme = (id: ThemeId) => {
+    applyPreset(id);
+  };
 
-    // 2. Sync theme classes directly on documentElement and body for full OS/browser native control theming
-    const allThemeClasses = Object.keys(THEMES).map((k) => `theme-${k}`);
-    document.documentElement.classList.remove(...allThemeClasses, 'dark');
-    document.body.classList.remove(...allThemeClasses, 'dark');
+  const updateBrightness = (delta: number) => {
+    const clamped = Math.max(-50, Math.min(50, Math.round(delta)));
+    setCustomConfig((prev) => ({
+      ...prev,
+      brightness: clamped,
+      isCustom: true,
+      presetId: prev.presetId === 'apple-glass' && clamped === 0 ? 'apple-glass' : 'custom',
+    }));
+  };
 
-    document.documentElement.classList.add(`theme-${themeId}`);
-    document.body.classList.add(`theme-${themeId}`);
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-      document.body.classList.add('dark');
-    }
-  }, [isDark, themeId]);
+  const updateBgColor = (hex: string) => {
+    setCustomConfig((prev) => ({
+      ...prev,
+      bgBaseHex: hex,
+      isCustom: true,
+      presetId: 'custom',
+    }));
+  };
+
+  const updateAccentColor = (hex: string) => {
+    setCustomConfig((prev) => ({
+      ...prev,
+      accentHex: hex,
+      isCustom: true,
+      presetId: 'custom',
+    }));
+  };
+
+  const resetToDefault = () => {
+    setCustomConfig(DEFAULT_CUSTOM_CONFIG);
+  };
 
   return (
-    <ThemeContext.Provider value={{ currentTheme, isDark, density, setTheme, setDensity }}>
-      <div className={`theme-${themeId} density-${density} ${isDark ? 'dark' : ''} min-h-screen transition-colors duration-200`}>
+    <ThemeContext.Provider
+      value={{
+        currentTheme,
+        customConfig,
+        computedTokens,
+        isDark,
+        density,
+        isCustomizerOpen,
+        setIsCustomizerOpen,
+        setTheme,
+        setDensity,
+        applyPreset,
+        updateBrightness,
+        updateBgColor,
+        updateAccentColor,
+        resetToDefault,
+      }}
+    >
+      <div
+        className={`theme-${customConfig.presetId} density-${density} ${
+          isDark ? 'dark' : ''
+        } min-h-screen transition-colors duration-200`}
+        style={{
+          background: 'var(--color-bg-gradient)',
+          color: 'var(--color-text-primary)',
+        }}
+      >
         {children}
       </div>
     </ThemeContext.Provider>

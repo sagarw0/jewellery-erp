@@ -126,8 +126,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                   ✕
                 </button>
               </div>
+
               <div className="space-y-1 max-h-60 overflow-y-auto">
-                {Object.values(THEMES).map((theme) => (
+                {Object.values(THEMES)
+                  .filter((theme) => theme.id !== 'custom')
+                  .map((theme) => (
                   <button
                     key={theme.id}
                     type="button"
