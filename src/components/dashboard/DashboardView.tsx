@@ -309,7 +309,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Card 1: Today's Cash */}
         <div
           onClick={() => onQuickAction('day_book')}
-          className="relative overflow-hidden bg-white/85 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/90 dark:border-slate-700/80 p-3.5 rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1 hover:border-emerald-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[132px] group"
+          className="relative overflow-hidden bg-white/92 dark:bg-slate-900/90 backdrop-blur-2xl border border-white/95 dark:border-slate-700/90 p-3.5 rounded-2xl shadow-[0_8px_26px_rgba(15,23,42,0.06)] hover:shadow-xl hover:-translate-y-1 hover:border-emerald-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[132px] group"
         >
           {/* Subtle ambient accent glow */}
           <div className="absolute -top-10 -right-10 w-24 h-24 bg-emerald-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-emerald-400/20 transition-all" />
@@ -317,10 +317,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900 text-emerald-600 dark:text-emerald-400 border border-emerald-200/80 dark:border-emerald-700/60 shadow-xs group-hover:scale-105 group-hover:bg-emerald-600 group-hover:text-white transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-emerald-100/80 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300/80 dark:border-emerald-700/60 shadow-xs group-hover:scale-105 group-hover:bg-emerald-600 group-hover:text-white transition-all shrink-0">
                 <Wallet className="w-4 h-4" />
               </div>
-              <span className="text-xs font-black tracking-tight text-slate-900 dark:text-white truncate">
+              <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
                 Today's Cash
               </span>
             </div>
@@ -334,27 +334,27 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-300/80 text-[10px]">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-300/90 text-[10px]">
               ↑ 8.5%
             </span>
-            <span className="text-slate-500 dark:text-slate-400 font-medium truncate">vs yesterday</span>
+            <span className="text-slate-600 dark:text-slate-400 font-medium truncate">vs yesterday</span>
           </div>
         </div>
 
         {/* Card 2: Today's Bank */}
         <div
           onClick={() => onQuickAction('day_book')}
-          className="relative overflow-hidden bg-white/85 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/90 dark:border-slate-700/80 p-3.5 rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1 hover:border-sky-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[132px] group"
+          className="relative overflow-hidden bg-white/92 dark:bg-slate-900/90 backdrop-blur-2xl border border-white/95 dark:border-slate-700/90 p-3.5 rounded-2xl shadow-[0_8px_26px_rgba(15,23,42,0.06)] hover:shadow-xl hover:-translate-y-1 hover:border-sky-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[132px] group"
         >
           <div className="absolute -top-10 -right-10 w-24 h-24 bg-sky-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-sky-400/20 transition-all" />
           <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-sky-400 to-blue-500 opacity-80 group-hover:opacity-100 transition-opacity" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-sky-50 to-sky-100 dark:from-sky-950 dark:to-sky-900 text-sky-600 dark:text-sky-400 border border-sky-200/80 dark:border-sky-700/60 shadow-xs group-hover:scale-105 group-hover:bg-sky-600 group-hover:text-white transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-sky-100/80 dark:bg-sky-950 text-sky-700 dark:text-sky-400 border border-sky-300/80 dark:border-sky-700/60 shadow-xs group-hover:scale-105 group-hover:bg-sky-600 group-hover:text-white transition-all shrink-0">
                 <Building className="w-4 h-4" />
               </div>
-              <span className="text-xs font-black tracking-tight text-slate-900 dark:text-white truncate">
+              <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
                 Today's Bank
               </span>
             </div>
@@ -368,27 +368,27 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-300/80 text-[10px]">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-sky-500/15 text-sky-800 dark:text-sky-300 border border-sky-300/90 text-[10px]">
               ↑ 4.2%
             </span>
-            <span className="text-slate-500 dark:text-slate-400 font-medium truncate">4 Active A/cs</span>
+            <span className="text-slate-600 dark:text-slate-400 font-medium truncate">4 Active A/cs</span>
           </div>
         </div>
 
         {/* Card 3: Today's Sales */}
         <div
           onClick={() => onQuickAction('sales_invoice')}
-          className="relative overflow-hidden bg-white/85 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/90 dark:border-slate-700/80 p-3.5 rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1 hover:border-amber-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[132px] group"
+          className="relative overflow-hidden bg-white/92 dark:bg-slate-900/90 backdrop-blur-2xl border border-white/95 dark:border-slate-700/90 p-3.5 rounded-2xl shadow-[0_8px_26px_rgba(15,23,42,0.06)] hover:shadow-xl hover:-translate-y-1 hover:border-amber-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[132px] group"
         >
           <div className="absolute -top-10 -right-10 w-24 h-24 bg-amber-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-amber-400/20 transition-all" />
           <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-amber-400 to-yellow-500 opacity-80 group-hover:opacity-100 transition-opacity" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-950 dark:to-amber-900 text-amber-600 dark:text-amber-400 border border-amber-200/80 dark:border-amber-700/60 shadow-xs group-hover:scale-105 group-hover:bg-amber-600 group-hover:text-white transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-amber-100/80 dark:bg-amber-950 text-amber-700 dark:text-amber-400 border border-amber-300/80 dark:border-amber-700/60 shadow-xs group-hover:scale-105 group-hover:bg-amber-600 group-hover:text-white transition-all shrink-0">
                 <TrendingUp className="w-4 h-4" />
               </div>
-              <span className="text-xs font-black tracking-tight text-slate-900 dark:text-white truncate">
+              <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
                 Today's Sales
               </span>
             </div>
@@ -402,27 +402,27 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-300/80 text-[10px]">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-300/90 text-[10px]">
               ↑ 12.4%
             </span>
-            <span className="text-slate-500 dark:text-slate-400 font-medium truncate">vs yesterday</span>
+            <span className="text-slate-600 dark:text-slate-400 font-medium truncate">vs yesterday</span>
           </div>
         </div>
 
         {/* Card 4: Today's Purchase */}
         <div
           onClick={() => onQuickAction('purchase')}
-          className="relative overflow-hidden bg-white/85 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/90 dark:border-slate-700/80 p-3.5 rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1 hover:border-rose-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[132px] group"
+          className="relative overflow-hidden bg-white/92 dark:bg-slate-900/90 backdrop-blur-2xl border border-white/95 dark:border-slate-700/90 p-3.5 rounded-2xl shadow-[0_8px_26px_rgba(15,23,42,0.06)] hover:shadow-xl hover:-translate-y-1 hover:border-rose-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[132px] group"
         >
           <div className="absolute -top-10 -right-10 w-24 h-24 bg-rose-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-rose-400/20 transition-all" />
           <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-rose-400 to-pink-500 opacity-80 group-hover:opacity-100 transition-opacity" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-rose-50 to-rose-100 dark:from-rose-950 dark:to-rose-900 text-rose-600 dark:text-rose-400 border border-rose-200/80 dark:border-rose-700/60 shadow-xs group-hover:scale-105 group-hover:bg-rose-600 group-hover:text-white transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-rose-100/80 dark:bg-rose-950 text-rose-700 dark:text-rose-400 border border-rose-300/80 dark:border-rose-700/60 shadow-xs group-hover:scale-105 group-hover:bg-rose-600 group-hover:text-white transition-all shrink-0">
                 <ShoppingBag className="w-4 h-4" />
               </div>
-              <span className="text-xs font-black tracking-tight text-slate-900 dark:text-white truncate">
+              <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
                 Today's Purchase
               </span>
             </div>
@@ -436,27 +436,27 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-rose-500/15 text-rose-700 dark:text-rose-300 border border-rose-300/80 text-[10px]">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-rose-500/15 text-rose-800 dark:text-rose-300 border border-rose-300/90 text-[10px]">
               ↓ 6.3%
             </span>
-            <span className="text-slate-500 dark:text-slate-400 font-medium truncate">Bullion Inward</span>
+            <span className="text-slate-600 dark:text-slate-400 font-medium truncate">Bullion Inward</span>
           </div>
         </div>
 
         {/* Card 5: Orders Pending */}
         <div
           onClick={() => onQuickAction('new_order')}
-          className="relative overflow-hidden bg-white/85 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/90 dark:border-slate-700/80 p-3.5 rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1 hover:border-indigo-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[132px] group"
+          className="relative overflow-hidden bg-white/92 dark:bg-slate-900/90 backdrop-blur-2xl border border-white/95 dark:border-slate-700/90 p-3.5 rounded-2xl shadow-[0_8px_26px_rgba(15,23,42,0.06)] hover:shadow-xl hover:-translate-y-1 hover:border-indigo-400 transition-all duration-300 cursor-pointer flex flex-col justify-between h-[132px] group"
         >
           <div className="absolute -top-10 -right-10 w-24 h-24 bg-indigo-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-indigo-400/20 transition-all" />
           <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-indigo-400 to-purple-500 opacity-80 group-hover:opacity-100 transition-opacity" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-950 dark:to-indigo-900 text-indigo-600 dark:text-indigo-400 border border-indigo-200/80 dark:border-indigo-700/60 shadow-xs group-hover:scale-105 group-hover:bg-indigo-600 group-hover:text-white transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-indigo-100/80 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-400 border border-indigo-300/80 dark:border-indigo-700/60 shadow-xs group-hover:scale-105 group-hover:bg-indigo-600 group-hover:text-white transition-all shrink-0">
                 <Package className="w-4 h-4" />
               </div>
-              <span className="text-xs font-black tracking-tight text-slate-900 dark:text-white truncate">
+              <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
                 Orders Pending
               </span>
             </div>
@@ -470,24 +470,24 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border border-indigo-300/80 text-[10px]">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-indigo-500/15 text-indigo-800 dark:text-indigo-300 border border-indigo-300/90 text-[10px]">
               2 Due Today
             </span>
-            <span className="text-slate-500 dark:text-slate-400 font-medium truncate">Delivery</span>
+            <span className="text-slate-600 dark:text-slate-400 font-medium truncate">Delivery</span>
           </div>
         </div>
 
         {/* Card 6: New Walk-Ins */}
-        <div className="relative overflow-hidden bg-white/85 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/90 dark:border-slate-700/80 p-3.5 rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1 hover:border-teal-400 transition-all duration-300 flex flex-col justify-between h-[132px] group">
+        <div className="relative overflow-hidden bg-white/92 dark:bg-slate-900/90 backdrop-blur-2xl border border-white/95 dark:border-slate-700/90 p-3.5 rounded-2xl shadow-[0_8px_26px_rgba(15,23,42,0.06)] hover:shadow-xl hover:-translate-y-1 hover:border-teal-400 transition-all duration-300 flex flex-col justify-between h-[132px] group">
           <div className="absolute -top-10 -right-10 w-24 h-24 bg-teal-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-teal-400/20 transition-all" />
           <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-teal-400 to-emerald-500 opacity-80 group-hover:opacity-100 transition-opacity" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-950 dark:to-teal-900 text-teal-600 dark:text-teal-400 border border-teal-200/80 dark:border-teal-700/60 shadow-xs group-hover:scale-105 group-hover:bg-teal-600 group-hover:text-white transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-teal-100/80 dark:bg-teal-950 text-teal-700 dark:text-teal-400 border border-teal-300/80 dark:border-teal-700/60 shadow-xs group-hover:scale-105 group-hover:bg-teal-600 group-hover:text-white transition-all shrink-0">
                 <UserPlus className="w-4 h-4" />
               </div>
-              <span className="text-xs font-black tracking-tight text-slate-900 dark:text-white truncate">
+              <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
                 New Walk-ins
               </span>
             </div>
@@ -501,24 +501,24 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-300/80 text-[10px]">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-300/90 text-[10px]">
               ↑ 27%
             </span>
-            <span className="text-slate-500 dark:text-slate-400 font-medium truncate">New Profiles</span>
+            <span className="text-slate-600 dark:text-slate-400 font-medium truncate">New Profiles</span>
           </div>
         </div>
 
         {/* Card 7: Total Footfall */}
-        <div className="relative overflow-hidden bg-white/85 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/90 dark:border-slate-700/80 p-3.5 rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1 hover:border-violet-400 transition-all duration-300 flex flex-col justify-between h-[132px] group">
+        <div className="relative overflow-hidden bg-white/92 dark:bg-slate-900/90 backdrop-blur-2xl border border-white/95 dark:border-slate-700/90 p-3.5 rounded-2xl shadow-[0_8px_26px_rgba(15,23,42,0.06)] hover:shadow-xl hover:-translate-y-1 hover:border-violet-400 transition-all duration-300 flex flex-col justify-between h-[132px] group">
           <div className="absolute -top-10 -right-10 w-24 h-24 bg-violet-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-violet-400/20 transition-all" />
           <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-violet-400 to-purple-500 opacity-80 group-hover:opacity-100 transition-opacity" />
 
           <div className="flex items-center justify-between z-10">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-violet-50 to-violet-100 dark:from-violet-950 dark:to-violet-900 text-violet-600 dark:text-violet-400 border border-violet-200/80 dark:border-violet-700/60 shadow-xs group-hover:scale-105 group-hover:bg-violet-600 group-hover:text-white transition-all shrink-0">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-violet-100/80 dark:bg-violet-950 text-violet-700 dark:text-violet-400 border border-violet-300/80 dark:border-violet-700/60 shadow-xs group-hover:scale-105 group-hover:bg-violet-600 group-hover:text-white transition-all shrink-0">
                 <Users className="w-4 h-4" />
               </div>
-              <span className="text-xs font-black tracking-tight text-slate-900 dark:text-white truncate">
+              <span className="text-xs font-black tracking-tight text-slate-950 dark:text-white truncate">
                 Total Footfall
               </span>
             </div>
@@ -532,10 +532,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-1.5 text-[11px] z-10">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-300/80 text-[10px]">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full font-black bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-300/90 text-[10px]">
               ↑ 16%
             </span>
-            <span className="text-slate-500 dark:text-slate-400 font-medium truncate">Showroom Total</span>
+            <span className="text-slate-600 dark:text-slate-400 font-medium truncate">Showroom Total</span>
           </div>
         </div>
       </div>
