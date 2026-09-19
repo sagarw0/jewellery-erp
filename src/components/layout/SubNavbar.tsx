@@ -14,6 +14,7 @@ import {
   FileSpreadsheet,
   Boxes,
   ClipboardCheck,
+  SlidersHorizontal,
   Layers,
   ChevronRight,
   Command,
@@ -204,6 +205,15 @@ export const SubNavbar: React.FC<SubNavbarProps> = ({
         isActive: stockSubView === 'stock_report',
         allowedRoles: ['Owner', 'Manager', 'Karagir'],
         onClick: () => setStockSubView && setStockSubView('stock_report'),
+      },
+      {
+        id: 'stock_refill',
+        label: 'Stock Refill & Targets',
+        hotkey: 'Ctrl+R',
+        icon: SlidersHorizontal,
+        isActive: stockSubView === 'stock_refill',
+        allowedRoles: ['Owner', 'Manager', 'Karagir'],
+        onClick: () => setStockSubView && setStockSubView('stock_refill'),
       },
       {
         id: 'audit',

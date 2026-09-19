@@ -16,7 +16,7 @@ export type NavSection =
 export type MasterSubView = 'account_master' | 'vendor_master' | 'karagir_master' | 'item_creation' | 'barcode';
 export type TransactionSubView = 'new_order' | 'purchase' | 'refinery_in' | 'sales_invoice';
 export type AccountSubView = 'day_book' | 'book_display' | 'account_display';
-export type StockSubView = 'stock_report' | 'audit';
+export type StockSubView = 'stock_report' | 'stock_refill' | 'audit';
 
 // ----------------------------------------------------
 // Theme Types & Customization (Strict 3 Luxury Themes)
@@ -624,6 +624,25 @@ export interface StockItem {
   is_loose?: boolean;
   rate_per_gm: number;
   total_value: number;
+}
+
+export interface StockRefillItem {
+  id: string;
+  item_name: string;            // Item Description
+  category: string;             // Gold, Silver, Diamond, Platinum, Bullion
+  purity: number;               // 91.6, 75.0, 99.99, 92.5
+  desired_stock: number;        // Target/Desired Min Stock (Pcs)
+  sold_stock: number;           // Sold Stock in period (Pcs)
+  current_stock: number;        // Current Available Stock (Pcs) = desired - sold (or current balance)
+  gross_wt_per_unit: number;    // Approx weight per pc (gm)
+  vendor_id?: string;
+  vendor_name: string;          // Assigned Preferred Maker/Supplier
+  vendor_phone: string;         // WhatsApp contact phone (e.g. 919820123456)
+  last_refill_date?: string;
+  status: 'critical' | 'low' | 'adequate' | 'surplus';
+  urgency: 'HIGH' | 'MEDIUM' | 'NORMAL';
+  is_ordered?: boolean;
+  last_order_timestamp?: string;
 }
 
 // ----------------------------------------------------

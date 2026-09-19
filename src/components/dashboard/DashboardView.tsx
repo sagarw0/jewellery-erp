@@ -45,6 +45,7 @@ import {
   NewOrderBookingRecord,
   SundryDebtorRow,
   StockItem,
+  StockRefillItem,
   BranchId,
   AuthUser,
 } from '../../types/erp';
@@ -66,6 +67,8 @@ interface DashboardViewProps {
   orders: NewOrderBookingRecord[];
   debtors: SundryDebtorRow[];
   stockItems: StockItem[];
+  refillItems?: StockRefillItem[];
+  onOpenStockRefill?: () => void;
   currentUser?: AuthUser | null;
   selectedBranch?: BranchId;
   onSelectBranch?: (branchId: BranchId) => void;
@@ -313,6 +316,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   orders,
   debtors,
   stockItems,
+  refillItems = [],
+  onOpenStockRefill,
   currentUser,
   selectedBranch = 'all',
   onSelectBranch,
@@ -641,6 +646,57 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
         )}
       </div>
+
+      {/* Stock Refill Alert Banner (Displayed when items are below desired level) */}
+      {(() => {
+        const deficitList = refillItems.filter((i) => i.current_stock < i.desired_stock);
+        if (deficitList.length === 0) return null;
+        const totalDefPcs = deficitList.reduce((acc, it) => acc + (it.desired_stock - it.current_stock), 0);
+
+        return (
+          <div
+            className={`p-3.5 sm:p-4 rounded-2xl border flex flex-col md:flex-row items-center justify-between gap-3 shadow-xs animate-in fade-in duration-150 ${
+              isDark
+                ? 'bg-gradient-to-r from-rose-950/40 via-amber-950/30 to-purple-950/30 border-rose-500/40 text-white'
+                : 'bg-gradient-to-r from-amber-500/10 via-amber-50 to-rose-50 border-amber-300 text-slate-900 shadow-2xs'
+            }`}
+          >
+            <div className="flex items-center space-x-3 w-full md:w-auto">
+              <div className="p-2.5 rounded-2xl bg-amber-500 text-slate-950 shadow-xs shrink-0 animate-pulse">
+                <AlertCircle className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center space-x-2 flex-wrap">
+                  <span className="font-black text-xs sm:text-sm tracking-tight">
+                    Stock Refill Alert: {deficitList.length} SKUs Below Target
+                  </span>
+                  <span className="px-2 py-0.2 rounded-full text-[9.5px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-400/30">
+                    +{totalDefPcs} Pcs Shortfall
+                  </span>
+                </div>
+                <div className="text-[11px] text-slate-600 dark:text-slate-300 flex items-center space-x-1.5 flex-wrap mt-0.5">
+                  <span className="font-bold text-amber-700 dark:text-amber-300">Rule:</span>
+                  <span className="font-mono text-[10.5px]">
+                    Desired ({deficitList.reduce((s, i) => s + i.desired_stock, 0)}) − Sold ({deficitList.reduce((s, i) => s + i.sold_stock, 0)}) = Current Floor ({deficitList.reduce((s, i) => s + i.current_stock, 0)})
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-2 w-full md:w-auto justify-end">
+              {onOpenStockRefill && (
+                <button
+                  onClick={onOpenStockRefill}
+                  className="w-full md:w-auto px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-black text-xs shadow-xs flex items-center justify-center space-x-1.5 cursor-pointer transition-all"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Refill via WhatsApp ({totalDefPcs} pcs)</span>
+                </button>
+              )}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* 1. TOP EXECUTIVE METRICS STRIP (7 Clean Luxury Frosted Glass Cards) */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-3.5 items-stretch">

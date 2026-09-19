@@ -15,6 +15,7 @@ import {
   DayBookSummary,
   SundryDebtorRow,
   StockItem,
+  StockRefillItem,
   DebitLedgerEntry,
   CreditLedgerEntry,
   BackupStatusInfo,
@@ -34,6 +35,7 @@ import {
   INITIAL_DAYBOOK_SUMMARY,
   INITIAL_DEBTORS,
   INITIAL_STOCK,
+  INITIAL_STOCK_REFILL_ITEMS,
   INITIAL_LEDGER_DEBIT,
   INITIAL_LEDGER_CREDIT,
   INITIAL_BACKUP_STATUS,
@@ -57,6 +59,8 @@ import { DayBookView } from './components/accounts/DayBookView';
 import { BookDisplayView } from './components/accounts/BookDisplayView';
 import { AccountDisplayView } from './components/accounts/AccountDisplayView';
 import { StockReportView } from './components/stock/StockReportView';
+import { StockRefillAlertModal } from './components/stock/StockRefillAlertModal';
+import { StockRefillManagerView } from './components/stock/StockRefillManagerView';
 import { BackupManagerView } from './components/backup/BackupManagerView';
 import { FieldDictionaryView } from './components/dictionary/FieldDictionaryView';
 import { GoldSchemeView } from './components/common/GoldSchemeView';
@@ -128,6 +132,43 @@ export function App() {
   const [debitEntries, setDebitEntries] = useState<DebitLedgerEntry[]>(INITIAL_LEDGER_DEBIT);
   const [creditEntries, setCreditEntries] = useState<CreditLedgerEntry[]>(INITIAL_LEDGER_CREDIT);
   const [backupStatus, setBackupStatus] = useState<BackupStatusInfo[]>(INITIAL_BACKUP_STATUS);
+
+  // Stock Refill Target Store & Daily 1st-Login Popup Alert State
+  const [refillItems, setRefillItems] = useState<StockRefillItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('swarna_stock_refill_items');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return INITIAL_STOCK_REFILL_ITEMS;
+  });
+  const [isStockRefillAlertOpen, setIsStockRefillAlertOpen] = useState(false);
+
+  const handleUpdateRefillItem = (updated: StockRefillItem) => {
+    setRefillItems((prev) => {
+      const idx = prev.findIndex((i) => i.id === updated.id);
+      let next: StockRefillItem[];
+      if (idx >= 0) {
+        next = [...prev];
+        next[idx] = updated;
+      } else {
+        next = [updated, ...prev];
+      }
+      try {
+        localStorage.setItem('swarna_stock_refill_items', JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
+  };
+
+  const handleAddRefillItem = (newItem: StockRefillItem) => {
+    setRefillItems((prev) => {
+      const next = [newItem, ...prev];
+      try {
+        localStorage.setItem('swarna_stock_refill_items', JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
+  };
 
   // Load cloud data from Supabase on startup
   useEffect(() => {
@@ -256,6 +297,10 @@ export function App() {
       case 'stock_report':
         setCurrentSection('stock');
         setStockSubView('stock_report');
+        break;
+      case 'stock_refill':
+        setCurrentSection('stock');
+        setStockSubView('stock_refill');
         break;
       case 'day_book':
         setCurrentSection('accounts');
@@ -472,10 +517,23 @@ export function App() {
         onLoginSuccess={(user) => {
           setCurrentUser(user);
           if (user.branchId) setSelectedBranch(user.branchId);
+
+          // Check if 1st login of the day for stock refill alert popup
+          const todayStr = new Date().toISOString().slice(0, 10);
+          const lastAlertKey = `swarna_last_login_stock_alert_date_${user.code}`;
+          const lastAlertDate = localStorage.getItem(lastAlertKey);
+
+          // If 1st login of the day, trigger the popup alert
+          if (lastAlertDate !== todayStr) {
+            setIsStockRefillAlertOpen(true);
+            localStorage.setItem(lastAlertKey, todayStr);
+          }
         }}
       />
     );
   }
+
+  const stockDeficitCount = refillItems.filter((i) => i.current_stock < i.desired_stock).length;
 
   return (
     <div className={`min-h-screen ${currentTheme.appBg} ${currentTheme.textPrimary} flex flex-col font-sans selection:bg-sky-200`}>
@@ -494,6 +552,8 @@ export function App() {
         onOpenAnalytics={() => setShowAnalytics(true)}
         onOpenBullionRates={() => setShowBullionRates(true)}
         onOpenAiAssistant={() => setShowAiAssistant(true)}
+        onOpenStockRefill={() => setIsStockRefillAlertOpen(true)}
+        stockDeficitCount={stockDeficitCount}
       />
 
       {/* Sub-Header Navigation Tabs for Multi-view Sections */}
@@ -522,6 +582,8 @@ export function App() {
             orders={orders}
             debtors={debtors}
             stockItems={stockItems}
+            refillItems={refillItems}
+            onOpenStockRefill={() => setIsStockRefillAlertOpen(true)}
             currentUser={currentUser}
             selectedBranch={selectedBranch}
             onSelectBranch={(b) => setSelectedBranch(b)}
@@ -657,10 +719,33 @@ export function App() {
 
         {/* 5. STOCK */}
         {currentSection === 'stock' && (
-          <StockReportView
-            stockItems={stockItems}
-            onClose={() => setCurrentSection('dashboard')}
-          />
+          <>
+            {stockSubView === 'stock_report' && (
+              <StockReportView
+                stockItems={stockItems}
+                onClose={() => setCurrentSection('dashboard')}
+              />
+            )}
+            {stockSubView === 'stock_refill' && (
+              <StockRefillManagerView
+                refillItems={refillItems}
+                onUpdateRefillItem={handleUpdateRefillItem}
+                onAddRefillItem={handleAddRefillItem}
+                onOpenAlertModal={() => setIsStockRefillAlertOpen(true)}
+                currentUser={currentUser}
+                vendors={vendors}
+                karagirs={karagirs}
+                gold24kRate={gold24kRate}
+                gold22kRate={gold22kRate}
+              />
+            )}
+            {stockSubView === 'audit' && (
+              <StockReportView
+                stockItems={stockItems}
+                onClose={() => setCurrentSection('dashboard')}
+              />
+            )}
+          </>
         )}
 
         {/* 6. REPORTS (Day Book & MIS) */}
@@ -794,6 +879,21 @@ export function App() {
       <ThemeCustomizerModal
         isOpen={isCustomizerOpen}
         onClose={() => setIsCustomizerOpen(false)}
+      />
+
+      {/* Daily 1st-Login Stock Refill Alert Modal */}
+      <StockRefillAlertModal
+        isOpen={isStockRefillAlertOpen}
+        onClose={() => setIsStockRefillAlertOpen(false)}
+        refillItems={refillItems}
+        onUpdateRefillItem={handleUpdateRefillItem}
+        onOpenDetailedManager={() => {
+          setCurrentSection('stock');
+          setStockSubView('stock_refill');
+        }}
+        currentUser={currentUser}
+        gold24kRate={gold24kRate}
+        gold22kRate={gold22kRate}
       />
     </div>
   );

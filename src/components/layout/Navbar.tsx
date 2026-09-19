@@ -120,6 +120,8 @@ interface NavbarProps {
   onOpenAnalytics: () => void;
   onOpenBullionRates?: () => void;
   onOpenAiAssistant?: () => void;
+  onOpenStockRefill?: () => void;
+  stockDeficitCount?: number;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -136,6 +138,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenAnalytics,
   onOpenBullionRates,
   onOpenAiAssistant,
+  onOpenStockRefill,
+  stockDeficitCount = 0,
 }) => {
   const {
     currentTheme,
@@ -396,6 +400,29 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="text-[9px] bg-black/20 text-slate-900 px-1 py-0.2 rounded font-mono">
                 AI
               </span>
+            </button>
+          )}
+
+          {/* Stock Refill Alert & Target Manager */}
+          {onOpenStockRefill && (
+            <button
+              onClick={onOpenStockRefill}
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl font-bold text-xs transition-all cursor-pointer border ${
+                stockDeficitCount > 0
+                  ? 'bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border-rose-400/40 shadow-2xs'
+                  : isDark
+                  ? 'bg-white/10 hover:bg-white/15 text-white border-white/20'
+                  : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300 shadow-2xs'
+              }`}
+              title="Stock Refill & Inventory Deficit Manager (Desired Stock - Sold Stock = Current Stock)"
+            >
+              <Boxes className="w-3.5 h-3.5 text-amber-500" />
+              <span className="hidden md:inline">Stock Refill</span>
+              {stockDeficitCount > 0 && (
+                <span className="text-[9.5px] bg-rose-500 text-white font-black px-1.5 py-0.2 rounded-full animate-pulse">
+                  {stockDeficitCount} Low
+                </span>
+              )}
             </button>
           )}
 
