@@ -139,8 +139,8 @@ select optgroup {
    ========================================================================== */
 
 .theme-apple-glass {
-  background: radial-gradient(circle at 15% 15%, rgba(199, 222, 255, 0.45) 0%, rgba(240, 244, 249, 0.85) 45%, rgba(254, 240, 199, 0.25) 100%),
-              linear-gradient(135deg, #eef4fb 0%, #e2edfb 40%, #f8fafc 100%) fixed !important;
+  background: radial-gradient(circle at 15% 15%, rgba(180, 205, 240, 0.55) 0%, rgba(220, 228, 238, 0.92) 45%, rgba(240, 225, 185, 0.35) 100%),
+              linear-gradient(135deg, #dce6f2 0%, #d0e0f2 40%, #e8eef5 100%) fixed !important;
   color: #0f172a !important;
   color-scheme: light !important;
 }
