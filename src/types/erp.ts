@@ -19,28 +19,41 @@ export type AccountSubView = 'day_book' | 'book_display' | 'account_display';
 export type StockSubView = 'stock_report' | 'audit';
 
 // ----------------------------------------------------
-// Theme Types & Customization
+// Theme Types & Customization (Strict 3 Luxury Themes)
 // ----------------------------------------------------
 export type ThemeId =
   | 'apple-glass'
-  | 'cyber-diamond'
-  | 'champagne-pearl'
-  | 'titanium-sunset'
-  | 'emerald-neon'
-  | 'cosmic-aurora'
-  | 'nordic-slate'
-  | 'mughal-ruby'
-  | 'light-blue'
   | 'royal-gold'
-  | 'emerald-luxury'
-  | 'rose-gold'
-  | 'velvet-purple'
-  | 'platinum-ice'
-  | 'ruby-regal'
   | 'obsidian-velvet'
-  | 'midnight-blue'
-  | 'high-contrast'
   | 'custom';
+
+export type UserRole =
+  | 'Owner'
+  | 'Manager'
+  | 'Cashier'
+  | 'Accountant'
+  | 'Karagir';
+
+export type BranchId = 'all' | 'mumbai' | 'pune' | 'thane';
+
+export interface BranchInfo {
+  id: BranchId;
+  code: string;
+  name: string;
+  shortName: string;
+  city: string;
+  address: string;
+  license: string;
+  phone: string;
+}
+
+export interface AuthUser {
+  code: string;
+  name: string;
+  role: UserRole;
+  branch: string;
+  branchId: BranchId;
+}
 
 export type UiDensity = 'compact' | 'comfortable';
 

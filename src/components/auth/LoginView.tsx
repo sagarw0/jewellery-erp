@@ -15,31 +15,80 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { useTheme, THEMES } from '../../context/ThemeContext';
-import { ThemeId } from '../../types/erp';
+import { ThemeId, UserRole, BranchId, AuthUser } from '../../types/erp';
 
 interface LoginViewProps {
-  onLoginSuccess: (user: { code: string; name: string; role: string; branch: string }) => void;
+  onLoginSuccess: (user: AuthUser) => void;
 }
 
-export const BRANCHES = [
-  'Main Showroom - Zaveri Bazaar, Mumbai',
-  'Bandra West Flagship Showroom',
-  'Vile Parle Heritage Jewellery Store',
-  'Pune Camp Bullion Branch',
-  'Central Workshop & Karagir Unit'
+export const BRANCHES_LIST: { id: BranchId; label: string; city: string }[] = [
+  { id: 'mumbai', label: 'Mumbai Flagship Showroom (HM-916-MH-4421)', city: 'Mumbai' },
+  { id: 'pune', label: 'Pune Camp Showroom (HM-916-PN-1102)', city: 'Pune' },
+  { id: 'thane', label: 'Thane West Luxury Boutique (HM-916-TH-8833)', city: 'Thane' },
 ];
 
-export const DEMO_USERS = [
-  { code: 'EMP-101', name: 'Ramesh Kulkarni', role: 'Head Cashier', branch: 'Main Showroom - Zaveri Bazaar, Mumbai', pass: 'demo123' },
-  { code: 'EMP-204', name: 'Sanjay Verma', role: 'Senior Sales Executive', branch: 'Bandra West Flagship Showroom', pass: 'demo123' },
-  { code: 'EMP-001', name: 'Pravin Shah', role: 'Showroom Manager / Admin', branch: 'Main Showroom - Zaveri Bazaar, Mumbai', pass: 'admin123' },
+export const DEMO_USERS: {
+  code: string;
+  name: string;
+  role: UserRole;
+  branch: string;
+  branchId: BranchId;
+  pass: string;
+  desc: string;
+}[] = [
+  {
+    code: 'OWNER-01',
+    name: 'Sagar Wadkar',
+    role: 'Owner',
+    branch: 'Mumbai Flagship Showroom (HM-916-MH-4421)',
+    branchId: 'all',
+    pass: 'admin123',
+    desc: 'Full Access to all 11 Modules + Multi-Branch Switching + All Controls',
+  },
+  {
+    code: 'CASH-101',
+    name: 'Ramesh Kulkarni',
+    role: 'Cashier',
+    branch: 'Mumbai Flagship Showroom (HM-916-MH-4421)',
+    branchId: 'mumbai',
+    pass: 'demo123',
+    desc: 'Sales POS Counter (F4), Day Book, Gold Scheme & Messenger',
+  },
+  {
+    code: 'MGR-201',
+    name: 'Pravin Shah',
+    role: 'Manager',
+    branch: 'Mumbai Flagship Showroom (HM-916-MH-4421)',
+    branchId: 'mumbai',
+    pass: 'demo123',
+    desc: 'Sales, Purchases, Orders, Stock, Barcodes, Daybook & Masters',
+  },
+  {
+    code: 'ACCT-301',
+    name: 'Sunil Agrawal',
+    role: 'Accountant',
+    branch: 'Mumbai Flagship Showroom (HM-916-MH-4421)',
+    branchId: 'mumbai',
+    pass: 'demo123',
+    desc: 'Accounts, Ledgers, Purchases, Day Book, Sundry Debtors & Reports',
+  },
+  {
+    code: 'KARA-401',
+    name: 'Govind Soni',
+    role: 'Karagir',
+    branch: 'Central Workshop Unit',
+    branchId: 'mumbai',
+    pass: 'demo123',
+    desc: 'Workshop Job Cards, Refinery In, Material Melting & Stock Vault',
+  },
 ];
 
 export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
   const { currentTheme, isDark, setTheme } = useTheme();
-  const [employeeCode, setEmployeeCode] = useState('EMP-101');
-  const [branch, setBranch] = useState(BRANCHES[0]);
-  const [password, setPassword] = useState('demo123');
+  const [employeeCode, setEmployeeCode] = useState('OWNER-01');
+  const [branch, setBranch] = useState(BRANCHES_LIST[0].label);
+  const [branchId, setBranchId] = useState<BranchId>('all');
+  const [password, setPassword] = useState('admin123');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -65,20 +114,23 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
         (u) => u.code.toLowerCase() === employeeCode.trim().toLowerCase()
       );
       const userName = matched ? matched.name : 'Authorized Staff';
-      const userRole = matched ? matched.role : 'Billing Executive';
+      const userRole: UserRole = matched ? matched.role : 'Cashier';
+      const bId = matched ? matched.branchId : branchId;
 
       onLoginSuccess({
         code: employeeCode.trim().toUpperCase(),
         name: userName,
         role: userRole,
         branch,
+        branchId: bId,
       });
-    }, 600);
+    }, 400);
   };
 
   const handleQuickDemo = (user: typeof DEMO_USERS[0]) => {
     setEmployeeCode(user.code);
     setBranch(user.branch);
+    setBranchId(user.branchId);
     setPassword(user.pass);
     setErrorMsg('');
   };
@@ -240,16 +292,20 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                 <Building2 className={`w-4 h-4 absolute left-3 top-2.5 ${isDark ? 'text-sky-400' : 'text-sky-500'}`} />
                 <select
                   value={branch}
-                  onChange={(e) => setBranch(e.target.value)}
+                  onChange={(e) => {
+                    const selected = BRANCHES_LIST.find((b) => b.label === e.target.value);
+                    setBranch(e.target.value);
+                    if (selected) setBranchId(selected.id);
+                  }}
                   className={`w-full pl-9 pr-3 py-2 rounded-lg font-medium transition-colors focus:outline-none ${
                     isDark
                       ? 'bg-white/[0.09] border border-white/20 text-white focus:border-sky-400 focus:bg-[#1f2937]'
                       : 'bg-slate-50 border border-slate-300 text-slate-900 focus:border-blue-500 focus:bg-white'
                   }`}
                 >
-                  {BRANCHES.map((b) => (
-                    <option key={b} value={b} className={isDark ? 'bg-[#1f2937] text-white' : 'bg-white text-slate-900'}>
-                      {b}
+                  {BRANCHES_LIST.map((b) => (
+                    <option key={b.id} value={b.label} className={isDark ? 'bg-[#1f2937] text-white' : 'bg-white text-slate-900'}>
+                      {b.label}
                     </option>
                   ))}
                 </select>
@@ -303,12 +359,12 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
             </button>
           </form>
 
-          {/* Quick Demo Login Chips */}
+          {/* Quick Demo Login Chips with Role details */}
           <div className={`pt-4 border-t ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
             <span className={`block text-[11px] font-semibold uppercase tracking-wider mb-2 text-center ${
               isDark ? 'text-slate-300' : 'text-slate-400'
             }`}>
-              Quick Demo Staff Profiles
+              Quick Switch Demo Roles
             </span>
             <div className="grid grid-cols-1 gap-1.5">
               {DEMO_USERS.map((user) => (
@@ -316,27 +372,39 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                   key={user.code}
                   type="button"
                   onClick={() => handleQuickDemo(user)}
-                  className={`p-2 rounded-lg text-left transition-colors flex items-center justify-between group ${
-                    isDark
+                  className={`p-2 rounded-xl text-left transition-all flex items-center justify-between group cursor-pointer ${
+                    employeeCode === user.code
+                      ? isDark
+                        ? 'bg-amber-500/20 border-2 border-amber-400 text-white shadow-xs'
+                        : 'bg-blue-50 border-2 border-blue-500 text-slate-950 shadow-xs'
+                      : isDark
                       ? 'bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white'
-                      : 'bg-sky-50/70 hover:bg-sky-100/80 border border-sky-200/60 text-slate-800'
+                      : 'bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800'
                   }`}
                 >
-                  <div>
-                    <div className="font-semibold text-xs flex items-center space-x-1.5">
-                      <span className={isDark ? 'text-white' : 'text-slate-800'}>{user.name}</span>
+                  <div className="min-w-0 pr-2">
+                    <div className="font-bold text-xs flex items-center space-x-1.5 flex-wrap">
+                      <span className={isDark ? 'text-white' : 'text-slate-900'}>{user.name}</span>
                       <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono font-bold ${
-                        isDark ? 'text-sky-300 bg-white/15 border border-white/20' : 'text-sky-700 bg-sky-200/60'
+                        user.role === 'Owner'
+                          ? 'bg-amber-400/25 text-amber-900 dark:text-amber-300 border border-amber-400/40'
+                          : user.role === 'Cashier'
+                          ? 'bg-emerald-400/25 text-emerald-900 dark:text-emerald-300 border border-emerald-400/40'
+                          : 'bg-sky-400/25 text-sky-900 dark:text-sky-300 border border-sky-400/40'
                       }`}>
-                        {user.code}
+                        {user.role} ({user.code})
                       </span>
                     </div>
-                    <div className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{user.role}</div>
+                    <div className={`text-[10px] truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                      {user.desc}
+                    </div>
                   </div>
-                  <span className={`text-[10px] font-semibold font-mono ${
-                    isDark ? 'text-sky-300 group-hover:text-sky-200 underline' : 'text-blue-600 group-hover:underline'
+                  <span className={`text-[10px] font-bold shrink-0 ${
+                    employeeCode === user.code
+                      ? isDark ? 'text-amber-300' : 'text-blue-700'
+                      : isDark ? 'text-slate-400 group-hover:text-white' : 'text-slate-500 group-hover:text-slate-900'
                   }`}>
-                    Select
+                    {employeeCode === user.code ? '✓ Active' : 'Select →'}
                   </span>
                 </button>
               ))}

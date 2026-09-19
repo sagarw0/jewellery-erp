@@ -18,7 +18,10 @@ import {
   DebitLedgerEntry,
   CreditLedgerEntry,
   BackupStatusInfo,
-  BackupMediaOption
+  BackupMediaOption,
+  UserRole,
+  BranchId,
+  AuthUser,
 } from './types/erp';
 import {
   INITIAL_ACCOUNTS,
@@ -33,12 +36,12 @@ import {
   INITIAL_STOCK,
   INITIAL_LEDGER_DEBIT,
   INITIAL_LEDGER_CREDIT,
-  INITIAL_BACKUP_STATUS
+  INITIAL_BACKUP_STATUS,
 } from './utils/mockData';
 import { cloudService } from './lib/supabase';
 
 import { LoginView } from './components/auth/LoginView';
-import { Navbar } from './components/layout/Navbar';
+import { Navbar, ROLE_NAV_PERMISSIONS } from './components/layout/Navbar';
 import { SubNavbar } from './components/layout/SubNavbar';
 import { DashboardView } from './components/dashboard/DashboardView';
 import { AccountMasterView } from './components/masters/AccountMasterView';
@@ -67,17 +70,13 @@ import { ThemeCustomizerModal } from './components/common/ThemeCustomizerModal';
 import { useTheme } from './context/ThemeContext';
 import { Sparkles } from 'lucide-react';
 
-interface AuthUser {
-  code: string;
-  name: string;
-  role: string;
-  branch: string;
-}
-
 export function App() {
   const { currentTheme, isCustomizerOpen, setIsCustomizerOpen } = useTheme();
   // Authentication State (Starts with Login Page)
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+
+  // Multi-Branch State ('all' = Consolidated View across all branches)
+  const [selectedBranch, setSelectedBranch] = useState<BranchId>('all');
 
   // Executive Analytics Modal State
   const [showAnalytics, setShowAnalytics] = useState(false);
@@ -444,9 +443,38 @@ export function App() {
     );
   };
 
+  const handleChangeUserRole = (newRole: UserRole) => {
+    if (!currentUser) return;
+    const updated: AuthUser = {
+      ...currentUser,
+      role: newRole,
+    };
+    setCurrentUser(updated);
+
+    const allowed = ROLE_NAV_PERMISSIONS[newRole];
+    if (allowed && !allowed.includes(currentSection)) {
+      const fallbackSection = allowed[0] || 'dashboard';
+      setCurrentSection(fallbackSection);
+      if (fallbackSection === 'transactions') {
+        setTransSubView(newRole === 'Karagir' ? 'new_order' : 'sales_invoice');
+      } else if (fallbackSection === 'accounts') {
+        setAccSubView('day_book');
+      } else if (fallbackSection === 'stock') {
+        setStockSubView('stock_report');
+      }
+    }
+  };
+
   // If not logged in, show clean Login Screen
   if (!currentUser) {
-    return <LoginView onLoginSuccess={(user) => setCurrentUser(user)} />;
+    return (
+      <LoginView
+        onLoginSuccess={(user) => {
+          setCurrentUser(user);
+          if (user.branchId) setSelectedBranch(user.branchId);
+        }}
+      />
+    );
   }
 
   return (
@@ -459,6 +487,9 @@ export function App() {
         gold22kRate={gold22kRate}
         silverRate={silverRate}
         currentUser={currentUser}
+        selectedBranch={selectedBranch}
+        onSelectBranch={(b) => setSelectedBranch(b)}
+        onChangeUserRole={handleChangeUserRole}
         onLogout={() => setCurrentUser(null)}
         onOpenAnalytics={() => setShowAnalytics(true)}
         onOpenBullionRates={() => setShowBullionRates(true)}
@@ -476,6 +507,7 @@ export function App() {
         setAccSubView={setAccSubView}
         stockSubView={stockSubView}
         setStockSubView={setStockSubView}
+        currentUser={currentUser}
       />
 
       {/* Main Workspace Container */}
@@ -491,6 +523,8 @@ export function App() {
             debtors={debtors}
             stockItems={stockItems}
             currentUser={currentUser}
+            selectedBranch={selectedBranch}
+            onSelectBranch={(b) => setSelectedBranch(b)}
             onOpenBullionRates={() => setShowBullionRates(true)}
           />
         )}

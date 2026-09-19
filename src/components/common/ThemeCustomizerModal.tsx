@@ -35,37 +35,23 @@ interface ThemeCustomizerModalProps {
 }
 
 const QUICK_BG_SWATCHES = [
-  { name: 'Apple Ice', hex: '#b8cadc' },
+  { name: 'Apple Ice Ambient', hex: '#b8cadc' },
+  { name: 'Champagne Silk', hex: '#f1e6cd' },
+  { name: 'Obsidian OLED Black', hex: '#070b14' },
   { name: 'Pearl Cream', hex: '#faf3ec' },
   { name: 'Titanium Ice', hex: '#dce5ee' },
-  { name: 'Sapphire Sky', hex: '#cbd8e8' },
-  { name: '24K Gold Silk', hex: '#f1e6cd' },
-  { name: 'Emerald Mint', hex: '#cfeee0' },
-  { name: 'Rose Quartz', hex: '#fce4e8' },
-  { name: 'Amethyst Mist', hex: '#e9e3f8' },
-  { name: 'Nordic Gray', hex: '#e2e8f0' },
-  { name: 'Ruby Silk', hex: '#fbdcdc' },
-  { name: 'Cyber Space', hex: '#050b14' },
-  { name: 'Midnight Navy', hex: '#081326' },
-  { name: 'Deep Forest', hex: '#061a14' },
-  { name: 'Cosmic Indigo', hex: '#0b091a' },
-  { name: 'Mughal Crimson', hex: '#1f0707' },
-  { name: 'OLED Pure Black', hex: '#000000' },
+  { name: 'Sapphire Crystal', hex: '#cbd8e8' },
+  { name: 'Midnight Navy', hex: '#0a192f' },
+  { name: 'Pure OLED Black', hex: '#000000' },
 ];
 
 const QUICK_ACCENT_SWATCHES = [
   { name: 'Apple iOS Blue', hex: '#007aff' },
-  { name: 'Cyan Neon Laser', hex: '#00f2fe' },
-  { name: 'Coral Sunset Gold', hex: '#f97316' },
-  { name: 'Royal 24K Gold', hex: '#d97706' },
-  { name: 'Gem Emerald', hex: '#059669' },
-  { name: 'Electric Mint', hex: '#10b981' },
-  { name: 'Rose Ruby', hex: '#e11d48' },
-  { name: 'Nebula Violet', hex: '#8b5cf6' },
-  { name: 'Velvet Amethyst', hex: '#7c3aed' },
-  { name: 'Ice Blue', hex: '#0284c7' },
-  { name: 'Topaz Amber', hex: '#f59e0b' },
-  { name: 'OLED Neon Gold', hex: '#fbbf24' },
+  { name: 'Royal 24K Bullion Gold', hex: '#d97706' },
+  { name: 'Luminous Amber Gold', hex: '#f59e0b' },
+  { name: 'Diamond Cyan', hex: '#00f2fe' },
+  { name: 'Emerald Gemstone', hex: '#059669' },
+  { name: 'Imperial Ruby', hex: '#e11d48' },
 ];
 
 export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
