@@ -71,6 +71,11 @@ import { BullionRateModal } from './components/common/BullionRateModal';
 import { AiAssistantModal } from './components/common/AiAssistantModal';
 import { bullionRatesService } from './services/bullionRatesService';
 import { ThemeCustomizerModal } from './components/common/ThemeCustomizerModal';
+import {
+  UserRoleManagementModal,
+  ManagedUser,
+  INITIAL_STAFF_USERS,
+} from './components/common/UserRoleManagementModal';
 import { useTheme } from './context/ThemeContext';
 import { Sparkles } from 'lucide-react';
 
@@ -78,6 +83,10 @@ export function App() {
   const { currentTheme, isCustomizerOpen, setIsCustomizerOpen, isDark } = useTheme();
   // Authentication State (Starts with Login Page)
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+
+  // Staff Users & RBAC Management State
+  const [staffUsers, setStaffUsers] = useState<ManagedUser[]>(INITIAL_STAFF_USERS);
+  const [showUserRoleModal, setShowUserRoleModal] = useState(false);
 
   // Multi-Branch State ('all' = Consolidated View across all branches)
   const [selectedBranch, setSelectedBranch] = useState<BranchId>('all');
@@ -488,6 +497,35 @@ export function App() {
     );
   };
 
+  const handleUpdateStaffRole = (userCode: string, newRole: UserRole) => {
+    // PROTECTED OWNER RULE: Owner role is permanently locked and cannot be demoted or changed
+    if (userCode === 'OWNER-01') return;
+
+    setStaffUsers((prev) =>
+      prev.map((u) => (u.code === userCode ? { ...u, role: newRole } : u))
+    );
+
+    // If currently logged-in user is this staff member, update active session too
+    if (currentUser && currentUser.code === userCode) {
+      handleChangeUserRole(newRole);
+    }
+  };
+
+  const handleAddNewStaff = (newUser: ManagedUser) => {
+    setStaffUsers((prev) => [...prev, newUser]);
+  };
+
+  const handleSwitchActiveStaff = (targetUser: ManagedUser) => {
+    setCurrentUser(targetUser);
+    if (targetUser.branchId) setSelectedBranch(targetUser.branchId);
+
+    const allowed = ROLE_NAV_PERMISSIONS[targetUser.role];
+    if (allowed && !allowed.includes(currentSection)) {
+      const fallbackSection = allowed[0] || 'dashboard';
+      setCurrentSection(fallbackSection);
+    }
+  };
+
   const handleChangeUserRole = (newRole: UserRole) => {
     if (!currentUser) return;
     const updated: AuthUser = {
@@ -553,6 +591,7 @@ export function App() {
         onOpenBullionRates={() => setShowBullionRates(true)}
         onOpenAiAssistant={() => setShowAiAssistant(true)}
         onOpenStockRefill={() => setIsStockRefillAlertOpen(true)}
+        onOpenUserRoleManagement={() => setShowUserRoleModal(true)}
         stockDeficitCount={stockDeficitCount}
       />
 
@@ -784,6 +823,7 @@ export function App() {
               setGold22kRate(g22);
               setSilverRate(sil);
             }}
+            onOpenUserRoleManagement={() => setShowUserRoleModal(true)}
           />
         )}
 
@@ -904,6 +944,17 @@ export function App() {
         currentUser={currentUser}
         gold24kRate={gold24kRate}
         gold22kRate={gold22kRate}
+      />
+
+      {/* Employee Role & RBAC Access Management Console */}
+      <UserRoleManagementModal
+        isOpen={showUserRoleModal}
+        onClose={() => setShowUserRoleModal(false)}
+        currentUser={currentUser}
+        usersList={staffUsers}
+        onUpdateUserRole={handleUpdateStaffRole}
+        onAddNewUser={handleAddNewStaff}
+        onSwitchUser={handleSwitchActiveStaff}
       />
     </div>
   );

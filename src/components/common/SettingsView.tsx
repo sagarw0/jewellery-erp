@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, Save, Building, Scale, Percent } from 'lucide-react';
+import { Settings, Save, Building, Scale, Percent, Users, ShieldCheck } from 'lucide-react';
 import { bullionRatesService } from '../../services/bullionRatesService';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -8,6 +8,7 @@ interface SettingsViewProps {
   gold22kRate: number;
   silverRate: number;
   onUpdateRates: (g24: number, g22: number, sil: number) => void;
+  onOpenUserRoleManagement?: () => void;
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
@@ -15,6 +16,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   gold22kRate,
   silverRate,
   onUpdateRates,
+  onOpenUserRoleManagement,
 }) => {
   const { isDark } = useTheme();
   const [showroomName, setShowroomName] = useState('SWARNA JEWELLERS & BULLION');
@@ -39,7 +41,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
-      <div className={`border rounded-xl p-4 flex items-center justify-between shadow-sm transition-all ${
+      <div className={`border rounded-xl p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm transition-all ${
         isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
       }`}>
         <div className="flex items-center space-x-3">
@@ -53,22 +55,38 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               <span>ERP System & Financial Settings</span>
             </h1>
             <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Configure showroom profile, statutory BIS Hallmark license, GST tax heads, and live bullion rates.
+              Configure showroom profile, statutory BIS Hallmark license, GST tax heads, and staff access roles.
             </p>
           </div>
         </div>
 
-        <button
-          onClick={handleSave}
-          className={`flex items-center space-x-1.5 px-4 py-2 font-bold text-xs rounded-lg shadow transition-all cursor-pointer ${
-            isDark
-              ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-extrabold'
-              : 'bg-blue-600 hover:bg-blue-700 text-white'
-          }`}
-        >
-          <Save className="w-4 h-4" />
-          <span>Save Changes</span>
-        </button>
+        <div className="flex items-center space-x-2">
+          {onOpenUserRoleManagement && (
+            <button
+              onClick={onOpenUserRoleManagement}
+              className={`flex items-center space-x-1.5 px-3 py-2 text-xs font-bold rounded-lg border transition-all cursor-pointer ${
+                isDark
+                  ? 'bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 border-amber-400/30'
+                  : 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300 shadow-2xs'
+              }`}
+            >
+              <Users className="w-4 h-4 text-amber-500" />
+              <span>Employee Roles (RBAC)</span>
+            </button>
+          )}
+
+          <button
+            onClick={handleSave}
+            className={`flex items-center space-x-1.5 px-4 py-2 font-bold text-xs rounded-lg shadow transition-all cursor-pointer ${
+              isDark
+                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-extrabold'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`}
+          >
+            <Save className="w-4 h-4" />
+            <span>Save Changes</span>
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

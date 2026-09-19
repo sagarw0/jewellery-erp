@@ -121,6 +121,7 @@ interface NavbarProps {
   onOpenBullionRates?: () => void;
   onOpenAiAssistant?: () => void;
   onOpenStockRefill?: () => void;
+  onOpenUserRoleManagement?: () => void;
   stockDeficitCount?: number;
 }
 
@@ -139,6 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenBullionRates,
   onOpenAiAssistant,
   onOpenStockRefill,
+  onOpenUserRoleManagement,
   stockDeficitCount = 0,
 }) => {
   const {
@@ -198,7 +200,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             : 'bg-white/95 border-slate-200/80 text-slate-900'
         }`}
       >
-        {/* Brand & Showroom Branch */}
+        {/* Brand */}
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2.5">
             <div
@@ -219,116 +221,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                 >
                   SWARNA ERP
                 </span>
-                <span
-                  className={`text-[9.5px] font-black px-1.5 py-0.5 rounded-full border hidden sm:inline-block ${
-                    isDark
-                      ? 'bg-amber-500/20 text-amber-300 border-amber-400/40'
-                      : 'bg-amber-100 text-amber-950 border border-amber-400'
-                  }`}
-                >
-                  v2.6 Luxury
-                </span>
               </div>
               <span
                 className={`text-[10.5px] font-semibold block ${
-                  isDark ? 'text-slate-300' : 'text-slate-600'
+                  isDark ? 'text-slate-400' : 'text-slate-600'
                 }`}
               >
                 ogaworld.in • Enterprise Suite
               </span>
             </div>
-          </div>
-
-          <span className={`${isDark ? 'text-white/20' : 'text-slate-300'} hidden md:inline`}>
-            |
-          </span>
-
-          {/* Multi-Branch Switcher Dropdown (Accessible to Owner & Staff) */}
-          <div className="relative">
-            <button
-              onClick={() => setShowBranchDropdown(!showBranchDropdown)}
-              className={`flex items-center space-x-2 text-[11px] px-2.5 py-1.5 rounded-xl border transition-all cursor-pointer ${
-                isDark
-                  ? 'bg-white/10 text-slate-200 border-white/15 hover:bg-white/15'
-                  : 'bg-slate-50 text-slate-950 border-slate-300 hover:bg-slate-100 font-bold shadow-2xs'
-              }`}
-              title="Switch Showroom Branch (or view Consolidated Multi-Branch Totals)"
-            >
-              <Building2
-                className={`w-3.5 h-3.5 ${
-                  selectedBranch === 'all'
-                    ? 'text-amber-500'
-                    : isDark
-                    ? 'text-sky-400'
-                    : 'text-blue-600'
-                }`}
-              />
-              <div className="text-left">
-                <span className="font-bold truncate max-w-[150px] sm:max-w-[200px] block leading-tight">
-                  {currentBranchObj.shortName}
-                </span>
-              </div>
-              <ChevronDown className="w-3 h-3 opacity-60 ml-0.5" />
-            </button>
-
-            {showBranchDropdown && (
-              <div
-                className={`absolute left-0 mt-2 w-72 rounded-2xl p-2 border shadow-xl z-50 animate-in fade-in duration-150 ${
-                  isDark
-                    ? 'bg-[#0f172a]/95 border-white/20 text-white backdrop-blur-2xl'
-                    : 'bg-white border-slate-200 text-slate-900 backdrop-blur-2xl shadow-lg'
-                }`}
-              >
-                <div className="flex items-center justify-between px-2.5 py-1.5 border-b border-white/10 mb-1">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                    Switch Showroom Branch
-                  </span>
-                  <button
-                    onClick={() => setShowBranchDropdown(false)}
-                    className="text-xs text-slate-400 hover:text-white"
-                  >
-                    ✕
-                  </button>
-                </div>
-
-                <div className="space-y-1">
-                  {BRANCHES_CONFIG.map((b) => {
-                    const isSelected = selectedBranch === b.id;
-                    return (
-                      <button
-                        key={b.id}
-                        onClick={() => {
-                          onSelectBranch(b.id);
-                          setShowBranchDropdown(false);
-                        }}
-                        className={`w-full p-2 rounded-xl text-left transition-all flex items-center justify-between cursor-pointer ${
-                          isSelected
-                            ? isDark
-                              ? 'bg-amber-400/20 text-amber-300 border border-amber-400/40 font-bold'
-                              : 'bg-blue-50 text-blue-900 border border-blue-300 font-bold'
-                            : isDark
-                            ? 'hover:bg-white/10 text-slate-200'
-                            : 'hover:bg-slate-50 text-slate-700'
-                        }`}
-                      >
-                        <div className="min-w-0 pr-1">
-                          <div className="text-xs font-bold truncate flex items-center space-x-1.5">
-                            <span>{b.shortName}</span>
-                            {b.id === 'all' && (
-                              <span className="px-1.5 py-0.2 rounded text-[9px] bg-amber-500/20 text-amber-600 dark:text-amber-300 font-mono">
-                                3 Hubs
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-[10px] opacity-70 truncate">{b.tag}</div>
-                        </div>
-                        {isSelected && <Check className="w-3.5 h-3.5 shrink-0" />}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
@@ -388,44 +289,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* AI Copilot Button */}
-          {onOpenAiAssistant && (
-            <button
-              onClick={onOpenAiAssistant}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl font-bold text-xs transition-all cursor-pointer bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 shadow-2xs"
-              title="Swarna AI ERP Copilot (Ctrl+Space)"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-slate-950" />
-              <span className="hidden md:inline">AI Copilot</span>
-              <span className="text-[9px] bg-black/20 text-slate-900 px-1 py-0.2 rounded font-mono">
-                AI
-              </span>
-            </button>
-          )}
-
-          {/* Stock Refill Alert & Target Manager */}
-          {onOpenStockRefill && (
-            <button
-              onClick={onOpenStockRefill}
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl font-bold text-xs transition-all cursor-pointer border ${
-                stockDeficitCount > 0
-                  ? 'bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border-rose-400/40 shadow-2xs'
-                  : isDark
-                  ? 'bg-white/10 hover:bg-white/15 text-white border-white/20'
-                  : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300 shadow-2xs'
-              }`}
-              title="Stock Refill & Inventory Deficit Manager (Desired Stock - Sold Stock = Current Stock)"
-            >
-              <Boxes className="w-3.5 h-3.5 text-amber-500" />
-              <span className="hidden md:inline">Stock Refill</span>
-              {stockDeficitCount > 0 && (
-                <span className="text-[9.5px] bg-rose-500 text-white font-black px-1.5 py-0.2 rounded-full animate-pulse">
-                  {stockDeficitCount} Low
-                </span>
-              )}
-            </button>
-          )}
-
           {/* Executive Analytics */}
           <button
             onClick={onOpenAnalytics}
@@ -465,7 +328,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                     ? 'bg-white/10 text-white border-white/20 hover:bg-white/15'
                     : 'bg-white text-slate-900 border-slate-300 hover:bg-slate-50 shadow-2xs'
                 }`}
-                title="Click to switch role or view permissions"
+                title={
+                  activeRole === 'Owner'
+                    ? 'Showroom Owner - Click to manage employee roles'
+                    : `Logged in as ${currentUser.name} (${activeRole})`
+                }
               >
                 <div className="text-right">
                   <div className="font-bold text-[11px] leading-tight flex items-center justify-end space-x-1">
@@ -473,7 +340,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <span className="truncate max-w-[100px]">{currentUser.name}</span>
                   </div>
                   <div
-                    className={`text-[9.5px] font-bold uppercase tracking-wider ${
+                    className={`text-[9.5px] font-bold uppercase tracking-wider flex items-center justify-end space-x-0.5 ${
                       activeRole === 'Owner'
                         ? 'text-amber-600 dark:text-amber-300'
                         : activeRole === 'Cashier'
@@ -481,74 +348,116 @@ export const Navbar: React.FC<NavbarProps> = ({
                         : 'text-blue-600 dark:text-sky-300'
                     }`}
                   >
-                    {activeRole} • Switch ▾
+                    <span>{activeRole}</span>
+                    {activeRole === 'Owner' && <span className="text-[8.5px] ml-0.5 font-black">👑</span>}
+                    <ChevronDown className="w-2.5 h-2.5 opacity-60 ml-0.5" />
                   </div>
                 </div>
               </button>
 
-              {/* Role Switcher Menu */}
+              {/* Role Switcher & Management Menu */}
               {showRoleDropdown && (
                 <div
-                  className={`absolute right-0 mt-2 w-64 rounded-2xl p-2 border shadow-xl z-50 animate-in fade-in duration-150 ${
+                  className={`absolute right-0 mt-2 w-72 rounded-2xl p-2.5 border shadow-2xl z-50 animate-in fade-in duration-150 ${
                     isDark
-                      ? 'bg-[#0f172a]/95 border-white/20 text-white backdrop-blur-2xl'
-                      : 'bg-white border-slate-200 text-slate-900 backdrop-blur-2xl shadow-lg'
+                      ? 'bg-[#0f172a]/98 border-white/20 text-white backdrop-blur-2xl'
+                      : 'bg-white border-slate-200 text-slate-900 backdrop-blur-2xl shadow-xl'
                   }`}
                 >
-                  <div className="flex items-center justify-between px-2.5 py-1.5 border-b border-white/10 mb-1">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                      Switch Role (RBAC)
-                    </span>
+                  <div className="flex items-center justify-between px-2.5 py-1.5 border-b border-white/10 mb-2">
+                    <div>
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
+                        User & Access Control
+                      </span>
+                      <span className="text-xs font-black truncate block">
+                        {currentUser.name} ({activeRole})
+                      </span>
+                    </div>
                     <button
                       onClick={() => setShowRoleDropdown(false)}
-                      className="text-xs text-slate-400 hover:text-white"
+                      className="text-xs text-slate-400 hover:text-white p-1"
                     >
                       ✕
                     </button>
                   </div>
 
-                  <div className="space-y-1">
-                    {(['Owner', 'Manager', 'Cashier', 'Accountant', 'Karagir'] as UserRole[]).map(
-                      (role) => {
-                        const isSelected = activeRole === role;
-                        return (
-                          <button
-                            key={role}
-                            onClick={() => {
-                              if (onChangeUserRole) onChangeUserRole(role);
-                              setShowRoleDropdown(false);
-                            }}
-                            className={`w-full p-2 rounded-xl text-left transition-all flex items-center justify-between cursor-pointer ${
-                              isSelected
-                                ? isDark
-                                  ? 'bg-amber-400/20 text-amber-300 border border-amber-400/40 font-bold'
-                                  : 'bg-blue-50 text-blue-900 border border-blue-300 font-bold'
-                                : isDark
-                                ? 'hover:bg-white/10 text-slate-200'
-                                : 'hover:bg-slate-50 text-slate-700'
-                            }`}
-                          >
-                            <div>
-                              <div className="text-xs font-bold">{role}</div>
-                              <div className="text-[10px] opacity-70">
-                                {role === 'Owner' && 'Full 11 Modules + All Branches'}
-                                {role === 'Manager' && 'Masters, Sales, Purchases, Stock'}
-                                {role === 'Cashier' && 'Sales POS Counter, Day Book'}
-                                {role === 'Accountant' && 'Financial Ledgers, Purchase, Reports'}
-                                {role === 'Karagir' && 'Workshop Job Cards, Refinery In'}
+                  {/* If Owner: Prominent Button to open full Employee Role Management modal */}
+                  {activeRole === 'Owner' && onOpenUserRoleManagement && (
+                    <div className="mb-2">
+                      <button
+                        onClick={() => {
+                          setShowRoleDropdown(false);
+                          onOpenUserRoleManagement();
+                        }}
+                        className="w-full p-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-slate-950 font-black text-xs flex items-center justify-between shadow-xs cursor-pointer transition-all"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <ShieldCheck className="w-4 h-4 text-slate-950" />
+                          <span>Manage Staff Roles</span>
+                        </div>
+                        <span className="text-[10px] bg-black/20 text-slate-950 px-1.5 py-0.5 rounded font-mono">
+                          Owner
+                        </span>
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Perspective testing quick switch for Owner */}
+                  {activeRole === 'Owner' && (
+                    <div className="space-y-1">
+                      <div className="px-2 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                        Test Role Perspective:
+                      </div>
+                      {(['Owner', 'Manager', 'Cashier', 'Accountant', 'Karagir'] as UserRole[]).map(
+                        (role) => {
+                          const isSelected = activeRole === role;
+                          return (
+                            <button
+                              key={role}
+                              onClick={() => {
+                                if (onChangeUserRole) onChangeUserRole(role);
+                                setShowRoleDropdown(false);
+                              }}
+                              className={`w-full p-2 rounded-xl text-left transition-all flex items-center justify-between cursor-pointer ${
+                                isSelected
+                                  ? isDark
+                                    ? 'bg-amber-400/20 text-amber-300 border border-amber-400/40 font-bold'
+                                    : 'bg-blue-50 text-blue-900 border border-blue-300 font-bold'
+                                  : isDark
+                                  ? 'hover:bg-white/10 text-slate-200'
+                                  : 'hover:bg-slate-50 text-slate-700'
+                              }`}
+                            >
+                              <div>
+                                <div className="text-xs font-bold">{role}</div>
+                                <div className="text-[10px] opacity-70">
+                                  {role === 'Owner' && '👑 Protected (Full 11 Modules)'}
+                                  {role === 'Manager' && 'Masters, Sales, Purchases, Stock'}
+                                  {role === 'Cashier' && 'Sales POS Counter, Day Book'}
+                                  {role === 'Accountant' && 'Financial Ledgers, Purchase, Reports'}
+                                  {role === 'Karagir' && 'Workshop Job Cards, Refinery In'}
+                                </div>
                               </div>
-                            </div>
-                            {isSelected && <Check className="w-3.5 h-3.5 shrink-0" />}
-                          </button>
-                        );
-                      }
-                    )}
-                  </div>
+                              {isSelected && <Check className="w-3.5 h-3.5 shrink-0" />}
+                            </button>
+                          );
+                        }
+                      )}
+                    </div>
+                  )}
+
+                  {/* Non-Owner Notice */}
+                  {activeRole !== 'Owner' && (
+                    <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-[11px] text-slate-400 space-y-1 mb-2">
+                      <div className="font-bold text-slate-300">Staff Access Level</div>
+                      <div>Roles and permissions are managed by the Showroom Owner (<span className="text-amber-400 font-bold">Sagar Wadkar</span>).</div>
+                    </div>
+                  )}
 
                   <div className="pt-2 mt-1 border-t border-white/10 flex justify-between items-center px-1">
                     <button
                       onClick={onLogout}
-                      className="text-[11px] font-bold text-rose-600 hover:underline flex items-center space-x-1"
+                      className="text-[11px] font-bold text-rose-500 hover:text-rose-400 hover:underline flex items-center space-x-1 cursor-pointer"
                     >
                       <LogOut className="w-3 h-3" />
                       <span>Sign Out</span>
