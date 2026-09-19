@@ -869,6 +869,21 @@ export interface ChatMessage {
   };
   tableData?: ChatTableData;
   screenDirection?: ScreenDirectionData;
+  toolCallExecuted?: {
+    toolName: string;
+    args: Record<string, any>;
+  };
+  summaryCards?: any[];
+  isDisambiguation?: boolean;
+  disambiguationPrompt?: string;
+  disambiguationOptions?: any[];
+  clientNavigation?: {
+    section: string;
+    subView?: string;
+    params?: Record<string, any>;
+    screenName: string;
+    shortcut: string;
+  };
   cardData?: {
     type: 'purchase_receipt' | 'barcode_tag' | 'sales_receipt' | 'order_receipt' | 'refinery_receipt' | 'account_receipt' | 'daybook_receipt' | 'stock_summary' | 'debtor_summary' | 'info_card';
     title: string;

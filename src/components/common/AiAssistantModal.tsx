@@ -33,7 +33,11 @@ import {
   Globe,
   Play,
   Square,
-  Barcode as BarcodeIcon,
+  Zap,
+  Code2,
+  Check,
+  Building2,
+  Package,
 } from 'lucide-react';
 import {
   TaskType,
@@ -56,6 +60,9 @@ import {
 } from '../../types/erp';
 import { formatCurrency, formatWeight } from '../../utils/calculations';
 import { useTheme } from '../../context/ThemeContext';
+import { semanticRouter } from '../../services/semanticRouterService';
+import { AiAnalyticsCards } from '../ai/AiAnalyticsCard';
+import { AiDataGrid } from '../ai/AiDataGrid';
 
 interface AiAssistantModalProps {
   isOpen: boolean;
@@ -89,6 +96,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   const [isListening, setIsListening] = useState(false);
   const [autoSpeakAudio, setAutoSpeakAudio] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<ChatLanguage>('auto');
 
   // Active step-by-step workflow state
@@ -109,22 +117,21 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
       sender: 'bot',
       language: 'en',
       text: `👋 Welcome to **Swarna AI ERP Copilot**!
-मी मराठी, हिन्दी व इंग्रजी (English) भाषेत तुमच्या दुकानातील सर्व कामे १-१ प्रश्न विचारून पूर्ण करू शकतो.
+Powered by **LLM Function Calling & Semantic Intent Recognition**.
 
-### 🌟 Quick Actions & Reports (क्विक ऑप्शन्स):`,
+Ask any full-sentence query or command:
+- 📊 *"What were our total sales and average order values today?"*
+- 🏢 *"Find supplier Rajesh"* or *"Check balance for Mahalaxmi Silver"*
+- 📋 *"Where is order ORD-2026-108 and what is the delivery date?"*
+- 🚀 *"Take me to Sales POS"* or *"Open Day Book"*`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       quickChips: [
-        { label: '🪙 भिशी ग्राहक (Bhishi)', action: 'query', payload: 'bhishi' },
-        { label: '🏷️ अनप्रिंटेड बारकोड (Unprinted)', action: 'query', payload: 'unprinted' },
-        { label: '📦 एकूण उपलब्ध सोने (Total Gold)', action: 'query', payload: 'total gold' },
-        { label: '💵 आजचा गल्ला व ग्राहक (Till)', action: 'query', payload: 'till' },
-        { label: '📦 लूज स्टॉक (Loose Stock)', action: 'query', payload: 'loose stock' },
-        { label: '👥 उधारी बाकीदार (Debtors)', action: 'query', payload: 'debtors' },
-        { label: '🛒 नवीन खरेदी (New Purchase)', action: 'start_task', payload: 'purchase_inward' },
-        { label: '🏷️ बारकोड बनवा (New Tag)', action: 'start_task', payload: 'barcode_generate' },
-        { label: '💰 विक्री बिल (Sales POS)', action: 'start_task', payload: 'sales_invoice' },
-        { label: '📋 कस्टम ऑर्डर (Book Order)', action: 'start_task', payload: 'order_booking' },
-        { label: '🔥 जुने सोने रिफायनरी', action: 'start_task', payload: 'refinery_melting' },
+        { label: '📊 Today’s Sales Turnover', action: 'query', payload: 'What were our total sales today?' },
+        { label: '🏢 Find Supplier Rajesh', action: 'query', payload: 'Find supplier Rajesh' },
+        { label: '📋 Track Order ORD-2026-108', action: 'query', payload: 'Track order ORD-2026-108' },
+        { label: '🚀 Open Sales POS (F4)', action: 'navigate', payload: { section: 'transactions', subView: 'sales_invoice' } },
+        { label: '🛒 Open Purchase (F5)', action: 'navigate', payload: { section: 'transactions', subView: 'purchase' } },
+        { label: '💵 Open Day Book (F10)', action: 'navigate', payload: { section: 'accounts', subView: 'day_book' } },
       ],
     },
   ]);
@@ -139,7 +146,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   }, [context, engine]);
 
   // Text-To-Speech (TTS Audio Response)
-  const speakText = (text: string, langHint: 'en' | 'mr' | 'hi' = 'mr') => {
+  const speakText = (text: string, langHint: 'en' | 'mr' | 'hi' = 'en') => {
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
 
@@ -186,7 +193,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages, isOpen, activeTask]);
+  }, [messages, isOpen, activeTask, isThinking]);
 
   // Global Escape key listener to cleanly close modal
   useEffect(() => {
@@ -382,10 +389,10 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           cardData: executionResult.cardData,
           quickChips: [
-            { label: '🛒 नवीन खरेदी (Purchase)', action: 'start_task', payload: 'purchase_inward' },
-            { label: '🏷️ बारकोड टॅग (Barcode)', action: 'start_task', payload: 'barcode_generate' },
-            { label: '💰 विक्री बिल (Sales POS)', action: 'start_task', payload: 'sales_invoice' },
-            { label: '📦 स्टॉक तपासा (Stock)', action: 'query', payload: 'stock' },
+            { label: '🛒 New Purchase', action: 'start_task', payload: 'purchase_inward' },
+            { label: '🏷️ Barcode Tag', action: 'start_task', payload: 'barcode_generate' },
+            { label: '💰 Sales POS', action: 'start_task', payload: 'sales_invoice' },
+            { label: '📦 Check Stock', action: 'query', payload: 'What is our total gold stock?' },
           ],
         },
       ]);
@@ -413,57 +420,89 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
       {
         id: `cancel-${Date.now()}`,
         sender: 'bot',
-        text: 'कार्य रद्द केले आहे. मी इतर काय मदत करू? (Workflow cancelled)',
+        text: 'Workflow cancelled. How else can I assist you?',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         quickChips: [
-          { label: '🪙 भिशी ग्राहक', action: 'query', payload: 'bhishi' },
-          { label: '🏷️ अनप्रिंटेड बारकोड', action: 'query', payload: 'unprinted' },
-          { label: '📦 एकूण सोने', action: 'query', payload: 'total gold' },
-          { label: '💵 आजचा गल्ला', action: 'query', payload: 'till' },
+          { label: '📊 Sales Turnover', action: 'query', payload: 'What were our total sales today?' },
+          { label: '🏢 Find Supplier', action: 'query', payload: 'Find supplier Rajesh' },
+          { label: '📋 Track Order', action: 'query', payload: 'Track order ORD-2026-108' },
         ],
       },
     ]);
   };
 
-  // Process text or voice input
-  const handleProcessInput = (userText: string) => {
+  // Process text or voice input via Semantic LLM Function Calling Router
+  const handleProcessInput = async (userText: string) => {
     if (!userText.trim()) return;
 
-    // Add user message
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: `user-${Date.now()}`,
-        sender: 'user',
-        text: userText,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      },
-    ]);
+    // Check if direct task workflow command
+    const lower = userText.toLowerCase();
+    if (lower === 'start purchase' || lower === 'new purchase') {
+      startWorkflow('purchase_inward');
+      return;
+    }
+    if (lower === 'start barcode' || lower === 'new barcode') {
+      startWorkflow('barcode_generate');
+      return;
+    }
 
-    // Process via Multilingual Engine
-    const result = engine.processUserInput(userText, selectedLanguage);
+    const userMsg: ChatMessage = {
+      id: `user-${Date.now()}`,
+      sender: 'user',
+      text: userText,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
 
-    if (result.taskToStart) {
-      startWorkflow(result.taskToStart);
-    } else {
+    setMessages((prev) => [...prev, userMsg]);
+    setIsThinking(true);
+
+    try {
+      // Execute Semantic LLM Router with full-sentence understanding & Function Calling
+      const result = await semanticRouter.processUserMessage(
+        userText,
+        [...messages, userMsg],
+        context
+      );
+
+      // Programmatic Client Navigation Execution
+      if (result.clientNavigation) {
+        onNavigate(result.clientNavigation.section, result.clientNavigation.subView);
+      }
+
+      const botMsg: ChatMessage = {
+        id: result.messageId || `bot-${Date.now()}`,
+        sender: 'bot',
+        language: selectedLanguage === 'auto' ? 'en' : selectedLanguage,
+        text: result.text,
+        timestamp: result.timestamp,
+        toolCallExecuted: result.toolCallExecuted,
+        summaryCards: result.summaryCards,
+        tableData: result.tableData,
+        isDisambiguation: result.isDisambiguation,
+        disambiguationPrompt: result.disambiguationPrompt,
+        disambiguationOptions: result.disambiguationOptions,
+        clientNavigation: result.clientNavigation,
+        quickChips: result.quickChips,
+      };
+
+      setMessages((prev) => [...prev, botMsg]);
+
+      if (autoSpeakAudio) {
+        speakText(result.text, selectedLanguage === 'auto' ? 'en' : selectedLanguage);
+      }
+    } catch (err) {
+      console.error('Semantic router error:', err);
       setMessages((prev) => [
         ...prev,
         {
-          id: `bot-${Date.now()}`,
+          id: `bot-err-${Date.now()}`,
           sender: 'bot',
-          language: result.language,
-          text: result.response,
+          text: `I encountered an issue processing your request. Please try again or rephrase.`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          tableData: result.tableData,
-          cardData: result.cardData,
-          screenDirection: result.screenDirection,
-          quickChips: result.quickChips,
         },
       ]);
-
-      if (autoSpeakAudio) {
-        speakText(result.response, result.language);
-      }
+    } finally {
+      setIsThinking(false);
     }
   };
 
@@ -486,56 +525,11 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     }
   };
 
-  // Card Action Click
-  const handleCardAction = (actionId: string) => {
-    switch (actionId) {
-      case 'nav_purchase':
-        onNavigate('transactions', 'purchase');
-        break;
-      case 'nav_barcode':
-        onNavigate('masters', 'barcode');
-        break;
-      case 'nav_sales':
-        onNavigate('transactions', 'sales_invoice');
-        break;
-      case 'nav_orders':
-        onNavigate('transactions', 'new_order');
-        break;
-      case 'nav_refinery':
-        onNavigate('transactions', 'refinery_in');
-        break;
-      case 'nav_accounts':
-        onNavigate('masters', 'account_master');
-        break;
-      case 'nav_stock':
-        onNavigate('stock', 'stock_report');
-        break;
-      case 'nav_daybook':
-        onNavigate('accounts', 'day_book');
-        break;
-      case 'nav_debtors':
-        onNavigate('accounts', 'book_display');
-        break;
-      case 'task_barcode':
-        startWorkflow('barcode_generate');
-        break;
-      case 'task_sale':
-        startWorkflow('sales_invoice');
-        break;
-      case 'task_account':
-        startWorkflow('account_create');
-        break;
-      default:
-        break;
-    }
-  };
-
   if (!isOpen) return null;
 
   const currentWorkflow = activeTask ? TASK_WORKFLOWS[activeTask.taskType] : null;
   const currentStep = currentWorkflow ? currentWorkflow.steps[activeTask!.stepIndex] : null;
 
-  // Active step prompt in chosen language
   const stepQuestionText = currentStep
     ? (selectedLanguage === 'mr' && currentStep.questionMr
         ? currentStep.questionMr
@@ -544,7 +538,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
         : currentStep.question)
     : '';
 
-  // Minimized Floating Pill Bar Dock (Preserves active conversation & tasks)
+  // Minimized Floating Pill Bar Dock
   if (isMinimized) {
     return (
       <div className="fixed bottom-4 right-4 z-50 pointer-events-auto select-none transition-all duration-300 animate-in fade-in slide-in-from-bottom-3">
@@ -583,7 +577,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                 isDark ? 'hover:bg-white/10 text-slate-300' : 'hover:bg-slate-100 text-slate-600'
               }`}
-              title="Restore Window (🗖)"
+              title="Restore Window"
             >
               <Maximize2 className="w-4 h-4" />
             </button>
@@ -606,7 +600,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col justify-end items-end p-2 sm:p-4 md:p-5 pointer-events-none overflow-hidden select-none">
-      {/* Universal Backdrop overlay - Clicking outside cleanly closes the Copilot */}
+      {/* Universal Backdrop overlay */}
       <div
         className="fixed inset-0 bg-black/35 backdrop-blur-xs pointer-events-auto transition-opacity"
         onClick={() => {
@@ -616,12 +610,12 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
         title="Click outside to close (Esc)"
       />
 
-      {/* Main Copilot Drawer Container - Always anchored within screen viewport */}
+      {/* Main Copilot Drawer Container */}
       <div
         className={`pointer-events-auto flex flex-col rounded-2xl sm:rounded-3xl shadow-2xl border transition-all duration-300 overflow-hidden relative z-10 ${
           isExpanded
-            ? 'w-full sm:w-[840px] md:w-[940px] lg:w-[1040px] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] h-[min(760px,calc(100dvh-2.5rem))] max-h-[calc(100dvh-1.5rem)]'
-            : 'w-full sm:w-[500px] md:w-[550px] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] h-[min(640px,calc(100dvh-2.5rem))] max-h-[calc(100dvh-1.5rem)]'
+            ? 'w-full sm:w-[840px] md:w-[960px] lg:w-[1080px] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] h-[min(780px,calc(100dvh-2.5rem))] max-h-[calc(100dvh-1.5rem)]'
+            : 'w-full sm:w-[540px] md:w-[600px] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] h-[min(660px,calc(100dvh-2.5rem))] max-h-[calc(100dvh-1.5rem)]'
         } ${
           isDark
             ? 'bg-[#0f172a]/95 backdrop-blur-2xl border-white/20 text-white shadow-2xl shadow-black/80'
@@ -629,7 +623,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header - Guaranteed 100% visible on all screen sizes */}
+        {/* Header */}
         <div
           className={`px-3 sm:px-4 py-2.5 sm:py-3 border-b flex items-center justify-between shrink-0 ${
             isDark
@@ -644,38 +638,18 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-bold text-xs sm:text-sm tracking-wide">Swarna AI Copilot</span>
-                <span className="text-[9px] sm:text-[10px] px-1.5 py-0.2 rounded-full font-semibold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                  Online
+                <span className="text-[9px] sm:text-[10px] px-1.5 py-0.2 rounded-full font-semibold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center space-x-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>Function Calling Engine</span>
                 </span>
               </div>
-              <span className={`text-[10px] sm:text-[11px] block font-medium truncate max-w-[160px] sm:max-w-xs ${isDark ? 'text-slate-400' : 'text-blue-100'}`}>
-                {activeTask
-                  ? `Task: ${currentWorkflow?.name}`
-                  : 'मराठी • हिन्दी • English • Voice Supported'}
+              <span className={`text-[10px] sm:text-[11px] block font-medium truncate max-w-[180px] sm:max-w-xs ${isDark ? 'text-slate-400' : 'text-blue-100'}`}>
+                Semantic Reasoning • Analytics Cards • Dynamic Tables
               </span>
             </div>
           </div>
 
           <div className="flex items-center space-x-1 sm:space-x-1.5">
-            {/* Language Selector Dropdown */}
-            <div className="relative">
-              <select
-                value={selectedLanguage}
-                onChange={(e) => setSelectedLanguage(e.target.value as ChatLanguage)}
-                className={`text-[10px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-1 rounded-lg border outline-hidden cursor-pointer transition-all ${
-                  isDark
-                    ? 'bg-white/10 text-white border-white/20'
-                    : 'bg-white/20 text-white border-white/30 hover:bg-white/30'
-                }`}
-                title="Select Language / भाषा निवडा"
-              >
-                <option value="auto" className="text-slate-900">🌐 Auto</option>
-                <option value="mr" className="text-slate-900">मराठी</option>
-                <option value="hi" className="text-slate-900">हिन्दी</option>
-                <option value="en" className="text-slate-900">English</option>
-              </select>
-            </div>
-
             {/* Audio Voice Output Toggle (TTS) */}
             <button
               onClick={() => {
@@ -692,7 +666,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                   ? 'hover:bg-white/10 text-slate-400'
                   : 'hover:bg-white/20 text-white/80'
               }`}
-              title={autoSpeakAudio ? 'Audio Voice: ON (Click to Mute)' : 'Enable Audio Voice (Text-To-Speech)'}
+              title={autoSpeakAudio ? 'Audio Voice: ON' : 'Enable Voice Audio'}
             >
               {isSpeaking ? <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-bounce" /> : autoSpeakAudio ? <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
             </button>
@@ -706,13 +680,12 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                   {
                     id: 'reset-msg',
                     sender: 'bot',
-                    text: 'चॅट इतिहास साफ केला आहे. मी तुम्हाला कशी मदत करू शकतो? (Chat cleared)',
+                    text: 'Chat history cleared. How can I assist you with your sales, vendors, or orders?',
                     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                     quickChips: [
-                      { label: '🪙 भिशी ग्राहक', action: 'query', payload: 'bhishi' },
-                      { label: '🏷️ अनप्रिंटेड बारकोड', action: 'query', payload: 'unprinted' },
-                      { label: '📦 एकूण सोने', action: 'query', payload: 'total gold' },
-                      { label: '💵 आजचा गल्ला', action: 'query', payload: 'till' },
+                      { label: '📊 Today’s Sales Turnover', action: 'query', payload: 'What were our total sales today?' },
+                      { label: '🏢 Find Supplier Rajesh', action: 'query', payload: 'Find supplier Rajesh' },
+                      { label: '📋 Track Order ORD-2026-108', action: 'query', payload: 'Track order ORD-2026-108' },
                     ],
                   },
                 ]);
@@ -747,13 +720,13 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
 
-            {/* Prominent High-Contrast Close Button */}
+            {/* Close Button */}
             <button
               onClick={() => {
                 stopSpeaking();
                 onClose();
               }}
-              className="p-1.5 rounded-lg bg-white/10 hover:bg-rose-600 text-white hover:text-white transition-all cursor-pointer font-bold shadow-xs flex items-center justify-center"
+              className="p-1.5 rounded-lg bg-white/10 hover:bg-rose-600 text-white transition-all cursor-pointer font-bold shadow-xs flex items-center justify-center"
               title="Close Copilot (Esc)"
             >
               <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -770,231 +743,107 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                 msg.sender === 'user' ? 'items-end' : 'items-start'
               }`}
             >
-              <div className="flex items-end space-x-2 max-w-[96%] sm:max-w-[92%]">
+              <div className="flex items-end space-x-2 max-w-[98%] sm:max-w-[94%]">
                 {msg.sender === 'bot' && (
                   <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs mb-1">
                     <Bot className="w-3.5 h-3.5" />
                   </div>
                 )}
                 <div
-                  className={`p-3.5 rounded-2xl shadow-xs leading-relaxed whitespace-pre-line w-full ${
+                  className={`p-3.5 rounded-2xl shadow-xs leading-relaxed w-full ${
                     msg.sender === 'user'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-br-xs'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-br-xs whitespace-pre-line'
                       : isDark
                       ? 'bg-white/10 border border-white/15 text-slate-100 rounded-bl-xs'
                       : 'bg-slate-100 border border-slate-200 text-slate-900 rounded-bl-xs'
                   }`}
                 >
-                  <div className="space-y-1.5">
+                  {/* Tool Call Executed Badge */}
+                  {msg.toolCallExecuted && (
+                    <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 mb-2 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-700 dark:text-blue-300 text-[10px] font-mono font-bold">
+                      <Zap className="w-3 h-3 text-amber-500" />
+                      <span>LLM Tool Executed:</span>
+                      <span className="font-black text-blue-900 dark:text-blue-100">
+                        {msg.toolCallExecuted.toolName}()
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Markdown / Response Text */}
+                  <div className="space-y-1.5 whitespace-pre-line leading-relaxed">
                     {msg.text}
                   </div>
 
-                  {/* Dynamic Interactive Table Display */}
+                  {/* Analytics Summary Cards */}
+                  {msg.summaryCards && msg.summaryCards.length > 0 && (
+                    <AiAnalyticsCards cards={msg.summaryCards} />
+                  )}
+
+                  {/* Interactive Dynamic Data Grid */}
                   {msg.tableData && (
-                    <div className={`mt-3 rounded-xl border overflow-hidden ${
-                      isDark ? 'bg-black/40 border-white/15 text-white' : 'bg-white border-sky-200 text-slate-900 shadow-sm'
-                    }`}>
-                      {/* Table Header Strip */}
-                      <div className={`p-2.5 border-b flex items-center justify-between ${
-                        isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'
-                      }`}>
-                        <div>
-                          <span className="font-bold text-xs text-blue-700 dark:text-amber-400 block">
-                            {msg.tableData.title}
-                          </span>
-                          {msg.tableData.subtitle && (
-                            <span className="text-[10px] text-slate-500 font-medium">
-                              {msg.tableData.subtitle}
-                            </span>
-                          )}
-                        </div>
+                    <AiDataGrid tableData={msg.tableData} onNavigate={onNavigate} />
+                  )}
 
-                        {msg.tableData.navigationAction && (
+                  {/* Disambiguation Choice Chips */}
+                  {msg.isDisambiguation && msg.disambiguationOptions && msg.disambiguationOptions.length > 0 && (
+                    <div className="my-3 p-3 rounded-2xl border border-amber-300/80 bg-amber-50/70 dark:bg-amber-950/30 dark:border-amber-500/30 space-y-2">
+                      <span className="text-[11px] font-bold text-amber-950 dark:text-amber-200 block">
+                        {msg.disambiguationPrompt || 'Multiple records found. Please choose an option:'}
+                      </span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {msg.disambiguationOptions.map((opt) => (
                           <button
-                            onClick={() => onNavigate(msg.tableData!.navigationAction!.section, msg.tableData!.navigationAction!.subView)}
-                            className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] shadow-2xs flex items-center space-x-1 cursor-pointer"
+                            key={opt.id}
+                            onClick={() => handleProcessInput(opt.payload)}
+                            className="p-2.5 rounded-xl border border-amber-200 bg-white hover:bg-amber-100/80 dark:bg-white/10 dark:hover:bg-white/20 text-left transition-all cursor-pointer shadow-2xs group flex flex-col justify-between"
                           >
-                            <span>{msg.tableData.navigationAction.label}</span>
-                            <ExternalLink className="w-3 h-3 ml-0.5" />
-                          </button>
-                        )}
-                      </div>
-
-                      {/* Scrollable Data Grid */}
-                      <div className="overflow-x-auto max-h-64 scrollbar-thin">
-                        <table className="w-full text-left text-[11px] border-collapse">
-                          <thead className={`sticky top-0 z-10 border-b font-bold ${
-                            isDark ? 'bg-[#0f172a] text-slate-300 border-white/10' : 'bg-slate-100 text-slate-700 border-slate-200'
-                          }`}>
-                            <tr>
-                              {msg.tableData.columns.map((col) => (
-                                <th
-                                  key={col.key}
-                                  className={`p-2 whitespace-nowrap ${
-                                    col.align === 'right' ? 'text-right' : col.align === 'center' ? 'text-center' : 'text-left'
-                                  }`}
-                                >
-                                  {col.label}
-                                </th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-slate-200/40 dark:divide-white/5 font-mono text-[11px]">
-                            {msg.tableData.rows.map((row, rIdx) => (
-                              <tr
-                                key={rIdx}
-                                className={`transition-colors ${
-                                  isDark ? 'hover:bg-white/5' : 'hover:bg-sky-50/50'
-                                }`}
-                              >
-                                {msg.tableData!.columns.map((col) => {
-                                  const cellVal = row[col.key];
-                                  return (
-                                    <td
-                                      key={col.key}
-                                      className={`p-2 whitespace-nowrap ${
-                                        col.align === 'right' ? 'text-right font-medium' : col.align === 'center' ? 'text-center' : 'text-left'
-                                      }`}
-                                    >
-                                      {col.format === 'badge' ? (
-                                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                                          String(cellVal).includes('Active') || String(cellVal).includes('TAG')
-                                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                                            : String(cellVal).includes('Matured')
-                                            ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                                            : 'bg-sky-100 text-blue-900 border border-sky-200'
-                                        }`}>
-                                          {String(cellVal)}
-                                        </span>
-                                      ) : (
-                                        String(cellVal ?? '—')
-                                      )}
-                                    </td>
-                                  );
-                                })}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Summary / Voucher Card */}
-                  {msg.cardData && (
-                    <div className={`mt-3 p-3 rounded-xl border ${
-                      isDark ? 'bg-black/30 border-white/15 text-white' : 'bg-white border-sky-200 text-slate-900 shadow-sm'
-                    }`}>
-                      <div className="flex items-center justify-between font-bold text-[12px] pb-2 border-b border-slate-200/50 mb-2">
-                        <span className="flex items-center space-x-1.5 text-blue-600 dark:text-amber-400">
-                          <CheckCircle2 className="w-4 h-4" />
-                          <span>{msg.cardData.title}</span>
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
-                        {Object.entries(msg.cardData.details).map(([k, v]) => (
-                          <div key={k} className="flex flex-col">
-                            <span className="text-[9px] text-slate-500 font-sans uppercase">{k}</span>
-                            <span className="font-semibold">{String(v)}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {msg.cardData.actions && msg.cardData.actions.length > 0 && (
-                        <div className="mt-3 pt-2 border-t border-slate-200/50 flex flex-wrap gap-1.5">
-                          {msg.cardData.actions.map((act) => (
-                            <button
-                              key={act.actionId}
-                              onClick={() => handleCardAction(act.actionId)}
-                              className={`px-2.5 py-1 rounded-lg text-[11px] font-bold flex items-center space-x-1 transition-all cursor-pointer ${
-                                act.primary
-                                  ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-xs'
-                                  : isDark
-                                  ? 'bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15'
-                                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'
-                              }`}
-                            >
-                              <span>{act.label}</span>
-                              <ExternalLink className="w-3 h-3 ml-0.5" />
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Dynamic Screen Direction & Direct Navigation Card */}
-                  {msg.screenDirection && (
-                    <div className={`mt-3 p-3.5 rounded-2xl border transition-all ${
-                      isDark
-                        ? 'bg-gradient-to-br from-blue-950/60 via-[#0f172a] to-indigo-950/40 border-blue-500/30 text-white shadow-lg'
-                        : 'bg-gradient-to-br from-blue-50/90 via-indigo-50/70 to-amber-50/50 border-blue-200 text-slate-900 shadow-md'
-                    }`}>
-                      <div className="flex items-start justify-between gap-2 pb-2.5 border-b border-blue-200/50 dark:border-white/10">
-                        <div className="flex items-center space-x-2.5">
-                          <span className="text-2xl p-2 rounded-xl bg-blue-500/10 dark:bg-white/10 border border-blue-400/20 shadow-xs">
-                            {msg.screenDirection.icon}
-                          </span>
-                          <div>
-                            <div className="flex items-center space-x-2 flex-wrap">
-                              <span className="font-bold text-xs text-blue-700 dark:text-amber-400">
-                                {msg.screenDirection.screenName}
+                            <div className="flex items-center justify-between">
+                              <span className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-blue-600">
+                                {opt.title}
                               </span>
-                              <span className="px-1.5 py-0.5 rounded-md text-[10px] font-mono font-bold bg-amber-400 text-slate-950 shadow-2xs">
-                                {msg.screenDirection.shortcut}
-                              </span>
+                              {opt.badge && (
+                                <span className="text-[9.5px] px-1.5 py-0.2 rounded-full font-bold bg-amber-100 text-amber-900 border border-amber-300">
+                                  {opt.badge}
+                                </span>
+                              )}
                             </div>
-                            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium block">
-                              {msg.screenDirection.reason || 'Screen Navigation & Module Access'}
+                            <span className="text-[10.5px] text-slate-500 dark:text-slate-300 mt-0.5">
+                              {opt.subtitle}
                             </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <p className="mt-2 text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
-                        {msg.screenDirection.description}
-                      </p>
-
-                      <div className="mt-3 pt-2.5 border-t border-blue-200/50 dark:border-white/10 flex flex-wrap items-center gap-2">
-                        <button
-                          onClick={() => {
-                            onNavigate(msg.screenDirection!.section, msg.screenDirection!.subView);
-                          }}
-                          className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs shadow-md hover:shadow-lg flex items-center space-x-1.5 transition-all cursor-pointer group"
-                        >
-                          <span>🚀 Open {msg.screenDirection.screenName.split('(')[0].trim()} ({msg.screenDirection.shortcut})</span>
-                          <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                        </button>
-
-                        {msg.screenDirection.relatedActions && msg.screenDirection.relatedActions.map((act, actIdx) => (
-                          <button
-                            key={actIdx}
-                            onClick={() => handleChipClick(act)}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1 transition-all cursor-pointer ${
-                              isDark
-                                ? 'bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15'
-                                : 'bg-white hover:bg-amber-50 text-slate-700 border border-slate-200 shadow-2xs'
-                            }`}
-                          >
-                            <span>{act.label}</span>
                           </button>
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {/* Audio Speaker Listen Button & Action Chips */}
+                  {/* Client Navigation Notification */}
+                  {msg.clientNavigation && (
+                    <div className="my-2 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-400/30 text-emerald-900 dark:text-emerald-300 flex items-center justify-between text-xs font-bold">
+                      <div className="flex items-center space-x-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <span>Redirected to {msg.clientNavigation.screenName} ({msg.clientNavigation.shortcut})</span>
+                      </div>
+                      <button
+                        onClick={() => onNavigate(msg.clientNavigation!.section, msg.clientNavigation!.subView)}
+                        className="px-2.5 py-0.5 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white text-[10.5px] font-bold cursor-pointer"
+                      >
+                        Re-open ↗
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Follow-up Quick Action Chips */}
                   <div className="mt-3 pt-2 border-t border-slate-200/30 flex items-center justify-between flex-wrap gap-1.5">
                     {msg.sender === 'bot' && (
                       <button
-                        onClick={() => speakText(msg.text, msg.language || 'mr')}
+                        onClick={() => speakText(msg.text, msg.language || 'en')}
                         className={`text-[10px] px-2 py-0.5 rounded-md flex items-center space-x-1 font-medium transition-colors cursor-pointer ${
                           isDark ? 'bg-white/10 hover:bg-white/20 text-amber-300' : 'bg-slate-200/70 hover:bg-slate-300 text-slate-700'
                         }`}
                         title="Listen to this message"
                       >
                         <Volume2 className="w-3 h-3" />
-                        <span>ऐका (Listen)</span>
+                        <span>Listen</span>
                       </button>
                     )}
 
@@ -1004,7 +853,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                           <button
                             key={idx}
                             onClick={() => handleChipClick(chip)}
-                            className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer flex items-center space-x-1 ${
+                            className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer flex items-center space-x-1 ${
                               isDark
                                 ? 'bg-white/15 hover:bg-white/25 text-amber-300 border border-white/20'
                                 : 'bg-white hover:bg-blue-50 text-blue-900 border border-blue-200 shadow-2xs'
@@ -1024,7 +873,18 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
             </div>
           ))}
 
-          {/* ACTIVE 1-BY-1 STEP QUESTION CARD */}
+          {/* Thinking / Tool Evaluation Loading Indicator */}
+          {isThinking && (
+            <div className="flex items-center space-x-2.5 p-3 rounded-2xl bg-blue-500/10 border border-blue-400/30 text-blue-900 dark:text-blue-200 max-w-sm animate-pulse">
+              <Bot className="w-4 h-4 text-blue-600 animate-spin" />
+              <div className="text-xs">
+                <span className="font-bold block">Evaluating Intent & Function Tools...</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400">Context reasoning in progress</span>
+              </div>
+            </div>
+          )}
+
+          {/* ACTIVE STEP WORKFLOW CARD */}
           {activeTask && currentWorkflow && currentStep && (
             <div
               className={`p-4 rounded-2xl border shadow-lg animate-in fade-in slide-in-from-bottom-2 duration-200 ${
@@ -1077,7 +937,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                 )}
               </div>
 
-              {/* Step Input Field based on type */}
+              {/* Step Input Field */}
               <div className="space-y-2 mb-3">
                 {currentStep.type === 'select' ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
@@ -1156,34 +1016,10 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                         onClick={() => handleStepSubmit()}
                         className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold text-xs shadow-xs transition-all flex items-center space-x-1 cursor-pointer"
                       >
-                        <span>Next (पुढे)</span>
+                        <span>Next</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
-
-                    {/* Quick Presets Chips */}
-                    {currentStep.quickPresets && currentStep.quickPresets.length > 0 && (
-                      <div className="flex items-center space-x-1.5 mt-2 overflow-x-auto scrollbar-none">
-                        <span className="text-[10px] text-slate-400 font-medium">Presets:</span>
-                        {currentStep.quickPresets.map((p, idx) => (
-                          <button
-                            key={idx}
-                            type="button"
-                            onClick={() => {
-                              setStepInputValue(p);
-                              handleStepSubmit(p);
-                            }}
-                            className={`px-2 py-0.5 rounded-lg text-[10px] font-mono border transition-all cursor-pointer ${
-                              isDark
-                                ? 'bg-white/10 hover:bg-white/20 border-white/15 text-slate-200'
-                                : 'bg-white hover:bg-slate-100 border-slate-200 text-slate-700'
-                            }`}
-                          >
-                            {currentStep.type === 'currency' ? `₹${p}` : `${p}g`}
-                          </button>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 )}
 
@@ -1211,15 +1047,13 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                   <span>Previous</span>
                 </button>
 
-                <div className="flex items-center space-x-2">
-                  <button
-                    type="button"
-                    onClick={() => handleStepSubmit()}
-                    className="text-blue-700 dark:text-amber-400 hover:underline font-medium cursor-pointer"
-                  >
-                    Accept Default &rarr;
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => handleStepSubmit()}
+                  className="text-blue-700 dark:text-amber-400 hover:underline font-medium cursor-pointer"
+                >
+                  Accept Default &rarr;
+                </button>
               </div>
             </div>
           )}
@@ -1227,7 +1061,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Bottom Input Area with Speech-to-Text & Multilingual hints */}
+        {/* Bottom Input Area */}
         <div
           className={`p-3 border-t shrink-0 ${
             isDark ? 'bg-[#0b1120] border-white/10' : 'bg-white border-slate-200'
@@ -1244,7 +1078,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                   ? 'bg-white/10 text-slate-300 hover:bg-white/20 border-white/15'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200'
               }`}
-              title={isListening ? 'Listening (बोलणे चालू आहे)...' : 'Voice Speech Input (मराठी/हिन्दी/English बोलून विचारू शकता)'}
+              title={isListening ? 'Listening...' : 'Voice Speech Input'}
             >
               {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
             </button>
@@ -1258,13 +1092,9 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                 placeholder={
                   activeTask
                     ? 'Workflow in progress above...'
-                    : selectedLanguage === 'mr'
-                    ? 'काहीही विचारा (उदा. "भिशी ग्राहक", "एकूण सोने किती", "अनप्रिंटेड बारकोड", "खरेदी करा")...'
-                    : selectedLanguage === 'hi'
-                    ? 'कुछ भी पूछें (उदा. "भिशी ग्राहक", "कुल सोना कितना है", "आज का गल्ला")...'
-                    : 'Ask anything in Marathi / Hindi / English (e.g. "show bhishi", "total gold", "unprinted barcodes")...'
+                    : 'Ask anything (e.g. "total sales today", "find supplier Rajesh", "track order ORD-2026-108")...'
                 }
-                disabled={Boolean(activeTask)}
+                disabled={Boolean(activeTask) || isThinking}
                 className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium outline-hidden transition-all ${
                   isDark
                     ? 'bg-white/10 border-white/15 text-white placeholder:text-slate-500 focus:border-amber-400'
@@ -1275,7 +1105,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
             <button
               type="submit"
-              disabled={!inputVal.trim() || Boolean(activeTask)}
+              disabled={!inputVal.trim() || Boolean(activeTask) || isThinking}
               className="p-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 disabled:opacity-50 text-white shadow-xs transition-all cursor-pointer disabled:cursor-not-allowed"
               title="Send Message"
             >
@@ -1286,8 +1116,8 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
           {/* Micro Helper Bar */}
           <div className="flex items-center justify-between text-[10px] text-slate-400 mt-2 px-1">
             <span className="flex items-center space-x-1">
-              <Globe className="w-3 h-3 text-amber-500" />
-              <span>मराठी, हिन्दी, English Voice & Text</span>
+              <Zap className="w-3 h-3 text-amber-500" />
+              <span>Full-Sentence Semantic Function Calling Active</span>
             </span>
             <div className="flex items-center space-x-2 font-mono">
               <span className="px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-white/10 text-slate-600 dark:text-slate-300 font-semibold">
