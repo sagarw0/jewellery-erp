@@ -326,6 +326,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onOpenThemePicker,
 }) => {
   const { currentTheme, computedTokens, isDark } = useTheme();
+  const [dashboardPerspective, setDashboardPerspective] = useState<
+    'overview' | 'vault' | 'banking' | 'sales' | 'crm'
+  >('overview');
   const [activeNoticeTab, setActiveNoticeTab] = useState<
     'all' | 'receivables' | 'orders' | 'birthdays' | 'bhishi'
   >('all');
@@ -646,6 +649,56 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             ))}
           </div>
         )}
+      </div>
+
+      {/* Interactive Perspective Selector Strip */}
+      <div className="flex items-center justify-between flex-wrap gap-2.5 pt-0.5">
+        <div className="flex items-center space-x-1.5 p-1 rounded-2xl bg-white/70 dark:bg-white/5 border border-slate-200/90 dark:border-white/10 text-xs overflow-x-auto shadow-2xs backdrop-blur-md">
+          {[
+            { id: 'overview', label: 'Executive 360°', icon: Sparkles },
+            { id: 'vault', label: 'Bullion Vault & 3D', icon: Coins },
+            { id: 'banking', label: 'Banks & Cashflow', icon: Building },
+            { id: 'sales', label: 'Sales & Invoicing', icon: ShoppingBag },
+            { id: 'crm', label: 'CRM & Notices', icon: Bell },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isTabActive = dashboardPerspective === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setDashboardPerspective(tab.id as any)}
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                  isTabActive
+                    ? isDark
+                      ? 'bg-amber-400 text-slate-950 font-black shadow-xs'
+                      : 'bg-blue-600 text-white font-black shadow-xs'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Live Rates Quick Trigger */}
+        <div className="flex items-center space-x-2">
+          {onOpenBullionRates && (
+            <button
+              onClick={onOpenBullionRates}
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                isDark
+                  ? 'bg-amber-500/10 text-amber-300 border-amber-400/40 hover:bg-amber-500/20'
+                  : 'bg-amber-50 text-amber-950 border-amber-300 hover:bg-amber-100 shadow-2xs'
+              }`}
+              title="Open Live Showroom Bullion Rates Board"
+            >
+              <TrendingUp className="w-3.5 h-3.5 text-amber-600" />
+              <span>Live Bullion Board</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Stock Refill Alert Banner (Displayed when items are below desired level) */}

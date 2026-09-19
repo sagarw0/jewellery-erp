@@ -45,6 +45,16 @@ export const THEME_PRESETS: Record<ThemeId, {
     swatchPrimary: '#d97706',
     swatchSecondary: '#f59e0b',
   },
+  'sapphire-glass': {
+    id: 'sapphire-glass',
+    name: 'Sapphire Ice & Royal Glass',
+    subtitle: 'Original executive showroom blue with crystalline contrast & sapphire glow',
+    isDark: false,
+    bgBaseHex: '#cbd8e8',
+    accentHex: '#2563eb',
+    swatchPrimary: '#2563eb',
+    swatchSecondary: '#0284c7',
+  },
   'obsidian-velvet': {
     id: 'obsidian-velvet',
     name: 'Obsidian Midnight OLED Dark',
