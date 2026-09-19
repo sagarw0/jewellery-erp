@@ -4,6 +4,8 @@
 // brightness shifting, and dynamic CSS variable injection on :root.
 // ==========================================================================
 
+import { GlassBlurIntensity, CardCornerRadius, ShadowGlowDepth } from '../types/erp';
+
 export interface RgbColor {
   r: number;
   g: number;
@@ -25,6 +27,7 @@ export interface ThemeTokens {
   appPrimary: string;
   appPrimaryHover: string;
   appPrimaryText: string;
+  appPrimaryGlow: string;
   appAccent: string;
   appAccentBg: string;
   appTextPrimary: string;
@@ -36,6 +39,8 @@ export interface ThemeTokens {
   appInputBg: string;
   appInputBorder: string;
   appTableHeaderBg: string;
+  appBlur: string;
+  appRadius: string;
   isDark: boolean;
 }
 
@@ -185,8 +190,6 @@ export function generateBgGradient(baseHex: string, brightnessDelta: number): {
   const lum = getRelativeLuminance(rgb.r, rgb.g, rgb.b);
   const isDark = lum < 0.38;
 
-  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
-
   // Derive subtle gradient nuances based on hue
   const stop1 = adjustColorLightness(adjustedHex, isDark ? 4 : 5);
   const stop2 = adjustedHex;
@@ -207,27 +210,55 @@ export function generateBgGradient(baseHex: string, brightnessDelta: number): {
 export function computeThemeTokens(
   bgBaseHex: string,
   accentHex: string,
-  brightnessDelta: number // -50 to +50
+  brightnessDelta: number, // -50 to +50
+  glassBlur: GlassBlurIntensity = 'standard',
+  cornerRadius: CardCornerRadius = 'squircle',
+  shadowDepth: ShadowGlowDepth = 'deep'
 ): ThemeTokens {
   const { gradient, effectiveBg, isDark } = generateBgGradient(bgBaseHex, brightnessDelta);
-  const bgRgb = hexToRgb(effectiveBg);
   const accentRgb = hexToRgb(accentHex);
   const accentLum = getRelativeLuminance(accentRgb.r, accentRgb.g, accentRgb.b);
   const primaryText = accentLum < 0.5 ? '#ffffff' : '#0f172a';
+  const primaryGlow = `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.45)`;
 
   const primaryHover = adjustColorLightness(accentHex, isDark ? 10 : -10);
+
+  // Blur string
+  let blurVal = '24px';
+  if (glassBlur === 'low') blurVal = '12px';
+  else if (glassBlur === 'ultra') blurVal = '36px';
+  else if (glassBlur === 'solid') blurVal = '0px';
+
+  // Radius string
+  let radiusVal = '1.25rem'; // squircle 20px
+  if (cornerRadius === 'standard') radiusVal = '0.75rem'; // 12px
+  else if (cornerRadius === 'ultra') radiusVal = '1.75rem'; // 28px
+
+  // Shadow calculation
+  let shadowVal = isDark
+    ? '0 12px 36px 0 rgba(0, 0, 0, 0.45)'
+    : '0 12px 40px 0 rgba(15, 23, 42, 0.08), 0 1px 3px 0 rgba(0, 0, 0, 0.02)';
+
+  if (shadowDepth === 'minimal') {
+    shadowVal = isDark ? '0 4px 12px 0 rgba(0,0,0,0.3)' : '0 4px 12px 0 rgba(15,23,42,0.04)';
+  } else if (shadowDepth === 'glow') {
+    shadowVal = isDark
+      ? `0 14px 44px 0 rgba(0, 0, 0, 0.6), 0 0 25px 0 ${primaryGlow}`
+      : `0 14px 40px 0 rgba(15, 23, 42, 0.10), 0 0 20px 0 ${primaryGlow}`;
+  }
 
   if (isDark) {
     // Dark mode design tokens
     return {
       appBg: effectiveBg,
       appBgGradient: gradient,
-      appSurface: 'rgba(15, 23, 42, 0.85)',
-      appSurfaceGlass: 'rgba(30, 41, 59, 0.70)',
-      appHeaderBg: 'rgba(15, 23, 42, 0.92)',
+      appSurface: glassBlur === 'solid' ? '#0f172a' : 'rgba(15, 23, 42, 0.85)',
+      appSurfaceGlass: glassBlur === 'solid' ? '#1e293b' : 'rgba(30, 41, 59, 0.70)',
+      appHeaderBg: glassBlur === 'solid' ? '#070b14' : 'rgba(15, 23, 42, 0.92)',
       appPrimary: accentHex,
       appPrimaryHover: primaryHover,
       appPrimaryText: primaryText,
+      appPrimaryGlow: primaryGlow,
       appAccent: accentHex,
       appAccentBg: `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.20)`,
       appTextPrimary: '#f8fafc',
@@ -235,10 +266,12 @@ export function computeThemeTokens(
       appTextMuted: '#94a3b8',
       appBorder: 'rgba(255, 255, 255, 0.14)',
       appCardBorder: 'rgba(255, 255, 255, 0.16)',
-      appCardShadow: '0 12px 36px 0 rgba(0, 0, 0, 0.45)',
-      appInputBg: 'rgba(15, 23, 42, 0.75)',
+      appCardShadow: shadowVal,
+      appInputBg: glassBlur === 'solid' ? '#0f172a' : 'rgba(15, 23, 42, 0.75)',
       appInputBorder: 'rgba(255, 255, 255, 0.20)',
-      appTableHeaderBg: 'rgba(30, 41, 59, 0.80)',
+      appTableHeaderBg: glassBlur === 'solid' ? '#1e293b' : 'rgba(30, 41, 59, 0.80)',
+      appBlur: blurVal,
+      appRadius: radiusVal,
       isDark: true,
     };
   } else {
@@ -246,12 +279,13 @@ export function computeThemeTokens(
     return {
       appBg: effectiveBg,
       appBgGradient: gradient,
-      appSurface: 'rgba(255, 255, 255, 0.96)',
-      appSurfaceGlass: 'rgba(255, 255, 255, 0.88)',
-      appHeaderBg: 'rgba(255, 255, 255, 0.94)',
+      appSurface: glassBlur === 'solid' ? '#ffffff' : 'rgba(255, 255, 255, 0.96)',
+      appSurfaceGlass: glassBlur === 'solid' ? '#f8fafc' : 'rgba(255, 255, 255, 0.88)',
+      appHeaderBg: glassBlur === 'solid' ? '#ffffff' : 'rgba(255, 255, 255, 0.94)',
       appPrimary: accentHex,
       appPrimaryHover: primaryHover,
       appPrimaryText: primaryText,
+      appPrimaryGlow: primaryGlow,
       appAccent: accentHex,
       appAccentBg: `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.12)`,
       appTextPrimary: '#0f172a',
@@ -259,10 +293,12 @@ export function computeThemeTokens(
       appTextMuted: '#64748b',
       appBorder: 'rgba(15, 23, 42, 0.12)',
       appCardBorder: 'rgba(255, 255, 255, 0.98)',
-      appCardShadow: '0 12px 40px 0 rgba(15, 23, 42, 0.08), 0 1px 3px 0 rgba(0, 0, 0, 0.02)',
-      appInputBg: 'rgba(255, 255, 255, 0.98)',
+      appCardShadow: shadowVal,
+      appInputBg: '#ffffff',
       appInputBorder: '#cbd5e1',
       appTableHeaderBg: 'rgba(241, 245, 249, 0.90)',
+      appBlur: blurVal,
+      appRadius: radiusVal,
       isDark: false,
     };
   }
@@ -282,6 +318,7 @@ export function applyCssTokensToDocument(tokens: ThemeTokens): void {
   root.style.setProperty('--color-primary', tokens.appPrimary);
   root.style.setProperty('--color-primary-hover', tokens.appPrimaryHover);
   root.style.setProperty('--color-primary-text', tokens.appPrimaryText);
+  root.style.setProperty('--color-primary-glow', tokens.appPrimaryGlow);
   root.style.setProperty('--color-accent', tokens.appAccent);
   root.style.setProperty('--color-accent-bg', tokens.appAccentBg);
   root.style.setProperty('--color-text-primary', tokens.appTextPrimary);
@@ -293,6 +330,8 @@ export function applyCssTokensToDocument(tokens: ThemeTokens): void {
   root.style.setProperty('--color-input-bg', tokens.appInputBg);
   root.style.setProperty('--color-input-border', tokens.appInputBorder);
   root.style.setProperty('--color-table-header-bg', tokens.appTableHeaderBg);
+  root.style.setProperty('--app-blur', tokens.appBlur);
+  root.style.setProperty('--app-radius', tokens.appRadius);
 
   // Set browser native color-scheme
   root.style.colorScheme = tokens.isDark ? 'dark' : 'light';

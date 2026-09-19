@@ -269,12 +269,20 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Main Navigation Bar (Horizontal Top Menus) */}
-      <nav className={`px-4 py-1.5 flex items-center justify-between overflow-x-auto scrollbar-none border-t ${
-        isDark
-          ? 'bg-[#070b14]/95 border-white/10'
-          : 'bg-white/95 backdrop-blur-md border-slate-300 shadow-2xs'
-      }`}>
-        <div className="flex items-center space-x-1 min-w-max">
+      <nav
+        className="px-4 py-2 flex items-center justify-between overflow-x-auto scrollbar-none border-t transition-all duration-300 backdrop-blur-xl no-print"
+        style={{
+          backgroundColor: computedTokens.appHeaderBg,
+          borderColor: computedTokens.appBorder,
+        }}
+      >
+        <div
+          className="flex items-center space-x-1 p-1 rounded-2xl border shadow-inner min-w-max transition-all backdrop-blur-2xl"
+          style={{
+            backgroundColor: isDark ? 'rgba(0, 0, 0, 0.35)' : 'rgba(255, 255, 255, 0.65)',
+            borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.9)',
+          }}
+        >
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentSection === item.id;
@@ -282,20 +290,38 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 key={item.id}
                 onClick={() => onSelectSection(item.id)}
-                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-150 cursor-pointer ${
+                className={`relative flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer select-none group ${
                   isActive
-                    ? `${currentTheme.activePill} shadow-xs`
-                    : isDark
-                    ? 'text-slate-200 hover:text-white hover:bg-white/10'
-                    : 'text-slate-800 hover:text-slate-950 hover:bg-slate-100 border border-transparent hover:border-slate-200'
+                    ? 'shadow-md scale-[1.02]'
+                    : 'hover:scale-[1.01] opacity-75 hover:opacity-100'
                 }`}
+                style={{
+                  backgroundColor: isActive ? computedTokens.appPrimary : 'transparent',
+                  color: isActive ? computedTokens.appPrimaryText : computedTokens.appTextPrimary,
+                  boxShadow: isActive ? `0 4px 14px ${computedTokens.appPrimaryGlow}` : 'none',
+                }}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-inherit' : isDark ? 'text-slate-400' : 'text-slate-600'}`} />
-                <span>{item.label}</span>
+                {/* Active Top Specular Reflection */}
+                {isActive && (
+                  <div className="absolute top-0 left-2 right-2 h-[2px] bg-white/40 rounded-full blur-[0.5px]" />
+                )}
+
+                <Icon
+                  className={`w-3.5 h-3.5 transition-transform group-hover:scale-110 ${
+                    isActive ? 'text-inherit' : 'opacity-70'
+                  }`}
+                />
+                <span className="truncate">{item.label}</span>
                 {item.hotkey && (
-                  <span className={`text-[9px] px-1 py-0.2 rounded font-mono font-bold ml-0.5 ${
-                    isActive ? 'bg-black/25 text-white' : isDark ? 'bg-white/10 text-slate-300' : 'bg-slate-200 text-slate-900 border border-slate-400'
-                  }`}>
+                  <span
+                    className={`text-[9.5px] px-1.5 py-0.2 rounded-md font-mono font-bold tracking-tight shadow-2xs transition-all ${
+                      isActive
+                        ? 'bg-black/25 text-white border border-white/20'
+                        : isDark
+                        ? 'bg-white/10 text-slate-300 border border-white/10 group-hover:bg-white/20'
+                        : 'bg-slate-200/90 text-slate-800 border border-slate-300 group-hover:bg-slate-300'
+                    }`}
+                  >
                     {item.hotkey}
                   </span>
                 )}

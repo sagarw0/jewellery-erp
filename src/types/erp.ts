@@ -23,6 +23,13 @@ export type StockSubView = 'stock_report' | 'audit';
 // ----------------------------------------------------
 export type ThemeId =
   | 'apple-glass'
+  | 'cyber-diamond'
+  | 'champagne-pearl'
+  | 'titanium-sunset'
+  | 'emerald-neon'
+  | 'cosmic-aurora'
+  | 'nordic-slate'
+  | 'mughal-ruby'
   | 'light-blue'
   | 'royal-gold'
   | 'emerald-luxury'
@@ -37,11 +44,18 @@ export type ThemeId =
 
 export type UiDensity = 'compact' | 'comfortable';
 
+export type GlassBlurIntensity = 'low' | 'standard' | 'ultra' | 'solid';
+export type CardCornerRadius = 'standard' | 'squircle' | 'ultra';
+export type ShadowGlowDepth = 'minimal' | 'deep' | 'glow';
+
 export interface CustomThemeConfig {
   presetId: ThemeId;
   bgBaseHex: string;
   accentHex: string;
   brightness: number; // -50 to +50
+  glassBlur?: GlassBlurIntensity;
+  cornerRadius?: CardCornerRadius;
+  shadowDepth?: ShadowGlowDepth;
   isCustom: boolean;
 }
 

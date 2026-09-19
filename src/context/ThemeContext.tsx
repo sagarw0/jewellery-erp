@@ -1,5 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { ThemeId, ThemeConfig, UiDensity, CustomThemeConfig } from '../types/erp';
+import {
+  ThemeId,
+  ThemeConfig,
+  UiDensity,
+  CustomThemeConfig,
+  GlassBlurIntensity,
+  CardCornerRadius,
+  ShadowGlowDepth,
+} from '../types/erp';
 import {
   computeThemeTokens,
   applyCssTokensToDocument,
@@ -26,6 +34,76 @@ export const THEME_PRESETS: Record<ThemeId, {
     accentHex: '#007aff',
     swatchPrimary: '#007aff',
     swatchSecondary: '#38bdf8',
+  },
+  'cyber-diamond': {
+    id: 'cyber-diamond',
+    name: 'Cyber Diamond & Neon Cyan',
+    subtitle: 'Ultra-sleek OLED dark space with radiant diamond cyan laser accents',
+    isDark: true,
+    bgBaseHex: '#050b14',
+    accentHex: '#00f2fe',
+    swatchPrimary: '#00f2fe',
+    swatchSecondary: '#38bdf8',
+  },
+  'champagne-pearl': {
+    id: 'champagne-pearl',
+    name: 'Champagne Pearl & Rose Silk',
+    subtitle: 'Ultra-luxe showroom bridal theme with iridescent pearl cream & gold',
+    isDark: false,
+    bgBaseHex: '#faf3ec',
+    accentHex: '#d97706',
+    swatchPrimary: '#e6a87c',
+    swatchSecondary: '#d97706',
+  },
+  'titanium-sunset': {
+    id: 'titanium-sunset',
+    name: 'Titanium Sunset & Coral Gold',
+    subtitle: 'California Apple aesthetic with titanium ice & warm coral sunset glow',
+    isDark: false,
+    bgBaseHex: '#dce5ee',
+    accentHex: '#f97316',
+    swatchPrimary: '#f97316',
+    swatchSecondary: '#fbbf24',
+  },
+  'emerald-neon': {
+    id: 'emerald-neon',
+    name: 'Deep Forest & Mint Neon',
+    subtitle: 'Rich botanical luxury with electric neon emerald luminescence',
+    isDark: true,
+    bgBaseHex: '#061a14',
+    accentHex: '#10b981',
+    swatchPrimary: '#10b981',
+    swatchSecondary: '#34d399',
+  },
+  'cosmic-aurora': {
+    id: 'cosmic-aurora',
+    name: 'Cosmic Aurora & Nebula Violet',
+    subtitle: 'Deep space indigo with dynamic aurora violet & emerald hues',
+    isDark: true,
+    bgBaseHex: '#0b091a',
+    accentHex: '#8b5cf6',
+    swatchPrimary: '#8b5cf6',
+    swatchSecondary: '#ec4899',
+  },
+  'nordic-slate': {
+    id: 'nordic-slate',
+    name: 'Nordic Minimalist Slate & Ice',
+    subtitle: 'Scandinavian architectural studio gray with ice blue accents',
+    isDark: false,
+    bgBaseHex: '#e2e8f0',
+    accentHex: '#0284c7',
+    swatchPrimary: '#0284c7',
+    swatchSecondary: '#475569',
+  },
+  'mughal-ruby': {
+    id: 'mughal-ruby',
+    name: 'Imperial Mughal Ruby & Gold',
+    subtitle: 'Traditional royal Indian heritage luxury with crimson & antique gold',
+    isDark: true,
+    bgBaseHex: '#1f0707',
+    accentHex: '#e11d48',
+    swatchPrimary: '#dc2626',
+    swatchSecondary: '#d97706',
   },
   'light-blue': {
     id: 'light-blue',
@@ -179,8 +257,8 @@ export function buildThemeConfig(presetId: ThemeId, tokens: ThemeTokens): ThemeC
     textSecondary: isDark ? 'text-slate-200 font-medium' : 'text-slate-700 font-medium',
     textMuted: isDark ? 'text-slate-400' : 'text-slate-500',
     subnavBg: isDark
-      ? 'bg-white/[0.04] backdrop-blur-md border-b border-white/10 text-white'
-      : 'bg-white/92 backdrop-blur-xl border-b border-white/90 text-slate-900',
+      ? 'bg-slate-900/80 backdrop-blur-xl border-b border-white/10 text-white'
+      : 'bg-white/90 backdrop-blur-xl border-b border-white/80 text-slate-900',
     activePill: isDark
       ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-semibold shadow-xs'
       : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-xs border border-blue-400/50',
@@ -222,6 +300,9 @@ interface ThemeContextType {
   updateBrightness: (brightness: number) => void;
   updateBgColor: (hex: string) => void;
   updateAccentColor: (hex: string) => void;
+  updateGlassBlur: (blur: GlassBlurIntensity) => void;
+  updateCornerRadius: (radius: CardCornerRadius) => void;
+  updateShadowDepth: (shadow: ShadowGlowDepth) => void;
   resetToDefault: () => void;
 }
 
@@ -230,6 +311,9 @@ const DEFAULT_CUSTOM_CONFIG: CustomThemeConfig = {
   bgBaseHex: '#b8cadc',
   accentHex: '#007aff',
   brightness: 0,
+  glassBlur: 'standard',
+  cornerRadius: 'squircle',
+  shadowDepth: 'deep',
   isCustom: false,
 };
 
@@ -247,6 +331,9 @@ const ThemeContext = createContext<ThemeContextType>({
   updateBrightness: () => {},
   updateBgColor: () => {},
   updateAccentColor: () => {},
+  updateGlassBlur: () => {},
+  updateCornerRadius: () => {},
+  updateShadowDepth: () => {},
   resetToDefault: () => {},
 });
 
@@ -258,13 +345,17 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       if (savedConfig) {
         const parsed = JSON.parse(savedConfig) as CustomThemeConfig;
         if (parsed.presetId && THEME_PRESETS[parsed.presetId]) {
-          return parsed;
+          return {
+            ...DEFAULT_CUSTOM_CONFIG,
+            ...parsed,
+          };
         }
       }
       const legacyTheme = localStorage.getItem('swarna_erp_theme') as ThemeId;
       if (legacyTheme && THEME_PRESETS[legacyTheme]) {
         const preset = THEME_PRESETS[legacyTheme];
         return {
+          ...DEFAULT_CUSTOM_CONFIG,
           presetId: legacyTheme,
           bgBaseHex: preset.bgBaseHex,
           accentHex: preset.accentHex,
@@ -288,7 +379,10 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const computedTokens = computeThemeTokens(
     customConfig.bgBaseHex,
     customConfig.accentHex,
-    customConfig.brightness
+    customConfig.brightness,
+    customConfig.glassBlur || 'standard',
+    customConfig.cornerRadius || 'squircle',
+    customConfig.shadowDepth || 'deep'
   );
 
   const isDark = computedTokens.isDark;
@@ -319,13 +413,14 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const applyPreset = (id: ThemeId) => {
     const preset = THEME_PRESETS[id] || THEME_PRESETS['apple-glass'];
-    setCustomConfig({
+    setCustomConfig((prev) => ({
+      ...prev,
       presetId: id,
       bgBaseHex: preset.bgBaseHex,
       accentHex: preset.accentHex,
       brightness: 0,
       isCustom: false,
-    });
+    }));
   };
 
   const setTheme = (id: ThemeId) => {
@@ -360,6 +455,30 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }));
   };
 
+  const updateGlassBlur = (blur: GlassBlurIntensity) => {
+    setCustomConfig((prev) => ({
+      ...prev,
+      glassBlur: blur,
+      isCustom: true,
+    }));
+  };
+
+  const updateCornerRadius = (radius: CardCornerRadius) => {
+    setCustomConfig((prev) => ({
+      ...prev,
+      cornerRadius: radius,
+      isCustom: true,
+    }));
+  };
+
+  const updateShadowDepth = (shadow: ShadowGlowDepth) => {
+    setCustomConfig((prev) => ({
+      ...prev,
+      shadowDepth: shadow,
+      isCustom: true,
+    }));
+  };
+
   const resetToDefault = () => {
     setCustomConfig(DEFAULT_CUSTOM_CONFIG);
   };
@@ -380,6 +499,9 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         updateBrightness,
         updateBgColor,
         updateAccentColor,
+        updateGlassBlur,
+        updateCornerRadius,
+        updateShadowDepth,
         resetToDefault,
       }}
     >

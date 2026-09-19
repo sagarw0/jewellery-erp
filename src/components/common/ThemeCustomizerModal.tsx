@@ -4,7 +4,6 @@ import {
   Sparkles,
   Sliders,
   Sun,
-  Moon,
   RotateCcw,
   Check,
   X,
@@ -14,9 +13,21 @@ import {
   ShieldCheck,
   Eye,
   Layers,
+  Sparkle,
+  Zap,
+  Box,
+  Shapes,
+  Flame,
+  Diamond,
+  Compass,
 } from 'lucide-react';
 import { useTheme, THEME_PRESETS } from '../../context/ThemeContext';
-import { ThemeId } from '../../types/erp';
+import {
+  ThemeId,
+  GlassBlurIntensity,
+  CardCornerRadius,
+  ShadowGlowDepth,
+} from '../../types/erp';
 
 interface ThemeCustomizerModalProps {
   isOpen: boolean;
@@ -24,29 +35,37 @@ interface ThemeCustomizerModalProps {
 }
 
 const QUICK_BG_SWATCHES = [
-  { name: 'Apple Ice', hex: '#b8cadc', isDark: false },
-  { name: 'Sapphire', hex: '#cbd8e8', isDark: false },
-  { name: '24K Gold', hex: '#f1e6cd', isDark: false },
-  { name: 'Emerald', hex: '#cfeee0', isDark: false },
-  { name: 'Rose Gold', hex: '#fce4e8', isDark: false },
-  { name: 'Amethyst', hex: '#e9e3f8', isDark: false },
-  { name: 'Platinum', hex: '#d8dfe6', isDark: false },
-  { name: 'Ruby Silk', hex: '#fbdcdc', isDark: false },
-  { name: 'Midnight', hex: '#070b14', isDark: true },
-  { name: 'Ocean Navy', hex: '#081326', isDark: true },
-  { name: 'OLED Black', hex: '#000000', isDark: true },
+  { name: 'Apple Ice', hex: '#b8cadc' },
+  { name: 'Pearl Cream', hex: '#faf3ec' },
+  { name: 'Titanium Ice', hex: '#dce5ee' },
+  { name: 'Sapphire Sky', hex: '#cbd8e8' },
+  { name: '24K Gold Silk', hex: '#f1e6cd' },
+  { name: 'Emerald Mint', hex: '#cfeee0' },
+  { name: 'Rose Quartz', hex: '#fce4e8' },
+  { name: 'Amethyst Mist', hex: '#e9e3f8' },
+  { name: 'Nordic Gray', hex: '#e2e8f0' },
+  { name: 'Ruby Silk', hex: '#fbdcdc' },
+  { name: 'Cyber Space', hex: '#050b14' },
+  { name: 'Midnight Navy', hex: '#081326' },
+  { name: 'Deep Forest', hex: '#061a14' },
+  { name: 'Cosmic Indigo', hex: '#0b091a' },
+  { name: 'Mughal Crimson', hex: '#1f0707' },
+  { name: 'OLED Pure Black', hex: '#000000' },
 ];
 
 const QUICK_ACCENT_SWATCHES = [
-  { name: 'iOS Blue', hex: '#007aff' },
-  { name: 'Royal Gold', hex: '#d97706' },
+  { name: 'Apple iOS Blue', hex: '#007aff' },
+  { name: 'Cyan Neon Laser', hex: '#00f2fe' },
+  { name: 'Coral Sunset Gold', hex: '#f97316' },
+  { name: 'Royal 24K Gold', hex: '#d97706' },
   { name: 'Gem Emerald', hex: '#059669' },
+  { name: 'Electric Mint', hex: '#10b981' },
   { name: 'Rose Ruby', hex: '#e11d48' },
-  { name: 'Amethyst', hex: '#7c3aed' },
-  { name: 'Cyan Neon', hex: '#06b6d4' },
+  { name: 'Nebula Violet', hex: '#8b5cf6' },
+  { name: 'Velvet Amethyst', hex: '#7c3aed' },
+  { name: 'Ice Blue', hex: '#0284c7' },
   { name: 'Topaz Amber', hex: '#f59e0b' },
-  { name: 'OLED Gold', hex: '#fbbf24' },
-  { name: 'Slate Gray', hex: '#475569' },
+  { name: 'OLED Neon Gold', hex: '#fbbf24' },
 ];
 
 export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
@@ -64,22 +83,33 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
     updateBrightness,
     updateBgColor,
     updateAccentColor,
+    updateGlassBlur,
+    updateCornerRadius,
+    updateShadowDepth,
     resetToDefault,
   } = useTheme();
 
-  const [activeTab, setActiveTab] = useState<'presets' | 'fine_tune' | 'colors'>('presets');
+  const [activeTab, setActiveTab] = useState<'presets' | 'surface' | 'colors' | 'fine_tune'>('presets');
+  const [presetCategory, setPresetCategory] = useState<'all' | 'light' | 'dark'>('all');
 
   if (!isOpen) return null;
 
+  const allPresetIds = (Object.keys(THEME_PRESETS) as ThemeId[]).filter((id) => id !== 'custom');
+  const filteredPresets = allPresetIds.filter((id) => {
+    if (presetCategory === 'light') return !THEME_PRESETS[id].isDark;
+    if (presetCategory === 'dark') return THEME_PRESETS[id].isDark;
+    return true;
+  });
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto no-print"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/65 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto no-print"
       role="dialog"
       aria-modal="true"
     >
       {/* Modal Dialog Card */}
       <div
-        className="relative w-full max-w-3xl rounded-3xl border shadow-2xl overflow-hidden flex flex-col my-auto transition-all duration-300"
+        className="relative w-full max-w-4xl rounded-3xl border shadow-2xl overflow-hidden flex flex-col my-auto transition-all duration-300"
         style={{
           background: computedTokens.appSurface,
           borderColor: computedTokens.appCardBorder,
@@ -122,9 +152,12 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                 >
                   {isDark ? '🌙 Dark Mode' : '☀️ Light Mode'}
                 </span>
+                <span className="hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-full bg-white/15 font-mono">
+                  {allPresetIds.length} Luxury Themes
+                </span>
               </div>
               <p className="text-xs font-medium opacity-75">
-                Dynamic design tokens, contrast engine & real-time brightness tuning
+                Modern luxury themes, frosted glass styling, brightness slider & design tokens
               </p>
             </div>
           </div>
@@ -153,9 +186,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
           <button
             onClick={() => setActiveTab('presets')}
             className={`px-3.5 py-2 rounded-xl flex items-center space-x-1.5 transition-all cursor-pointer whitespace-nowrap ${
-              activeTab === 'presets'
-                ? 'shadow-xs'
-                : 'opacity-70 hover:opacity-100'
+              activeTab === 'presets' ? 'shadow-xs' : 'opacity-70 hover:opacity-100'
             }`}
             style={{
               backgroundColor: activeTab === 'presets' ? computedTokens.appPrimary : 'transparent',
@@ -163,15 +194,27 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
             }}
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Theme Presets ({Object.keys(THEME_PRESETS).length})</span>
+            <span>Theme Presets ({allPresetIds.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('surface')}
+            className={`px-3.5 py-2 rounded-xl flex items-center space-x-1.5 transition-all cursor-pointer whitespace-nowrap ${
+              activeTab === 'surface' ? 'shadow-xs' : 'opacity-70 hover:opacity-100'
+            }`}
+            style={{
+              backgroundColor: activeTab === 'surface' ? computedTokens.appPrimary : 'transparent',
+              color: activeTab === 'surface' ? computedTokens.appPrimaryText : 'inherit',
+            }}
+          >
+            <Shapes className="w-3.5 h-3.5" />
+            <span>Glass & Surface Physics</span>
           </button>
 
           <button
             onClick={() => setActiveTab('fine_tune')}
             className={`px-3.5 py-2 rounded-xl flex items-center space-x-1.5 transition-all cursor-pointer whitespace-nowrap ${
-              activeTab === 'fine_tune'
-                ? 'shadow-xs'
-                : 'opacity-70 hover:opacity-100'
+              activeTab === 'fine_tune' ? 'shadow-xs' : 'opacity-70 hover:opacity-100'
             }`}
             style={{
               backgroundColor: activeTab === 'fine_tune' ? computedTokens.appPrimary : 'transparent',
@@ -179,7 +222,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
             }}
           >
             <Sliders className="w-3.5 h-3.5" />
-            <span>Lightness & Darken Slider</span>
+            <span>Lightness / Darken Slider</span>
             {customConfig.brightness !== 0 && (
               <span className="ml-1 px-1.5 py-0.2 rounded-full text-[9px] bg-white/20">
                 {customConfig.brightness > 0 ? `+${customConfig.brightness}%` : `${customConfig.brightness}%`}
@@ -190,9 +233,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
           <button
             onClick={() => setActiveTab('colors')}
             className={`px-3.5 py-2 rounded-xl flex items-center space-x-1.5 transition-all cursor-pointer whitespace-nowrap ${
-              activeTab === 'colors'
-                ? 'shadow-xs'
-                : 'opacity-70 hover:opacity-100'
+              activeTab === 'colors' ? 'shadow-xs' : 'opacity-70 hover:opacity-100'
             }`}
             style={{
               backgroundColor: activeTab === 'colors' ? computedTokens.appPrimary : 'transparent',
@@ -200,7 +241,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
             }}
           >
             <Palette className="w-3.5 h-3.5" />
-            <span>Custom Colors & Accents</span>
+            <span>Custom Colors & Jewel Accents</span>
           </button>
         </div>
 
@@ -209,91 +250,263 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
           {/* TAB 1: PRESETS */}
           {activeTab === 'presets' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <span className="text-xs font-bold uppercase tracking-wider opacity-75">
-                  Select Pre-Configured Luxury Palette
+                  Select Pre-Configured Luxury Theme
                 </span>
-                <span className="text-xs font-semibold opacity-60">
-                  Click any theme to instantly apply
-                </span>
+                {/* Filter Pills */}
+                <div className="flex items-center space-x-1 bg-black/10 dark:bg-white/10 p-1 rounded-xl">
+                  <button
+                    onClick={() => setPresetCategory('all')}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                      presetCategory === 'all'
+                        ? 'bg-white text-slate-950 shadow-2xs dark:bg-slate-800 dark:text-white'
+                        : 'opacity-70 hover:opacity-100'
+                    }`}
+                  >
+                    All ({allPresetIds.length})
+                  </button>
+                  <button
+                    onClick={() => setPresetCategory('light')}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                      presetCategory === 'light'
+                        ? 'bg-white text-slate-950 shadow-2xs dark:bg-slate-800 dark:text-white'
+                        : 'opacity-70 hover:opacity-100'
+                    }`}
+                  >
+                    ☀️ Light
+                  </button>
+                  <button
+                    onClick={() => setPresetCategory('dark')}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                      presetCategory === 'dark'
+                        ? 'bg-white text-slate-950 shadow-2xs dark:bg-slate-800 dark:text-white'
+                        : 'opacity-70 hover:opacity-100'
+                    }`}
+                  >
+                    🌙 Dark / OLED
+                  </button>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {(Object.keys(THEME_PRESETS) as ThemeId[])
-                  .filter((id) => id !== 'custom')
-                  .map((presetId) => {
-                    const p = THEME_PRESETS[presetId];
-                    const isSelected = customConfig.presetId === presetId && !customConfig.isCustom;
+                {filteredPresets.map((presetId) => {
+                  const p = THEME_PRESETS[presetId];
+                  const isSelected = customConfig.presetId === presetId && !customConfig.isCustom;
 
-                    return (
-                      <button
-                        key={presetId}
-                        onClick={() => applyPreset(presetId)}
-                        className={`text-left p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer relative group flex flex-col justify-between h-[108px] ${
-                          isSelected
-                            ? 'ring-2 shadow-md scale-[1.02]'
-                            : 'hover:scale-[1.01] hover:shadow-xs'
-                        }`}
-                        style={{
-                          background: p.isDark ? 'rgba(15, 23, 42, 0.75)' : 'rgba(255, 255, 255, 0.85)',
-                          borderColor: isSelected ? p.accentHex : (p.isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'),
-                        }}
-                      >
-                        <div className="flex items-start justify-between">
-                          {/* Dual Color Swatch Dot */}
-                          <div className="flex items-center space-x-1.5">
-                            <div
-                              className="w-5 h-5 rounded-full border-2 border-white shadow-xs"
-                              style={{ backgroundColor: p.swatchPrimary }}
-                            />
-                            <div
-                              className="w-3.5 h-3.5 rounded-full border border-white shadow-xs -ml-2"
-                              style={{ backgroundColor: p.swatchSecondary }}
-                            />
-                            <div
-                              className="w-3.5 h-3.5 rounded-full border border-white shadow-xs -ml-2 opacity-80"
-                              style={{ backgroundColor: p.bgBaseHex }}
-                              title="Background tone"
-                            />
-                          </div>
-
-                          <div className="flex items-center space-x-1">
-                            {p.isDark ? (
-                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-white/15 text-slate-200">
-                                Dark
-                              </span>
-                            ) : (
-                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-900">
-                                Light
-                              </span>
-                            )}
-                            {isSelected && (
-                              <div
-                                className="p-1 rounded-full text-white"
-                                style={{ backgroundColor: p.accentHex }}
-                              >
-                                <Check className="w-3 h-3 stroke-[3]" />
-                              </div>
-                            )}
-                          </div>
+                  return (
+                    <button
+                      key={presetId}
+                      onClick={() => applyPreset(presetId)}
+                      className={`text-left p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer relative group flex flex-col justify-between h-[112px] ${
+                        isSelected
+                          ? 'ring-2 shadow-md scale-[1.02]'
+                          : 'hover:scale-[1.01] hover:shadow-xs'
+                      }`}
+                      style={{
+                        background: p.isDark ? 'rgba(15, 23, 42, 0.80)' : 'rgba(255, 255, 255, 0.88)',
+                        borderColor: isSelected ? p.accentHex : (p.isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'),
+                      }}
+                    >
+                      <div className="flex items-start justify-between">
+                        {/* Dual Color Swatch Dot */}
+                        <div className="flex items-center space-x-1.5">
+                          <div
+                            className="w-5 h-5 rounded-full border-2 border-white shadow-xs"
+                            style={{ backgroundColor: p.swatchPrimary }}
+                          />
+                          <div
+                            className="w-3.5 h-3.5 rounded-full border border-white shadow-xs -ml-2"
+                            style={{ backgroundColor: p.swatchSecondary }}
+                          />
+                          <div
+                            className="w-3.5 h-3.5 rounded-full border border-white shadow-xs -ml-2 opacity-80"
+                            style={{ backgroundColor: p.bgBaseHex }}
+                            title="Background tone"
+                          />
                         </div>
 
-                        <div>
-                          <div className={`text-xs font-black truncate ${p.isDark ? 'text-white' : 'text-slate-900'}`}>
-                            {p.name}
-                          </div>
-                          <div className={`text-[10.5px] font-medium truncate opacity-70 ${p.isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                            {p.subtitle}
-                          </div>
+                        <div className="flex items-center space-x-1">
+                          {p.isDark ? (
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-white/15 text-slate-200">
+                              Dark
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-900">
+                              Light
+                            </span>
+                          )}
+                          {isSelected && (
+                            <div
+                              className="p-1 rounded-full text-white"
+                              style={{ backgroundColor: p.accentHex }}
+                            >
+                              <Check className="w-3 h-3 stroke-[3]" />
+                            </div>
+                          )}
                         </div>
-                      </button>
-                    );
-                  })}
+                      </div>
+
+                      <div>
+                        <div className={`text-xs font-black truncate ${p.isDark ? 'text-white' : 'text-slate-900'}`}>
+                          {p.name}
+                        </div>
+                        <div className={`text-[10px] font-medium truncate opacity-70 ${p.isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                          {p.subtitle}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
 
-          {/* TAB 2: FINE-TUNING SLIDER */}
+          {/* TAB 2: SURFACE & GLASS PHYSICS */}
+          {activeTab === 'surface' && (
+            <div className="space-y-6">
+              {/* Glass Blur Intensity */}
+              <div
+                className="p-5 rounded-2xl border space-y-3"
+                style={{
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
+                  borderColor: computedTokens.appBorder,
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Sparkle className="w-4 h-4 text-sky-400" />
+                    <span className="font-extrabold text-sm">Frosted Glass Blur Intensity</span>
+                  </div>
+                  <span className="text-xs font-mono font-bold uppercase opacity-80">
+                    Blur: {customConfig.glassBlur || 'standard'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+                  {[
+                    { id: 'low' as GlassBlurIntensity, label: 'Low Frost (12px)', desc: 'Fast & subtle' },
+                    { id: 'standard' as GlassBlurIntensity, label: 'Standard (24px)', desc: 'Apple glass' },
+                    { id: 'ultra' as GlassBlurIntensity, label: 'Ultra Frost (36px)', desc: 'Max depth' },
+                    { id: 'solid' as GlassBlurIntensity, label: 'Solid Opaque', desc: 'No blur (OLED)' },
+                  ].map((item) => {
+                    const isSelected = (customConfig.glassBlur || 'standard') === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => updateGlassBlur(item.id)}
+                        className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
+                          isSelected ? 'shadow-md ring-2 scale-[1.02]' : 'opacity-70 hover:opacity-100'
+                        }`}
+                        style={{
+                          backgroundColor: isSelected ? computedTokens.appPrimary : 'transparent',
+                          color: isSelected ? computedTokens.appPrimaryText : 'inherit',
+                          borderColor: isSelected ? computedTokens.appPrimary : computedTokens.appBorder,
+                        }}
+                      >
+                        <div className="font-bold text-xs">{item.label}</div>
+                        <div className="text-[10px] opacity-75">{item.desc}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Corner Radius & Squircles */}
+              <div
+                className="p-5 rounded-2xl border space-y-3"
+                style={{
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
+                  borderColor: computedTokens.appBorder,
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Box className="w-4 h-4 text-emerald-400" />
+                    <span className="font-extrabold text-sm">Card & Container Corner Radius</span>
+                  </div>
+                  <span className="text-xs font-mono font-bold uppercase opacity-80">
+                    Radius: {customConfig.cornerRadius || 'squircle'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2.5 pt-1">
+                  {[
+                    { id: 'standard' as CardCornerRadius, label: 'Standard (12px)', desc: 'Crisp corporate' },
+                    { id: 'squircle' as CardCornerRadius, label: 'Squircle (20px)', desc: 'iOS Apple curve' },
+                    { id: 'ultra' as CardCornerRadius, label: 'Ultra Round (28px)', desc: 'Pill capsule' },
+                  ].map((item) => {
+                    const isSelected = (customConfig.cornerRadius || 'squircle') === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => updateCornerRadius(item.id)}
+                        className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
+                          isSelected ? 'shadow-md ring-2 scale-[1.02]' : 'opacity-70 hover:opacity-100'
+                        }`}
+                        style={{
+                          backgroundColor: isSelected ? computedTokens.appPrimary : 'transparent',
+                          color: isSelected ? computedTokens.appPrimaryText : 'inherit',
+                          borderColor: isSelected ? computedTokens.appPrimary : computedTokens.appBorder,
+                        }}
+                      >
+                        <div className="font-bold text-xs">{item.label}</div>
+                        <div className="text-[10px] opacity-75">{item.desc}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Glow & Elevation Shadows */}
+              <div
+                className="p-5 rounded-2xl border space-y-3"
+                style={{
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
+                  borderColor: computedTokens.appBorder,
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Zap className="w-4 h-4 text-amber-400" />
+                    <span className="font-extrabold text-sm">Glow & Elevation Shadow Depth</span>
+                  </div>
+                  <span className="text-xs font-mono font-bold uppercase opacity-80">
+                    Depth: {customConfig.shadowDepth || 'deep'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2.5 pt-1">
+                  {[
+                    { id: 'minimal' as ShadowGlowDepth, label: 'Minimalist Flat', desc: 'Subtle clean shadow' },
+                    { id: 'deep' as ShadowGlowDepth, label: 'Deep 3D Luxury', desc: 'Floating glass depth' },
+                    { id: 'glow' as ShadowGlowDepth, label: 'Ambient Neon Glow', desc: 'Laser jewel aura' },
+                  ].map((item) => {
+                    const isSelected = (customConfig.shadowDepth || 'deep') === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => updateShadowDepth(item.id)}
+                        className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
+                          isSelected ? 'shadow-md ring-2 scale-[1.02]' : 'opacity-70 hover:opacity-100'
+                        }`}
+                        style={{
+                          backgroundColor: isSelected ? computedTokens.appPrimary : 'transparent',
+                          color: isSelected ? computedTokens.appPrimaryText : 'inherit',
+                          borderColor: isSelected ? computedTokens.appPrimary : computedTokens.appBorder,
+                        }}
+                      >
+                        <div className="font-bold text-xs">{item.label}</div>
+                        <div className="text-[10px] opacity-75">{item.desc}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: FINE-TUNING SLIDER */}
           {activeTab === 'fine_tune' && (
             <div className="space-y-6">
               {/* Brightness Adjustment Box */}
@@ -397,9 +610,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                   <button
                     onClick={() => setDensity('compact')}
                     className={`p-3 rounded-2xl border flex items-center justify-center space-x-2.5 text-xs font-bold transition-all cursor-pointer ${
-                      density === 'compact'
-                        ? 'shadow-md ring-2'
-                        : 'opacity-70 hover:opacity-100'
+                      density === 'compact' ? 'shadow-md ring-2' : 'opacity-70 hover:opacity-100'
                     }`}
                     style={{
                       backgroundColor: density === 'compact' ? computedTokens.appPrimary : 'transparent',
@@ -414,9 +625,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                   <button
                     onClick={() => setDensity('comfortable')}
                     className={`p-3 rounded-2xl border flex items-center justify-center space-x-2.5 text-xs font-bold transition-all cursor-pointer ${
-                      density === 'comfortable'
-                        ? 'shadow-md ring-2'
-                        : 'opacity-70 hover:opacity-100'
+                      density === 'comfortable' ? 'shadow-md ring-2' : 'opacity-70 hover:opacity-100'
                     }`}
                     style={{
                       backgroundColor: density === 'comfortable' ? computedTokens.appPrimary : 'transparent',
@@ -432,7 +641,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
             </div>
           )}
 
-          {/* TAB 3: CUSTOM COLORS */}
+          {/* TAB 4: CUSTOM COLORS */}
           {activeTab === 'colors' && (
             <div className="space-y-6">
               {/* Background Color Picker */}
@@ -470,9 +679,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                         key={swatch.name}
                         onClick={() => updateBgColor(swatch.hex)}
                         className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
-                          isSelected
-                            ? 'ring-2 shadow-xs scale-105'
-                            : 'hover:scale-[1.02]'
+                          isSelected ? 'ring-2 shadow-xs scale-105' : 'hover:scale-[1.02]'
                         }`}
                         style={{
                           backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.9)',
@@ -525,9 +732,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                         key={swatch.name}
                         onClick={() => updateAccentColor(swatch.hex)}
                         className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
-                          isSelected
-                            ? 'ring-2 shadow-xs scale-105'
-                            : 'hover:scale-[1.02]'
+                          isSelected ? 'ring-2 shadow-xs scale-105' : 'hover:scale-[1.02]'
                         }`}
                         style={{
                           backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.9)',
@@ -552,19 +757,46 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
             <div className="flex items-center space-x-2 mb-2.5">
               <Eye className="w-4 h-4 opacity-75" />
               <span className="text-xs font-bold uppercase tracking-wider opacity-75">
-                Real-Time Component Preview
+                Real-Time Menu & Component Preview
               </span>
             </div>
 
             <div
-              className="p-4 rounded-2xl border backdrop-blur-2xl space-y-3 transition-all duration-300"
+              className="p-4 rounded-2xl border backdrop-blur-2xl space-y-3.5 transition-all duration-300"
               style={{
                 background: computedTokens.appSurfaceGlass,
                 borderColor: computedTokens.appCardBorder,
                 boxShadow: computedTokens.appCardShadow,
               }}
             >
-              <div className="flex items-center justify-between">
+              {/* Sample Subnav Segment */}
+              <div
+                className="flex items-center p-1 rounded-xl border space-x-1 backdrop-blur-2xl"
+                style={{
+                  backgroundColor: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.7)',
+                  borderColor: computedTokens.appBorder,
+                }}
+              >
+                <div
+                  className="flex items-center space-x-1.5 px-3 py-1 rounded-lg text-xs font-bold shadow-sm"
+                  style={{
+                    backgroundColor: computedTokens.appPrimary,
+                    color: computedTokens.appPrimaryText,
+                  }}
+                >
+                  <Diamond className="w-3.5 h-3.5" />
+                  <span>Account Master</span>
+                  <span className="text-[9px] px-1 py-0.2 rounded bg-black/25 text-white font-mono">F8</span>
+                </div>
+                <div className="flex items-center space-x-1.5 px-3 py-1 rounded-lg text-xs font-bold opacity-75">
+                  <Compass className="w-3.5 h-3.5" />
+                  <span>Vendor Master</span>
+                  <span className="text-[9px] px-1 py-0.2 rounded bg-slate-200 dark:bg-white/10 font-mono">F1</span>
+                </div>
+              </div>
+
+              {/* Sample Metric & Action */}
+              <div className="flex items-center justify-between pt-1">
                 <div className="flex items-center space-x-2">
                   <div
                     className="w-8 h-8 rounded-xl flex items-center justify-center shadow-xs"

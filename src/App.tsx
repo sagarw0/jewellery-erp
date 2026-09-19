@@ -37,9 +37,9 @@ import {
 } from './utils/mockData';
 import { cloudService } from './lib/supabase';
 
-// Layout & Components
 import { LoginView } from './components/auth/LoginView';
 import { Navbar } from './components/layout/Navbar';
+import { SubNavbar } from './components/layout/SubNavbar';
 import { DashboardView } from './components/dashboard/DashboardView';
 import { AccountMasterView } from './components/masters/AccountMasterView';
 import { VendorMasterView } from './components/masters/VendorMasterView';
@@ -466,194 +466,17 @@ export function App() {
       />
 
       {/* Sub-Header Navigation Tabs for Multi-view Sections */}
-      {currentSection === 'masters' && (
-        <div className={`${currentTheme.subnavBg} px-4 py-2 flex items-center justify-between text-xs overflow-x-auto scrollbar-none transition-colors duration-200`}>
-          <div className="flex items-center space-x-2">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mr-1 hidden sm:inline">
-              Masters:
-            </span>
-            <button
-              onClick={() => setMasterSubView('account_master')}
-              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
-                masterSubView === 'account_master'
-                  ? `${currentTheme.activePill} shadow-xs`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span>Account Master</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
-                masterSubView === 'account_master' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
-              }`}>F8</span>
-            </button>
-            <button
-              onClick={() => setMasterSubView('vendor_master')}
-              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
-                masterSubView === 'vendor_master'
-                  ? `${currentTheme.activePill} shadow-xs`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span>Vendor Master</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
-                masterSubView === 'vendor_master' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
-              }`}>F1</span>
-            </button>
-            <button
-              onClick={() => setMasterSubView('karagir_master')}
-              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
-                masterSubView === 'karagir_master'
-                  ? `${currentTheme.activePill} shadow-xs`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span>Karagir Master</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
-                masterSubView === 'karagir_master' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
-              }`}>F6</span>
-            </button>
-            <button
-              onClick={() => setMasterSubView('item_creation')}
-              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
-                masterSubView === 'item_creation'
-                  ? `${currentTheme.activePill} shadow-xs`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span>Item Creation Master</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
-                masterSubView === 'item_creation' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
-              }`}>F2</span>
-            </button>
-            <button
-              onClick={() => setMasterSubView('barcode')}
-              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
-                masterSubView === 'barcode'
-                  ? `${currentTheme.activePill} shadow-xs`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span>Barcode Studio</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
-                masterSubView === 'barcode' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
-              }`}>F3</span>
-            </button>
-          </div>
-          <span className="text-[10px] text-slate-400 font-mono hidden md:inline">Press F2/F3/F8 to switch quickly</span>
-        </div>
-      )}
-
-      {currentSection === 'transactions' && (
-        <div className={`${currentTheme.subnavBg} px-4 py-2 flex items-center justify-between text-xs overflow-x-auto scrollbar-none transition-colors duration-200`}>
-          <div className="flex items-center space-x-2">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mr-1 hidden sm:inline">
-              Vouchers:
-            </span>
-            <button
-              onClick={() => setTransSubView('new_order')}
-              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
-                transSubView === 'new_order'
-                  ? `${currentTheme.activePill} shadow-xs`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span>New Order Booking</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
-                transSubView === 'new_order' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
-              }`}>F7</span>
-            </button>
-            <button
-              onClick={() => setTransSubView('purchase')}
-              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
-                transSubView === 'purchase'
-                  ? `${currentTheme.activePill} shadow-xs`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span>Purchase Invoice</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
-                transSubView === 'purchase' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
-              }`}>F5</span>
-            </button>
-            <button
-              onClick={() => setTransSubView('refinery_in')}
-              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
-                transSubView === 'refinery_in'
-                  ? `${currentTheme.activePill} shadow-xs`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span>Refinery In</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
-                transSubView === 'refinery_in' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
-              }`}>F6</span>
-            </button>
-            <button
-              onClick={() => setTransSubView('sales_invoice')}
-              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
-                transSubView === 'sales_invoice'
-                  ? `${currentTheme.activePill} shadow-xs`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span>Sales POS Counter</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
-                transSubView === 'sales_invoice' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
-              }`}>F4</span>
-            </button>
-          </div>
-          <span className="text-[10px] text-slate-400 font-mono hidden md:inline">Press F4-F7 to switch vouchers</span>
-        </div>
-      )}
-
-      {currentSection === 'accounts' && (
-        <div className={`${currentTheme.subnavBg} px-4 py-2 flex items-center justify-between text-xs overflow-x-auto scrollbar-none transition-colors duration-200`}>
-          <div className="flex items-center space-x-2">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mr-1 hidden sm:inline">
-              Ledgers:
-            </span>
-            <button
-              onClick={() => setAccSubView('day_book')}
-              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
-                accSubView === 'day_book'
-                  ? `${currentTheme.activePill} shadow-xs`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span>Day Book</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
-                accSubView === 'day_book' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
-              }`}>F10</span>
-            </button>
-            <button
-              onClick={() => setAccSubView('book_display')}
-              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
-                accSubView === 'book_display'
-                  ? `${currentTheme.activePill} shadow-xs`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span>Debtors Ledger</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
-                accSubView === 'book_display' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
-              }`}>F11</span>
-            </button>
-            <button
-              onClick={() => setAccSubView('account_display')}
-              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
-                accSubView === 'account_display'
-                  ? `${currentTheme.activePill} shadow-xs`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span>Account Display (T-Ledger)</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
-                accSubView === 'account_display' ? 'bg-black/20 text-white' : 'bg-slate-200/80 text-slate-600'
-              }`}>F8</span>
-            </button>
-          </div>
-          <span className="text-[10px] text-slate-400 font-mono hidden md:inline">Press F8/F10/F11 for books</span>
-        </div>
-      )}
+      <SubNavbar
+        currentSection={currentSection}
+        masterSubView={masterSubView}
+        setMasterSubView={setMasterSubView}
+        transSubView={transSubView}
+        setTransSubView={setTransSubView}
+        accSubView={accSubView}
+        setAccSubView={setAccSubView}
+        stockSubView={stockSubView}
+        setStockSubView={setStockSubView}
+      />
 
       {/* Main Workspace Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
