@@ -30,6 +30,7 @@ import { ColumnSettingsModal } from '../common/ColumnSettingsModal';
 import { FieldHelpModal } from '../common/FieldHelpModal';
 import { PrintVoucherModal } from '../common/PrintVoucherModal';
 import { WhatsAppShareModal } from '../common/WhatsAppShareModal';
+import { useTheme } from '../../context/ThemeContext';
 
 interface RefineryInViewProps {
   refineries: RefineryRecord[];
@@ -59,6 +60,7 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
   onClose,
   goldRate,
 }) => {
+  const { currentTheme, isDark } = useTheme();
   const [activeTab, setActiveTab] = useState<RefineryTab>('refinery_in');
   const [columns, setColumns] = useState<ColumnSetting[]>(DEFAULT_REFINERY_COLUMNS);
 
@@ -68,13 +70,13 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
   const [showWhatsApp, setShowWhatsApp] = useState(false);
 
   const [header, setHeader] = useState<RefineryHeader>({
-    refinery_name: 'Shirpur Gold Refinery & Assayers Ltd',
+    refinery_name: 'National Bullion Refinery Pvt Ltd',
     remark: 'Scrap lot melting: customer exchange & bench scrap',
     payment_mode: 'Credit',
     invoice_prefix: 'REF',
-    manual_no: 'RF-2026-88',
+    manual_no: 'RF-2026-089',
     invoice_date: new Date().toISOString().split('T')[0],
-    invoice_no: 'REF-8841',
+    invoice_no: 'REF-2026-089',
     state: 'Maharashtra (27)',
     gst_not_required: false,
   });
@@ -83,40 +85,40 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
     {
       id: 'ri-1',
       no: 1,
-      trans_type: 'Old Gold Scrap',
-      item_name: 'Customer Exchange Old 22K Scrap',
-      gross_wt: 142.500,
-      net_wt: 138.200,
-      purity: 88.5,
-      fin_wt: 122.307,
-      rate: 7250,
-      amount: 886725.75,
-      refinery_loss: 0.450,
+      trans_type: 'Old Gold Scrap 22K',
+      item_name: 'Scrap Bangles & Chains',
+      gross_wt: 120.5,
+      net_wt: 118.2,
+      purity: 91.6,
+      fin_wt: 108.271,
+      rate: 7650,
+      amount: 828273.15,
+      refinery_loss: 0.95,
       refinery_profit: 0,
-      total_amt: 886725.75,
-      making_on_qty: 1500,
+      making_on_qty: 1200,
+      total_amt: 829473.15,
     },
     {
       id: 'ri-2',
       no: 2,
-      trans_type: 'Workshop Filings',
-      item_name: 'Polishing Powder & Sweepings',
-      gross_wt: 65.000,
-      net_wt: 58.400,
-      purity: 72.0,
-      fin_wt: 42.048,
-      rate: 7250,
-      amount: 304848.00,
-      refinery_loss: 0.620,
+      trans_type: 'Old Melting Bits 18K',
+      item_name: 'Broken Rings & Castings',
+      gross_wt: 75.8,
+      net_wt: 74.5,
+      purity: 75.0,
+      fin_wt: 55.875,
+      rate: 6500,
+      amount: 363187.5,
+      refinery_loss: 0.65,
       refinery_profit: 0,
-      total_amt: 304848.00,
-      making_on_qty: 800,
+      making_on_qty: 850,
+      total_amt: 364037.5,
     },
   ]);
 
   const [weightSummary, setWeightSummary] = useState<RefineryWeightSummary>({
-    balance_wgt_grswt: 207.500,
-    net_wgt: 196.600,
+    balance_wgt_grswt: 196.3,
+    net_wgt: 192.7,
     fin_wgt: 164.355,
   });
 
@@ -185,19 +187,39 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Top Toolbar */}
-      <div className="bg-white border border-sky-200/80 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+      <div
+        className={`p-3.5 rounded-xl flex flex-wrap items-center justify-between gap-3 shadow-sm border ${
+          isDark
+            ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs'
+            : 'bg-white border-sky-200/80 text-slate-800'
+        }`}
+      >
         <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-lg bg-orange-50 text-orange-600 border border-orange-200">
+          <div
+            className={`p-2 rounded-lg border ${
+              isDark
+                ? 'bg-amber-400/10 text-amber-400 border-amber-400/20'
+                : 'bg-orange-50 text-orange-600 border-orange-200'
+            }`}
+          >
             <Flame className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base font-bold text-slate-800">Refinery Inward</h1>
-              <span className="text-xs px-2 py-0.5 rounded bg-orange-50 text-orange-700 font-mono font-bold border border-orange-200">
+              <h1 className={`text-base font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                Refinery Inward
+              </h1>
+              <span
+                className={`text-xs px-2 py-0.5 rounded font-mono font-bold border ${
+                  isDark
+                    ? 'bg-amber-400/20 text-amber-300 border-amber-400/30'
+                    : 'bg-orange-50 text-orange-700 border-orange-200'
+                }`}
+              >
                 {header.invoice_no}
               </span>
             </div>
-            <p className="text-xs text-slate-500">
+            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
               Melting scrap recovery, fine pure weight yield, and assayer accounts.
             </p>
           </div>
@@ -206,7 +228,7 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
         <div className="flex items-center space-x-1.5 flex-wrap">
           <button
             onClick={handleSave}
-            className="flex items-center space-x-1 px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow"
+            className="flex items-center space-x-1 px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-bold shadow"
           >
             <Save className="w-3.5 h-3.5" />
             <span>Save Refinery Batch</span>
@@ -214,21 +236,32 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
 
           <button
             onClick={() => setShowPrint(true)}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-sky-50 text-sky-800 text-xs font-semibold border border-sky-200 hover:bg-sky-100"
+            className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+              isDark
+                ? 'bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border-sky-500/20'
+                : 'bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100'
+            }`}
           >
-            <Printer className="w-3.5 h-3.5" />
+            <Printer className="w-3.5 h-3.5 text-sky-400" />
             <span>Print</span>
           </button>
 
           <button
             onClick={() => setShowHelp(true)}
-            className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-amber-50 text-amber-800 text-xs font-bold border border-amber-300 hover:bg-amber-100"
+            className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-bold border ${
+              isDark
+                ? 'bg-amber-400/10 border-amber-400/30 text-amber-300 hover:bg-amber-400/20'
+                : 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100'
+            }`}
           >
             <HelpCircle className="w-3.5 h-3.5" />
             <span>H</span>
           </button>
 
-          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600">
+          <button
+            onClick={onClose}
+            className={`p-1.5 ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-400 hover:text-slate-600'}`}
+          >
             <XCircle className="w-4 h-4" />
           </button>
         </div>

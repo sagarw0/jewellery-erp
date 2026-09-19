@@ -376,12 +376,16 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h1 className="text-xl font-extrabold tracking-tight text-slate-950">Vendor & Supplier Master</h1>
-                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400 shadow-2xs">
+                <h1 className={`text-xl font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-slate-950'}`}>
+                  Vendor & Supplier Master
+                </h1>
+                <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full border shadow-2xs ${
+                  isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/40' : 'bg-amber-100 text-amber-950 border-amber-400'
+                }`}>
                   व्हेंडर व पुरवठादार व्यवस्थापन
                 </span>
               </div>
-              <p className="text-xs text-slate-700 font-semibold mt-0.5">
+              <p className={`text-xs font-semibold mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-700'}`}>
                 Manage Bullion Dealers, Karigars, Casting Units, Wholesalers & auto-populate Purchase Inwards
               </p>
             </div>
@@ -391,16 +395,24 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
         <div className="flex items-center space-x-2">
           <button
             onClick={handleExportCSV}
-            className="px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-900 text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer shadow-xs"
+            className={`px-3 py-2 rounded-xl border text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer shadow-xs ${
+              isDark
+                ? 'bg-white/10 hover:bg-white/15 border-white/15 text-white'
+                : 'border-slate-300 bg-white hover:bg-slate-100 text-slate-900'
+            }`}
             title="Download CSV"
           >
-            <Download className="w-4 h-4 text-slate-700" />
+            <Download className={`w-4 h-4 ${isDark ? 'text-amber-400' : 'text-slate-700'}`} />
             <span className="hidden sm:inline">Export CSV</span>
           </button>
 
           <button
             onClick={handleOpenAdd}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold text-xs shadow-md flex items-center space-x-2 transition-all cursor-pointer active:scale-95"
+            className={`px-4 py-2 rounded-xl font-bold text-xs shadow-md flex items-center space-x-2 transition-all cursor-pointer active:scale-95 ${
+              isDark
+                ? 'bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-slate-950 font-extrabold'
+                : 'bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white'
+            }`}
           >
             <Plus className="w-4 h-4" />
             <span>+ Add New Vendor</span>
@@ -410,54 +422,70 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
 
       {/* KPI Cards Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-        <div className="p-4 rounded-2xl border bg-white border-slate-300 shadow-sm transition-all">
-          <div className="flex items-center justify-between text-xs text-slate-700 font-bold mb-1">
+        <div className={`p-4 rounded-2xl border transition-all ${
+          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-slate-300 shadow-sm'
+        }`}>
+          <div className={`flex items-center justify-between text-xs font-bold mb-1 ${
+            isDark ? 'text-slate-300' : 'text-slate-700'
+          }`}>
             <span>Active Suppliers</span>
-            <Building2 className="w-4 h-4 text-blue-600" />
+            <Building2 className={`w-4 h-4 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
           </div>
-          <div className="text-xl font-black text-slate-950">
-            {metrics.totalActive} <span className="text-xs font-bold text-slate-600">/ {vendors.length} Total</span>
+          <div className={`text-xl font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>
+            {metrics.totalActive} <span className={`text-xs font-bold ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ {vendors.length} Total</span>
           </div>
-          <div className="text-[11px] text-emerald-800 font-bold mt-1">
+          <div className={`text-[11px] font-bold mt-1 ${isDark ? 'text-emerald-400' : 'text-emerald-800'}`}>
             ✓ Ready for Purchase & Orders
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl border bg-white border-slate-300 shadow-sm transition-all">
-          <div className="flex items-center justify-between text-xs text-slate-700 font-bold mb-1">
+        <div className={`p-4 rounded-2xl border transition-all ${
+          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-slate-300 shadow-sm'
+        }`}>
+          <div className={`flex items-center justify-between text-xs font-bold mb-1 ${
+            isDark ? 'text-slate-300' : 'text-slate-700'
+          }`}>
             <span>Outstanding Payable (₹)</span>
-            <CreditCard className="w-4 h-4 text-amber-600" />
+            <CreditCard className="w-4 h-4 text-amber-500" />
           </div>
-          <div className="text-xl font-black text-amber-950 font-mono">
+          <div className={`text-xl font-black font-mono ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
             {formatCurrency(metrics.totalCashPayable)}
           </div>
-          <div className="text-[11px] text-slate-600 font-semibold mt-1">
+          <div className={`text-[11px] font-semibold mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
             Total ledger credit balance
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl border bg-white border-slate-300 shadow-sm transition-all">
-          <div className="flex items-center justify-between text-xs text-slate-700 font-bold mb-1">
+        <div className={`p-4 rounded-2xl border transition-all ${
+          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-slate-300 shadow-sm'
+        }`}>
+          <div className={`flex items-center justify-between text-xs font-bold mb-1 ${
+            isDark ? 'text-slate-300' : 'text-slate-700'
+          }`}>
             <span>Fine Gold Due (g)</span>
-            <Coins className="w-4 h-4 text-amber-600" />
+            <Coins className="w-4 h-4 text-amber-500" />
           </div>
-          <div className="text-xl font-black font-mono text-amber-950">
+          <div className={`text-xl font-black font-mono ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
             {formatWeight(metrics.totalGoldGrams)}
           </div>
-          <div className="text-[11px] text-slate-600 font-semibold mt-1">
+          <div className={`text-[11px] font-semibold mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
             ~{(metrics.totalGoldGrams / 11.664).toFixed(2)} tolas pure gold
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl border bg-white border-slate-300 shadow-sm transition-all">
-          <div className="flex items-center justify-between text-xs text-slate-700 font-bold mb-1">
+        <div className={`p-4 rounded-2xl border transition-all ${
+          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-slate-300 shadow-sm'
+        }`}>
+          <div className={`flex items-center justify-between text-xs font-bold mb-1 ${
+            isDark ? 'text-slate-300' : 'text-slate-700'
+          }`}>
             <span>Fine Silver Due (g)</span>
-            <Scale className="w-4 h-4 text-slate-600" />
+            <Scale className={`w-4 h-4 ${isDark ? 'text-slate-400' : 'text-slate-600'}`} />
           </div>
-          <div className="text-xl font-black font-mono text-slate-950">
+          <div className={`text-xl font-black font-mono ${isDark ? 'text-white' : 'text-slate-950'}`}>
             {formatWeight(metrics.totalSilverGrams)}
           </div>
-          <div className="text-[11px] text-slate-600 font-semibold mt-1">
+          <div className={`text-[11px] font-semibold mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
             ~{(metrics.totalSilverGrams / 1000).toFixed(2)} kg 999 silver
           </div>
         </div>

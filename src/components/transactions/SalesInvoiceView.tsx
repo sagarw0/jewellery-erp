@@ -37,7 +37,7 @@ const DEFAULT_SALES_COLUMNS: ColumnSetting[] = [
 ];
 
 export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, goldRate }) => {
-  const { currentTheme } = useTheme();
+  const { currentTheme, isDark } = useTheme();
 
   // Invoice Mode: Tax Invoice vs Estimate / Quotation
   const [billMode, setBillMode] = useState<'Tax Invoice' | 'Estimate'>('Tax Invoice');
@@ -180,17 +180,25 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
       </div>
 
       {/* Bill Controls Strip: Tax Invoice vs Estimate & Salesman Name */}
-      <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-4 shadow-sm grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs`}>
+      <div className={`border rounded-xl p-4 shadow-sm grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs transition-all ${
+        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+      }`}>
         {/* Bill Type Mode Selection */}
         <div>
-          <label className="block text-[11px] font-bold text-slate-700 mb-1">Invoice Mode <span className="text-rose-500">*</span></label>
+          <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+            Invoice Mode <span className="text-rose-500">*</span>
+          </label>
           <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
               onClick={() => setBillMode('Tax Invoice')}
               className={`py-1.5 rounded-lg font-bold border transition-all cursor-pointer ${
                 billMode === 'Tax Invoice'
-                  ? 'bg-emerald-50 border-emerald-400 text-emerald-800 shadow-2xs'
+                  ? isDark
+                    ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-2xs'
+                    : 'bg-emerald-50 border-emerald-400 text-emerald-800 shadow-2xs'
+                  : isDark
+                  ? 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10'
                   : 'bg-slate-50 border-slate-200 text-slate-600'
               }`}
             >
@@ -201,7 +209,11 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
               onClick={() => setBillMode('Estimate')}
               className={`py-1.5 rounded-lg font-bold border transition-all cursor-pointer ${
                 billMode === 'Estimate'
-                  ? 'bg-amber-50 border-amber-400 text-amber-800 shadow-2xs'
+                  ? isDark
+                    ? 'bg-amber-400/20 border-amber-400 text-amber-300 shadow-2xs'
+                    : 'bg-amber-50 border-amber-400 text-amber-800 shadow-2xs'
+                  : isDark
+                  ? 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10'
                   : 'bg-slate-50 border-slate-200 text-slate-600'
               }`}
             >
@@ -212,14 +224,16 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
 
         {/* Salesman Name */}
         <div>
-          <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center space-x-1">
-            <User className="w-3.5 h-3.5 text-blue-600" />
+          <label className={`block text-[11px] font-bold mb-1 flex items-center space-x-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+            <User className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
             <span>Salesman Name <span className="text-rose-500">*</span></span>
           </label>
           <select
             value={salesmanName}
             onChange={(e) => setSalesmanName(e.target.value)}
-            className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-bold"
+            className={`w-full px-2.5 py-1.5 rounded-lg font-bold border outline-hidden ${
+              isDark ? 'bg-[#0f172a] border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+            }`}
           >
             <option value="Pooja Sharma (EMP-204)">Pooja Sharma (EMP-204)</option>
             <option value="Ramesh Kulkarni (EMP-101)">Ramesh Kulkarni (EMP-101)</option>
@@ -231,82 +245,104 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
 
         {/* Customer Name */}
         <div>
-          <label className="block text-[11px] font-bold text-slate-700 mb-1">Customer Name</label>
+          <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Customer Name</label>
           <input
             type="text"
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
-            className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-semibold"
+            className={`w-full px-2.5 py-1.5 rounded-lg font-semibold border outline-hidden ${
+              isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+            }`}
           />
         </div>
 
         {/* Phone */}
         <div>
-          <label className="block text-[11px] font-bold text-slate-700 mb-1">Mobile No</label>
+          <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Mobile No</label>
           <input
             type="text"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono"
+            className={`w-full px-2.5 py-1.5 rounded-lg font-mono border outline-hidden ${
+              isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+            }`}
           />
         </div>
       </div>
 
       {/* Barcode Quick Scan Bar */}
-      <div className="bg-gradient-to-r from-blue-50 to-sky-50 border border-sky-200 rounded-xl p-3 flex items-center justify-between gap-3 text-xs">
+      <div className={`border rounded-xl p-3 flex items-center justify-between gap-3 text-xs transition-all ${
+        isDark
+          ? 'bg-white/5 border-white/10 text-white'
+          : 'bg-gradient-to-r from-blue-50 to-sky-50 border border-sky-200 text-slate-900'
+      }`}>
         <form onSubmit={handleScanBarcode} className="flex items-center space-x-2 flex-1">
-          <Barcode className="w-5 h-5 text-blue-600" />
+          <Barcode className={`w-5 h-5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
           <input
             type="text"
             placeholder="Scan Tag No / Barcode (e.g. TAG-88201) and press Enter..."
             value={barcodeInput}
             onChange={(e) => setBarcodeInput(e.target.value)}
-            className="flex-1 px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono text-xs focus:outline-none focus:border-blue-500"
+            className={`flex-1 px-3 py-1.5 rounded-lg font-mono text-xs border outline-hidden ${
+              isDark
+                ? 'bg-white/5 border-white/15 text-white placeholder-slate-500 focus:border-amber-400'
+                : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-500'
+            }`}
           />
           <button
             type="submit"
-            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg cursor-pointer"
+            className={`px-3 py-1.5 font-bold rounded-lg cursor-pointer transition-all ${
+              isDark
+                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-extrabold hover:from-amber-500 hover:to-yellow-600'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`}
           >
             Add
           </button>
         </form>
-        <span className="text-[11px] text-slate-500 hidden sm:inline font-mono">
+        <span className={`text-[11px] hidden sm:inline font-mono ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
           Gold 22K 916: ₹{goldRate.toLocaleString('en-IN')}/g
         </span>
       </div>
 
       {/* Items Table */}
-      <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-4 shadow-sm space-y-3`}>
-        <div className="overflow-x-auto border border-slate-200 rounded-lg">
+      <div className={`border rounded-xl p-4 shadow-sm space-y-3 transition-all ${
+        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-slate-200'
+      }`}>
+        <div className={`overflow-x-auto border rounded-lg ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
           <table className="w-full text-left text-xs border-collapse">
-            <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
+            <thead className={`font-bold border-b ${
+              isDark ? 'bg-white/10 text-slate-200 border-white/10' : 'bg-slate-50 text-slate-700 border-slate-200'
+            }`}>
               <tr>
-                <th className="p-2.5 border-r border-slate-200 w-10 text-center">#</th>
-                <th className="p-2.5 border-r border-slate-200 min-w-[200px]">Item Description</th>
-                <th className="p-2.5 border-r border-slate-200 text-right w-24">Gross Wt</th>
-                <th className="p-2.5 border-r border-slate-200 text-right w-24 font-bold text-blue-800">Net Wt</th>
-                <th className="p-2.5 border-r border-slate-200 text-center w-16">Purity</th>
-                <th className="p-2.5 border-r border-slate-200 text-right w-24">Rate/Gm</th>
-                <th className="p-2.5 border-r border-slate-200 text-right w-24">Making</th>
-                <th className="p-2.5 border-r border-slate-200 text-right w-28 font-bold text-slate-900">Total (₹)</th>
+                <th className={`p-2.5 border-r w-10 text-center ${isDark ? 'border-white/10' : 'border-slate-200'}`}>#</th>
+                <th className={`p-2.5 border-r min-w-[200px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>Item Description</th>
+                <th className={`p-2.5 border-r text-right w-24 ${isDark ? 'border-white/10' : 'border-slate-200'}`}>Gross Wt</th>
+                <th className={`p-2.5 border-r text-right w-24 font-bold ${isDark ? 'border-white/10 text-amber-300' : 'border-slate-200 text-blue-800'}`}>Net Wt</th>
+                <th className={`p-2.5 border-r text-center w-16 ${isDark ? 'border-white/10' : 'border-slate-200'}`}>Purity</th>
+                <th className={`p-2.5 border-r text-right w-24 ${isDark ? 'border-white/10' : 'border-slate-200'}`}>Rate/Gm</th>
+                <th className={`p-2.5 border-r text-right w-24 ${isDark ? 'border-white/10' : 'border-slate-200'}`}>Making</th>
+                <th className={`p-2.5 border-r text-right w-28 font-bold ${isDark ? 'border-white/10 text-amber-300' : 'border-slate-200 text-slate-900'}`}>Total (₹)</th>
                 <th className="p-2.5 text-center w-12">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 bg-white font-mono text-[11px]">
+            <tbody className={`divide-y font-mono text-[11px] ${
+              isDark ? 'divide-white/10 bg-transparent text-slate-200' : 'divide-slate-200 bg-white'
+            }`}>
               {items.map((it, idx) => (
-                <tr key={it.id} className="hover:bg-sky-50/30">
-                  <td className="p-2.5 border-r border-slate-200 text-center text-slate-400">{idx + 1}</td>
-                  <td className="p-2.5 border-r border-slate-200 font-sans font-semibold text-slate-900">{it.item_name}</td>
-                  <td className="p-2.5 border-r border-slate-200 text-right">{formatWeight(it.gross_wt)}</td>
-                  <td className="p-2.5 border-r border-slate-200 text-right font-bold text-blue-800">{formatWeight(it.net_wt)}</td>
-                  <td className="p-2.5 border-r border-slate-200 text-center">{it.purity}%</td>
-                  <td className="p-2.5 border-r border-slate-200 text-right">₹{it.rate}</td>
-                  <td className="p-2.5 border-r border-slate-200 text-right">{formatCurrency(it.making_amt)}</td>
-                  <td className="p-2.5 border-r border-slate-200 text-right font-bold text-slate-900">{formatCurrency(it.total_amt)}</td>
+                <tr key={it.id} className={isDark ? 'hover:bg-white/[0.04]' : 'hover:bg-sky-50/30'}>
+                  <td className={`p-2.5 border-r text-center ${isDark ? 'border-white/10 text-slate-500' : 'border-slate-200 text-slate-400'}`}>{idx + 1}</td>
+                  <td className={`p-2.5 border-r font-sans font-semibold ${isDark ? 'border-white/10 text-white' : 'border-slate-200 text-slate-900'}`}>{it.item_name}</td>
+                  <td className={`p-2.5 border-r text-right ${isDark ? 'border-white/10' : 'border-slate-200'}`}>{formatWeight(it.gross_wt)}</td>
+                  <td className={`p-2.5 border-r text-right font-bold ${isDark ? 'border-white/10 text-amber-300' : 'border-slate-200 text-blue-800'}`}>{formatWeight(it.net_wt)}</td>
+                  <td className={`p-2.5 border-r text-center ${isDark ? 'border-white/10' : 'border-slate-200'}`}>{it.purity}%</td>
+                  <td className={`p-2.5 border-r text-right ${isDark ? 'border-white/10' : 'border-slate-200'}`}>₹{it.rate}</td>
+                  <td className={`p-2.5 border-r text-right ${isDark ? 'border-white/10' : 'border-slate-200'}`}>{formatCurrency(it.making_amt)}</td>
+                  <td className={`p-2.5 border-r text-right font-bold ${isDark ? 'border-white/10 text-amber-300' : 'border-slate-200 text-slate-900'}`}>{formatCurrency(it.total_amt)}</td>
                   <td className="p-2.5 text-center">
                     <button
                       onClick={() => setItems(items.filter((x) => x.id !== it.id))}
-                      className="text-rose-600 hover:text-rose-800 p-1"
+                      className="text-rose-500 hover:text-rose-400 p-1 cursor-pointer"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -321,51 +357,65 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
       {/* Financial Settlement & Total Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
         {/* Trade-in URD */}
-        <div className="bg-amber-50/70 border border-amber-200 p-4 rounded-xl space-y-2">
-          <div className="flex justify-between items-center text-amber-900 font-bold font-sans">
+        <div className={`p-4 rounded-xl space-y-2 border transition-all ${
+          isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-amber-50/70 border-amber-200'
+        }`}>
+          <div className={`flex justify-between items-center font-bold font-sans ${
+            isDark ? 'text-amber-300' : 'text-amber-900'
+          }`}>
             <span className="flex items-center space-x-1">
-              <Coins className="w-4 h-4 text-amber-600" />
+              <Coins className="w-4 h-4 text-amber-500" />
               <span>Old Gold / URD Credit</span>
             </span>
           </div>
           <div>
-            <label className="block text-[10px] text-slate-600 mb-1">Old Gold Exchange Value (₹)</label>
+            <label className={`block text-[10px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Old Gold Exchange Value (₹)</label>
             <input
               type="number"
               value={urdAmount}
               onChange={(e) => setUrdAmount(parseFloat(e.target.value) || 0)}
-              className="w-full px-2.5 py-1.5 bg-white border border-amber-300 rounded-lg text-right font-bold text-amber-900"
+              className={`w-full px-2.5 py-1.5 rounded-lg text-right font-bold border outline-hidden ${
+                isDark
+                  ? 'bg-white/5 border-white/15 text-amber-300 focus:border-amber-400'
+                  : 'bg-white border-amber-300 text-amber-900'
+              }`}
             />
           </div>
         </div>
 
         {/* Tendered Payments */}
-        <div className="bg-sky-50/70 border border-sky-200 p-4 rounded-xl space-y-2">
-          <span className="font-bold text-blue-900 font-sans block">Customer Tender</span>
+        <div className={`p-4 rounded-xl space-y-2 border transition-all ${
+          isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-sky-50/70 border-sky-200'
+        }`}>
+          <span className={`font-bold font-sans block ${isDark ? 'text-slate-200' : 'text-blue-900'}`}>Customer Tender</span>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-[10px] text-slate-600 mb-1">Cash (₹)</label>
+              <label className={`block text-[10px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Cash (₹)</label>
               <input
                 type="number"
                 value={cashTendered}
                 onChange={(e) => setCashTendered(parseFloat(e.target.value) || 0)}
-                className="w-full px-2 py-1 bg-white border border-slate-300 rounded font-right font-bold text-slate-900 text-xs"
+                className={`w-full px-2 py-1 rounded font-right font-bold text-xs border outline-hidden ${
+                  isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-900'
+                }`}
               />
             </div>
             <div>
-              <label className="block text-[10px] text-slate-600 mb-1">Bank / UPI / Card (₹)</label>
+              <label className={`block text-[10px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Bank / UPI / Card (₹)</label>
               <input
                 type="number"
                 value={bankTendered}
                 onChange={(e) => setBankTendered(parseFloat(e.target.value) || 0)}
-                className="w-full px-2 py-1 bg-white border border-slate-300 rounded font-right font-bold text-blue-900 text-xs"
+                className={`w-full px-2 py-1 rounded font-right font-bold text-xs border outline-hidden ${
+                  isDark ? 'bg-white/5 border-white/15 text-amber-300' : 'bg-white border-slate-300 text-blue-900'
+                }`}
               />
             </div>
           </div>
         </div>
 
         {/* Net Settlement */}
-        <div className="bg-gradient-to-br from-blue-700 to-indigo-800 text-white p-4 rounded-xl space-y-2">
+        <div className="bg-gradient-to-br from-blue-700 to-indigo-800 text-white p-4 rounded-xl space-y-2 shadow-md">
           <div className="flex justify-between text-xs">
             <span className="text-blue-200">Subtotal:</span>
             <span>{formatCurrency(subtotal)}</span>

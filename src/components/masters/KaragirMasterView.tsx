@@ -389,82 +389,100 @@ export const KaragirMasterView: React.FC<KaragirMasterViewProps> = ({
       {/* 4 Executive KPI Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Active Artisans */}
-        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
+        <div className={`p-4 rounded-xl border flex items-center justify-between transition-all ${
+          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-slate-200 shadow-sm'
+        }`}>
           <div>
-            <span className="text-xs font-bold text-slate-600 block uppercase tracking-wider">
+            <span className={`text-xs font-bold block uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
               Active Karagirs
             </span>
-            <div className="text-2xl font-black text-slate-950 mt-1">
+            <div className={`text-2xl font-black mt-1 ${isDark ? 'text-white' : 'text-slate-950'}`}>
               {kpis.totalActive}
-              <span className="text-xs font-semibold text-slate-500 ml-1">/ {kpis.totalCount} total</span>
+              <span className={`text-xs font-semibold ml-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>/ {kpis.totalCount} total</span>
             </div>
-            <span className="text-[11px] text-emerald-800 font-bold flex items-center space-x-1 mt-0.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+            <span className={`text-[11px] font-bold flex items-center space-x-1 mt-0.5 ${isDark ? 'text-emerald-400' : 'text-emerald-800'}`}>
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
               <span>Available for Job Work</span>
             </span>
           </div>
-          <div className="p-3 rounded-xl bg-blue-100 text-blue-900 border border-blue-200">
+          <div className={`p-3 rounded-xl border ${
+            isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-blue-100 text-blue-900 border-blue-200'
+          }`}>
             <Hammer className="w-5 h-5" />
           </div>
         </div>
 
         {/* Card 2: Fine Gold in Job Work */}
-        <div className="p-4 rounded-xl bg-white border border-amber-200 shadow-sm flex items-center justify-between">
+        <div className={`p-4 rounded-xl border flex items-center justify-between transition-all ${
+          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-amber-200 shadow-sm'
+        }`}>
           <div>
-            <span className="text-xs font-bold text-amber-900 block uppercase tracking-wider">
+            <span className={`text-xs font-bold block uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-amber-900'}`}>
               Fine Gold in Workshop
             </span>
-            <div className="text-2xl font-black text-amber-950 font-mono mt-1">
+            <div className={`text-2xl font-black font-mono mt-1 ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
               {formatWeight(kpis.totalGoldDue)}g
             </div>
-            <span className="text-[11px] text-amber-800 font-semibold">
+            <span className={`text-[11px] font-semibold ${isDark ? 'text-slate-400' : 'text-amber-800'}`}>
               ≈ {(kpis.totalGoldDue / 11.664).toFixed(2)} tolas 24K metal
             </span>
           </div>
-          <div className="p-3 rounded-xl bg-amber-100 text-amber-950 border border-amber-300">
+          <div className={`p-3 rounded-xl border ${
+            isDark ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' : 'bg-amber-100 text-amber-950 border-amber-300'
+          }`}>
             <Scale className="w-5 h-5" />
           </div>
         </div>
 
         {/* Card 3: Labor / Making Dues */}
-        <div className="p-4 rounded-xl bg-white border border-emerald-200 shadow-sm flex items-center justify-between">
+        <div className={`p-4 rounded-xl border flex items-center justify-between transition-all ${
+          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-emerald-200 shadow-sm'
+        }`}>
           <div>
-            <span className="text-xs font-bold text-slate-700 block uppercase tracking-wider">
+            <span className={`text-xs font-bold block uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
               Labor / Making Dues
             </span>
-            <div className="text-2xl font-black text-slate-950 font-mono mt-1">
+            <div className={`text-2xl font-black font-mono mt-1 ${isDark ? 'text-emerald-300' : 'text-slate-950'}`}>
               {formatCurrency(kpis.totalCashPayable)}
             </div>
-            <span className="text-[11px] text-emerald-800 font-bold">
+            <span className={`text-[11px] font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-800'}`}>
               Net Payable: {formatCurrency(kpis.netCashBalance)}
             </span>
           </div>
-          <div className="p-3 rounded-xl bg-emerald-100 text-emerald-950 border border-emerald-300">
+          <div className={`p-3 rounded-xl border ${
+            isDark ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-emerald-100 text-emerald-950 border-emerald-300'
+          }`}>
             <Coins className="w-5 h-5" />
           </div>
         </div>
 
         {/* Card 4: Active Job Orders */}
-        <div className="p-4 rounded-xl bg-white border border-indigo-200 shadow-sm flex items-center justify-between">
+        <div className={`p-4 rounded-xl border flex items-center justify-between transition-all ${
+          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-indigo-200 shadow-sm'
+        }`}>
           <div>
-            <span className="text-xs font-bold text-indigo-900 block uppercase tracking-wider">
+            <span className={`text-xs font-bold block uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-indigo-900'}`}>
               In-Progress Job Cards
             </span>
-            <div className="text-2xl font-black text-indigo-950 font-mono mt-1">
+            <div className={`text-2xl font-black font-mono mt-1 ${isDark ? 'text-indigo-300' : 'text-indigo-950'}`}>
               {kpis.totalActiveJobs} Jobs
             </div>
-            <span className="text-[11px] text-indigo-800 font-semibold">
+            <span className={`text-[11px] font-semibold ${isDark ? 'text-slate-400' : 'text-indigo-800'}`}>
               Active custom bridal orders
             </span>
           </div>
-          <div className="p-3 rounded-xl bg-indigo-100 text-indigo-950 border border-indigo-300">
+          <div className={`p-3 rounded-xl border ${
+            isDark ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' : 'bg-indigo-100 text-indigo-950 border-indigo-300'
+          }`}>
             <Layers className="w-5 h-5" />
           </div>
         </div>
       </div>
 
       {/* Filter Bar & Search */}
-      <div className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
+      <div className={`p-3.5 rounded-xl border flex flex-wrap items-center justify-between gap-3 transition-all ${
+        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-slate-200 shadow-xs'
+      }`}>
         <div className="flex-1 min-w-[240px] max-w-md relative">
           <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
           <input

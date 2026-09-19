@@ -140,7 +140,165 @@
   color: var(--color-text-primary) !important;
 }
 
-/* 1. Frosted Glass Cards with authentic Apple Specular Highlights */
+/* ==========================================================================
+   Dark Luxury Glass & Obsidian / Sapphire / Custom Dark Mode Engine
+   Harmonizes ALL application screens, cards, inputs, tables, modals, & toolbars
+   ========================================================================== */
+
+.dark,
+.theme-obsidian-velvet,
+.theme-custom.dark,
+:root.dark {
+  color-scheme: dark !important;
+}
+
+/* 1. Global Card & Container Surfaces in Dark Mode */
+.dark .bg-white,
+.theme-obsidian-velvet .bg-white,
+.dark .bg-slate-50,
+.theme-obsidian-velvet .bg-slate-50,
+.dark .bg-slate-100,
+.theme-obsidian-velvet .bg-slate-100,
+.dark .bg-sky-50,
+.theme-obsidian-velvet .bg-sky-50,
+.dark .bg-amber-50,
+.theme-obsidian-velvet .bg-amber-50,
+.dark .bg-emerald-50,
+.theme-obsidian-velvet .bg-emerald-50,
+.dark .bg-indigo-50,
+.theme-obsidian-velvet .bg-indigo-50 {
+  background-color: rgba(15, 23, 42, 0.90) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f8fafc !important;
+}
+
+/* 2. Form Inputs, Selects, and Textareas in Dark Mode */
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="submit"]):not([type="button"]),
+.dark select,
+.dark textarea,
+.theme-obsidian-velvet input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="submit"]):not([type="button"]),
+.theme-obsidian-velvet select,
+.theme-obsidian-velvet textarea {
+  background-color: rgba(30, 41, 59, 0.70) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder,
+.theme-obsidian-velvet input::placeholder,
+.theme-obsidian-velvet textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus,
+.theme-obsidian-velvet input:focus,
+.theme-obsidian-velvet select:focus,
+.theme-obsidian-velvet textarea:focus {
+  border-color: var(--color-primary, #f59e0b) !important;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.25) !important;
+}
+
+/* 3. Dark Tables & Data Grids */
+.dark table,
+.theme-obsidian-velvet table {
+  color: #f8fafc !important;
+}
+
+.dark table thead,
+.dark table thead th,
+.dark table th,
+.theme-obsidian-velvet table thead,
+.theme-obsidian-velvet table thead th,
+.theme-obsidian-velvet table th {
+  background-color: rgba(30, 41, 59, 0.85) !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  font-weight: 700 !important;
+}
+
+.dark table tbody tr,
+.theme-obsidian-velvet table tbody tr {
+  background-color: transparent !important;
+}
+
+.dark table tbody tr:hover td,
+.theme-obsidian-velvet table tbody tr:hover td {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.dark table td,
+.theme-obsidian-velvet table td {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #cbd5e1 !important;
+}
+
+/* 4. Text Contrast & Borders in Dark Mode */
+.dark .text-slate-950,
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark .text-blue-900,
+.dark .text-blue-950,
+.dark .text-amber-950,
+.dark .text-emerald-950,
+.dark .text-indigo-950,
+.theme-obsidian-velvet .text-slate-950,
+.theme-obsidian-velvet .text-slate-900,
+.theme-obsidian-velvet .text-slate-800,
+.theme-obsidian-velvet .text-blue-900,
+.theme-obsidian-velvet .text-blue-950,
+.theme-obsidian-velvet .text-amber-950,
+.theme-obsidian-velvet .text-emerald-950,
+.theme-obsidian-velvet .text-indigo-950 {
+  color: #f8fafc !important;
+}
+
+.dark .text-slate-700,
+.dark .text-slate-600,
+.dark .text-slate-500,
+.theme-obsidian-velvet .text-slate-700,
+.theme-obsidian-velvet .text-slate-600,
+.theme-obsidian-velvet .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+.dark .border-slate-200,
+.dark .border-slate-300,
+.dark .border-sky-200,
+.dark .border-amber-200,
+.dark .border-blue-200,
+.dark .border-emerald-200,
+.dark .border-indigo-200,
+.dark .divide-slate-200,
+.theme-obsidian-velvet .border-slate-200,
+.theme-obsidian-velvet .border-slate-300,
+.theme-obsidian-velvet .border-sky-200,
+.theme-obsidian-velvet .border-amber-200,
+.theme-obsidian-velvet .border-blue-200,
+.theme-obsidian-velvet .border-emerald-200,
+.theme-obsidian-velvet .border-indigo-200,
+.theme-obsidian-velvet .divide-slate-200 {
+  border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+/* 5. Modals & Dialogs in Dark Mode */
+.dark [role="dialog"],
+.dark .fixed .bg-white,
+.theme-obsidian-velvet [role="dialog"],
+.theme-obsidian-velvet .fixed .bg-white {
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: blur(36px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
+  color: #f8fafc !important;
+}
+
+/* 6. Apple iOS Frosted Glass in Light Mode */
 .theme-apple-glass .bg-white,
 .theme-apple-glass .glass-card,
 .theme-custom:not(.dark) .bg-white,
@@ -153,7 +311,6 @@
   color: #0f172a !important;
 }
 
-/* 2. Top Header & Navbars */
 .theme-apple-glass header,
 .theme-apple-glass nav,
 .theme-custom:not(.dark) header,
@@ -164,7 +321,6 @@
   border-color: rgba(255, 255, 255, 0.9) !important;
 }
 
-/* 3. Inputs, Selects, and Textareas */
 .theme-apple-glass input,
 .theme-apple-glass select,
 .theme-apple-glass textarea,
@@ -187,7 +343,6 @@
   box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.22) !important;
 }
 
-/* 4. Glass Tables & Data Grids */
 .theme-apple-glass table,
 .theme-custom:not(.dark) table {
   color: #0f172a !important;
@@ -214,7 +369,6 @@
   color: #1e293b !important;
 }
 
-/* 5. Modals & Dialogs */
 .theme-apple-glass [role="dialog"],
 .theme-apple-glass .fixed .bg-white,
 .theme-custom:not(.dark) [role="dialog"],

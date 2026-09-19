@@ -62,6 +62,7 @@ import { WhatsAppShareModal } from '../common/WhatsAppShareModal';
 import { AssignKaragirModal, DEFAULT_KARAGIRS, JEWELLERY_SAMPLE_PRESETS } from '../common/AssignKaragirModal';
 import { KaragirJobCardModal } from '../common/KaragirJobCardModal';
 import { ReceiveKaragirModal } from '../common/ReceiveKaragirModal';
+import { useTheme } from '../../context/ThemeContext';
 
 interface NewOrderBookingViewProps {
   orders: NewOrderBookingRecord[];
@@ -97,6 +98,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
   karagirs = INITIAL_KARAGIRS,
   onSaveKaragir,
 }) => {
+  const { currentTheme, isDark, computedTokens } = useTheme();
   const [activeTab, setActiveTab] = useState<NewOrderTab>('new_order_booking');
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(orders[0]?.id || null);
   const [orderColumns, setOrderColumns] = useState<ColumnSetting[]>(DEFAULT_ORDER_COLUMNS);
@@ -584,19 +586,39 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Top Action Toolbar */}
-      <div className="bg-white border border-sky-200/80 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+      <div
+        className={`p-3.5 rounded-xl flex flex-wrap items-center justify-between gap-3 shadow-sm border ${
+          isDark
+            ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs'
+            : 'bg-white border-sky-200/80 text-slate-800'
+        }`}
+      >
         <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-lg bg-blue-50 text-blue-600 border border-blue-200">
+          <div
+            className={`p-2 rounded-lg border ${
+              isDark
+                ? 'bg-amber-400/10 text-amber-400 border-amber-400/20'
+                : 'bg-blue-50 text-blue-600 border-blue-200'
+            }`}
+          >
             <Receipt className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base font-bold text-slate-800">New Order Booking</h1>
-              <span className="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-mono font-bold border border-blue-200">
+              <h1 className={`text-base font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                New Order Booking
+              </h1>
+              <span
+                className={`text-xs px-2 py-0.5 rounded font-mono font-bold border ${
+                  isDark
+                    ? 'bg-amber-400/20 text-amber-300 border-amber-400/30'
+                    : 'bg-blue-100 text-blue-800 border-blue-200'
+                }`}
+              >
                 {selectedOrderId ? orders.find((o) => o.id === selectedOrderId)?.order_no : 'NEW BOOKING'}
               </span>
             </div>
-            <p className="text-xs text-slate-500">
+            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
               Simplified & sorted order flow. All 45+ fields preserved and accessible.
             </p>
           </div>
@@ -616,11 +638,19 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
           {/* Assigned Karagir Badge */}
           {currentSelectedOrder?.assigned_karagir && (
-            <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-300 text-amber-900 text-xs font-bold">
+            <div
+              className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg border text-xs font-bold ${
+                isDark
+                  ? 'bg-amber-400/10 border-amber-400/30 text-amber-300'
+                  : 'bg-amber-50 border-amber-300 text-amber-900'
+              }`}
+            >
               <span>🔨 {currentSelectedOrder.assigned_karagir}</span>
               <button
                 onClick={() => handleOpenJobCard(currentSelectedOrder)}
-                className="text-amber-700 underline hover:text-amber-950 text-[10px]"
+                className={`underline text-[10px] ${
+                  isDark ? 'text-amber-300 hover:text-amber-100' : 'text-amber-700 hover:text-amber-950'
+                }`}
                 title="Print Karagir Job Card"
               >
                 (Job Card)
@@ -639,15 +669,19 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
           <button
             onClick={handleNewOrder}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors"
+            className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+              isDark
+                ? 'bg-white/10 hover:bg-white/20 text-slate-200 border border-white/10'
+                : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+            }`}
           >
-            <Plus className="w-3.5 h-3.5 text-blue-600" />
+            <Plus className="w-3.5 h-3.5 text-amber-400" />
             <span>New (Alt+N)</span>
           </button>
 
           <button
             onClick={handleSave}
-            className="flex items-center space-x-1 px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow transition-all"
+            className="flex items-center space-x-1 px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-bold shadow transition-all"
           >
             <Save className="w-3.5 h-3.5" />
             <span>Save Order (Alt+S)</span>
@@ -655,32 +689,48 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
           <button
             onClick={() => setShowPrint(true)}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-800 text-xs font-semibold border border-sky-200 transition-colors"
+            className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+              isDark
+                ? 'bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border-sky-500/20'
+                : 'bg-sky-50 hover:bg-sky-100 text-sky-800 border-sky-200'
+            }`}
           >
-            <Printer className="w-3.5 h-3.5 text-sky-600" />
+            <Printer className="w-3.5 h-3.5 text-sky-400" />
             <span>Print Slip</span>
           </button>
 
           <button
             onClick={() => setShowWhatsApp(true)}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-200 transition-colors"
+            className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+              isDark
+                ? 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border-emerald-500/20'
+                : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-200'
+            }`}
           >
-            <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+            <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
             <span>WhatsApp</span>
           </button>
 
           <button
             onClick={() => setShowColumnSettings(true)}
-            className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-mono font-bold border border-slate-200"
+            className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold border ${
+              isDark
+                ? 'bg-white/10 hover:bg-white/20 text-slate-300 border-white/10'
+                : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'
+            }`}
             title="Gridsetting (GS)"
           >
-            <Sliders className="w-3.5 h-3.5 text-blue-600" />
+            <Sliders className="w-3.5 h-3.5 text-amber-400" />
             <span>GS</span>
           </button>
 
           <button
             onClick={() => setShowHelp(true)}
-            className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-amber-50 border border-amber-300 text-amber-800 hover:bg-amber-100 text-xs font-bold"
+            className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-bold border ${
+              isDark
+                ? 'bg-amber-400/10 border-amber-400/30 text-amber-300 hover:bg-amber-400/20'
+                : 'bg-amber-50 border-amber-300 text-amber-800 hover:bg-amber-100'
+            }`}
             title="Field Dictionary (H)"
           >
             <HelpCircle className="w-3.5 h-3.5" />
@@ -689,7 +739,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600"
+            className={`p-1.5 ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-400 hover:text-slate-600'}`}
           >
             <XCircle className="w-4 h-4" />
           </button>
@@ -697,14 +747,24 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
       </div>
 
       {/* 7 Workflow Sub-Tabs */}
-      <div className="flex border-b border-sky-200 bg-white rounded-t-xl px-2 pt-2 space-x-1 overflow-x-auto scrollbar-none shadow-2xs">
+      <div
+        className={`flex border-b rounded-t-xl px-2 pt-2 space-x-1 overflow-x-auto scrollbar-none shadow-2xs ${
+          isDark
+            ? 'bg-[#0f172a]/95 border-white/10'
+            : 'bg-white border-sky-200'
+        }`}
+      >
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`px-3.5 py-2 rounded-t-lg text-xs font-semibold whitespace-nowrap transition-all ${
               activeTab === tab.id
-                ? 'bg-blue-50/80 text-blue-700 border-b-2 border-blue-600 font-bold'
+                ? isDark
+                  ? 'bg-white/10 text-amber-400 border-b-2 border-amber-400 font-bold'
+                  : 'bg-blue-50/80 text-blue-700 border-b-2 border-blue-600 font-bold'
+                : isDark
+                ? 'text-slate-400 hover:text-white hover:bg-white/5'
                 : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
             }`}
           >

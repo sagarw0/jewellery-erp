@@ -59,7 +59,7 @@ const DEFAULT_ITEM_COLUMNS: ColumnSetting[] = [
 ];
 
 export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, onClose }) => {
-  const { currentTheme } = useTheme();
+  const { currentTheme, isDark } = useTheme();
   const [activeTab, setActiveTab] = useState<'create_item' | 'opening_stock'>('create_item');
 
   // Existing Created Items Master Store
@@ -350,19 +350,25 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Top Toolbar */}
-      <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-sm`}>
+      <div className={`border rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-sm transition-all ${
+        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+      }`}>
         <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-lg bg-blue-50 text-blue-600 border border-blue-200">
+          <div className={`p-2 rounded-lg border ${
+            isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-blue-50 text-blue-600 border-blue-200'
+          }`}>
             <PackagePlus className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-base font-bold text-slate-800 flex items-center space-x-2">
+            <h1 className={`text-base font-bold flex items-center space-x-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
               <span>Item Creation & Opening Stock Master</span>
-              <span className="text-xs px-2 py-0.5 rounded bg-sky-100 text-blue-800 font-mono font-bold border border-sky-200">
+              <span className={`text-xs px-2 py-0.5 rounded font-mono font-bold border ${
+                isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-sky-100 text-blue-800 border-sky-200'
+              }`}>
                 F2 Action
               </span>
             </h1>
-            <p className="text-xs text-slate-500">
+            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
               Create master items, assign total batch weights, divide into individual pieces, and adjust inventory.
             </p>
           </div>
@@ -372,16 +378,22 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
         <div className="flex items-center space-x-2 flex-wrap">
           <button
             onClick={() => setShowColumnSettings(true)}
-            className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-mono font-bold border border-slate-200 hover:bg-slate-200 cursor-pointer"
+            className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold border cursor-pointer transition-all ${
+              isDark ? 'bg-white/10 text-white border-white/15 hover:bg-white/20' : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+            }`}
             title="Grid Settings"
           >
-            <Sliders className="w-3.5 h-3.5 text-blue-600" />
+            <Sliders className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
             <span>GS</span>
           </button>
 
           <button
             onClick={activeTab === 'create_item' ? handleSaveItem : handleSaveOpeningStock}
-            className="flex items-center space-x-1 px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow cursor-pointer"
+            className={`flex items-center space-x-1 px-4 py-1.5 rounded-lg text-xs font-bold shadow cursor-pointer transition-all ${
+              isDark
+                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-extrabold'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`}
           >
             <Save className="w-3.5 h-3.5" />
             <span>{activeTab === 'create_item' ? 'Save Item (Alt+S)' : 'Save Piece (Alt+S)'}</span>
@@ -390,7 +402,9 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
           {selectedItemId && activeTab === 'create_item' && (
             <button
               onClick={() => handleDeleteItem(selectedItemId)}
-              className="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200 hover:bg-rose-100 cursor-pointer"
+              className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-bold border cursor-pointer transition-all ${
+                isDark ? 'bg-rose-500/20 text-rose-300 border-rose-500/40 hover:bg-rose-500/30' : 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100'
+              }`}
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>Delete</span>
@@ -399,7 +413,9 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
 
           <button
             onClick={handleCancel}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold border border-slate-200 hover:bg-slate-200 cursor-pointer"
+            className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-semibold border cursor-pointer transition-all ${
+              isDark ? 'bg-white/10 text-white border-white/15 hover:bg-white/20' : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+            }`}
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Cancel</span>
@@ -407,24 +423,32 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
 
           <button
             onClick={() => setShowHelp(true)}
-            className="p-1.5 rounded-lg bg-amber-50 text-amber-800 text-xs font-bold border border-amber-300 hover:bg-amber-100 cursor-pointer"
+            className={`p-1.5 rounded-lg text-xs font-bold border cursor-pointer transition-all ${
+              isDark ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 hover:bg-amber-500/30' : 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100'
+            }`}
           >
             <HelpCircle className="w-3.5 h-3.5" />
           </button>
 
-          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600 cursor-pointer">
+          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-200 cursor-pointer">
             <XCircle className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       {/* Tabs Strip: 1. Create Item | 2. Opening Stock */}
-      <div className="flex border-b border-sky-200 bg-white rounded-t-xl px-2 pt-2 space-x-2 shadow-2xs">
+      <div className={`flex border-b rounded-t-xl px-2 pt-2 space-x-2 shadow-2xs transition-all ${
+        isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-sky-200'
+      }`}>
         <button
           onClick={() => setActiveTab('create_item')}
           className={`px-4 py-2 rounded-t-lg text-xs font-bold transition-all cursor-pointer ${
             activeTab === 'create_item'
-              ? 'bg-blue-50/80 text-blue-700 border-b-2 border-blue-600'
+              ? isDark
+                ? 'bg-amber-400/20 text-amber-300 border-b-2 border-amber-400'
+                : 'bg-blue-50/80 text-blue-700 border-b-2 border-blue-600'
+              : isDark
+              ? 'text-slate-400 hover:text-white hover:bg-white/5'
               : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
           }`}
         >
@@ -434,7 +458,11 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
           onClick={() => setActiveTab('opening_stock')}
           className={`px-4 py-2 rounded-t-lg text-xs font-bold transition-all cursor-pointer ${
             activeTab === 'opening_stock'
-              ? 'bg-blue-50/80 text-blue-700 border-b-2 border-blue-600'
+              ? isDark
+                ? 'bg-amber-400/20 text-amber-300 border-b-2 border-amber-400'
+                : 'bg-blue-50/80 text-blue-700 border-b-2 border-blue-600'
+              : isDark
+              ? 'text-slate-400 hover:text-white hover:bg-white/5'
               : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
           }`}
         >

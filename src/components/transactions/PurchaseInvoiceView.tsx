@@ -65,6 +65,7 @@ import { ColumnSettingsModal } from '../common/ColumnSettingsModal';
 import { FieldHelpModal } from '../common/FieldHelpModal';
 import { PrintVoucherModal } from '../common/PrintVoucherModal';
 import { WhatsAppShareModal } from '../common/WhatsAppShareModal';
+import { useTheme } from '../../context/ThemeContext';
 
 interface PurchaseInvoiceViewProps {
   purchases: PurchaseRecord[];
@@ -256,6 +257,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
   onSaveVendor,
   onNavigateToBarcode,
 }) => {
+  const { currentTheme, isDark } = useTheme();
   // Dynamic Vendors from Master
   const availableVendors = useMemo(() => {
     if (vendors && vendors.length > 0) return vendors;
@@ -688,27 +690,39 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* 1. TOP CONTROL & METRIC TOOLBAR */}
-      <div className="bg-white border border-sky-200/90 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-sm">
+      <div className={`border rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-sm transition-all ${
+        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/90 text-slate-900'
+      }`}>
         <div className="flex items-center space-x-3.5">
-          <div className="p-2.5 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-700 text-white shadow-md shadow-indigo-500/20">
-            <ShoppingBag className="w-6 h-6" />
+          <div className={`p-2.5 rounded-xl text-white shadow-md ${
+            isDark ? 'bg-amber-400 text-slate-950 font-bold shadow-amber-500/20' : 'bg-gradient-to-br from-indigo-600 to-blue-700 shadow-indigo-500/20'
+          }`}>
+            <ShoppingBag className={`w-6 h-6 ${isDark ? 'text-slate-950' : 'text-white'}`} />
           </div>
           <div>
             <div className="flex items-center space-x-2.5">
-              <h1 className="text-base font-semibold text-slate-900 tracking-tight">Purchase Invoice</h1>
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 font-mono font-medium border border-indigo-200 shadow-2xs">
+              <h1 className={`text-base font-semibold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                Purchase Invoice
+              </h1>
+              <span className={`text-xs px-2.5 py-0.5 rounded-full font-mono font-medium border shadow-2xs ${
+                isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/40' : 'bg-indigo-50 text-indigo-700 border-indigo-200'
+              }`}>
                 {header.invoice_no}
               </span>
-              <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium border border-slate-200">
+              <span className={`text-[11px] px-2 py-0.5 rounded-full font-medium border ${
+                isDark ? 'bg-white/10 text-slate-300 border-white/15' : 'bg-slate-100 text-slate-600 border-slate-200'
+              }`}>
                 F5
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-2">
+            <p className={`text-xs mt-0.5 flex items-center gap-2 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
               <span>Wholesale lots inwards</span>
               <span>•</span>
-              <span className="font-medium text-slate-700">{header.supplier_name}</span>
+              <span className={`font-medium ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>{header.supplier_name}</span>
               <span>•</span>
-              <span className="text-emerald-700 font-semibold font-mono">₹{payment.bill_amount.toLocaleString('en-IN')}</span>
+              <span className={`font-semibold font-mono ${isDark ? 'text-amber-300' : 'text-emerald-700'}`}>
+                ₹{payment.bill_amount.toLocaleString('en-IN')}
+              </span>
             </p>
           </div>
         </div>
@@ -716,12 +730,18 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {/* View Mode Toggle & Actions */}
         <div className="flex items-center space-x-2 flex-wrap gap-y-2">
           {/* View Mode Switcher: Tabbed vs Single Screen */}
-          <div className="bg-slate-100 p-1 rounded-xl border border-slate-200 flex items-center space-x-1">
+          <div className={`p-1 rounded-xl border flex items-center space-x-1 ${
+            isDark ? 'bg-white/5 border-white/10' : 'bg-slate-100 border-slate-200'
+          }`}>
             <button
               onClick={() => setViewMode('tabbed')}
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                 viewMode === 'tabbed'
-                  ? 'bg-white text-blue-700 shadow-xs border border-blue-200'
+                  ? isDark
+                    ? 'bg-amber-400/20 text-amber-300 border border-amber-400/40 shadow-xs'
+                    : 'bg-white text-blue-700 shadow-xs border border-blue-200'
+                  : isDark
+                  ? 'text-slate-400 hover:text-white'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
               title="View tabs one-by-one"
@@ -731,9 +751,13 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             </button>
             <button
               onClick={() => setViewMode('single_screen')}
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                 viewMode === 'single_screen'
-                  ? 'bg-blue-600 text-white shadow-xs'
+                  ? isDark
+                    ? 'bg-amber-400 text-slate-950 font-bold shadow-xs'
+                    : 'bg-blue-600 text-white shadow-xs'
+                  : isDark
+                  ? 'text-slate-400 hover:text-white'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
               title="Show all 7 options unified on 1 single continuous screen"
@@ -745,7 +769,11 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
 
           <button
             onClick={handleSave}
-            className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs active:scale-98 transition-all"
+            className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-semibold shadow-xs active:scale-98 transition-all cursor-pointer ${
+              isDark
+                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-extrabold'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`}
           >
             <Save className="w-3.5 h-3.5" />
             <span>Save Invoice</span>
@@ -753,7 +781,11 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
 
           <button
             onClick={() => setShowPrint(true)}
-            className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-sky-50 text-sky-800 text-xs font-medium border border-sky-200 hover:bg-sky-100 transition-colors"
+            className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-medium border transition-colors cursor-pointer ${
+              isDark
+                ? 'bg-white/10 hover:bg-white/15 text-white border-white/15'
+                : 'bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100'
+            }`}
           >
             <Printer className="w-3.5 h-3.5" />
             <span>Print</span>

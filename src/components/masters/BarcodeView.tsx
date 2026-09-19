@@ -160,7 +160,7 @@ export interface StockTransferHistoryRecord {
 }
 
 export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose }) => {
-  const { currentTheme } = useTheme();
+  const { currentTheme, isDark } = useTheme();
   const [activeTab, setActiveTab] = useState<'multiple_opening' | 'loose_to_barcode' | 'print_studio'>('print_studio');
 
   // Master batch items available for breaking down into multiple barcodes
@@ -1157,19 +1157,25 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Top Studio Toolbar */}
-      <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-sm no-print`}>
+      <div className={`border rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-sm no-print transition-all ${
+        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+      }`}>
         <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 shadow-2xs">
+          <div className={`p-2 rounded-lg border shadow-2xs ${
+            isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-blue-50 text-blue-600 border-blue-200'
+          }`}>
             <Barcode className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-base font-bold text-slate-800 flex items-center space-x-2">
+            <h1 className={`text-base font-bold flex items-center space-x-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
               <span>Jewellery Barcode & RFID Tag Studio</span>
-              <span className="text-xs px-2 py-0.5 rounded bg-sky-100 text-blue-800 font-mono font-bold border border-sky-200">
+              <span className={`text-xs px-2 py-0.5 rounded font-mono font-bold border ${
+                isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-sky-100 text-blue-800 border-sky-200'
+              }`}>
                 F3 Studio
               </span>
             </h1>
-            <p className="text-xs text-slate-500">
+            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
               List format barcode manager showing item names, live stock allocation, batch division, and 1D/2D thermal printing.
             </p>
           </div>
@@ -1178,25 +1184,33 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
         <div className="flex items-center space-x-2 flex-wrap">
           <button
             onClick={handleExportCSV}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold border border-slate-200 hover:bg-slate-200 cursor-pointer"
+            className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-semibold border cursor-pointer transition-all ${
+              isDark ? 'bg-white/10 text-white border-white/15 hover:bg-white/20' : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+            }`}
             title="Export Barcode List to CSV"
           >
-            <Download className="w-3.5 h-3.5 text-blue-600" />
+            <Download className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
             <span>Export CSV</span>
           </button>
 
           <button
             onClick={() => setShowColumnSettings(true)}
-            className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-mono font-bold border border-slate-200 hover:bg-slate-200 cursor-pointer"
+            className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold border cursor-pointer transition-all ${
+              isDark ? 'bg-white/10 text-white border-white/15 hover:bg-white/20' : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+            }`}
             title="Grid Column Settings"
           >
-            <Sliders className="w-3.5 h-3.5 text-blue-600" />
+            <Sliders className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
             <span>GS</span>
           </button>
 
           <button
             onClick={handlePrintSelected}
-            className="flex items-center space-x-1 px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white text-xs font-bold shadow cursor-pointer transition-all"
+            className={`flex items-center space-x-1 px-4 py-1.5 rounded-lg text-xs font-bold shadow cursor-pointer transition-all ${
+              isDark
+                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-extrabold'
+                : 'bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white'
+            }`}
           >
             <Printer className="w-3.5 h-3.5" />
             <span>
@@ -1204,19 +1218,25 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
             </span>
           </button>
 
-          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600 cursor-pointer">
+          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-200 cursor-pointer">
             <XCircle className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex border-b border-sky-200 bg-white rounded-t-xl px-2 pt-2 space-x-2 shadow-2xs no-print">
+      <div className={`flex border-b rounded-t-xl px-2 pt-2 space-x-2 shadow-2xs no-print transition-all ${
+        isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-sky-200'
+      }`}>
         <button
           onClick={() => setActiveTab('print_studio')}
           className={`px-3.5 py-2 rounded-t-lg text-xs font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
             activeTab === 'print_studio'
-              ? 'bg-blue-50/90 text-blue-700 border-b-2 border-blue-600 shadow-2xs'
+              ? isDark
+                ? 'bg-amber-400/20 text-amber-300 border-b-2 border-amber-400 shadow-2xs'
+                : 'bg-blue-50/90 text-blue-700 border-b-2 border-blue-600 shadow-2xs'
+              : isDark
+              ? 'text-slate-400 hover:text-white hover:bg-white/5'
               : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
           }`}
         >
@@ -1227,7 +1247,11 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
           onClick={() => setActiveTab('multiple_opening')}
           className={`px-3.5 py-2 rounded-t-lg text-xs font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
             activeTab === 'multiple_opening'
-              ? 'bg-blue-50/90 text-blue-700 border-b-2 border-blue-600 shadow-2xs'
+              ? isDark
+                ? 'bg-amber-400/20 text-amber-300 border-b-2 border-amber-400 shadow-2xs'
+                : 'bg-blue-50/90 text-blue-700 border-b-2 border-blue-600 shadow-2xs'
+              : isDark
+              ? 'text-slate-400 hover:text-white hover:bg-white/5'
               : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
           }`}
         >
@@ -1238,7 +1262,11 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
           onClick={() => setActiveTab('loose_to_barcode')}
           className={`px-3.5 py-2 rounded-t-lg text-xs font-bold transition-all cursor-pointer flex items-center space-x-1.5 ${
             activeTab === 'loose_to_barcode'
-              ? 'bg-blue-50/90 text-blue-700 border-b-2 border-blue-600 shadow-2xs'
+              ? isDark
+                ? 'bg-amber-400/20 text-amber-300 border-b-2 border-amber-400 shadow-2xs'
+                : 'bg-blue-50/90 text-blue-700 border-b-2 border-blue-600 shadow-2xs'
+              : isDark
+              ? 'text-slate-400 hover:text-white hover:bg-white/5'
               : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
           }`}
         >

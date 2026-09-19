@@ -75,7 +75,7 @@ import { useTheme } from './context/ThemeContext';
 import { Sparkles } from 'lucide-react';
 
 export function App() {
-  const { currentTheme, isCustomizerOpen, setIsCustomizerOpen } = useTheme();
+  const { currentTheme, isCustomizerOpen, setIsCustomizerOpen, isDark } = useTheme();
   // Authentication State (Starts with Login Page)
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
 
@@ -792,27 +792,37 @@ export function App() {
       </main>
 
       {/* Enterprise Status Footer */}
-      <footer className="bg-white border-t border-sky-200 px-4 py-2 text-xs text-slate-500 flex flex-wrap items-center justify-between gap-2 no-print">
+      <footer
+        className={`px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2 no-print border-t ${
+          isDark
+            ? 'bg-[#070b14]/95 border-white/10 text-slate-400'
+            : 'bg-white border-sky-200 text-slate-500'
+        }`}
+      >
         <div className="flex items-center space-x-3">
-          <span className="flex items-center space-x-1.5 text-emerald-700 font-medium">
+          <span className="flex items-center space-x-1.5 text-emerald-500 font-medium">
             <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
             <span>Cloud Database: Connected (fbmbvnvnfypkkrpslnag.supabase.co)</span>
           </span>
-          <span className="text-slate-300">|</span>
-          <span className="font-mono text-slate-600">Branch: {currentUser.branch}</span>
-          <span className="text-slate-300 hidden sm:inline">|</span>
-          <span className="font-mono text-slate-600 hidden sm:inline">HM-916-MH-4421</span>
+          <span className={isDark ? 'text-slate-700' : 'text-slate-300'}>|</span>
+          <span className={`font-mono ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            Branch: {currentUser.branch}
+          </span>
+          <span className={`${isDark ? 'text-slate-700' : 'text-slate-300'} hidden sm:inline`}>|</span>
+          <span className={`font-mono ${isDark ? 'text-slate-300' : 'text-slate-600'} hidden sm:inline`}>
+            HM-916-MH-4421
+          </span>
         </div>
 
         <div className="flex items-center space-x-3 text-[11px] font-mono">
           <button
             onClick={() => setCurrentSection('field_dictionary')}
-            className="text-blue-700 hover:text-blue-900 underline"
+            className={`${isDark ? 'text-amber-400 hover:text-amber-300' : 'text-blue-700 hover:text-blue-900'} underline`}
           >
             Field Preservation Audit (Spec #40-41)
           </button>
           <span>•</span>
-          <span className="text-slate-500">Domain: ogaworld.in</span>
+          <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>Domain: ogaworld.in</span>
         </div>
       </footer>
 
