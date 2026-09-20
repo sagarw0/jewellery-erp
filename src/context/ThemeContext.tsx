@@ -7,6 +7,9 @@ import {
   GlassBlurIntensity,
   CardCornerRadius,
   ShadowGlowDepth,
+  CardTextSize,
+  CardFontWeight,
+  DashboardCardTypographyConfig,
 } from '../types/erp';
 import {
   computeThemeTokens,
@@ -14,6 +17,17 @@ import {
   ThemeTokens,
   adjustColorLightness,
 } from '../utils/colorUtils';
+
+export type CustomizerTab = 'presets' | 'surface' | 'fine_tune' | 'colors' | 'card_typography';
+
+export const DEFAULT_CARD_TYPOGRAPHY: DashboardCardTypographyConfig = {
+  textSize: 'medium',
+  fontWeight: 'bold',
+  isItalic: false,
+  titleColorHex: '',
+  valueColorHex: '',
+  labelColorHex: '',
+};
 
 export const THEME_PRESETS: Record<ThemeId, {
   id: ThemeId;
@@ -153,7 +167,10 @@ interface ThemeContextType {
   isDark: boolean;
   density: UiDensity;
   isCustomizerOpen: boolean;
+  customizerTab: CustomizerTab;
   setIsCustomizerOpen: (open: boolean) => void;
+  setCustomizerTab: (tab: CustomizerTab) => void;
+  openCustomizerWithTab: (tab?: CustomizerTab) => void;
   setTheme: (themeId: ThemeId) => void;
   setDensity: (density: UiDensity) => void;
   applyPreset: (themeId: ThemeId) => void;
@@ -164,6 +181,16 @@ interface ThemeContextType {
   updateCornerRadius: (radius: CardCornerRadius) => void;
   updateShadowDepth: (shadow: ShadowGlowDepth) => void;
   resetToDefault: () => void;
+  // Card Typography Customization
+  cardTypography: DashboardCardTypographyConfig;
+  updateCardTextSize: (size: CardTextSize) => void;
+  updateCardFontWeight: (weight: CardFontWeight) => void;
+  updateCardItalic: (isItalic: boolean) => void;
+  updateCardTitleColor: (hex: string) => void;
+  updateCardValueColor: (hex: string) => void;
+  updateCardLabelColor: (hex: string) => void;
+  setCardTypographyPreset: (preset: { title?: string; value?: string; label?: string }) => void;
+  resetCardTypography: () => void;
 }
 
 const DEFAULT_CUSTOM_CONFIG: CustomThemeConfig = {
@@ -174,6 +201,7 @@ const DEFAULT_CUSTOM_CONFIG: CustomThemeConfig = {
   glassBlur: 'standard',
   cornerRadius: 'squircle',
   shadowDepth: 'deep',
+  cardTypography: DEFAULT_CARD_TYPOGRAPHY,
   isCustom: false,
 };
 
@@ -184,7 +212,10 @@ const ThemeContext = createContext<ThemeContextType>({
   isDark: false,
   density: 'comfortable',
   isCustomizerOpen: false,
+  customizerTab: 'presets',
   setIsCustomizerOpen: () => {},
+  setCustomizerTab: () => {},
+  openCustomizerWithTab: () => {},
   setTheme: () => {},
   setDensity: () => {},
   applyPreset: () => {},
@@ -195,6 +226,15 @@ const ThemeContext = createContext<ThemeContextType>({
   updateCornerRadius: () => {},
   updateShadowDepth: () => {},
   resetToDefault: () => {},
+  cardTypography: DEFAULT_CARD_TYPOGRAPHY,
+  updateCardTextSize: () => {},
+  updateCardFontWeight: () => {},
+  updateCardItalic: () => {},
+  updateCardTitleColor: () => {},
+  updateCardValueColor: () => {},
+  updateCardLabelColor: () => {},
+  setCardTypographyPreset: () => {},
+  resetCardTypography: () => {},
 });
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -229,11 +269,42 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return DEFAULT_CUSTOM_CONFIG;
   });
 
+  // Card Typography state from localStorage
+  const [cardTypography, setCardTypography] = useState<DashboardCardTypographyConfig>(() => {
+    try {
+      const savedTypo = localStorage.getItem('swarna_erp_card_typography');
+      if (savedTypo) {
+        const parsed = JSON.parse(savedTypo) as DashboardCardTypographyConfig;
+        return {
+          ...DEFAULT_CARD_TYPOGRAPHY,
+          ...parsed,
+        };
+      }
+      if (customConfig.cardTypography) {
+        return {
+          ...DEFAULT_CARD_TYPOGRAPHY,
+          ...customConfig.cardTypography,
+        };
+      }
+    } catch {
+      // ignore
+    }
+    return DEFAULT_CARD_TYPOGRAPHY;
+  });
+
   const [density, setDensityState] = useState<UiDensity>(() => {
     return (localStorage.getItem('swarna_erp_density') as UiDensity) || 'comfortable';
   });
 
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
+  const [customizerTab, setCustomizerTab] = useState<CustomizerTab>('presets');
+
+  const openCustomizerWithTab = (tab?: CustomizerTab) => {
+    if (tab) {
+      setCustomizerTab(tab);
+    }
+    setIsCustomizerOpen(true);
+  };
 
   // 2. Dynamically calculate design tokens based on current config
   const computedTokens = computeThemeTokens(
@@ -263,8 +334,15 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     // Save to localStorage
     localStorage.setItem('swarna_erp_theme', customConfig.presetId);
-    localStorage.setItem('swarna_erp_theme_customizer', JSON.stringify(customConfig));
-  }, [customConfig, computedTokens]);
+    localStorage.setItem(
+      'swarna_erp_theme_customizer',
+      JSON.stringify({
+        ...customConfig,
+        cardTypography,
+      })
+    );
+    localStorage.setItem('swarna_erp_card_typography', JSON.stringify(cardTypography));
+  }, [customConfig, computedTokens, cardTypography]);
 
   const setDensity = (d: UiDensity) => {
     setDensityState(d);
@@ -339,8 +417,66 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }));
   };
 
+  // Card Typography Updaters
+  const updateCardTextSize = (size: CardTextSize) => {
+    setCardTypography((prev) => ({
+      ...prev,
+      textSize: size,
+    }));
+  };
+
+  const updateCardFontWeight = (weight: CardFontWeight) => {
+    setCardTypography((prev) => ({
+      ...prev,
+      fontWeight: weight,
+    }));
+  };
+
+  const updateCardItalic = (isItalic: boolean) => {
+    setCardTypography((prev) => ({
+      ...prev,
+      isItalic,
+    }));
+  };
+
+  const updateCardTitleColor = (hex: string) => {
+    setCardTypography((prev) => ({
+      ...prev,
+      titleColorHex: hex,
+    }));
+  };
+
+  const updateCardValueColor = (hex: string) => {
+    setCardTypography((prev) => ({
+      ...prev,
+      valueColorHex: hex,
+    }));
+  };
+
+  const updateCardLabelColor = (hex: string) => {
+    setCardTypography((prev) => ({
+      ...prev,
+      labelColorHex: hex,
+    }));
+  };
+
+  const setCardTypographyPreset = (preset: { title?: string; value?: string; label?: string }) => {
+    setCardTypography((prev) => ({
+      ...prev,
+      titleColorHex: preset.title || '',
+      valueColorHex: preset.value || '',
+      labelColorHex: preset.label || '',
+    }));
+  };
+
+  const resetCardTypography = () => {
+    setCardTypography(DEFAULT_CARD_TYPOGRAPHY);
+    localStorage.removeItem('swarna_erp_card_typography');
+  };
+
   const resetToDefault = () => {
     setCustomConfig(DEFAULT_CUSTOM_CONFIG);
+    resetCardTypography();
   };
 
   return (
@@ -352,7 +488,10 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         isDark,
         density,
         isCustomizerOpen,
+        customizerTab,
         setIsCustomizerOpen,
+        setCustomizerTab,
+        openCustomizerWithTab,
         setTheme,
         setDensity,
         applyPreset,
@@ -363,6 +502,15 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         updateCornerRadius,
         updateShadowDepth,
         resetToDefault,
+        cardTypography,
+        updateCardTextSize,
+        updateCardFontWeight,
+        updateCardItalic,
+        updateCardTitleColor,
+        updateCardValueColor,
+        updateCardLabelColor,
+        setCardTypographyPreset,
+        resetCardTypography,
       }}
     >
       <div

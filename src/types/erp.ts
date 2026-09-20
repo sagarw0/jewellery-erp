@@ -62,6 +62,18 @@ export type GlassBlurIntensity = 'low' | 'standard' | 'ultra' | 'solid';
 export type CardCornerRadius = 'standard' | 'squircle' | 'ultra';
 export type ShadowGlowDepth = 'minimal' | 'deep' | 'glow';
 
+export type CardTextSize = 'small' | 'medium' | 'large' | 'xlarge';
+export type CardFontWeight = 'normal' | 'medium' | 'semibold' | 'bold';
+
+export interface DashboardCardTypographyConfig {
+  textSize: CardTextSize;
+  fontWeight: CardFontWeight;
+  isItalic: boolean;
+  titleColorHex?: string;
+  valueColorHex?: string;
+  labelColorHex?: string;
+}
+
 export interface CustomThemeConfig {
   presetId: ThemeId;
   bgBaseHex: string;
@@ -70,6 +82,7 @@ export interface CustomThemeConfig {
   glassBlur?: GlassBlurIntensity;
   cornerRadius?: CardCornerRadius;
   shadowDepth?: ShadowGlowDepth;
+  cardTypography?: DashboardCardTypographyConfig;
   isCustom: boolean;
 }
 

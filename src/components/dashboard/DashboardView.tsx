@@ -334,7 +334,67 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onOpenBullionRates,
   onOpenThemePicker,
 }) => {
-  const { currentTheme, computedTokens, isDark } = useTheme();
+  const { currentTheme, computedTokens, isDark, cardTypography, openCustomizerWithTab } = useTheme();
+
+  // Dynamic Card Typography class names and styles derived from user preferences
+  const titleSizeClass =
+    cardTypography?.textSize === 'small'
+      ? 'text-[11px]'
+      : cardTypography?.textSize === 'large'
+      ? 'text-sm'
+      : cardTypography?.textSize === 'xlarge'
+      ? 'text-base'
+      : 'text-xs';
+
+  const valueSizeClass =
+    cardTypography?.textSize === 'small'
+      ? 'text-base sm:text-lg'
+      : cardTypography?.textSize === 'large'
+      ? 'text-xl sm:text-2xl'
+      : cardTypography?.textSize === 'xlarge'
+      ? 'text-2xl sm:text-3xl'
+      : 'text-lg sm:text-xl';
+
+  const subValueSizeClass =
+    cardTypography?.textSize === 'small'
+      ? 'text-xs sm:text-sm'
+      : cardTypography?.textSize === 'large'
+      ? 'text-base sm:text-lg'
+      : cardTypography?.textSize === 'xlarge'
+      ? 'text-lg sm:text-xl'
+      : 'text-sm sm:text-base';
+
+  const labelSizeClass =
+    cardTypography?.textSize === 'small'
+      ? 'text-[9px]'
+      : cardTypography?.textSize === 'large'
+      ? 'text-[11.5px]'
+      : cardTypography?.textSize === 'xlarge'
+      ? 'text-xs'
+      : 'text-[10px]';
+
+  const cardWeightClass =
+    cardTypography?.fontWeight === 'normal'
+      ? 'font-normal'
+      : cardTypography?.fontWeight === 'medium'
+      ? 'font-medium'
+      : cardTypography?.fontWeight === 'semibold'
+      ? 'font-semibold'
+      : 'font-bold';
+
+  const cardItalicClass = cardTypography?.isItalic ? 'italic' : '';
+
+  const getCardTitleStyle = (fallbackColor?: string) => ({
+    color: cardTypography?.titleColorHex || fallbackColor || undefined,
+  });
+
+  const getCardValueStyle = (fallbackColor?: string) => ({
+    color: cardTypography?.valueColorHex || fallbackColor || undefined,
+  });
+
+  const getCardLabelStyle = (fallbackColor?: string) => ({
+    color: cardTypography?.labelColorHex || fallbackColor || undefined,
+  });
 
   // Perspective tab navigation state
   const [dashboardPerspective, setDashboardPerspective] = useState<
@@ -742,8 +802,29 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           })}
         </div>
 
-        {/* Live Rates Quick Trigger & Stock Refill Indicator */}
-        <div className="flex items-center space-x-2">
+        {/* Live Rates Quick Trigger, Card Styling & Stock Refill Indicator */}
+        <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+          <button
+            onClick={() => openCustomizerWithTab?.('card_typography')}
+            className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer shadow-2xs ${
+              isDark
+                ? 'bg-blue-500/20 text-blue-300 border-blue-400/50 hover:bg-blue-500/30'
+                : 'bg-blue-100 text-blue-950 border-blue-400 hover:bg-blue-200'
+            }`}
+            title="Customize Card Text Color, Size, Boldness & Italic Style"
+          >
+            <SlidersHorizontal className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>Card Styling</span>
+            {(cardTypography?.textSize !== 'medium' ||
+              cardTypography?.fontWeight !== 'bold' ||
+              cardTypography?.isItalic ||
+              Boolean(cardTypography?.titleColorHex) ||
+              Boolean(cardTypography?.valueColorHex) ||
+              Boolean(cardTypography?.labelColorHex)) && (
+              <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
+            )}
+          </button>
+
           {onOpenStockRefill && (
             <button
               onClick={onOpenStockRefill}
@@ -776,12 +857,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </div>
 
-      {/* 1. TOP EXECUTIVE METRICS STRIP (7 Clean Luxury Cards with High Contrast) */}
+      {/* 1. TOP EXECUTIVE METRICS STRIP (7 Clean Luxury Cards with Dynamic Typography) */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-3.5 items-stretch">
         {/* Card 1: Today's Cash */}
         <div
           onClick={() => onQuickAction('day_book')}
-          className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between h-[128px] ${
+          className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[128px] ${
             isDark
               ? 'bg-[#0f172a]/95 hover:bg-[#0f172a] border-emerald-500/40 hover:border-emerald-400 text-white shadow-md'
               : 'bg-white hover:bg-slate-50 border-slate-300 hover:border-emerald-500 text-slate-950 shadow-sm'
@@ -792,19 +873,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-emerald-600 text-white shadow-xs shrink-0">
                 <Wallet className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">Today's Cash</span>
+              <span
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                style={getCardTitleStyle()}
+              >
+                Today's Cash
+              </span>
             </div>
             <ArrowUpRight className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-emerald-300">
+            <div
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-emerald-300`}
+              style={getCardValueStyle()}
+            >
               {formatCurrency(branchData.cashInHand)}
             </div>
           </div>
 
-          <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-semibold bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
+          <div className="flex items-center space-x-1">
+            <span
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40`}
+              style={getCardLabelStyle()}
+            >
               Till Reconciled
             </span>
           </div>
@@ -813,7 +905,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Card 2: Today's Bank */}
         <div
           onClick={() => onQuickAction('day_book')}
-          className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between h-[128px] ${
+          className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[128px] ${
             isDark
               ? 'bg-[#0f172a]/95 hover:bg-[#0f172a] border-sky-500/40 hover:border-sky-400 text-white shadow-md'
               : 'bg-white hover:bg-slate-50 border-slate-300 hover:border-sky-500 text-slate-950 shadow-sm'
@@ -824,19 +916,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-sky-600 text-white shadow-xs shrink-0">
                 <Building className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">Bank Balances</span>
+              <span
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                style={getCardTitleStyle()}
+              >
+                Bank Balances
+              </span>
             </div>
             <ArrowUpRight className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-sky-300">
+            <div
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-sky-300`}
+              style={getCardValueStyle()}
+            >
               {formatCurrency(branchData.bankTotal)}
             </div>
           </div>
 
-          <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-semibold bg-sky-100 text-sky-950 dark:bg-sky-950/70 dark:text-sky-300 border border-sky-300 dark:border-sky-500/40">
+          <div className="flex items-center space-x-1">
+            <span
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-sky-100 text-sky-950 dark:bg-sky-950/70 dark:text-sky-300 border border-sky-300 dark:border-sky-500/40`}
+              style={getCardLabelStyle()}
+            >
               {branchData.bankAccounts.length} Active Accounts
             </span>
           </div>
@@ -845,7 +948,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Card 3: Today's Sales */}
         <div
           onClick={() => onQuickAction('sales_invoice')}
-          className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between h-[128px] ${
+          className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[128px] ${
             isDark
               ? 'bg-[#0f172a]/95 hover:bg-[#0f172a] border-amber-500/40 hover:border-amber-400 text-white shadow-md'
               : 'bg-white hover:bg-slate-50 border-slate-300 hover:border-amber-500 text-slate-950 shadow-sm'
@@ -856,19 +959,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-amber-600 text-white shadow-xs shrink-0">
                 <TrendingUp className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">Today's Sales</span>
+              <span
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                style={getCardTitleStyle()}
+              >
+                Today's Sales
+              </span>
             </div>
             <ArrowUpRight className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-amber-300">
+            <div
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-amber-300`}
+              style={getCardValueStyle()}
+            >
               {formatCurrency(branchData.todaySales)}
             </div>
           </div>
 
-          <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-semibold bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
+          <div className="flex items-center space-x-1">
+            <span
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40`}
+              style={getCardLabelStyle()}
+            >
               ↑ 12.4% vs yday
             </span>
           </div>
@@ -877,7 +991,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Card 4: Today's Purchase */}
         <div
           onClick={() => onQuickAction('purchase')}
-          className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between h-[128px] ${
+          className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[128px] ${
             isDark
               ? 'bg-[#0f172a]/95 hover:bg-[#0f172a] border-rose-500/40 hover:border-rose-400 text-white shadow-md'
               : 'bg-white hover:bg-slate-50 border-slate-300 hover:border-rose-500 text-slate-950 shadow-sm'
@@ -888,19 +1002,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-rose-600 text-white shadow-xs shrink-0">
                 <ShoppingBag className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">Purchases</span>
+              <span
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                style={getCardTitleStyle()}
+              >
+                Purchases
+              </span>
             </div>
             <ArrowUpRight className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-rose-300">
+            <div
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-rose-300`}
+              style={getCardValueStyle()}
+            >
               {formatCurrency(branchData.todayPurchase)}
             </div>
           </div>
 
-          <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-semibold bg-rose-100 text-rose-950 dark:bg-rose-950/70 dark:text-rose-300 border border-rose-300 dark:border-rose-500/40">
+          <div className="flex items-center space-x-1">
+            <span
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-rose-100 text-rose-950 dark:bg-rose-950/70 dark:text-rose-300 border border-rose-300 dark:border-rose-500/40`}
+              style={getCardLabelStyle()}
+            >
               Bullion Inward
             </span>
           </div>
@@ -909,7 +1034,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Card 5: Orders Pending */}
         <div
           onClick={() => onQuickAction('new_order')}
-          className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between h-[128px] ${
+          className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[128px] ${
             isDark
               ? 'bg-[#0f172a]/95 hover:bg-[#0f172a] border-indigo-500/40 hover:border-indigo-400 text-white shadow-md'
               : 'bg-white hover:bg-slate-50 border-slate-300 hover:border-indigo-500 text-slate-950 shadow-sm'
@@ -920,19 +1045,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-indigo-600 text-white shadow-xs shrink-0">
                 <Package className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">Pending Orders</span>
+              <span
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                style={getCardTitleStyle()}
+              >
+                Pending Orders
+              </span>
             </div>
             <ArrowUpRight className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-indigo-300">
+            <div
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-indigo-300`}
+              style={getCardValueStyle()}
+            >
               {branchData.pendingOrders} Orders
             </div>
           </div>
 
-          <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-semibold bg-indigo-100 text-indigo-950 dark:bg-indigo-950/70 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-500/40">
+          <div className="flex items-center space-x-1">
+            <span
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-indigo-100 text-indigo-950 dark:bg-indigo-950/70 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-500/40`}
+              style={getCardLabelStyle()}
+            >
               2 Due Today
             </span>
           </div>
@@ -940,7 +1076,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
         {/* Card 6: New Walk-Ins */}
         <div
-          className={`p-3.5 rounded-2xl border transition-all duration-200 flex flex-col justify-between h-[128px] ${
+          className={`p-3.5 rounded-2xl border transition-all duration-200 flex flex-col justify-between min-h-[128px] ${
             isDark
               ? 'bg-[#0f172a]/95 border-teal-500/40 text-white shadow-md'
               : 'bg-white border-slate-300 text-slate-950 shadow-sm'
@@ -951,18 +1087,29 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-teal-600 text-white shadow-xs shrink-0">
                 <UserPlus className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">New Walk-ins</span>
+              <span
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                style={getCardTitleStyle()}
+              >
+                New Walk-ins
+              </span>
             </div>
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-teal-300">
+            <div
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-teal-300`}
+              style={getCardValueStyle()}
+            >
               {branchData.visitors} Visitors
             </div>
           </div>
 
-          <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-semibold bg-teal-100 text-teal-950 dark:bg-teal-950/70 dark:text-teal-300 border border-teal-300 dark:border-teal-500/40">
+          <div className="flex items-center space-x-1">
+            <span
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-teal-100 text-teal-950 dark:bg-teal-950/70 dark:text-teal-300 border border-teal-300 dark:border-teal-500/40`}
+              style={getCardLabelStyle()}
+            >
               New Profiles
             </span>
           </div>
@@ -970,7 +1117,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
         {/* Card 7: Total Footfall */}
         <div
-          className={`p-3.5 rounded-2xl border transition-all duration-200 flex flex-col justify-between h-[128px] ${
+          className={`p-3.5 rounded-2xl border transition-all duration-200 flex flex-col justify-between min-h-[128px] ${
             isDark
               ? 'bg-[#0f172a]/95 border-violet-500/40 text-white shadow-md'
               : 'bg-white border-slate-300 text-slate-950 shadow-sm'
@@ -981,18 +1128,29 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-violet-600 text-white shadow-xs shrink-0">
                 <Users className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">Total Guests</span>
+              <span
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                style={getCardTitleStyle()}
+              >
+                Total Guests
+              </span>
             </div>
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-violet-300">
+            <div
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-violet-300`}
+              style={getCardValueStyle()}
+            >
               {branchData.footfall} Guests
             </div>
           </div>
 
-          <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-semibold bg-violet-100 text-violet-950 dark:bg-violet-950/70 dark:text-violet-300 border border-violet-300 dark:border-violet-500/40">
+          <div className="flex items-center space-x-1">
+            <span
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-violet-100 text-violet-950 dark:bg-violet-950/70 dark:text-violet-300 border border-violet-300 dark:border-violet-500/40`}
+              style={getCardLabelStyle()}
+            >
               Showroom Total
             </span>
           </div>
@@ -1090,37 +1248,82 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             }`}
           >
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-950 dark:text-slate-200">Simulated 24K Rate</div>
-              <div className="text-sm sm:text-base font-bold font-mono mt-1 text-amber-950 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-500/40 inline-block shadow-2xs">
+              <div
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-950 dark:text-slate-200`}
+                style={getCardTitleStyle()}
+              >
+                Simulated 24K Rate
+              </div>
+              <div
+                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 text-amber-950 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-500/40 inline-block shadow-2xs`}
+                style={getCardValueStyle()}
+              >
                 ₹{simulatedGold24k.toLocaleString('en-IN')}/g
               </div>
-              <div className="text-[10.5px] font-bold text-slate-800 dark:text-slate-300 mt-1">Base: ₹{gold24kRate.toLocaleString('en-IN')}</div>
+              <div
+                className={`${labelSizeClass} font-bold text-slate-800 dark:text-slate-300 mt-1`}
+                style={getCardLabelStyle()}
+              >
+                Base: ₹{gold24kRate.toLocaleString('en-IN')}
+              </div>
             </div>
 
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-950 dark:text-slate-200">Simulated 22K (916)</div>
-              <div className="text-sm sm:text-base font-bold font-mono mt-1 text-amber-950 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-500/40 inline-block shadow-2xs">
+              <div
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-950 dark:text-slate-200`}
+                style={getCardTitleStyle()}
+              >
+                Simulated 22K (916)
+              </div>
+              <div
+                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 text-amber-950 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-500/40 inline-block shadow-2xs`}
+                style={getCardValueStyle()}
+              >
                 ₹{simulatedGold22k.toLocaleString('en-IN')}/g
               </div>
-              <div className="text-[10.5px] font-bold text-slate-800 dark:text-slate-300 mt-1">Base: ₹{gold22kRate.toLocaleString('en-IN')}</div>
+              <div
+                className={`${labelSizeClass} font-bold text-slate-800 dark:text-slate-300 mt-1`}
+                style={getCardLabelStyle()}
+              >
+                Base: ₹{gold22kRate.toLocaleString('en-IN')}
+              </div>
             </div>
 
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-950 dark:text-slate-200">Projected Vault Total</div>
-              <div className="text-sm sm:text-base font-bold font-mono mt-1 text-emerald-950 dark:text-emerald-300 bg-emerald-100/90 dark:bg-emerald-950/60 px-2.5 py-1 rounded-xl border border-emerald-300 dark:border-emerald-500/40 inline-block shadow-2xs">
+              <div
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-950 dark:text-slate-200`}
+                style={getCardTitleStyle()}
+              >
+                Projected Vault Total
+              </div>
+              <div
+                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 text-emerald-950 dark:text-emerald-300 bg-emerald-100/90 dark:bg-emerald-950/60 px-2.5 py-1 rounded-xl border border-emerald-300 dark:border-emerald-500/40 inline-block shadow-2xs`}
+                style={getCardValueStyle()}
+              >
                 {formatCurrency(simulatedVaultTotal)}
               </div>
-              <div className="text-[10.5px] font-bold text-slate-800 dark:text-slate-300 mt-1">Fine Wt: {formatWeight(branchData.goldFineWt)}</div>
+              <div
+                className={`${labelSizeClass} font-bold text-slate-800 dark:text-slate-300 mt-1`}
+                style={getCardLabelStyle()}
+              >
+                Fine Wt: {formatWeight(branchData.goldFineWt)}
+              </div>
             </div>
 
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-950 dark:text-slate-200">Simulated Valuation Delta</div>
               <div
-                className={`text-sm sm:text-base font-bold font-mono mt-1 inline-flex items-center justify-center space-x-1 px-2.5 py-1 rounded-xl border shadow-2xs ${
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-950 dark:text-slate-200`}
+                style={getCardTitleStyle()}
+              >
+                Simulated Valuation Delta
+              </div>
+              <div
+                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 inline-flex items-center justify-center space-x-1 px-2.5 py-1 rounded-xl border shadow-2xs ${
                   valuationDelta >= 0
                     ? 'bg-emerald-100 text-emerald-950 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40'
                     : 'bg-rose-100 text-rose-950 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-300 dark:border-rose-500/40'
                 }`}
+                style={getCardValueStyle()}
               >
                 {valuationDelta >= 0 ? (
                   <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-emerald-700 dark:text-emerald-300" />
@@ -1129,7 +1332,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 )}
                 <span>{formatCurrency(Math.abs(valuationDelta))}</span>
               </div>
-              <div className="text-[10.5px] font-bold font-mono mt-1 text-slate-900 dark:text-slate-200">
+              <div
+                className={`${labelSizeClass} font-bold font-mono mt-1 text-slate-900 dark:text-slate-200`}
+                style={getCardLabelStyle()}
+              >
                 {valuationDelta >= 0 ? `+${valuationDeltaPct.toFixed(2)}%` : `${valuationDeltaPct.toFixed(2)}%`}
               </div>
             </div>
@@ -1149,11 +1355,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="p-2 rounded-xl bg-blue-500/20 text-blue-600 dark:text-blue-400">
                 <Building className="w-4 h-4" />
               </div>
-              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wide text-slate-950 dark:text-white">
+              <h3
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-950 dark:text-white`}
+                style={getCardTitleStyle()}
+              >
                 Multi-Branch Velocity Comparison
               </h3>
             </div>
-            <span className="text-[10.5px] font-bold text-slate-800 dark:text-slate-300">3 Locations Active</span>
+            <span
+              className={`${labelSizeClass} font-bold text-slate-800 dark:text-slate-300`}
+              style={getCardLabelStyle()}
+            >
+              3 Locations Active
+            </span>
           </div>
 
           {/* Side-by-Side Branch Performance Cards */}
@@ -1178,23 +1392,37 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               >
                 <div>
                   <div className="flex items-center space-x-1.5">
-                    <span className="font-bold text-xs text-slate-950 dark:text-white">{b.name}</span>
+                    <span
+                      className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white`}
+                      style={getCardTitleStyle()}
+                    >
+                      {b.name}
+                    </span>
                     {selectedBranch === b.id && (
                       <span className="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white font-mono shadow-2xs">
                         Active
                       </span>
                     )}
                   </div>
-                  <div className="text-[11px] font-bold text-slate-800 dark:text-slate-300 font-mono mt-0.5">
+                  <div
+                    className={`${labelSizeClass} font-bold text-slate-800 dark:text-slate-300 font-mono mt-0.5`}
+                    style={getCardLabelStyle()}
+                  >
                     Fine Gold: {formatWeight(b.fineWt)} • Velocity Share: {b.share}
                   </div>
                 </div>
 
                 <div className="text-right font-mono">
-                  <div className="text-sm font-bold text-slate-950 dark:text-white">
+                  <div
+                    className={`${subValueSizeClass} ${cardWeightClass} text-slate-950 dark:text-white`}
+                    style={getCardValueStyle()}
+                  >
                     {formatCurrency(b.sales)}
                   </div>
-                  <div className="text-[10.5px] text-emerald-900 dark:text-emerald-400 font-bold">
+                  <div
+                    className={`${labelSizeClass} text-emerald-900 dark:text-emerald-400 font-bold`}
+                    style={getCardLabelStyle()}
+                  >
                     Today's Inflow
                   </div>
                 </div>
@@ -1301,10 +1529,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               >
                 <div className="flex justify-between items-start">
                   <div className="min-w-0 pr-1">
-                    <div className="font-bold text-xs truncate text-slate-950 dark:text-white" title={stk.name}>
+                    <div
+                      className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} truncate text-slate-950 dark:text-white`}
+                      style={getCardTitleStyle()}
+                      title={stk.name}
+                    >
                       {stk.name}
                     </div>
-                    <div className="text-[10.5px] font-bold text-slate-700 dark:text-slate-300">{stk.purity_label}</div>
+                    <div
+                      className={`${labelSizeClass} font-bold text-slate-700 dark:text-slate-300`}
+                      style={getCardLabelStyle()}
+                    >
+                      {stk.purity_label}
+                    </div>
                   </div>
                   <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold border shrink-0 ${stk.badge}`}>
                     {stk.pcs} Pcs
@@ -1322,8 +1559,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       : 'bg-slate-50 border-slate-300 text-slate-950'
                   }`}
                 >
-                  <span className="text-[10.5px] font-bold text-slate-800 dark:text-slate-300">Est. Value:</span>
-                  <span className="font-mono font-bold text-slate-950 dark:text-amber-300">
+                  <span
+                    className={`${labelSizeClass} font-bold text-slate-800 dark:text-slate-300`}
+                    style={getCardLabelStyle()}
+                  >
+                    Est. Value:
+                  </span>
+                  <span
+                    className={`${subValueSizeClass} ${cardWeightClass} font-mono text-slate-950 dark:text-amber-300`}
+                    style={getCardValueStyle()}
+                  >
                     {formatCurrency(stk.valuation)}
                   </span>
                 </div>
@@ -1337,16 +1582,44 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   }`}
                 >
                   <div className="flex justify-between items-center text-[10.5px]">
-                    <span className="font-sans font-bold text-slate-800 dark:text-slate-300">Gross Wt:</span>
-                    <span className="font-bold text-slate-950 dark:text-white">{formatWeight(stk.gross_wt)}</span>
+                    <span
+                      className={`font-sans font-bold ${labelSizeClass} text-slate-800 dark:text-slate-300`}
+                      style={getCardLabelStyle()}
+                    >
+                      Gross Wt:
+                    </span>
+                    <span
+                      className={`font-bold ${labelSizeClass} text-slate-950 dark:text-white`}
+                      style={getCardValueStyle()}
+                    >
+                      {formatWeight(stk.gross_wt)}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center text-[10.5px]">
-                    <span className="font-sans font-bold text-slate-800 dark:text-slate-300">Net Wt:</span>
-                    <span className="font-bold text-slate-950 dark:text-white">{formatWeight(stk.net_wt)}</span>
+                    <span
+                      className={`font-sans font-bold ${labelSizeClass} text-slate-800 dark:text-slate-300`}
+                      style={getCardLabelStyle()}
+                    >
+                      Net Wt:
+                    </span>
+                    <span
+                      className={`font-bold ${labelSizeClass} text-slate-950 dark:text-white`}
+                      style={getCardValueStyle()}
+                    >
+                      {formatWeight(stk.net_wt)}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center pt-1 border-t border-black/10 dark:border-white/10 font-bold text-[10.5px]">
-                    <span className="font-sans font-bold text-slate-950 dark:text-slate-200">Fine Metal:</span>
-                    <span className="font-bold text-amber-950 dark:text-amber-300">
+                    <span
+                      className={`font-sans font-bold ${labelSizeClass} text-slate-950 dark:text-slate-200`}
+                      style={getCardTitleStyle()}
+                    >
+                      Fine Metal:
+                    </span>
+                    <span
+                      className={`font-bold ${labelSizeClass} text-amber-950 dark:text-amber-300`}
+                      style={getCardValueStyle()}
+                    >
                       {formatWeight(stk.fine_wt)}
                     </span>
                   </div>
@@ -1371,7 +1644,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="p-2 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400">
                 <ShoppingBag className="w-4 h-4" />
               </div>
-              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wide text-slate-950 dark:text-white">
+              <h3
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-950 dark:text-white`}
+                style={getCardTitleStyle()}
+              >
                 Sales & Invoicing Command Center
               </h3>
             </div>
@@ -1397,18 +1673,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 }`}
               >
                 <div className="flex items-center justify-between text-xs font-bold">
-                  <span className="text-slate-950 dark:text-white">{t.label}</span>
-                  <span className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full border ${
-                    t.label.includes('UPI')
-                      ? 'bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40'
-                      : t.label.includes('Card')
-                      ? 'bg-blue-100 text-blue-950 dark:bg-blue-950/70 dark:text-blue-300 border-blue-300 dark:border-blue-500/40'
-                      : t.label.includes('Cash')
-                      ? 'bg-amber-100 text-amber-950 dark:bg-amber-950/70 dark:text-amber-300 border-amber-300 dark:border-amber-500/40'
-                      : 'bg-purple-100 text-purple-950 dark:bg-purple-950/70 dark:text-purple-300 border border-purple-300 dark:border-purple-500/40'
-                  }`}>{t.pct}%</span>
+                  <span
+                    className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white`}
+                    style={getCardTitleStyle()}
+                  >
+                    {t.label}
+                  </span>
+                  <span
+                    className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full border ${
+                      t.label.includes('UPI')
+                        ? 'bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40'
+                        : t.label.includes('Card')
+                        ? 'bg-blue-100 text-blue-950 dark:bg-blue-950/70 dark:text-blue-300 border-blue-300 dark:border-blue-500/40'
+                        : t.label.includes('Cash')
+                        ? 'bg-amber-100 text-amber-950 dark:bg-amber-950/70 dark:text-amber-300 border-amber-300 dark:border-amber-500/40'
+                        : 'bg-purple-100 text-purple-950 dark:bg-purple-950/70 dark:text-purple-300 border border-purple-300 dark:border-purple-500/40'
+                    }`}
+                  >
+                    {t.pct}%
+                  </span>
                 </div>
-                <div className="text-xl font-bold font-mono mt-2 text-slate-950 dark:text-white tracking-normal">
+                <div
+                  className={`${valueSizeClass} ${cardWeightClass} font-mono mt-2 text-slate-950 dark:text-white tracking-normal`}
+                  style={getCardValueStyle()}
+                >
                   {formatCurrency(t.amount)}
                 </div>
                 <div className="w-full bg-slate-200 dark:bg-white/10 rounded-full h-2 mt-3 overflow-hidden">
@@ -1653,20 +1941,38 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       }`}
                     >
                       <div className="flex justify-between items-start">
-                        <span className="font-bold text-xs text-slate-950 dark:text-white">{n.title}</span>
+                        <span
+                          className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white`}
+                          style={getCardTitleStyle()}
+                        >
+                          {n.title}
+                        </span>
                         <span className={`text-[9.5px] font-bold px-2 py-0.2 rounded-full border ${n.badgeColor}`}>
                           {n.tag}
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-900 dark:text-slate-200 font-semibold">{n.subtitle}</p>
+                      <p
+                        className={`${labelSizeClass} font-semibold text-slate-900 dark:text-slate-200`}
+                        style={getCardLabelStyle()}
+                      >
+                        {n.subtitle}
+                      </p>
 
                       <div className="flex items-center justify-between pt-1 border-t border-black/5 dark:border-white/10">
                         {n.amount ? (
-                          <div className="text-xs font-mono font-bold text-emerald-950 dark:text-emerald-300">
+                          <div
+                            className={`${subValueSizeClass} font-mono font-bold text-emerald-950 dark:text-emerald-300`}
+                            style={getCardValueStyle()}
+                          >
                             Amount: {formatCurrency(n.amount)}
                           </div>
                         ) : (
-                          <div className="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold">Action pending</div>
+                          <div
+                            className={`${labelSizeClass} text-slate-700 dark:text-slate-300 font-semibold`}
+                            style={getCardLabelStyle()}
+                          >
+                            Action pending
+                          </div>
                         )}
 
                         <button
