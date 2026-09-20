@@ -665,16 +665,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   selectedBranch === 'all'
                     ? isDark
                       ? 'bg-amber-400/20 text-amber-300 border-amber-400/40'
-                      : 'bg-amber-100 text-amber-900 border-amber-300'
+                      : 'bg-amber-100 text-amber-950 border-amber-400'
                     : isDark
                     ? 'bg-sky-400/20 text-sky-300 border-sky-400/40'
-                    : 'bg-blue-100 text-blue-900 border-blue-300'
+                    : 'bg-blue-100 text-blue-950 border-blue-400'
                 }`}
               >
                 {selectedBranch === 'all' ? 'Multi-Branch Consolidated' : 'Single Showroom'}
               </span>
             </div>
-            <div className="text-[11px] opacity-70">
+            <div className="text-[11px] font-semibold text-slate-800 dark:text-slate-300">
               Real-time stock valuation, sales ledger & till balance synchronized
             </div>
           </div>
@@ -1015,13 +1015,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <SlidersHorizontal className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wide flex items-center space-x-2">
+                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wide flex items-center space-x-2 text-slate-950 dark:text-white">
                   <span>Interactive Bullion Valuation Simulator</span>
                   <span className={`text-[10px] font-mono px-2 py-0.2 rounded-full font-semibold border ${isDark ? 'bg-amber-500/20 text-amber-300 border-amber-400/40' : 'bg-amber-100 text-amber-950 border-amber-300'}`}>
                     Live MCX Delta
                   </span>
                 </h3>
-                <p className="text-[11px] opacity-70 font-medium">
+                <p className="text-[11px] text-slate-800 dark:text-slate-300 font-semibold">
                   Simulate gold/silver rate shifts & project showroom inventory valuation impact
                 </p>
               </div>
@@ -1041,7 +1041,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {/* Quick Simulation Delta Chips & Slider */}
           <div className="space-y-2.5">
             <div className="flex items-center justify-between flex-wrap gap-2 text-xs">
-              <span className="font-bold text-slate-900 dark:text-slate-200">Quick Rate Adjustment:</span>
+              <span className="font-bold text-slate-950 dark:text-slate-100">Quick Rate Adjustment:</span>
               <div className="flex items-center space-x-1.5 flex-wrap">
                 {[-500, -250, -100, 0, 100, 250, 500, 1000].map((delta) => (
                   <button
@@ -1067,7 +1067,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             {/* Range Slider */}
             <div className="flex items-center space-x-3 pt-1">
-              <span className="text-[11px] font-mono text-rose-500 font-bold">-₹1,000</span>
+              <span className="text-[11px] font-mono text-rose-700 dark:text-rose-400 font-bold">-₹1,000</span>
               <input
                 type="range"
                 min="-1000"
@@ -1077,7 +1077,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 onChange={(e) => setRateSimulatorDelta(Number(e.target.value))}
                 className="flex-1 accent-amber-500 cursor-pointer h-2 bg-slate-200 dark:bg-white/10 rounded-lg appearance-none"
               />
-              <span className="text-[11px] font-mono text-emerald-500 font-bold">+₹1,000</span>
+              <span className="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">+₹1,000</span>
             </div>
           </div>
 
@@ -1090,31 +1090,31 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             }`}
           >
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-800 dark:text-slate-200">Simulated 24K Rate</div>
+              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-950 dark:text-slate-200">Simulated 24K Rate</div>
               <div className="text-sm sm:text-base font-bold font-mono mt-1 text-amber-950 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-500/40 inline-block shadow-2xs">
                 ₹{simulatedGold24k.toLocaleString('en-IN')}/g
               </div>
-              <div className="text-[10.5px] font-semibold text-slate-700 dark:text-slate-400 mt-1">Base: ₹{gold24kRate.toLocaleString('en-IN')}</div>
+              <div className="text-[10.5px] font-bold text-slate-800 dark:text-slate-300 mt-1">Base: ₹{gold24kRate.toLocaleString('en-IN')}</div>
             </div>
 
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-800 dark:text-slate-200">Simulated 22K (916)</div>
+              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-950 dark:text-slate-200">Simulated 22K (916)</div>
               <div className="text-sm sm:text-base font-bold font-mono mt-1 text-amber-950 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-500/40 inline-block shadow-2xs">
                 ₹{simulatedGold22k.toLocaleString('en-IN')}/g
               </div>
-              <div className="text-[10.5px] font-semibold text-slate-700 dark:text-slate-400 mt-1">Base: ₹{gold22kRate.toLocaleString('en-IN')}</div>
+              <div className="text-[10.5px] font-bold text-slate-800 dark:text-slate-300 mt-1">Base: ₹{gold22kRate.toLocaleString('en-IN')}</div>
             </div>
 
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-800 dark:text-slate-200">Projected Vault Total</div>
+              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-950 dark:text-slate-200">Projected Vault Total</div>
               <div className="text-sm sm:text-base font-bold font-mono mt-1 text-emerald-950 dark:text-emerald-300 bg-emerald-100/90 dark:bg-emerald-950/60 px-2.5 py-1 rounded-xl border border-emerald-300 dark:border-emerald-500/40 inline-block shadow-2xs">
                 {formatCurrency(simulatedVaultTotal)}
               </div>
-              <div className="text-[10.5px] font-semibold text-slate-700 dark:text-slate-400 mt-1">Fine Wt: {formatWeight(branchData.goldFineWt)}</div>
+              <div className="text-[10.5px] font-bold text-slate-800 dark:text-slate-300 mt-1">Fine Wt: {formatWeight(branchData.goldFineWt)}</div>
             </div>
 
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-800 dark:text-slate-200">Simulated Valuation Delta</div>
+              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-950 dark:text-slate-200">Simulated Valuation Delta</div>
               <div
                 className={`text-sm sm:text-base font-bold font-mono mt-1 inline-flex items-center justify-center space-x-1 px-2.5 py-1 rounded-xl border shadow-2xs ${
                   valuationDelta >= 0
@@ -1129,7 +1129,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 )}
                 <span>{formatCurrency(Math.abs(valuationDelta))}</span>
               </div>
-              <div className="text-[10.5px] font-semibold font-mono mt-1 text-slate-800 dark:text-slate-300">
+              <div className="text-[10.5px] font-bold font-mono mt-1 text-slate-900 dark:text-slate-200">
                 {valuationDelta >= 0 ? `+${valuationDeltaPct.toFixed(2)}%` : `${valuationDeltaPct.toFixed(2)}%`}
               </div>
             </div>
@@ -1153,7 +1153,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 Multi-Branch Velocity Comparison
               </h3>
             </div>
-            <span className="text-[10.5px] font-semibold text-slate-700 dark:text-slate-300">3 Locations Active</span>
+            <span className="text-[10.5px] font-bold text-slate-800 dark:text-slate-300">3 Locations Active</span>
           </div>
 
           {/* Side-by-Side Branch Performance Cards */}
@@ -1185,7 +1185,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       </span>
                     )}
                   </div>
-                  <div className="text-[11px] font-medium text-slate-700 dark:text-slate-300 font-mono mt-0.5">
+                  <div className="text-[11px] font-bold text-slate-800 dark:text-slate-300 font-mono mt-0.5">
                     Fine Gold: {formatWeight(b.fineWt)} • Velocity Share: {b.share}
                   </div>
                 </div>
@@ -1194,7 +1194,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <div className="text-sm font-bold text-slate-950 dark:text-white">
                     {formatCurrency(b.sales)}
                   </div>
-                  <div className="text-[10.5px] text-emerald-800 dark:text-emerald-400 font-semibold">
+                  <div className="text-[10.5px] text-emerald-900 dark:text-emerald-400 font-bold">
                     Today's Inflow
                   </div>
                 </div>
@@ -1205,7 +1205,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {/* Daily Sales Target Pace Bar */}
           <div className="pt-2 border-t border-black/5 dark:border-white/10 space-y-1.5">
             <div className="flex justify-between items-center text-xs font-bold">
-              <span className="text-slate-800 dark:text-slate-200 font-bold">Daily Showroom Target:</span>
+              <span className="text-slate-950 dark:text-slate-200 font-bold">Daily Showroom Target:</span>
               <span className="font-mono text-slate-950 dark:text-white font-bold">
                 {targetAchievedPct.toFixed(1)}% ({formatCurrency(branchData.todaySales)} / {formatCurrency(dailyTarget)})
               </span>
@@ -1254,7 +1254,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     <span>Live Bullion Market</span>
                   </button>
                 </div>
-                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-0.5">
+                <p className="text-xs text-slate-800 dark:text-slate-300 font-semibold mt-0.5">
                   Pure Gold 24K:{' '}
                   <span className="font-bold text-slate-950 dark:text-white">₹{simulatedGold24k.toLocaleString('en-IN')}/g</span> •
                   22K (916):{' '}
@@ -1270,10 +1270,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 className={`px-3.5 py-1.5 rounded-full text-xs font-mono font-bold border ${
                   isDark
                     ? 'bg-sky-500/20 text-sky-300 border-sky-400/40'
-                    : 'bg-sky-50 text-sky-950 border-sky-300'
+                    : 'bg-sky-100 text-sky-950 border-sky-300'
                 }`}
               >
-                <span className="text-slate-700 dark:text-slate-300 mr-1">Fine Metal:</span>
+                <span className="text-slate-900 dark:text-slate-300 mr-1 font-bold">Fine Metal:</span>
                 <span className="font-bold text-slate-950 dark:text-white">{formatWeight(branchData.goldFineWt)}</span>
               </div>
 
@@ -1281,10 +1281,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 className={`px-3.5 py-1.5 rounded-full text-xs font-mono font-bold border ${
                   isDark
                     ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40'
-                    : 'bg-emerald-50 text-emerald-950 border-emerald-300'
+                    : 'bg-emerald-100 text-emerald-950 border-emerald-300'
                 }`}
               >
-                <span className="text-slate-700 dark:text-slate-300 mr-1">Vault Valuation:</span>
+                <span className="text-slate-900 dark:text-slate-300 mr-1 font-bold">Vault Valuation:</span>
                 <span className="font-bold text-slate-950 dark:text-white">{formatCurrency(simulatedVaultTotal)}</span>
               </div>
             </div>
@@ -1304,9 +1304,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     <div className="font-bold text-xs truncate text-slate-950 dark:text-white" title={stk.name}>
                       {stk.name}
                     </div>
-                    <div className="text-[10px] font-medium text-slate-600 dark:text-slate-300">{stk.purity_label}</div>
+                    <div className="text-[10.5px] font-bold text-slate-700 dark:text-slate-300">{stk.purity_label}</div>
                   </div>
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border shrink-0 ${stk.badge}`}>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold border shrink-0 ${stk.badge}`}>
                     {stk.pcs} Pcs
                   </span>
                 </div>
@@ -1322,7 +1322,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       : 'bg-slate-50 border-slate-300 text-slate-950'
                   }`}
                 >
-                  <span className="text-[10.5px] font-semibold text-slate-700 dark:text-slate-300">Est. Value:</span>
+                  <span className="text-[10.5px] font-bold text-slate-800 dark:text-slate-300">Est. Value:</span>
                   <span className="font-mono font-bold text-slate-950 dark:text-amber-300">
                     {formatCurrency(stk.valuation)}
                   </span>
@@ -1337,16 +1337,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   }`}
                 >
                   <div className="flex justify-between items-center text-[10.5px]">
-                    <span className="font-sans font-semibold text-slate-700 dark:text-slate-300">Gross Wt:</span>
+                    <span className="font-sans font-bold text-slate-800 dark:text-slate-300">Gross Wt:</span>
                     <span className="font-bold text-slate-950 dark:text-white">{formatWeight(stk.gross_wt)}</span>
                   </div>
                   <div className="flex justify-between items-center text-[10.5px]">
-                    <span className="font-sans font-semibold text-slate-700 dark:text-slate-300">Net Wt:</span>
+                    <span className="font-sans font-bold text-slate-800 dark:text-slate-300">Net Wt:</span>
                     <span className="font-bold text-slate-950 dark:text-white">{formatWeight(stk.net_wt)}</span>
                   </div>
                   <div className="flex justify-between items-center pt-1 border-t border-black/10 dark:border-white/10 font-bold text-[10.5px]">
-                    <span className="font-sans font-bold text-slate-800 dark:text-slate-200">Fine Metal:</span>
-                    <span className="font-bold text-slate-950 dark:text-amber-300">
+                    <span className="font-sans font-bold text-slate-950 dark:text-slate-200">Fine Metal:</span>
+                    <span className="font-bold text-amber-950 dark:text-amber-300">
                       {formatWeight(stk.fine_wt)}
                     </span>
                   </div>
@@ -1578,7 +1578,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <div className="p-2 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400">
                     <Bell className="w-4 h-4" />
                   </div>
-                  <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wide">
+                  <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wide text-slate-950 dark:text-white">
                     Showroom Alerts & Notices
                   </h2>
                 </div>
@@ -1586,7 +1586,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   className={`text-[10.5px] px-2.5 py-0.5 rounded-full font-bold border ${
                     isDark
                       ? 'bg-rose-500/20 text-rose-300 border-rose-400/40'
-                      : 'bg-rose-100 text-rose-900 border-rose-300'
+                      : 'bg-rose-100 text-rose-950 border-rose-400'
                   }`}
                 >
                   {noticeItems.length} Pending
@@ -1604,7 +1604,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   className={`w-full pl-9 pr-3 py-1.5 rounded-xl text-xs border transition-all ${
                     isDark
                       ? 'bg-white/5 border-white/10 text-white placeholder:text-slate-400 focus:border-amber-400'
-                      : 'bg-white border-slate-300 text-slate-950 placeholder:text-slate-400 focus:border-blue-600'
+                      : 'bg-white border-slate-300 text-slate-950 placeholder:text-slate-500 focus:border-blue-600'
                   }`}
                 />
               </div>
@@ -1639,7 +1639,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               {/* Notices List */}
               <div className="space-y-2 max-h-[340px] overflow-y-auto pr-1">
                 {filteredNotices.length === 0 ? (
-                  <div className="p-6 text-center text-xs font-bold text-slate-600 dark:text-slate-400">
+                  <div className="p-6 text-center text-xs font-bold text-slate-900 dark:text-slate-200">
                     No notices match your current search query.
                   </div>
                 ) : (
@@ -1649,32 +1649,32 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       className={`p-3 rounded-2xl border transition-all space-y-1.5 ${
                         isDark
                           ? 'bg-white/5 hover:bg-white/10 border-white/10'
-                          : 'bg-slate-50 hover:bg-white border-slate-300 shadow-2xs'
+                          : 'bg-white hover:bg-slate-50 border-slate-300 shadow-2xs'
                       }`}
                     >
                       <div className="flex justify-between items-start">
                         <span className="font-bold text-xs text-slate-950 dark:text-white">{n.title}</span>
-                        <span className={`text-[9.5px] font-semibold px-2 py-0.2 rounded-full border ${n.badgeColor}`}>
+                        <span className={`text-[9.5px] font-bold px-2 py-0.2 rounded-full border ${n.badgeColor}`}>
                           {n.tag}
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-700 dark:text-slate-300 font-normal">{n.subtitle}</p>
+                      <p className="text-[11px] text-slate-900 dark:text-slate-200 font-semibold">{n.subtitle}</p>
 
                       <div className="flex items-center justify-between pt-1 border-t border-black/5 dark:border-white/10">
                         {n.amount ? (
-                          <div className="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-300">
+                          <div className="text-xs font-mono font-bold text-emerald-950 dark:text-emerald-300">
                             Amount: {formatCurrency(n.amount)}
                           </div>
                         ) : (
-                          <div className="text-[10px] text-slate-500 font-medium">Action pending</div>
+                          <div className="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold">Action pending</div>
                         )}
 
                         <button
                           onClick={() => handleAlertAction(n)}
-                          className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer border shadow-2xs ${
+                          className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border shadow-2xs ${
                             isDark
                               ? 'bg-white/15 hover:bg-white/25 text-white border-white/20'
-                              : 'bg-white hover:bg-slate-50 text-slate-950 border-slate-300'
+                              : 'bg-white hover:bg-slate-100 text-slate-950 border-slate-300'
                           }`}
                         >
                           {n.type === 'birthday' || n.type === 'anniversary' || n.type === 'receivable' ? (

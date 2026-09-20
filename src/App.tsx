@@ -584,7 +584,10 @@ export function App() {
   const stockDeficitCount = refillItems.filter((i) => i.current_stock < i.desired_stock).length;
 
   return (
-    <div className={`min-h-screen ${currentTheme.appBg} ${currentTheme.textPrimary} flex flex-col font-sans selection:bg-sky-200`}>
+    <div
+      style={{ backgroundColor: 'var(--color-bg, #b8cadc)' }}
+      className={`min-h-screen ${currentTheme.textPrimary} flex flex-col font-sans selection:bg-sky-200`}
+    >
       {/* Top Navbar */}
       <Navbar
         currentSection={currentSection}
