@@ -1208,7 +1208,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
             onClick={handlePrintSelected}
             className={`flex items-center space-x-1 px-4 py-1.5 rounded-lg text-xs font-bold shadow cursor-pointer transition-all ${
               isDark
-                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-extrabold'
+                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-bold'
                 : 'bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white'
             }`}
           >

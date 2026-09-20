@@ -659,7 +659,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <span className="font-extrabold text-xs sm:text-sm">{branchData.branchName}</span>
+              <span className="font-bold text-xs sm:text-sm">{branchData.branchName}</span>
               <span
                 className={`text-[9.5px] font-mono px-2 py-0.2 rounded-full font-bold border ${
                   selectedBranch === 'all'
@@ -692,11 +692,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <button
                 key={b.id}
                 onClick={() => onSelectBranch(b.id)}
-                className={`px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   selectedBranch === b.id
                     ? isDark
-                      ? 'bg-amber-400 text-slate-950 font-black shadow-xs'
-                      : 'bg-blue-600 text-white font-black shadow-xs'
+                      ? 'bg-amber-400 text-slate-950 font-bold shadow-xs'
+                      : 'bg-blue-600 text-white font-bold shadow-xs'
                     : isDark
                     ? 'text-slate-200 hover:text-white bg-white/10 hover:bg-white/20'
                     : 'text-slate-950 hover:text-blue-700 bg-white hover:bg-slate-50 border border-slate-300 shadow-2xs'
@@ -725,11 +725,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <button
                 key={tab.id}
                 onClick={() => setDashboardPerspective(tab.id as any)}
-                className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl font-black text-xs transition-all cursor-pointer ${
+                className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl font-semibold text-xs transition-all cursor-pointer ${
                   isTabActive
                     ? isDark
-                      ? 'bg-amber-400 text-slate-950 font-black shadow-xs'
-                      : 'bg-blue-600 text-white font-black shadow-xs'
+                      ? 'bg-amber-400 text-slate-950 font-bold shadow-xs'
+                      : 'bg-blue-600 text-white font-bold shadow-xs'
                     : isDark
                     ? 'text-slate-200 hover:text-white hover:bg-white/15'
                     : 'text-slate-950 hover:text-blue-700 hover:bg-white hover:shadow-2xs'
@@ -747,7 +747,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {onOpenStockRefill && (
             <button
               onClick={onOpenStockRefill}
-              className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-black transition-all cursor-pointer shadow-2xs ${
+              className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer shadow-2xs ${
                 isDark
                   ? 'bg-rose-500/20 text-rose-300 border-rose-400/50 hover:bg-rose-500/30'
                   : 'bg-rose-100 text-rose-950 border-rose-400 hover:bg-rose-200'
@@ -762,7 +762,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {onOpenBullionRates && (
             <button
               onClick={onOpenBullionRates}
-              className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-black transition-all cursor-pointer shadow-2xs ${
+              className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer shadow-2xs ${
                 isDark
                   ? 'bg-amber-500/20 text-amber-300 border-amber-400/50 hover:bg-amber-500/30'
                   : 'bg-amber-100 text-amber-950 border-amber-400 hover:bg-amber-200'
@@ -792,19 +792,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-emerald-600 text-white shadow-xs shrink-0">
                 <Wallet className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-black text-slate-950 dark:text-white truncate">Today's Cash</span>
+              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">Today's Cash</span>
             </div>
             <ArrowUpRight className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-black font-mono tracking-tight text-slate-950 dark:text-emerald-300">
+            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-emerald-300">
               {formatCurrency(branchData.cashInHand)}
             </div>
           </div>
 
           <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-black bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
+            <span className="px-2 py-0.5 rounded font-semibold bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
               Till Reconciled
             </span>
           </div>
@@ -824,19 +824,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-sky-600 text-white shadow-xs shrink-0">
                 <Building className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-black text-slate-950 dark:text-white truncate">Bank Balances</span>
+              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">Bank Balances</span>
             </div>
             <ArrowUpRight className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-black font-mono tracking-tight text-slate-950 dark:text-sky-300">
+            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-sky-300">
               {formatCurrency(branchData.bankTotal)}
             </div>
           </div>
 
           <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-black bg-sky-100 text-sky-950 dark:bg-sky-950/70 dark:text-sky-300 border border-sky-300 dark:border-sky-500/40">
+            <span className="px-2 py-0.5 rounded font-semibold bg-sky-100 text-sky-950 dark:bg-sky-950/70 dark:text-sky-300 border border-sky-300 dark:border-sky-500/40">
               {branchData.bankAccounts.length} Active Accounts
             </span>
           </div>
@@ -856,19 +856,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-amber-600 text-white shadow-xs shrink-0">
                 <TrendingUp className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-black text-slate-950 dark:text-white truncate">Today's Sales</span>
+              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">Today's Sales</span>
             </div>
             <ArrowUpRight className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-black font-mono tracking-tight text-slate-950 dark:text-amber-300">
+            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-amber-300">
               {formatCurrency(branchData.todaySales)}
             </div>
           </div>
 
           <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-black bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
+            <span className="px-2 py-0.5 rounded font-semibold bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
               ↑ 12.4% vs yday
             </span>
           </div>
@@ -888,19 +888,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-rose-600 text-white shadow-xs shrink-0">
                 <ShoppingBag className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-black text-slate-950 dark:text-white truncate">Purchases</span>
+              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">Purchases</span>
             </div>
             <ArrowUpRight className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-black font-mono tracking-tight text-slate-950 dark:text-rose-300">
+            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-rose-300">
               {formatCurrency(branchData.todayPurchase)}
             </div>
           </div>
 
           <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-black bg-rose-100 text-rose-950 dark:bg-rose-950/70 dark:text-rose-300 border border-rose-300 dark:border-rose-500/40">
+            <span className="px-2 py-0.5 rounded font-semibold bg-rose-100 text-rose-950 dark:bg-rose-950/70 dark:text-rose-300 border border-rose-300 dark:border-rose-500/40">
               Bullion Inward
             </span>
           </div>
@@ -920,19 +920,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-indigo-600 text-white shadow-xs shrink-0">
                 <Package className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-black text-slate-950 dark:text-white truncate">Pending Orders</span>
+              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">Pending Orders</span>
             </div>
             <ArrowUpRight className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-black font-mono tracking-tight text-slate-950 dark:text-indigo-300">
+            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-indigo-300">
               {branchData.pendingOrders} Orders
             </div>
           </div>
 
           <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-black bg-indigo-100 text-indigo-950 dark:bg-indigo-950/70 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-500/40">
+            <span className="px-2 py-0.5 rounded font-semibold bg-indigo-100 text-indigo-950 dark:bg-indigo-950/70 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-500/40">
               2 Due Today
             </span>
           </div>
@@ -951,18 +951,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-teal-600 text-white shadow-xs shrink-0">
                 <UserPlus className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-black text-slate-950 dark:text-white truncate">New Walk-ins</span>
+              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">New Walk-ins</span>
             </div>
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-black font-mono tracking-tight text-slate-950 dark:text-teal-300">
+            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-teal-300">
               {branchData.visitors} Visitors
             </div>
           </div>
 
           <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-black bg-teal-100 text-teal-950 dark:bg-teal-950/70 dark:text-teal-300 border border-teal-300 dark:border-teal-500/40">
+            <span className="px-2 py-0.5 rounded font-semibold bg-teal-100 text-teal-950 dark:bg-teal-950/70 dark:text-teal-300 border border-teal-300 dark:border-teal-500/40">
               New Profiles
             </span>
           </div>
@@ -981,18 +981,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-violet-600 text-white shadow-xs shrink-0">
                 <Users className="w-3.5 h-3.5" />
               </div>
-              <span className="text-xs font-black text-slate-950 dark:text-white truncate">Total Guests</span>
+              <span className="text-xs font-bold text-slate-950 dark:text-white truncate">Total Guests</span>
             </div>
           </div>
 
           <div className="my-auto pt-1">
-            <div className="text-lg sm:text-xl font-black font-mono tracking-tight text-slate-950 dark:text-violet-300">
+            <div className="text-lg sm:text-xl font-bold font-mono tracking-normal text-slate-950 dark:text-violet-300">
               {branchData.footfall} Guests
             </div>
           </div>
 
           <div className="flex items-center space-x-1 text-[10px]">
-            <span className="px-2 py-0.5 rounded font-black bg-violet-100 text-violet-950 dark:bg-violet-950/70 dark:text-violet-300 border border-violet-300 dark:border-violet-500/40">
+            <span className="px-2 py-0.5 rounded font-semibold bg-violet-100 text-violet-950 dark:bg-violet-950/70 dark:text-violet-300 border border-violet-300 dark:border-violet-500/40">
               Showroom Total
             </span>
           </div>
@@ -1015,13 +1015,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <SlidersHorizontal className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs sm:text-sm font-black uppercase tracking-wider flex items-center space-x-2">
+                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wide flex items-center space-x-2">
                   <span>Interactive Bullion Valuation Simulator</span>
-                  <span className={`text-[10px] font-mono px-2 py-0.2 rounded-full font-bold border ${isDark ? 'bg-amber-500/20 text-amber-300 border-amber-400/40' : 'bg-amber-100 text-amber-950 border-amber-300'}`}>
+                  <span className={`text-[10px] font-mono px-2 py-0.2 rounded-full font-semibold border ${isDark ? 'bg-amber-500/20 text-amber-300 border-amber-400/40' : 'bg-amber-100 text-amber-950 border-amber-300'}`}>
                     Live MCX Delta
                   </span>
                 </h3>
-                <p className="text-[11px] opacity-70">
+                <p className="text-[11px] opacity-70 font-medium">
                   Simulate gold/silver rate shifts & project showroom inventory valuation impact
                 </p>
               </div>
@@ -1030,7 +1030,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             {rateSimulatorDelta !== 0 && (
               <button
                 onClick={() => setRateSimulatorDelta(0)}
-                className="flex items-center space-x-1 px-2.5 py-1 rounded-xl text-xs font-bold bg-slate-200 dark:bg-white/10 hover:opacity-80 transition cursor-pointer"
+                className="flex items-center space-x-1 px-2.5 py-1 rounded-xl text-xs font-semibold bg-slate-200 dark:bg-white/10 hover:opacity-80 transition cursor-pointer"
               >
                 <RotateCcw className="w-3 h-3" />
                 <span>Reset Live</span>
@@ -1041,17 +1041,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {/* Quick Simulation Delta Chips & Slider */}
           <div className="space-y-2.5">
             <div className="flex items-center justify-between flex-wrap gap-2 text-xs">
-              <span className="font-extrabold text-slate-900 dark:text-slate-200">Quick Rate Adjustment:</span>
+              <span className="font-bold text-slate-900 dark:text-slate-200">Quick Rate Adjustment:</span>
               <div className="flex items-center space-x-1.5 flex-wrap">
                 {[-500, -250, -100, 0, 100, 250, 500, 1000].map((delta) => (
                   <button
                     key={delta}
                     onClick={() => setRateSimulatorDelta(delta)}
-                    className={`px-2.5 py-1 rounded-lg font-mono text-[11px] font-black border transition-all cursor-pointer shadow-2xs ${
+                    className={`px-2.5 py-1 rounded-lg font-mono text-[11px] font-semibold border transition-all cursor-pointer shadow-2xs ${
                       rateSimulatorDelta === delta
                         ? isDark
-                          ? 'bg-amber-400 text-slate-950 border-amber-400 font-black shadow-xs'
-                          : 'bg-blue-600 text-white border-blue-600 font-black shadow-xs'
+                          ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-xs'
+                          : 'bg-blue-600 text-white border-blue-600 font-bold shadow-xs'
                         : delta === 0
                         ? 'bg-slate-200 text-slate-950 dark:bg-white/15 dark:text-slate-200 border-slate-300 dark:border-white/20'
                         : delta > 0
@@ -1090,33 +1090,33 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             }`}
           >
             <div>
-              <div className="text-[11px] font-black uppercase tracking-wider text-slate-800 dark:text-slate-200">Simulated 24K Rate</div>
-              <div className="text-sm sm:text-base font-black font-mono mt-1 text-amber-950 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-500/40 inline-block shadow-2xs">
+              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-800 dark:text-slate-200">Simulated 24K Rate</div>
+              <div className="text-sm sm:text-base font-bold font-mono mt-1 text-amber-950 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-500/40 inline-block shadow-2xs">
                 ₹{simulatedGold24k.toLocaleString('en-IN')}/g
               </div>
-              <div className="text-[10.5px] font-extrabold text-slate-700 dark:text-slate-400 mt-1">Base: ₹{gold24kRate.toLocaleString('en-IN')}</div>
+              <div className="text-[10.5px] font-semibold text-slate-700 dark:text-slate-400 mt-1">Base: ₹{gold24kRate.toLocaleString('en-IN')}</div>
             </div>
 
             <div>
-              <div className="text-[11px] font-black uppercase tracking-wider text-slate-800 dark:text-slate-200">Simulated 22K (916)</div>
-              <div className="text-sm sm:text-base font-black font-mono mt-1 text-amber-950 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-500/40 inline-block shadow-2xs">
+              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-800 dark:text-slate-200">Simulated 22K (916)</div>
+              <div className="text-sm sm:text-base font-bold font-mono mt-1 text-amber-950 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-500/40 inline-block shadow-2xs">
                 ₹{simulatedGold22k.toLocaleString('en-IN')}/g
               </div>
-              <div className="text-[10.5px] font-extrabold text-slate-700 dark:text-slate-400 mt-1">Base: ₹{gold22kRate.toLocaleString('en-IN')}</div>
+              <div className="text-[10.5px] font-semibold text-slate-700 dark:text-slate-400 mt-1">Base: ₹{gold22kRate.toLocaleString('en-IN')}</div>
             </div>
 
             <div>
-              <div className="text-[11px] font-black uppercase tracking-wider text-slate-800 dark:text-slate-200">Projected Vault Total</div>
-              <div className="text-sm sm:text-base font-black font-mono mt-1 text-emerald-950 dark:text-emerald-300 bg-emerald-100/90 dark:bg-emerald-950/60 px-2.5 py-1 rounded-xl border border-emerald-300 dark:border-emerald-500/40 inline-block shadow-2xs">
+              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-800 dark:text-slate-200">Projected Vault Total</div>
+              <div className="text-sm sm:text-base font-bold font-mono mt-1 text-emerald-950 dark:text-emerald-300 bg-emerald-100/90 dark:bg-emerald-950/60 px-2.5 py-1 rounded-xl border border-emerald-300 dark:border-emerald-500/40 inline-block shadow-2xs">
                 {formatCurrency(simulatedVaultTotal)}
               </div>
-              <div className="text-[10.5px] font-extrabold text-slate-700 dark:text-slate-400 mt-1">Fine Wt: {formatWeight(branchData.goldFineWt)}</div>
+              <div className="text-[10.5px] font-semibold text-slate-700 dark:text-slate-400 mt-1">Fine Wt: {formatWeight(branchData.goldFineWt)}</div>
             </div>
 
             <div>
-              <div className="text-[11px] font-black uppercase tracking-wider text-slate-800 dark:text-slate-200">Simulated Valuation Delta</div>
+              <div className="text-[11px] font-bold uppercase tracking-wide text-slate-800 dark:text-slate-200">Simulated Valuation Delta</div>
               <div
-                className={`text-sm sm:text-base font-black font-mono mt-1 inline-flex items-center justify-center space-x-1 px-2.5 py-1 rounded-xl border shadow-2xs ${
+                className={`text-sm sm:text-base font-bold font-mono mt-1 inline-flex items-center justify-center space-x-1 px-2.5 py-1 rounded-xl border shadow-2xs ${
                   valuationDelta >= 0
                     ? 'bg-emerald-100 text-emerald-950 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40'
                     : 'bg-rose-100 text-rose-950 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-300 dark:border-rose-500/40'
@@ -1129,7 +1129,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 )}
                 <span>{formatCurrency(Math.abs(valuationDelta))}</span>
               </div>
-              <div className="text-[10.5px] font-black font-mono mt-1 text-slate-800 dark:text-slate-300">
+              <div className="text-[10.5px] font-semibold font-mono mt-1 text-slate-800 dark:text-slate-300">
                 {valuationDelta >= 0 ? `+${valuationDeltaPct.toFixed(2)}%` : `${valuationDeltaPct.toFixed(2)}%`}
               </div>
             </div>
@@ -1149,11 +1149,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="p-2 rounded-xl bg-blue-500/20 text-blue-600 dark:text-blue-400">
                 <Building className="w-4 h-4" />
               </div>
-              <h3 className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-950 dark:text-white">
+              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wide text-slate-950 dark:text-white">
                 Multi-Branch Velocity Comparison
               </h3>
             </div>
-            <span className="text-[10.5px] font-extrabold text-slate-700 dark:text-slate-300">3 Locations Active</span>
+            <span className="text-[10.5px] font-semibold text-slate-700 dark:text-slate-300">3 Locations Active</span>
           </div>
 
           {/* Side-by-Side Branch Performance Cards */}
@@ -1178,23 +1178,23 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               >
                 <div>
                   <div className="flex items-center space-x-1.5">
-                    <span className="font-black text-xs text-slate-950 dark:text-white">{b.name}</span>
+                    <span className="font-bold text-xs text-slate-950 dark:text-white">{b.name}</span>
                     {selectedBranch === b.id && (
-                      <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-emerald-600 text-white font-mono shadow-2xs">
+                      <span className="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white font-mono shadow-2xs">
                         Active
                       </span>
                     )}
                   </div>
-                  <div className="text-[11px] font-extrabold text-slate-700 dark:text-slate-300 font-mono mt-0.5">
+                  <div className="text-[11px] font-medium text-slate-700 dark:text-slate-300 font-mono mt-0.5">
                     Fine Gold: {formatWeight(b.fineWt)} • Velocity Share: {b.share}
                   </div>
                 </div>
 
                 <div className="text-right font-mono">
-                  <div className="text-sm font-black text-slate-950 dark:text-white">
+                  <div className="text-sm font-bold text-slate-950 dark:text-white">
                     {formatCurrency(b.sales)}
                   </div>
-                  <div className="text-[10.5px] text-emerald-800 dark:text-emerald-400 font-black">
+                  <div className="text-[10.5px] text-emerald-800 dark:text-emerald-400 font-semibold">
                     Today's Inflow
                   </div>
                 </div>
@@ -1205,8 +1205,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {/* Daily Sales Target Pace Bar */}
           <div className="pt-2 border-t border-black/5 dark:border-white/10 space-y-1.5">
             <div className="flex justify-between items-center text-xs font-bold">
-              <span className="text-slate-800 dark:text-slate-200 font-extrabold">Daily Showroom Target:</span>
-              <span className="font-mono text-slate-950 dark:text-white font-black">
+              <span className="text-slate-800 dark:text-slate-200 font-bold">Daily Showroom Target:</span>
+              <span className="font-mono text-slate-950 dark:text-white font-bold">
                 {targetAchievedPct.toFixed(1)}% ({formatCurrency(branchData.todaySales)} / {formatCurrency(dailyTarget)})
               </span>
             </div>
@@ -1239,7 +1239,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </div>
               <div>
                 <div className="flex items-center space-x-2 flex-wrap">
-                  <h2 className="text-sm sm:text-base font-black uppercase tracking-wider text-slate-950 dark:text-white">
+                  <h2 className="text-sm sm:text-base font-bold uppercase tracking-wide text-slate-950 dark:text-white">
                     CURRENT STOCK VAULT BREAKDOWN
                   </h2>
                   <button
@@ -1256,11 +1256,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 </div>
                 <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-0.5">
                   Pure Gold 24K:{' '}
-                  <span className="font-black text-slate-950 dark:text-white">₹{simulatedGold24k.toLocaleString('en-IN')}/g</span> •
+                  <span className="font-bold text-slate-950 dark:text-white">₹{simulatedGold24k.toLocaleString('en-IN')}/g</span> •
                   22K (916):{' '}
-                  <span className="font-black text-slate-950 dark:text-white">₹{simulatedGold22k.toLocaleString('en-IN')}/g</span> •
+                  <span className="font-bold text-slate-950 dark:text-white">₹{simulatedGold22k.toLocaleString('en-IN')}/g</span> •
                   Silver:{' '}
-                  <span className="font-black text-slate-950 dark:text-white">₹{simulatedSilver.toLocaleString('en-IN')}/g</span>
+                  <span className="font-bold text-slate-950 dark:text-white">₹{simulatedSilver.toLocaleString('en-IN')}/g</span>
                 </p>
               </div>
             </div>
@@ -1274,7 +1274,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 }`}
               >
                 <span className="text-slate-700 dark:text-slate-300 mr-1">Fine Metal:</span>
-                <span className="font-black text-slate-950 dark:text-white">{formatWeight(branchData.goldFineWt)}</span>
+                <span className="font-bold text-slate-950 dark:text-white">{formatWeight(branchData.goldFineWt)}</span>
               </div>
 
               <div
@@ -1285,7 +1285,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 }`}
               >
                 <span className="text-slate-700 dark:text-slate-300 mr-1">Vault Valuation:</span>
-                <span className="font-black text-slate-950 dark:text-white">{formatCurrency(simulatedVaultTotal)}</span>
+                <span className="font-bold text-slate-950 dark:text-white">{formatCurrency(simulatedVaultTotal)}</span>
               </div>
             </div>
           </div>
@@ -1301,12 +1301,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               >
                 <div className="flex justify-between items-start">
                   <div className="min-w-0 pr-1">
-                    <div className="font-black text-xs truncate text-slate-950 dark:text-white" title={stk.name}>
+                    <div className="font-bold text-xs truncate text-slate-950 dark:text-white" title={stk.name}>
                       {stk.name}
                     </div>
-                    <div className="text-[10px] font-bold text-slate-600 dark:text-slate-300">{stk.purity_label}</div>
+                    <div className="text-[10px] font-medium text-slate-600 dark:text-slate-300">{stk.purity_label}</div>
                   </div>
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-black border shrink-0 ${stk.badge}`}>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border shrink-0 ${stk.badge}`}>
                     {stk.pcs} Pcs
                   </span>
                 </div>
@@ -1322,8 +1322,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       : 'bg-slate-50 border-slate-300 text-slate-950'
                   }`}
                 >
-                  <span className="text-[10.5px] font-extrabold text-slate-700 dark:text-slate-300">Est. Value:</span>
-                  <span className="font-mono font-black text-slate-950 dark:text-amber-300">
+                  <span className="text-[10.5px] font-semibold text-slate-700 dark:text-slate-300">Est. Value:</span>
+                  <span className="font-mono font-bold text-slate-950 dark:text-amber-300">
                     {formatCurrency(stk.valuation)}
                   </span>
                 </div>
@@ -1337,16 +1337,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   }`}
                 >
                   <div className="flex justify-between items-center text-[10.5px]">
-                    <span className="font-sans font-extrabold text-slate-700 dark:text-slate-300">Gross Wt:</span>
-                    <span className="font-black text-slate-950 dark:text-white">{formatWeight(stk.gross_wt)}</span>
+                    <span className="font-sans font-semibold text-slate-700 dark:text-slate-300">Gross Wt:</span>
+                    <span className="font-bold text-slate-950 dark:text-white">{formatWeight(stk.gross_wt)}</span>
                   </div>
                   <div className="flex justify-between items-center text-[10.5px]">
-                    <span className="font-sans font-extrabold text-slate-700 dark:text-slate-300">Net Wt:</span>
-                    <span className="font-black text-slate-950 dark:text-white">{formatWeight(stk.net_wt)}</span>
+                    <span className="font-sans font-semibold text-slate-700 dark:text-slate-300">Net Wt:</span>
+                    <span className="font-bold text-slate-950 dark:text-white">{formatWeight(stk.net_wt)}</span>
                   </div>
                   <div className="flex justify-between items-center pt-1 border-t border-black/10 dark:border-white/10 font-bold text-[10.5px]">
-                    <span className="font-sans font-black text-slate-800 dark:text-slate-200">Fine Metal:</span>
-                    <span className="font-black text-slate-950 dark:text-amber-300">
+                    <span className="font-sans font-bold text-slate-800 dark:text-slate-200">Fine Metal:</span>
+                    <span className="font-bold text-slate-950 dark:text-amber-300">
                       {formatWeight(stk.fine_wt)}
                     </span>
                   </div>
@@ -1371,7 +1371,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="p-2 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400">
                 <ShoppingBag className="w-4 h-4" />
               </div>
-              <h3 className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-950 dark:text-white">
+              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wide text-slate-950 dark:text-white">
                 Sales & Invoicing Command Center
               </h3>
             </div>
@@ -1396,9 +1396,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     : 'bg-white border-slate-300 text-slate-950 shadow-xs'
                 }`}
               >
-                <div className="flex items-center justify-between text-xs font-black">
+                <div className="flex items-center justify-between text-xs font-bold">
                   <span className="text-slate-950 dark:text-white">{t.label}</span>
-                  <span className={`text-[11px] font-mono font-black px-2 py-0.5 rounded-full border ${
+                  <span className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full border ${
                     t.label.includes('UPI')
                       ? 'bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40'
                       : t.label.includes('Card')
@@ -1408,7 +1408,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       : 'bg-purple-100 text-purple-950 dark:bg-purple-950/70 dark:text-purple-300 border border-purple-300 dark:border-purple-500/40'
                   }`}>{t.pct}%</span>
                 </div>
-                <div className="text-xl font-black font-mono mt-2 text-slate-950 dark:text-white">
+                <div className="text-xl font-bold font-mono mt-2 text-slate-950 dark:text-white tracking-normal">
                   {formatCurrency(t.amount)}
                 </div>
                 <div className="w-full bg-slate-200 dark:bg-white/10 rounded-full h-2 mt-3 overflow-hidden">
@@ -1441,12 +1441,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <div className="p-2 rounded-xl bg-blue-500/20 text-blue-600 dark:text-blue-400">
                     <CreditCard className="w-4 h-4" />
                   </div>
-                  <h2 className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-950 dark:text-white">
+                  <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wide text-slate-950 dark:text-white">
                     Financial Balances (Cash & Bank)
                   </h2>
                 </div>
                 <span
-                  className={`text-xs font-mono font-black px-3 py-1 rounded-full border ${
+                  className={`text-xs font-mono font-bold px-3 py-1 rounded-full border ${
                     isDark
                       ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40'
                       : 'bg-emerald-50 text-emerald-950 border-emerald-300'
@@ -1469,22 +1469,22 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     <Wallet className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="font-black text-xs sm:text-sm text-slate-950 dark:text-white">
+                    <div className="font-bold text-xs sm:text-sm text-slate-950 dark:text-white">
                       Physical Cash in Hand (Showroom Till)
                     </div>
-                    <div className="text-[10.5px] font-extrabold text-slate-700 dark:text-slate-300">
+                    <div className="text-[10.5px] font-medium text-slate-700 dark:text-slate-300">
                       Opening balance + Counter collections reconciled
                     </div>
                   </div>
                 </div>
-                <div className="text-lg sm:text-xl font-black font-mono text-emerald-950 dark:text-emerald-300">
+                <div className="text-lg sm:text-xl font-bold font-mono text-emerald-950 dark:text-emerald-300">
                   {formatCurrency(branchData.cashInHand)}
                 </div>
               </div>
 
               {/* Cash in Bank Table */}
               <div className="space-y-2">
-                <div className="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center justify-between">
+                <div className="text-xs font-bold uppercase tracking-wide text-slate-800 dark:text-slate-200 flex items-center justify-between">
                   <span>Cash in Bank (Individual Accounts)</span>
                   <span>{branchData.bankAccounts.length} Linked Accounts</span>
                 </div>
@@ -1492,7 +1492,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <div className="overflow-x-auto border border-slate-300 dark:border-white/15 rounded-2xl overflow-hidden bg-white dark:bg-slate-900/90 shadow-2xs">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead
-                      className={`font-black border-b select-none ${
+                      className={`font-bold border-b select-none ${
                         isDark
                           ? 'bg-white/10 border-white/15 text-white'
                           : 'bg-slate-100 border-slate-300 text-slate-950'
@@ -1511,11 +1511,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                           key={idx}
                           className={isDark ? 'hover:bg-white/5' : 'hover:bg-slate-50'}
                         >
-                          <td className="p-3 border-r border-slate-200 dark:border-white/10 font-sans font-black text-slate-950 dark:text-white flex items-center space-x-2">
+                          <td className="p-3 border-r border-slate-200 dark:border-white/10 font-sans font-bold text-slate-950 dark:text-white flex items-center space-x-2">
                             <span className={`w-2.5 h-2.5 rounded-full ${b.iconColor}`} />
                             <span>{b.bank_name}</span>
                           </td>
-                          <td className="p-3 border-r border-slate-200 dark:border-white/10 text-center text-slate-800 dark:text-slate-200 font-bold">
+                          <td className="p-3 border-r border-slate-200 dark:border-white/10 text-center text-slate-800 dark:text-slate-200 font-medium">
                             <button
                               onClick={() => handleCopyAccount(b.account_no)}
                               className="inline-flex items-center space-x-1 hover:underline cursor-pointer"
@@ -1530,28 +1530,28 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                             </button>
                           </td>
                           <td className="p-3 border-r border-slate-200 dark:border-white/10 text-center">
-                            <span className={`px-2 py-0.5 rounded-full text-[9.5px] font-black border ${b.badgeColor}`}>
+                            <span className={`px-2 py-0.5 rounded-full text-[9.5px] font-semibold border ${b.badgeColor}`}>
                               {b.type}
                             </span>
                           </td>
-                          <td className="p-3 text-right font-black text-slate-950 dark:text-white text-sm">
+                          <td className="p-3 text-right font-bold text-slate-950 dark:text-white text-sm">
                             {formatCurrency(b.balance)}
                           </td>
                         </tr>
                       ))}
                     </tbody>
                     <tfoot
-                      className={`font-mono border-t font-black text-xs ${
+                      className={`font-mono border-t font-bold text-xs ${
                         isDark
                           ? 'bg-white/10 border-white/15 text-white'
                           : 'bg-slate-100 border-slate-300 text-slate-950'
                       }`}
                     >
                       <tr>
-                        <td colSpan={3} className="p-3 font-sans uppercase text-right font-black">
+                        <td colSpan={3} className="p-3 font-sans uppercase text-right font-bold">
                           Total Cash in Bank:
                         </td>
-                        <td className="p-3 text-right font-black text-slate-950 dark:text-white text-sm">
+                        <td className="p-3 text-right font-bold text-slate-950 dark:text-white text-sm">
                           {formatCurrency(branchData.bankTotal)}
                         </td>
                       </tr>
@@ -1578,7 +1578,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <div className="p-2 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400">
                     <Bell className="w-4 h-4" />
                   </div>
-                  <h2 className="text-xs sm:text-sm font-black uppercase tracking-wider">
+                  <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wide">
                     Showroom Alerts & Notices
                   </h2>
                 </div>
@@ -1621,11 +1621,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <button
                     key={tab.id}
                     onClick={() => setActiveNoticeTab(tab.id as any)}
-                    className={`px-3 py-1 rounded-xl whitespace-nowrap font-black text-xs transition-all cursor-pointer ${
+                    className={`px-3 py-1 rounded-xl whitespace-nowrap font-semibold text-xs transition-all cursor-pointer ${
                       activeNoticeTab === tab.id
                         ? isDark
-                          ? 'bg-amber-400 text-slate-950 font-black shadow-xs'
-                          : 'bg-blue-600 text-white font-black shadow-xs'
+                          ? 'bg-amber-400 text-slate-950 font-bold shadow-xs'
+                          : 'bg-blue-600 text-white font-bold shadow-xs'
                         : isDark
                         ? 'text-slate-200 hover:text-white bg-white/10'
                         : 'text-slate-950 hover:text-blue-700 bg-white border border-slate-300 shadow-2xs'
@@ -1653,25 +1653,25 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       }`}
                     >
                       <div className="flex justify-between items-start">
-                        <span className="font-extrabold text-xs text-slate-950 dark:text-white">{n.title}</span>
-                        <span className={`text-[9.5px] font-black px-2 py-0.2 rounded-full border ${n.badgeColor}`}>
+                        <span className="font-bold text-xs text-slate-950 dark:text-white">{n.title}</span>
+                        <span className={`text-[9.5px] font-semibold px-2 py-0.2 rounded-full border ${n.badgeColor}`}>
                           {n.tag}
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-700 dark:text-slate-300 font-semibold">{n.subtitle}</p>
+                      <p className="text-[11px] text-slate-700 dark:text-slate-300 font-normal">{n.subtitle}</p>
 
                       <div className="flex items-center justify-between pt-1 border-t border-black/5 dark:border-white/10">
                         {n.amount ? (
-                          <div className="text-xs font-mono font-black text-emerald-700 dark:text-emerald-300">
+                          <div className="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-300">
                             Amount: {formatCurrency(n.amount)}
                           </div>
                         ) : (
-                          <div className="text-[10px] text-slate-500 font-bold">Action pending</div>
+                          <div className="text-[10px] text-slate-500 font-medium">Action pending</div>
                         )}
 
                         <button
                           onClick={() => handleAlertAction(n)}
-                          className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer border shadow-2xs ${
+                          className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer border shadow-2xs ${
                             isDark
                               ? 'bg-white/15 hover:bg-white/25 text-white border-white/20'
                               : 'bg-white hover:bg-slate-50 text-slate-950 border-slate-300'

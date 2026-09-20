@@ -212,7 +212,7 @@ export const BackupManagerView: React.FC<BackupManagerViewProps> = ({
             disabled={isBackingUp}
             className={`flex items-center space-x-2 px-5 py-2.5 font-bold text-xs rounded-lg shadow disabled:opacity-50 cursor-pointer transition-all ${
               isDark
-                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-extrabold'
+                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-bold'
                 : 'bg-blue-600 hover:bg-blue-700 text-white'
             }`}
           >

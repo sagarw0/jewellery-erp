@@ -111,8 +111,8 @@ export const DayBookView: React.FC<DayBookViewProps> = ({
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base font-black tracking-tight">Day Book & Cashflow Register</h1>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-400/30">
+              <h1 className="text-base font-bold tracking-normal">Day Book & Cashflow Register</h1>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-400/30">
                 12-Column EOD Audit
               </span>
             </div>
@@ -125,7 +125,7 @@ export const DayBookView: React.FC<DayBookViewProps> = ({
         <div className="flex items-center space-x-2 flex-wrap">
           <button
             onClick={handleExportCSV}
-            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               isDark
                 ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
                 : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
@@ -137,7 +137,7 @@ export const DayBookView: React.FC<DayBookViewProps> = ({
 
           <button
             onClick={() => window.print()}
-            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               isDark
                 ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
                 : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
@@ -149,7 +149,7 @@ export const DayBookView: React.FC<DayBookViewProps> = ({
 
           <button
             onClick={() => setShowHelp(true)}
-            className="p-2 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-bold border border-amber-400/40 hover:bg-amber-500/20 cursor-pointer"
+            className="p-2 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-semibold border border-amber-400/40 hover:bg-amber-500/20 cursor-pointer"
           >
             <HelpCircle className="w-4 h-4" />
           </button>
@@ -179,11 +179,11 @@ export const DayBookView: React.FC<DayBookViewProps> = ({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as DayBookTab)}
-              className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
                 activeTab === tab.id
                   ? isDark
-                    ? 'bg-amber-400 text-slate-950 font-black shadow-xs'
-                    : 'bg-blue-600 text-white font-black shadow-xs'
+                    ? 'bg-amber-400 text-slate-950 font-bold shadow-xs'
+                    : 'bg-blue-600 text-white font-bold shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -242,7 +242,7 @@ export const DayBookView: React.FC<DayBookViewProps> = ({
                 <th className="p-3.5 font-mono">Invoice No</th>
                 <th className="p-3.5 text-right">Total Amt</th>
                 <th className="p-3.5 text-right text-amber-600 dark:text-amber-400">URD Amt</th>
-                <th className="p-3.5 text-right font-black">Net Billed</th>
+                <th className="p-3.5 text-right font-bold">Net Billed</th>
                 <th className="p-3.5 text-right text-emerald-600 dark:text-emerald-400">Cash Rec</th>
                 <th className="p-3.5 text-right text-rose-600 dark:text-rose-400">Cash Pay</th>
                 <th className="p-3.5 text-right text-blue-600 dark:text-blue-400">Bank Rec</th>
@@ -281,7 +281,7 @@ export const DayBookView: React.FC<DayBookViewProps> = ({
                     <td className="p-3.5 text-right text-amber-600 dark:text-amber-400">
                       {row.urd_amt > 0 ? formatCurrency(row.urd_amt) : '—'}
                     </td>
-                    <td className="p-3.5 text-right font-black text-slate-900 dark:text-white">
+                    <td className="p-3.5 text-right font-bold text-slate-900 dark:text-white">
                       {formatCurrency(row.net_amt)}
                     </td>
                     <td className="p-3.5 text-right text-emerald-600 dark:text-emerald-400 font-bold">
@@ -310,7 +310,7 @@ export const DayBookView: React.FC<DayBookViewProps> = ({
             {/* Table Footer Totals */}
             <tfoot>
               <tr
-                className={`border-t font-mono font-black text-xs ${
+                className={`border-t font-mono font-bold text-xs ${
                   isDark
                     ? 'bg-[#070b14]/95 text-white border-white/20'
                     : 'bg-slate-100 text-slate-950 border-slate-300'

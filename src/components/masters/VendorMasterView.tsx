@@ -376,7 +376,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h1 className={`text-xl font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-slate-950'}`}>
+                <h1 className={`text-xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-slate-950'}`}>
                   Vendor & Supplier Master
                 </h1>
                 <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full border shadow-2xs ${
@@ -410,7 +410,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             onClick={handleOpenAdd}
             className={`px-4 py-2 rounded-xl font-bold text-xs shadow-md flex items-center space-x-2 transition-all cursor-pointer active:scale-95 ${
               isDark
-                ? 'bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-slate-950 font-extrabold'
+                ? 'bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-slate-950 font-bold'
                 : 'bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white'
             }`}
           >
@@ -431,7 +431,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             <span>Active Suppliers</span>
             <Building2 className={`w-4 h-4 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
           </div>
-          <div className={`text-xl font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>
+          <div className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>
             {metrics.totalActive} <span className={`text-xs font-bold ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ {vendors.length} Total</span>
           </div>
           <div className={`text-[11px] font-bold mt-1 ${isDark ? 'text-emerald-400' : 'text-emerald-800'}`}>
@@ -448,7 +448,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             <span>Outstanding Payable (₹)</span>
             <CreditCard className="w-4 h-4 text-amber-500" />
           </div>
-          <div className={`text-xl font-black font-mono ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
+          <div className={`text-xl font-bold font-mono tracking-normal ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
             {formatCurrency(metrics.totalCashPayable)}
           </div>
           <div className={`text-[11px] font-semibold mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
@@ -465,7 +465,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             <span>Fine Gold Due (g)</span>
             <Coins className="w-4 h-4 text-amber-500" />
           </div>
-          <div className={`text-xl font-black font-mono ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
+          <div className={`text-xl font-bold font-mono tracking-normal ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
             {formatWeight(metrics.totalGoldGrams)}
           </div>
           <div className={`text-[11px] font-semibold mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
@@ -482,7 +482,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             <span>Fine Silver Due (g)</span>
             <Scale className={`w-4 h-4 ${isDark ? 'text-slate-400' : 'text-slate-600'}`} />
           </div>
-          <div className={`text-xl font-black font-mono ${isDark ? 'text-white' : 'text-slate-950'}`}>
+          <div className={`text-xl font-bold font-mono tracking-normal ${isDark ? 'text-white' : 'text-slate-950'}`}>
             {formatWeight(metrics.totalSilverGrams)}
           </div>
           <div className={`text-[11px] font-semibold mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
@@ -591,18 +591,18 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                   >
                     {/* Code */}
                     <td className="p-3.5 font-mono whitespace-nowrap">
-                      <span className="px-2.5 py-1 rounded-md bg-amber-100 text-amber-950 font-black border border-amber-300 text-xs shadow-2xs">
+                      <span className="px-2.5 py-1 rounded-md bg-amber-100 text-amber-950 font-bold border border-amber-300 text-xs shadow-2xs">
                         {v.vendor_code}
                       </span>
                     </td>
 
                     {/* Name & Type */}
                     <td className="p-3.5">
-                      <div className="font-extrabold text-slate-950 text-xs">
+                      <div className="font-bold text-slate-950 text-xs">
                         {v.vendor_name}
                       </div>
                       <div className="flex items-center space-x-1.5 mt-1 flex-wrap gap-y-1">
-                        <span className="text-[10px] px-2 py-0.5 rounded-md font-extrabold bg-indigo-100 text-indigo-950 border border-indigo-300">
+                        <span className="text-[10px] px-2 py-0.5 rounded-md font-semibold bg-indigo-100 text-indigo-950 border border-indigo-300">
                           {v.vendor_type}
                         </span>
                         {Boolean(v.credit_days && v.credit_days > 0) && (
@@ -615,7 +615,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
 
                     {/* Contact & Location */}
                     <td className="p-3.5">
-                      <div className="font-extrabold text-emerald-950 flex items-center space-x-1">
+                      <div className="font-bold text-emerald-950 flex items-center space-x-1">
                         <Phone className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                         <span>{v.phone}</span>
                       </div>
@@ -643,7 +643,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
 
                     {/* Ledger Cash Balance */}
                     <td className="p-3.5 text-right font-mono whitespace-nowrap">
-                      <div className={`text-xs font-black ${v.balance_type === 'Cr' ? 'text-amber-950' : 'text-emerald-950'}`}>
+                      <div className={`text-xs font-bold ${v.balance_type === 'Cr' ? 'text-amber-950' : 'text-emerald-950'}`}>
                         {formatCurrency(v.opening_balance_cash)}
                       </div>
                       <span className="text-[10px] text-slate-700 font-bold font-sans">
@@ -654,7 +654,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                     {/* Fine Metal Due */}
                     <td className="p-3.5 text-right font-mono whitespace-nowrap">
                       {(v.opening_balance_gold_fine_gm || 0) > 0 && (
-                        <div className="text-amber-950 font-black text-xs">
+                        <div className="text-amber-950 font-bold text-xs">
                           Au: {formatWeight(v.opening_balance_gold_fine_gm!)}
                         </div>
                       )}
@@ -670,7 +670,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
 
                     {/* Status */}
                     <td className="p-3.5 text-center whitespace-nowrap">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold shadow-2xs ${
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold shadow-2xs ${
                         v.status === 'Active'
                           ? 'bg-emerald-100 text-emerald-950 border border-emerald-400'
                           : 'bg-slate-200 text-slate-900 border border-slate-400'
@@ -686,7 +686,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                         {onNavigateToPurchase && (
                           <button
                             onClick={() => onNavigateToPurchase(v)}
-                            className="px-2 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-[11px] shadow-sm flex items-center space-x-1 cursor-pointer"
+                            className="px-2 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] shadow-sm flex items-center space-x-1 cursor-pointer"
                             title={`Create Purchase Bill for ${v.vendor_name} (F5)`}
                           >
                             <ShoppingBag className="w-3.5 h-3.5" />

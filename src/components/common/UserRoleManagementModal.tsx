@@ -279,11 +279,11 @@ export const UserRoleManagementModal: React.FC<UserRoleManagementModalProps> = (
             </div>
             <div>
               <div className="flex items-center space-x-2.5">
-                <h2 className="text-lg font-black tracking-tight">
+                <h2 className="text-lg font-bold tracking-normal">
                   Employee Role & Access Management (RBAC)
                 </h2>
                 <span
-                  className={`text-[10px] font-black px-2 py-0.5 rounded-full border uppercase tracking-wider ${
+                  className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border uppercase tracking-wider ${
                     isDark
                       ? 'bg-amber-500/20 text-amber-300 border-amber-400/30'
                       : 'bg-amber-100 text-amber-950 border-amber-300'
@@ -343,7 +343,7 @@ export const UserRoleManagementModal: React.FC<UserRoleManagementModalProps> = (
         >
           <ShieldCheck className="w-4 h-4 text-amber-500 shrink-0" />
           <div className="leading-tight">
-            <span className="font-extrabold">Owner Role Protection Active:</span> The showroom Owner role (
+            <span className="font-bold">Owner Role Protection Active:</span> The showroom Owner role (
             <span className="font-mono font-bold">OWNER-01 / Sagar Wadkar</span>) is permanently locked and cannot be demoted or changed. All other staff roles can be modified below.
           </div>
         </div>
@@ -522,7 +522,7 @@ export const UserRoleManagementModal: React.FC<UserRoleManagementModalProps> = (
                   {/* User Profile Column */}
                   <div className="flex items-start space-x-3.5 min-w-0">
                     <div
-                      className={`w-11 h-11 rounded-2xl flex items-center justify-center font-black text-sm shrink-0 border shadow-xs ${
+                      className={`w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-sm shrink-0 border shadow-xs ${
                         isUserOwner
                           ? 'bg-gradient-to-br from-amber-400 to-yellow-600 text-slate-950 border-amber-300'
                           : user.role === 'Manager'
@@ -539,12 +539,12 @@ export const UserRoleManagementModal: React.FC<UserRoleManagementModalProps> = (
 
                     <div className="min-w-0">
                       <div className="flex items-center space-x-2 flex-wrap">
-                        <h4 className="font-black text-sm">{user.name}</h4>
+                        <h4 className="font-bold text-sm">{user.name}</h4>
                         <span className="font-mono text-[11px] px-2 py-0.5 rounded-md bg-white/10 font-bold border border-white/15">
                           {user.code}
                         </span>
                         {isUserOwner && (
-                          <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 flex items-center space-x-1 shadow-2xs">
+                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 flex items-center space-x-1 shadow-2xs">
                             <ShieldCheck className="w-3 h-3" />
                             <span>Owner (Primary)</span>
                           </span>
@@ -577,7 +577,7 @@ export const UserRoleManagementModal: React.FC<UserRoleManagementModalProps> = (
                     <div className="text-right">
                       {isUserOwner ? (
                         <div
-                          className={`px-3 py-1.5 rounded-xl border text-xs font-black flex items-center space-x-1.5 cursor-not-allowed ${
+                          className={`px-3 py-1.5 rounded-xl border text-xs font-semibold flex items-center space-x-1.5 cursor-not-allowed ${
                             isDark
                               ? 'bg-amber-500/15 border-amber-400/40 text-amber-300'
                               : 'bg-amber-100 border-amber-300 text-amber-950'
@@ -593,7 +593,7 @@ export const UserRoleManagementModal: React.FC<UserRoleManagementModalProps> = (
                           <select
                             value={user.role}
                             onChange={(e) => handleRoleSelect(user, e.target.value as UserRole)}
-                            className={`px-3 py-1.5 rounded-xl border text-xs font-extrabold cursor-pointer transition-all ${
+                            className={`px-3 py-1.5 rounded-xl border text-xs font-bold cursor-pointer transition-all ${
                               user.role === 'Manager'
                                 ? isDark ? 'bg-blue-600/20 border-blue-400 text-blue-300' : 'bg-blue-100 border-blue-300 text-blue-950'
                                 : user.role === 'Cashier'

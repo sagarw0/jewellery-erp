@@ -114,8 +114,8 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base font-black tracking-tight">Book Display Register & Debtors</h1>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-400/30">
+              <h1 className="text-base font-bold tracking-normal">Book Display Register & Debtors</h1>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-400/30">
                 9 Ledger Books
               </span>
             </div>
@@ -128,7 +128,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
         <div className="flex items-center space-x-2 flex-wrap">
           <button
             onClick={() => setShowColumnSettings(true)}
-            className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold border transition-all cursor-pointer ${
+            className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-xl text-xs font-mono font-semibold border transition-all cursor-pointer ${
               isDark
                 ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
                 : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
@@ -140,7 +140,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
 
           <button
             onClick={handleExportCSV}
-            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               isDark
                 ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
                 : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
@@ -152,7 +152,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
 
           <button
             onClick={() => window.print()}
-            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               isDark
                 ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
                 : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
@@ -164,7 +164,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
 
           <button
             onClick={() => setShowHelp(true)}
-            className="p-2 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-bold border border-amber-400/40 hover:bg-amber-500/20 cursor-pointer"
+            className="p-2 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-semibold border border-amber-400/40 hover:bg-amber-500/20 cursor-pointer"
           >
             <HelpCircle className="w-4 h-4" />
           </button>
@@ -189,11 +189,11 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
             <button
               key={type}
               onClick={() => setBookType(type)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 bookType === type
                   ? isDark
-                    ? 'bg-amber-400 text-slate-950 font-black shadow-xs'
-                    : 'bg-blue-600 text-white font-black shadow-xs'
+                    ? 'bg-amber-400 text-slate-950 font-bold shadow-xs'
+                    : 'bg-blue-600 text-white font-bold shadow-xs'
                   : 'bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10'
               }`}
             >
@@ -264,8 +264,8 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
                 <th className="p-3.5 pl-4 w-12 text-center">#</th>
                 <th className="p-3.5 min-w-[200px]">Customer Name</th>
                 <th className="p-3.5 font-mono">Account Code</th>
-                <th className="p-3.5 text-right font-black">Current Balance (₹)</th>
-                <th className="p-3.5 text-right font-black text-rose-600 dark:text-rose-400">
+                <th className="p-3.5 text-right font-bold">Current Balance (₹)</th>
+                <th className="p-3.5 text-right font-bold text-rose-600 dark:text-rose-400">
                   Pending WT (gm)
                 </th>
                 <th className="p-3.5">Contact Phone</th>
@@ -294,10 +294,10 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
                     <td className="p-3.5 font-bold text-blue-600 dark:text-blue-400">
                       {row.code}
                     </td>
-                    <td className="p-3.5 text-right font-black text-slate-900 dark:text-white">
+                    <td className="p-3.5 text-right font-bold text-slate-900 dark:text-white">
                       {formatCurrency(row.balance)}
                     </td>
-                    <td className="p-3.5 text-right font-black text-rose-600 dark:text-rose-400">
+                    <td className="p-3.5 text-right font-bold text-rose-600 dark:text-rose-400">
                       {formatWeight(row.pending_wt)}
                     </td>
                     <td className="p-3.5 font-sans text-slate-600 dark:text-slate-300">
@@ -306,7 +306,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
                     <td className="p-3.5 text-right pr-4">
                       <button
                         onClick={() => handleSendWhatsAppReminder(row)}
-                        className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-bold text-xs shadow-xs inline-flex items-center space-x-1.5 transition-all cursor-pointer"
+                        className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-semibold text-xs shadow-xs inline-flex items-center space-x-1.5 transition-all cursor-pointer"
                         title="Send balance statement via WhatsApp"
                       >
                         <Send className="w-3 h-3" />
@@ -320,7 +320,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
             {/* Totals */}
             <tfoot>
               <tr
-                className={`border-t font-mono font-black text-xs ${
+                className={`border-t font-mono font-bold text-xs ${
                   isDark
                     ? 'bg-[#070b14]/95 text-white border-white/20'
                     : 'bg-slate-100 text-slate-950 border-slate-300'

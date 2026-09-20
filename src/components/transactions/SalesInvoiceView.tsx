@@ -293,7 +293,7 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
             type="submit"
             className={`px-3 py-1.5 font-bold rounded-lg cursor-pointer transition-all ${
               isDark
-                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-extrabold hover:from-amber-500 hover:to-yellow-600'
+                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-bold hover:from-amber-500 hover:to-yellow-600'
                 : 'bg-blue-600 hover:bg-blue-700 text-white'
             }`}
           >

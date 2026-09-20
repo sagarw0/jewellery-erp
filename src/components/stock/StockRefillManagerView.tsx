@@ -22,7 +22,8 @@ import {
   Layers,
   ArrowUpDown,
   Copy,
-  ChevronDown
+  ChevronDown,
+  Trash2
 } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { StockRefillItem, AuthUser, Vendor, Karagir } from '../../types/erp';
@@ -32,6 +33,7 @@ interface StockRefillManagerViewProps {
   refillItems: StockRefillItem[];
   onUpdateRefillItem: (item: StockRefillItem) => void;
   onAddRefillItem?: (item: StockRefillItem) => void;
+  onDeleteRefillItem?: (id: string) => void;
   onOpenAlertModal?: () => void;
   currentUser?: AuthUser | null;
   vendors?: Vendor[];
@@ -44,6 +46,7 @@ export const StockRefillManagerView: React.FC<StockRefillManagerViewProps> = ({
   refillItems,
   onUpdateRefillItem,
   onAddRefillItem,
+  onDeleteRefillItem,
   onOpenAlertModal,
   currentUser,
   vendors = [],
@@ -52,6 +55,14 @@ export const StockRefillManagerView: React.FC<StockRefillManagerViewProps> = ({
   gold22kRate = 7250,
 }) => {
   const { isDark, computedTokens } = useTheme();
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Are you sure you want to remove this stock refill target?')) {
+      if (onDeleteRefillItem) {
+        onDeleteRefillItem(id);
+      }
+    }
+  };
 
   // Filters & Search
   const [searchTerm, setSearchTerm] = useState('');
@@ -331,10 +342,10 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base font-black tracking-tight text-slate-900 dark:text-white">
+              <h1 className="text-base font-bold tracking-normal text-slate-900 dark:text-white">
                 Stock Refill & Desired Targets Management Hub
               </h1>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-400/30">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-400/30">
                 Formula Enabled
               </span>
             </div>
@@ -348,7 +359,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
           {onOpenAlertModal && (
             <button
               onClick={onOpenAlertModal}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-400/40 text-xs font-bold transition-all cursor-pointer"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-400/40 text-xs font-semibold transition-all cursor-pointer"
               title="Preview the Morning First-Login Popup Alert"
             >
               <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
@@ -358,7 +369,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 text-xs font-black shadow-xs transition-all cursor-pointer"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 text-xs font-bold shadow-xs transition-all cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Add Target SKU</span>
@@ -366,7 +377,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
           <button
             onClick={handleExportCSV}
-            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               isDark
                 ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
                 : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
@@ -378,7 +389,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
           <button
             onClick={() => window.print()}
-            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               isDark
                 ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
                 : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
@@ -403,7 +414,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
             <Calculator className="w-4 h-4" />
           </div>
           <div>
-            <span className="text-xs font-black uppercase tracking-wider text-amber-800 dark:text-amber-300 block">
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 block">
               Core Inventory Math:
             </span>
             <span className="text-[11px] text-slate-500 dark:text-slate-400">
@@ -413,19 +424,19 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
         </div>
 
         {/* Formula Representation */}
-        <div className="flex items-center flex-wrap gap-2 text-xs font-mono font-black justify-center">
+        <div className="flex items-center flex-wrap gap-2 text-xs font-mono font-bold justify-center">
           <div className="px-3 py-1.5 rounded-xl border bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-400/30">
             Desired Stock (Target)
           </div>
-          <span className="text-base font-black opacity-60">−</span>
+          <span className="text-base font-bold opacity-60">−</span>
           <div className="px-3 py-1.5 rounded-xl border bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-400/30">
             Sold Stock
           </div>
-          <span className="text-base font-black opacity-60">=</span>
+          <span className="text-base font-bold opacity-60">=</span>
           <div className="px-3 py-1.5 rounded-xl border bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-400/30">
             Current Stock (Available)
           </div>
-          <span className="text-base font-black opacity-60">➔</span>
+          <span className="text-base font-bold opacity-60">➔</span>
           <div className="px-3 py-1.5 rounded-xl border bg-amber-500/20 text-amber-900 dark:text-amber-300 border-amber-400/50">
             Shortfall to Refill
           </div>
@@ -440,17 +451,17 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Monitored Inventory SKUs
             </span>
             <div className="p-1.5 rounded-xl bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
               <Package className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black mt-2 font-mono text-slate-950 dark:text-white">
-            {totalSKUs} <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Items</span>
+          <div className="text-2xl font-bold mt-2 font-mono text-slate-950 dark:text-white">
+            {totalSKUs} <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">Items</span>
           </div>
-          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mt-1">
+          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 block mt-1">
             Active showroom target lines
           </span>
         </div>
@@ -461,20 +472,20 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Items in Deficit
             </span>
             <div className="p-1.5 rounded-xl bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300">
               <AlertTriangle className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black mt-2 font-mono text-rose-700 dark:text-rose-400">
+          <div className="text-2xl font-bold mt-2 font-mono text-rose-700 dark:text-rose-400">
             {totalDeficitCount}{' '}
-            <span className="text-xs font-bold text-rose-600 dark:text-rose-300">
+            <span className="text-xs font-semibold text-rose-600 dark:text-rose-300">
               ({Math.round((totalDeficitCount / (totalSKUs || 1)) * 100)}%)
             </span>
           </div>
-          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mt-1">
+          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 block mt-1">
             Require maker PO dispatch
           </span>
         </div>
@@ -485,17 +496,17 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Total Deficit Quantity
             </span>
             <div className="p-1.5 rounded-xl bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
               <Layers className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black mt-2 font-mono text-amber-900 dark:text-amber-300">
-            +{totalDeficitPcs} <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Pcs</span>
+          <div className="text-2xl font-bold mt-2 font-mono text-amber-900 dark:text-amber-300">
+            +{totalDeficitPcs} <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">Pcs</span>
           </div>
-          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mt-1">
+          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 block mt-1">
             Shortfall across all categories
           </span>
         </div>
@@ -506,18 +517,18 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Estimated Refill Weight
             </span>
             <div className="p-1.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
               <Sparkles className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black mt-2 font-mono text-emerald-800 dark:text-emerald-400">
+          <div className="text-2xl font-bold mt-2 font-mono text-emerald-800 dark:text-emerald-400">
             ~{totalDeficitEstWt.toFixed(2)}{' '}
-            <span className="text-xs font-bold text-slate-600 dark:text-slate-400">gm</span>
+            <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">gm</span>
           </div>
-          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mt-1">
+          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 block mt-1">
             Approx. bullion casting weight
           </span>
         </div>
@@ -663,10 +674,10 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                       }`}
                     >
                       {/* Item Name */}
-                      <td className="p-3.5 pl-4 font-black text-slate-950 dark:text-white">
+                      <td className="p-3.5 pl-4 font-bold text-slate-950 dark:text-white">
                         <div className="flex items-center space-x-2">
                           <div>
-                            <span className="block text-xs font-black text-slate-950 dark:text-white">{item.item_name}</span>
+                            <span className="block text-xs font-bold text-slate-950 dark:text-white">{item.item_name}</span>
                             <span className="text-[10.5px] text-slate-600 dark:text-slate-300 font-semibold">
                               Unit Wt: ~{item.gross_wt_per_unit || 15}g
                             </span>
@@ -676,7 +687,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
                       {/* Category & Purity */}
                       <td className="p-3.5 text-center">
-                        <span className="px-2.5 py-0.5 rounded-full font-mono text-[10.5px] font-black bg-slate-200 dark:bg-white/15 text-slate-900 dark:text-white border border-slate-300 dark:border-white/20">
+                        <span className="px-2.5 py-0.5 rounded-full font-mono text-[10.5px] font-semibold bg-slate-200 dark:bg-white/15 text-slate-900 dark:text-white border border-slate-300 dark:border-white/20">
                           {item.category} • {item.purity}%
                         </span>
                       </td>
@@ -716,7 +727,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                             >
                               -
                             </button>
-                            <span className="font-mono font-black text-xs text-blue-700 dark:text-blue-300 min-w-[32px] text-center">
+                            <span className="font-mono font-bold text-xs text-blue-700 dark:text-blue-300 min-w-[32px] text-center">
                               {item.desired_stock} pcs
                             </span>
                             <button
@@ -738,23 +749,23 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                       </td>
 
                       {/* Sold Stock */}
-                      <td className="p-3.5 text-center font-mono font-black text-rose-700 dark:text-rose-300">
+                      <td className="p-3.5 text-center font-mono font-bold text-rose-700 dark:text-rose-300">
                         {item.sold_stock} pcs
                       </td>
 
                       {/* Current Stock */}
-                      <td className="p-3.5 text-center font-mono font-black text-emerald-700 dark:text-emerald-300">
+                      <td className="p-3.5 text-center font-mono font-bold text-emerald-700 dark:text-emerald-300">
                         {item.current_stock} pcs
                       </td>
 
                       {/* Shortfall Deficit */}
                       <td className="p-3.5 text-center">
                         {hasDeficit ? (
-                          <span className="px-2.5 py-1 rounded-xl font-mono font-black text-xs bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-400/40">
+                          <span className="px-2.5 py-1 rounded-xl font-mono font-bold text-xs bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-400/40">
                             +{deficit} pcs (~{(deficit * (item.gross_wt_per_unit || 15)).toFixed(1)}g)
                           </span>
                         ) : (
-                          <span className="text-emerald-700 dark:text-emerald-400 font-black text-xs">
+                          <span className="text-emerald-700 dark:text-emerald-400 font-bold text-xs">
                             ✓ Adequate (0)
                           </span>
                         )}
@@ -767,10 +778,10 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                             <Building2 className="w-3 h-3" />
                           </div>
                           <div className="min-w-0">
-                            <span className="font-black text-slate-950 dark:text-white block truncate max-w-[170px] text-xs">
+                            <span className="font-bold text-slate-950 dark:text-white block truncate max-w-[170px] text-xs">
                               {item.vendor_name}
                             </span>
-                            <span className="text-[10.5px] text-slate-700 dark:text-slate-300 font-mono font-bold block">
+                            <span className="text-[10.5px] text-slate-700 dark:text-slate-300 font-mono font-semibold block">
                               {item.vendor_phone}
                             </span>
                           </div>
@@ -780,7 +791,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                       {/* Status */}
                       <td className="p-3.5 text-center">
                         <span
-                          className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
                             item.status === 'critical'
                               ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-400/30'
                               : item.status === 'low'
@@ -798,20 +809,30 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
                       {/* Action */}
                       <td className="p-3.5 text-right pr-4">
-                        {hasDeficit ? (
+                        <div className="flex items-center justify-end space-x-1.5">
+                          {hasDeficit && (
+                            <button
+                              onClick={() => {
+                                setPreviewItem(item);
+                                setCustomOrderQty(deficit);
+                                setCustomNotes('');
+                              }}
+                              className="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-semibold text-xs shadow-2xs flex items-center space-x-1 cursor-pointer transition-all"
+                              title="Order via WhatsApp"
+                            >
+                              <Send className="w-3 h-3" />
+                              <span className="hidden sm:inline">WhatsApp PO</span>
+                            </button>
+                          )}
+
                           <button
-                            onClick={() => handleOpenWhatsAppPreview(item)}
-                            className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-bold text-xs shadow-xs inline-flex items-center space-x-1.5 transition-all cursor-pointer"
-                            title="Generate and dispatch WhatsApp PO"
+                            onClick={() => handleDelete(item.id)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                            title="Remove target"
                           >
-                            <Send className="w-3 h-3" />
-                            <span>Refill WhatsApp (+{deficit})</span>
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
-                        ) : (
-                          <span className="text-[11px] text-slate-400 font-medium">
-                            Target Met
-                          </span>
-                        )}
+                        </div>
                       </td>
                     </tr>
                   );
@@ -822,7 +843,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
         </div>
       </div>
 
-      {/* WhatsApp Message Preview & Dispatch Modal */}
+      {/* WhatsApp Modal Dialog */}
       {previewItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
           <div
@@ -836,7 +857,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                   <Send className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-black">Dispatch WhatsApp Refill Order</h3>
+                  <h3 className="text-sm font-bold">Dispatch WhatsApp Refill Order</h3>
                   <p className="text-xs text-slate-400">
                     Vendor: {previewItem.vendor_name} ({previewItem.vendor_phone})
                   </p>
@@ -853,7 +874,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
             {/* Editable Order Parameters */}
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="block text-[11px] font-bold text-slate-400 mb-1">
+                <label className="block text-[11px] font-semibold text-slate-400 mb-1">
                   Refill Quantity (Pcs)
                 </label>
                 <input
@@ -861,24 +882,24 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                   min="1"
                   value={customOrderQty}
                   onChange={(e) => setCustomOrderQty(Number(e.target.value))}
-                  className={`w-full px-3 py-1.5 rounded-xl border font-bold ${
+                  className={`w-full px-3 py-1.5 rounded-xl border font-semibold ${
                     isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
                   }`}
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-400 mb-1">
+                <label className="block text-[11px] font-semibold text-slate-400 mb-1">
                   Est. Casting Weight (gm)
                 </label>
-                <div className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 font-mono font-bold">
+                <div className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 font-mono font-semibold">
                   ~{(customOrderQty * (previewItem.gross_wt_per_unit || 15)).toFixed(2)} gm
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-[11px] font-bold text-slate-400 mb-1">
+              <label className="block text-[11px] font-semibold text-slate-400 mb-1">
                 Custom Remarks / Delivery Instructions
               </label>
               <textarea
@@ -894,7 +915,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
             {/* WhatsApp Message Preview Box */}
             <div>
-              <label className="block text-[11px] font-bold text-slate-400 mb-1">
+              <label className="block text-[11px] font-semibold text-slate-400 mb-1">
                 Live WhatsApp Message Preview
               </label>
               <div className="p-3 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 text-[11px] font-mono whitespace-pre-line text-emerald-300 max-h-44 overflow-y-auto">
@@ -912,7 +933,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                   setCopiedId(previewItem.id);
                   setTimeout(() => setCopiedId(null), 2000);
                 }}
-                className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
                   isDark ? 'border-white/15 hover:bg-white/10' : 'border-slate-300 hover:bg-slate-100'
                 }`}
               >
@@ -921,7 +942,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
               <button
                 onClick={handleSendCustomWhatsApp}
-                className="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-bold text-xs shadow-md flex items-center space-x-1.5 cursor-pointer"
+                className="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-semibold text-xs shadow-md flex items-center space-x-1.5 cursor-pointer"
               >
                 <Send className="w-3.5 h-3.5" />
                 <span>Open in WhatsApp</span>
@@ -944,7 +965,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                 <div className="p-2 rounded-xl bg-amber-500 text-slate-950">
                   <Plus className="w-4 h-4" />
                 </div>
-                <h3 className="text-sm font-black">Add New Stock Refill Target SKU</h3>
+                <h3 className="text-sm font-bold">Add New Stock Refill Target SKU</h3>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
@@ -956,7 +977,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
             <form onSubmit={handleCreateNewItem} className="space-y-3 text-xs">
               <div>
-                <label className="block text-[11px] font-bold text-slate-400 mb-1">
+                <label className="block text-[11px] font-semibold text-slate-400 mb-1">
                   Item Description / Name *
                 </label>
                 <input
@@ -973,7 +994,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-400 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
                     Category
                   </label>
                   <select
@@ -991,7 +1012,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-400 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
                     Purity (%)
                   </label>
                   <input
@@ -1008,7 +1029,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-[11px] font-bold text-blue-400 mb-1">
+                  <label className="block text-[11px] font-semibold text-blue-400 mb-1">
                     Desired Target (Pcs)
                   </label>
                   <input
@@ -1016,14 +1037,14 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                     min="1"
                     value={newItemDesired}
                     onChange={(e) => setNewItemDesired(Number(e.target.value))}
-                    className={`w-full px-3 py-2 rounded-xl border font-bold ${
+                    className={`w-full px-3 py-2 rounded-xl border font-semibold ${
                       isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
                     }`}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-rose-400 mb-1">
+                  <label className="block text-[11px] font-semibold text-rose-400 mb-1">
                     Sold (Pcs)
                   </label>
                   <input
@@ -1031,14 +1052,14 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                     min="0"
                     value={newItemSold}
                     onChange={(e) => setNewItemSold(Number(e.target.value))}
-                    className={`w-full px-3 py-2 rounded-xl border font-bold ${
+                    className={`w-full px-3 py-2 rounded-xl border font-semibold ${
                       isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
                     }`}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-emerald-400 mb-1">
+                  <label className="block text-[11px] font-semibold text-emerald-400 mb-1">
                     Current Floor (Pcs)
                   </label>
                   <input
@@ -1046,7 +1067,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                     min="0"
                     value={newItemCurrent}
                     onChange={(e) => setNewItemCurrent(Number(e.target.value))}
-                    className={`w-full px-3 py-2 rounded-xl border font-bold ${
+                    className={`w-full px-3 py-2 rounded-xl border font-semibold ${
                       isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
                     }`}
                   />
@@ -1055,7 +1076,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-400 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
                     Assigned Maker / Supplier
                   </label>
                   <input
@@ -1070,7 +1091,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-400 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
                     WhatsApp Phone Number
                   </label>
                   <input
@@ -1089,7 +1110,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className={`px-4 py-2 rounded-xl font-bold ${
+                  className={`px-4 py-2 rounded-xl font-semibold ${
                     isDark ? 'border border-white/15' : 'border border-slate-300'
                   }`}
                 >
@@ -1097,7 +1118,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black"
+                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold"
                 >
                   Save Target SKU
                 </button>

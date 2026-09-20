@@ -63,7 +63,7 @@ export const AiDataGrid: React.FC<AiDataGridProps> = ({ tableData, onNavigate })
       {/* Table Header Controls */}
       <div className="p-3 bg-slate-50/90 border-b border-slate-200/80 flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h4 className="text-xs font-black text-slate-900 tracking-tight">
+          <h4 className="text-xs font-bold text-slate-900 tracking-normal">
             {tableData.title}
           </h4>
           {tableData.subtitle && (
@@ -151,7 +151,7 @@ export const AiDataGrid: React.FC<AiDataGridProps> = ({ tableData, onNavigate })
                           {val}
                         </span>
                       ) : (
-                        <span className={col.format === 'currency' ? 'font-black text-slate-900' : ''}>
+                        <span className={col.format === 'currency' ? 'font-bold text-slate-900' : ''}>
                           {val}
                         </span>
                       )}
@@ -170,7 +170,7 @@ export const AiDataGrid: React.FC<AiDataGridProps> = ({ tableData, onNavigate })
                   <td
                     key={col.key}
                     className={`p-2.5 text-[11.5px] ${
-                      col.align === 'right' ? 'text-right font-black text-slate-950 font-mono' : 'text-left font-bold text-slate-800'
+                      col.align === 'right' ? 'text-right font-bold text-slate-950 font-mono' : 'text-left font-bold text-slate-800'
                     }`}
                   >
                     {tableData.footerSummary![col.key] || (cIdx === 0 ? 'Summary Total:' : '')}

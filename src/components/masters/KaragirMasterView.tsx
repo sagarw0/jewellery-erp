@@ -354,7 +354,7 @@ export const KaragirMasterView: React.FC<KaragirMasterViewProps> = ({
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-xl font-extrabold text-slate-950 tracking-tight">
+              <h1 className="text-xl font-bold text-slate-950 tracking-tight">
                 Karagir & Artisan Master
               </h1>
               <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400 shadow-2xs">
@@ -396,7 +396,7 @@ export const KaragirMasterView: React.FC<KaragirMasterViewProps> = ({
             <span className={`text-xs font-bold block uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
               Active Karagirs
             </span>
-            <div className={`text-2xl font-black mt-1 ${isDark ? 'text-white' : 'text-slate-950'}`}>
+            <div className={`text-2xl font-bold mt-1 ${isDark ? 'text-white' : 'text-slate-950'}`}>
               {kpis.totalActive}
               <span className={`text-xs font-semibold ml-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>/ {kpis.totalCount} total</span>
             </div>
@@ -420,7 +420,7 @@ export const KaragirMasterView: React.FC<KaragirMasterViewProps> = ({
             <span className={`text-xs font-bold block uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-amber-900'}`}>
               Fine Gold in Workshop
             </span>
-            <div className={`text-2xl font-black font-mono mt-1 ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
+            <div className={`text-2xl font-bold font-mono tracking-normal mt-1 ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
               {formatWeight(kpis.totalGoldDue)}g
             </div>
             <span className={`text-[11px] font-semibold ${isDark ? 'text-slate-400' : 'text-amber-800'}`}>
@@ -442,7 +442,7 @@ export const KaragirMasterView: React.FC<KaragirMasterViewProps> = ({
             <span className={`text-xs font-bold block uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
               Labor / Making Dues
             </span>
-            <div className={`text-2xl font-black font-mono mt-1 ${isDark ? 'text-emerald-300' : 'text-slate-950'}`}>
+            <div className={`text-2xl font-bold font-mono tracking-normal mt-1 ${isDark ? 'text-emerald-300' : 'text-slate-950'}`}>
               {formatCurrency(kpis.totalCashPayable)}
             </div>
             <span className={`text-[11px] font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-800'}`}>
@@ -464,7 +464,7 @@ export const KaragirMasterView: React.FC<KaragirMasterViewProps> = ({
             <span className={`text-xs font-bold block uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-indigo-900'}`}>
               In-Progress Job Cards
             </span>
-            <div className={`text-2xl font-black font-mono mt-1 ${isDark ? 'text-indigo-300' : 'text-indigo-950'}`}>
+            <div className={`text-2xl font-bold font-mono tracking-normal mt-1 ${isDark ? 'text-indigo-300' : 'text-indigo-950'}`}>
               {kpis.totalActiveJobs} Jobs
             </div>
             <span className={`text-[11px] font-semibold ${isDark ? 'text-slate-400' : 'text-indigo-800'}`}>
@@ -568,14 +568,14 @@ export const KaragirMasterView: React.FC<KaragirMasterViewProps> = ({
                   >
                     {/* Karagir Code */}
                     <td className="p-3.5 font-mono font-bold whitespace-nowrap">
-                      <span className="px-2.5 py-1 rounded-md bg-amber-100 text-amber-950 font-black border border-amber-300 font-mono text-xs shadow-2xs inline-block">
+                      <span className="px-2.5 py-1 rounded-md bg-amber-100 text-amber-950 font-bold border border-amber-300 font-mono text-xs shadow-2xs inline-block">
                         {k.karagir_code}
                       </span>
                     </td>
 
                     {/* Name & Workshop */}
                     <td className="p-3.5">
-                      <div className="font-extrabold text-slate-950 text-xs tracking-tight">
+                      <div className="font-bold text-slate-950 text-xs">
                         {k.karagir_name}
                       </div>
                       {k.workshop_name && (
@@ -599,7 +599,7 @@ export const KaragirMasterView: React.FC<KaragirMasterViewProps> = ({
 
                     {/* Making Rate & Wastage */}
                     <td className="p-3.5 font-mono text-xs">
-                      <div className="font-extrabold text-slate-950">
+                      <div className="font-bold text-slate-950">
                         ₹{k.default_making_rate_per_gm}/g
                       </div>
                       <div className="text-[11px] font-bold text-rose-800 mt-0.5">
@@ -622,7 +622,7 @@ export const KaragirMasterView: React.FC<KaragirMasterViewProps> = ({
                     {/* Fine Gold Bal */}
                     <td className="p-3.5 text-right font-mono whitespace-nowrap">
                       {(k.opening_balance_gold_fine_gm || 0) > 0 ? (
-                        <div className="text-amber-950 font-extrabold text-xs">
+                        <div className="text-amber-950 font-bold text-xs">
                           Au: {formatWeight(k.opening_balance_gold_fine_gm)}g (24K)
                         </div>
                       ) : (
@@ -637,7 +637,7 @@ export const KaragirMasterView: React.FC<KaragirMasterViewProps> = ({
 
                     {/* Labor Ledger Balance */}
                     <td className="p-3.5 text-right font-mono whitespace-nowrap">
-                      <div className="text-amber-950 font-extrabold text-xs">
+                      <div className="text-amber-950 font-bold text-xs">
                         {formatCurrency(k.opening_balance_cash)}
                       </div>
                       <div className="text-[10px] font-bold text-slate-700">

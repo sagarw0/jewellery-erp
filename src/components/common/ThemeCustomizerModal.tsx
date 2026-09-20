@@ -128,11 +128,11 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h3 className="font-extrabold text-base tracking-tight">
+                <h3 className="font-bold text-base tracking-tight">
                   Global Theme & UI Customizer
                 </h3>
                 <span
-                  className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border shadow-2xs"
+                  className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider border shadow-2xs"
                   style={{
                     backgroundColor: computedTokens.appAccentBg,
                     color: computedTokens.appAccent,
@@ -337,7 +337,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                       </div>
 
                       <div>
-                        <div className={`text-xs font-black truncate ${p.isDark ? 'text-white' : 'text-slate-900'}`}>
+                        <div className={`text-xs font-bold truncate ${p.isDark ? 'text-white' : 'text-slate-900'}`}>
                           {p.name}
                         </div>
                         <div className={`text-[10px] font-medium truncate opacity-70 ${p.isDark ? 'text-slate-300' : 'text-slate-600'}`}>
@@ -365,7 +365,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Sparkle className="w-4 h-4 text-sky-400" />
-                    <span className="font-extrabold text-sm">Frosted Glass Blur Intensity</span>
+                    <span className="font-bold text-sm">Frosted Glass Blur Intensity</span>
                   </div>
                   <span className="text-xs font-mono font-bold uppercase opacity-80">
                     Blur: {customConfig.glassBlur || 'standard'}
@@ -412,7 +412,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Box className="w-4 h-4 text-emerald-400" />
-                    <span className="font-extrabold text-sm">Card & Container Corner Radius</span>
+                    <span className="font-bold text-sm">Card & Container Corner Radius</span>
                   </div>
                   <span className="text-xs font-mono font-bold uppercase opacity-80">
                     Radius: {customConfig.cornerRadius || 'squircle'}
@@ -458,7 +458,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Zap className="w-4 h-4 text-amber-400" />
-                    <span className="font-extrabold text-sm">Glow & Elevation Shadow Depth</span>
+                    <span className="font-bold text-sm">Glow & Elevation Shadow Depth</span>
                   </div>
                   <span className="text-xs font-mono font-bold uppercase opacity-80">
                     Depth: {customConfig.shadowDepth || 'deep'}
@@ -509,13 +509,13 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Sun className="w-4 h-4 text-amber-500" />
-                    <span className="font-extrabold text-sm">
+                    <span className="font-bold text-sm">
                       Brightness & Contrast Fine-Tuning
                     </span>
                   </div>
                   <div className="flex items-center space-x-1.5">
                     <span
-                      className="px-2.5 py-1 rounded-full text-xs font-mono font-black border"
+                      className="px-2.5 py-1 rounded-full text-xs font-mono font-semibold border"
                       style={{
                         backgroundColor: computedTokens.appAccentBg,
                         color: computedTokens.appAccent,
@@ -560,9 +560,9 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                     <button
                       key={step}
                       onClick={() => updateBrightness(step)}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
+                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all cursor-pointer ${
                         customConfig.brightness === step
-                          ? 'shadow-xs font-black'
+                          ? 'shadow-xs font-bold'
                           : 'opacity-70 hover:opacity-100 hover:bg-white/10'
                       }`}
                       style={{
@@ -588,7 +588,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Layers className="w-4 h-4 text-indigo-500" />
-                    <span className="font-extrabold text-sm">UI Density & Form Spacing</span>
+                    <span className="font-bold text-sm">UI Density & Form Spacing</span>
                   </div>
                   <span className="text-xs font-mono font-bold uppercase opacity-80">
                     Mode: {density}
@@ -644,7 +644,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Palette className="w-4 h-4 text-blue-500" />
-                    <span className="font-extrabold text-sm">Background Screen Tone</span>
+                    <span className="font-bold text-sm">Background Screen Tone</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <input
@@ -697,7 +697,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Sparkles className="w-4 h-4 text-amber-500" />
-                    <span className="font-extrabold text-sm">Accent & Brand Color</span>
+                    <span className="font-bold text-sm">Accent & Brand Color</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <input
@@ -797,7 +797,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
                     <TrendingUp className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs font-black">22K Gold Bullion Vault</div>
+                    <div className="text-xs font-bold">22K Gold Bullion Vault</div>
                     <div className="text-[10px] font-semibold opacity-70">
                       ₹7,45,200 • 108.450 g Net
                     </div>

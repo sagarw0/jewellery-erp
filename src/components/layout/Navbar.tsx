@@ -215,7 +215,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div>
               <div className="flex items-center space-x-1.5">
                 <span
-                  className={`font-black tracking-wider uppercase text-sm font-sans ${
+                  className={`font-bold tracking-wide uppercase text-sm font-sans ${
                     isDark ? 'text-white' : 'text-slate-950'
                   }`}
                 >
@@ -223,7 +223,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </span>
               </div>
               <span
-                className={`text-[10.5px] font-semibold block ${
+                className={`text-[10.5px] font-medium block ${
                   isDark ? 'text-slate-400' : 'text-slate-600'
                 }`}
               >
@@ -257,7 +257,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
               <TrendingUp className="w-3.5 h-3.5 text-amber-600" />
               <span
-                className={`text-[10.5px] font-black uppercase tracking-wider ${
+                className={`text-[10.5px] font-bold uppercase tracking-wide ${
                   isDark ? 'text-amber-300' : 'text-amber-950'
                 }`}
               >
@@ -267,24 +267,24 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <div className="flex items-center space-x-2 font-mono text-[11px]">
               <div className="flex items-center space-x-1">
-                <span className={isDark ? 'text-amber-300' : 'text-amber-900 font-bold'}>
+                <span className={isDark ? 'text-amber-300' : 'text-amber-900 font-semibold'}>
                   24K:
                 </span>
-                <span className="font-black">₹{gold24kRate.toLocaleString('en-IN')}</span>
+                <span className="font-bold">₹{gold24kRate.toLocaleString('en-IN')}</span>
               </div>
               <span className={isDark ? 'text-white/30' : 'text-slate-300'}>•</span>
               <div className="flex items-center space-x-1">
-                <span className={isDark ? 'text-amber-300' : 'text-amber-900 font-bold'}>
+                <span className={isDark ? 'text-amber-300' : 'text-amber-900 font-semibold'}>
                   22K:
                 </span>
-                <span className="font-black">₹{gold22kRate.toLocaleString('en-IN')}</span>
+                <span className="font-bold">₹{gold22kRate.toLocaleString('en-IN')}</span>
               </div>
               <span className={isDark ? 'text-white/30' : 'text-slate-300'}>•</span>
               <div className="flex items-center space-x-1">
-                <span className={isDark ? 'text-slate-300' : 'text-slate-700 font-bold'}>
+                <span className={isDark ? 'text-slate-300' : 'text-slate-700 font-semibold'}>
                   Sil:
                 </span>
-                <span className="font-black">₹{silverRate.toLocaleString('en-IN')}/g</span>
+                <span className="font-bold">₹{silverRate.toLocaleString('en-IN')}/g</span>
               </div>
             </div>
           </div>
@@ -349,7 +349,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     }`}
                   >
                     <span>{activeRole}</span>
-                    {activeRole === 'Owner' && <span className="text-[8.5px] ml-0.5 font-black">👑</span>}
+                    {activeRole === 'Owner' && <span className="text-[8.5px] ml-0.5 font-bold">👑</span>}
                     <ChevronDown className="w-2.5 h-2.5 opacity-60 ml-0.5" />
                   </div>
                 </div>
@@ -369,7 +369,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
                         User & Access Control
                       </span>
-                      <span className="text-xs font-black truncate block">
+                      <span className="text-xs font-bold truncate block">
                         {currentUser.name} ({activeRole})
                       </span>
                     </div>
@@ -389,7 +389,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                           setShowRoleDropdown(false);
                           onOpenUserRoleManagement();
                         }}
-                        className="w-full p-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-slate-950 font-black text-xs flex items-center justify-between shadow-xs cursor-pointer transition-all"
+                        className="w-full p-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-slate-950 font-bold text-xs flex items-center justify-between shadow-xs cursor-pointer transition-all"
                       >
                         <div className="flex items-center space-x-2">
                           <ShieldCheck className="w-4 h-4 text-slate-950" />
@@ -504,11 +504,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 key={item.id}
                 onClick={() => onSelectSection(item.id)}
-                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-black whitespace-nowrap transition-all duration-150 cursor-pointer select-none border ${
+                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-150 cursor-pointer select-none border ${
                   isActive
                     ? isDark
-                      ? 'bg-amber-400 text-slate-950 font-black border-amber-300 shadow-sm'
-                      : 'bg-blue-600 text-white font-black border-blue-700 shadow-sm'
+                      ? 'bg-amber-400 text-slate-950 font-bold border-amber-300 shadow-sm'
+                      : 'bg-blue-600 text-white font-bold border-blue-700 shadow-sm'
                     : isDark
                     ? 'text-slate-200 hover:text-white hover:bg-white/15 border-transparent'
                     : 'text-slate-950 hover:text-blue-700 hover:bg-white hover:shadow-2xs border-transparent'
@@ -519,10 +519,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                     isActive ? 'text-inherit' : isDark ? 'text-slate-300' : 'text-slate-800'
                   }`}
                 />
-                <span className="truncate font-black">{item.label}</span>
+                <span className="truncate font-semibold">{item.label}</span>
                 {item.hotkey && (
                   <span
-                    className={`text-[9.5px] px-1.5 py-0.5 rounded font-mono font-black tracking-tight border ${
+                    className={`text-[9.5px] px-1.5 py-0.5 rounded font-mono font-semibold tracking-normal border ${
                       isActive
                         ? isDark
                           ? 'bg-black/25 text-slate-950 border-black/10'

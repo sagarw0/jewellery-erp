@@ -237,7 +237,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
                 </div>
 
                 <div className="my-2.5">
-                  <div className={`text-2xl font-black font-mono tracking-tight ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
+                  <div className={`text-2xl font-bold font-mono tracking-normal ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
                     ₹{rates.gold24k.toLocaleString('en-IN')}
                     <span className={`text-xs font-semibold ml-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ gram</span>
                   </div>
@@ -273,7 +273,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
                 </div>
 
                 <div className="my-2.5">
-                  <div className={`text-2xl font-black font-mono tracking-tight ${isDark ? 'text-yellow-300' : 'text-yellow-950'}`}>
+                  <div className={`text-2xl font-bold font-mono tracking-normal ${isDark ? 'text-yellow-300' : 'text-yellow-950'}`}>
                     ₹{rates.gold22k.toLocaleString('en-IN')}
                     <span className={`text-xs font-semibold ml-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ gram</span>
                   </div>
@@ -309,7 +309,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
                 </div>
 
                 <div className="my-2.5">
-                  <div className={`text-2xl font-black font-mono tracking-tight ${isDark ? 'text-orange-300' : 'text-orange-950'}`}>
+                  <div className={`text-2xl font-bold font-mono tracking-normal ${isDark ? 'text-orange-300' : 'text-orange-950'}`}>
                     ₹{rates.gold18k.toLocaleString('en-IN')}
                     <span className={`text-xs font-semibold ml-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ gram</span>
                   </div>
@@ -345,7 +345,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
                 </div>
 
                 <div className="my-2.5">
-                  <div className={`text-2xl font-black font-mono tracking-tight ${isDark ? 'text-rose-300' : 'text-rose-950'}`}>
+                  <div className={`text-2xl font-bold font-mono tracking-normal ${isDark ? 'text-rose-300' : 'text-rose-950'}`}>
                     ₹{rates.gold14k.toLocaleString('en-IN')}
                     <span className={`text-xs font-semibold ml-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ gram</span>
                   </div>
@@ -381,7 +381,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
                 </div>
 
                 <div className="my-2.5">
-                  <div className={`text-2xl font-black font-mono tracking-tight ${isDark ? 'text-slate-100' : 'text-slate-950'}`}>
+                  <div className={`text-2xl font-bold font-mono tracking-normal ${isDark ? 'text-slate-100' : 'text-slate-950'}`}>
                     ₹{rates.silver999.toFixed(2)}
                     <span className={`text-xs font-semibold ml-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ gram</span>
                   </div>
@@ -417,7 +417,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
                 </div>
 
                 <div className="my-2.5">
-                  <div className={`text-2xl font-black font-mono tracking-tight ${isDark ? 'text-zinc-100' : 'text-slate-950'}`}>
+                  <div className={`text-2xl font-bold font-mono tracking-normal ${isDark ? 'text-zinc-100' : 'text-slate-950'}`}>
                     ₹{rates.silver925.toFixed(2)}
                     <span className={`text-xs font-semibold ml-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ gram</span>
                   </div>

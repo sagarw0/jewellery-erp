@@ -64,7 +64,7 @@ export const GoldSchemeView: React.FC = () => {
           onClick={() => alert('New member enrolled into Swarna Nidhi Scheme.')}
           className={`flex items-center space-x-1 px-4 py-1.5 rounded-lg text-xs font-bold shadow cursor-pointer transition-all ${
             isDark
-              ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-extrabold'
+              ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-bold'
               : 'bg-blue-600 hover:bg-blue-700 text-white'
           }`}
         >

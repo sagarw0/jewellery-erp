@@ -179,6 +179,16 @@ export function App() {
     });
   };
 
+  const handleDeleteRefillItem = (id: string) => {
+    setRefillItems((prev) => {
+      const next = prev.filter((i) => i.id !== id);
+      try {
+        localStorage.setItem('swarna_stock_refill_items', JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
+  };
+
   // Load cloud data from Supabase on startup
   useEffect(() => {
     async function loadCloudData() {
@@ -770,6 +780,7 @@ export function App() {
                 refillItems={refillItems}
                 onUpdateRefillItem={handleUpdateRefillItem}
                 onAddRefillItem={handleAddRefillItem}
+                onDeleteRefillItem={handleDeleteRefillItem}
                 onOpenAlertModal={() => setIsStockRefillAlertOpen(true)}
                 currentUser={currentUser}
                 vendors={vendors}

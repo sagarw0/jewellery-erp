@@ -763,7 +763,7 @@ Ask any full-sentence query or command:
                     <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 mb-2 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-700 dark:text-blue-300 text-[10px] font-mono font-bold">
                       <Zap className="w-3 h-3 text-amber-500" />
                       <span>LLM Tool Executed:</span>
-                      <span className="font-black text-blue-900 dark:text-blue-100">
+                      <span className="font-bold text-blue-900 dark:text-blue-100">
                         {msg.toolCallExecuted.toolName}()
                       </span>
                     </div>

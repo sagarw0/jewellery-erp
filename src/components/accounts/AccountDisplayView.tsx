@@ -66,10 +66,10 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base font-black tracking-tight">
+              <h1 className="text-base font-bold tracking-normal">
                 General Ledger & T-Account Display
               </h1>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-400/30">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-400/30">
                 Double Entry
               </span>
             </div>
@@ -82,11 +82,11 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
         <div className="flex items-center space-x-2 flex-wrap">
           {/* One Column Display Toggle (Spec #18) */}
           <label
-            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold cursor-pointer transition-all ${
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold cursor-pointer transition-all ${
               oneColumnDisplay
                 ? isDark
-                  ? 'bg-amber-400 text-slate-950 font-black border-amber-400'
-                  : 'bg-blue-600 text-white font-black border-blue-600 shadow-xs'
+                  ? 'bg-amber-400 text-slate-950 font-bold border-amber-400'
+                  : 'bg-blue-600 text-white font-bold border-blue-600 shadow-xs'
                 : isDark
                 ? 'bg-white/5 text-slate-300 border-white/10'
                 : 'bg-slate-50 text-slate-700 border-slate-300'
@@ -104,7 +104,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
 
           <button
             onClick={() => setShowWhatsApp(true)}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white text-xs font-bold shadow-xs cursor-pointer"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white text-xs font-semibold shadow-xs cursor-pointer"
           >
             <MessageCircle className="w-3.5 h-3.5" />
             <span>WhatsApp Ledger</span>
@@ -112,7 +112,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
 
           <button
             onClick={() => window.print()}
-            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               isDark
                 ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
                 : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
@@ -124,7 +124,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
 
           <button
             onClick={() => setShowHelp(true)}
-            className="p-2 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-bold border border-amber-400/40 hover:bg-amber-500/20 cursor-pointer"
+            className="p-2 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-semibold border border-amber-400/40 hover:bg-amber-500/20 cursor-pointer"
           >
             <HelpCircle className="w-4 h-4" />
           </button>
@@ -170,7 +170,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
               type="date"
               value={fromDate}
               onChange={(e) => setFromDate(e.target.value)}
-              className={`w-full px-3 py-1.5 rounded-xl border font-mono ${
+              className={`w-full px-2.5 py-1.5 rounded-xl border font-mono ${
                 isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300'
               }`}
             />
@@ -182,7 +182,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
               type="date"
               value={toDate}
               onChange={(e) => setToDate(e.target.value)}
-              className={`w-full px-3 py-1.5 rounded-xl border font-mono ${
+              className={`w-full px-2.5 py-1.5 rounded-xl border font-mono ${
                 isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300'
               }`}
             />
@@ -202,7 +202,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
             <span className="font-bold text-rose-600 dark:text-rose-400 text-xs uppercase tracking-wider">
               Debit Entries (Dr)
             </span>
-            <span className="font-mono font-black text-rose-600 dark:text-rose-400 text-xs">
+            <span className="font-mono font-bold text-rose-600 dark:text-rose-400 text-xs">
               Total Dr: {formatCurrency(totalDebit)}
             </span>
           </div>
@@ -232,7 +232,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
                       {row.particulars}
                     </td>
                     <td className="p-2.5 text-slate-500 font-bold">{row.r_no}</td>
-                    <td className="p-2.5 text-right pr-3 font-black text-rose-600 dark:text-rose-400">
+                    <td className="p-2.5 text-right pr-3 font-bold text-rose-600 dark:text-rose-400">
                       {formatCurrency(row.rs)}
                     </td>
                   </tr>
@@ -252,7 +252,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
             <span className="font-bold text-emerald-600 dark:text-emerald-400 text-xs uppercase tracking-wider">
               Credit Entries (Cr)
             </span>
-            <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-xs">
+            <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-xs">
               Total Cr: {formatCurrency(totalCredit)}
             </span>
           </div>
@@ -282,7 +282,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
                       {row.particulars}
                     </td>
                     <td className="p-2.5 text-slate-500 font-bold">{row.v_no}</td>
-                    <td className="p-2.5 text-right pr-3 font-black text-emerald-600 dark:text-emerald-400">
+                    <td className="p-2.5 text-right pr-3 font-bold text-emerald-600 dark:text-emerald-400">
                       {formatCurrency(row.rs)}
                     </td>
                   </tr>
@@ -313,7 +313,7 @@ export const AccountDisplayView: React.FC<AccountDisplayViewProps> = ({
         <div className="text-right">
           <span className="text-xs font-bold text-slate-400 block">Closing Balance (c/f)</span>
           <span
-            className={`text-lg sm:text-xl font-black font-mono ${
+            className={`text-lg sm:text-xl font-bold font-mono ${
               netClosingBalance >= 0
                 ? 'text-rose-600 dark:text-rose-400'
                 : 'text-emerald-600 dark:text-emerald-400'

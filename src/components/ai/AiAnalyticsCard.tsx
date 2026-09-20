@@ -46,7 +46,7 @@ export const AiAnalyticsCards: React.FC<AiAnalyticsCardsProps> = ({ cards }) => 
               <span className="text-[10.5px] font-bold text-slate-500 uppercase tracking-wider block">
                 {card.title}
               </span>
-              <div className={`text-base sm:text-lg font-black font-mono tracking-tight my-0.5 ${textAccent}`}>
+              <div className={`text-base sm:text-lg font-bold font-mono tracking-normal my-0.5 ${textAccent}`}>
                 {card.value}
               </div>
             </div>

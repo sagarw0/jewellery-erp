@@ -249,7 +249,7 @@ export const SubNavbar: React.FC<SubNavbarProps> = ({
       <div className="flex items-center space-x-2.5 min-w-max">
         {/* Crisp Submenu Label Indicator */}
         <div
-          className="flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-[11px] font-black uppercase tracking-wider shrink-0 border shadow-2xs"
+          className="flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-[11px] font-bold uppercase tracking-wide shrink-0 border shadow-2xs"
           style={{
             backgroundColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.08)',
             color: isDark ? '#ffffff' : '#0f172a',
@@ -257,7 +257,7 @@ export const SubNavbar: React.FC<SubNavbarProps> = ({
           }}
         >
           <CategoryIcon className="w-3.5 h-3.5 opacity-90 text-amber-500" />
-          <span className="font-black">{categoryTitle}</span>
+          <span className="font-bold">{categoryTitle}</span>
           <ChevronRight className="w-3 h-3 opacity-60" />
         </div>
 
@@ -277,11 +277,11 @@ export const SubNavbar: React.FC<SubNavbarProps> = ({
               <button
                 key={tab.id}
                 onClick={tab.onClick}
-                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-xl font-black text-xs transition-all duration-150 cursor-pointer select-none border ${
+                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-xl font-semibold text-xs transition-all duration-150 cursor-pointer select-none border ${
                   active
                     ? isDark
-                      ? 'bg-amber-400 text-slate-950 font-black border-amber-300 shadow-sm'
-                      : 'bg-blue-600 text-white font-black border-blue-700 shadow-sm'
+                      ? 'bg-amber-400 text-slate-950 font-bold border-amber-300 shadow-sm'
+                      : 'bg-blue-600 text-white font-bold border-blue-700 shadow-sm'
                     : isDark
                     ? 'text-slate-200 hover:text-white hover:bg-white/15 border-transparent'
                     : 'text-slate-950 hover:text-blue-700 hover:bg-white hover:shadow-2xs border-transparent'
@@ -293,11 +293,11 @@ export const SubNavbar: React.FC<SubNavbarProps> = ({
                   }`}
                 />
 
-                <span className="truncate font-black">{tab.label}</span>
+                <span className="truncate font-semibold">{tab.label}</span>
 
                 {/* Refined Keycap */}
                 <span
-                  className={`text-[9.5px] px-1.5 py-0.5 rounded font-mono font-black tracking-tight border ${
+                  className={`text-[9.5px] px-1.5 py-0.5 rounded font-mono font-semibold tracking-normal border ${
                     active
                       ? isDark
                         ? 'bg-black/25 text-slate-950 border-black/10'

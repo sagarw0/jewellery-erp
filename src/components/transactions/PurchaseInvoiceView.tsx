@@ -771,7 +771,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             onClick={handleSave}
             className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-semibold shadow-xs active:scale-98 transition-all cursor-pointer ${
               isDark
-                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-extrabold'
+                ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-bold'
                 : 'bg-blue-600 hover:bg-blue-700 text-white'
             }`}
           >
