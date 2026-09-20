@@ -655,11 +655,11 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                       }`}
                     >
                       {/* Item Name */}
-                      <td className="p-3.5 pl-4 font-bold text-slate-900 dark:text-white">
+                      <td className="p-3.5 pl-4 font-black text-slate-950 dark:text-white">
                         <div className="flex items-center space-x-2">
                           <div>
-                            <span className="block">{item.item_name}</span>
-                            <span className="text-[10px] text-slate-400 font-normal">
+                            <span className="block text-xs font-black text-slate-950 dark:text-white">{item.item_name}</span>
+                            <span className="text-[10.5px] text-slate-600 dark:text-slate-300 font-semibold">
                               Unit Wt: ~{item.gross_wt_per_unit || 15}g
                             </span>
                           </div>
@@ -668,7 +668,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
                       {/* Category & Purity */}
                       <td className="p-3.5 text-center">
-                        <span className="px-2 py-0.5 rounded-full font-mono text-[10.5px] font-bold bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300">
+                        <span className="px-2.5 py-0.5 rounded-full font-mono text-[10.5px] font-black bg-slate-200 dark:bg-white/15 text-slate-900 dark:text-white border border-slate-300 dark:border-white/20">
                           {item.category} • {item.purity}%
                         </span>
                       </td>
@@ -708,7 +708,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                             >
                               -
                             </button>
-                            <span className="font-mono font-black text-xs text-blue-600 dark:text-blue-400 min-w-[32px] text-center">
+                            <span className="font-mono font-black text-xs text-blue-700 dark:text-blue-300 min-w-[32px] text-center">
                               {item.desired_stock} pcs
                             </span>
                             <button
@@ -720,7 +720,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                             </button>
                             <button
                               onClick={() => handleStartEdit(item)}
-                              className="p-1 text-slate-400 hover:text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity ml-1"
+                              className="p-1 text-slate-500 hover:text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity ml-1"
                               title="Edit Desired Target & Vendor"
                             >
                               <Edit2 className="w-3 h-3" />
@@ -730,23 +730,23 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                       </td>
 
                       {/* Sold Stock */}
-                      <td className="p-3.5 text-center font-mono font-bold text-rose-600 dark:text-rose-400">
+                      <td className="p-3.5 text-center font-mono font-black text-rose-700 dark:text-rose-300">
                         {item.sold_stock} pcs
                       </td>
 
                       {/* Current Stock */}
-                      <td className="p-3.5 text-center font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                      <td className="p-3.5 text-center font-mono font-black text-emerald-700 dark:text-emerald-300">
                         {item.current_stock} pcs
                       </td>
 
                       {/* Shortfall Deficit */}
                       <td className="p-3.5 text-center">
                         {hasDeficit ? (
-                          <span className="px-2.5 py-1 rounded-xl font-mono font-black text-xs bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-400/30">
+                          <span className="px-2.5 py-1 rounded-xl font-mono font-black text-xs bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-400/40">
                             +{deficit} pcs (~{(deficit * (item.gross_wt_per_unit || 15)).toFixed(1)}g)
                           </span>
                         ) : (
-                          <span className="text-emerald-600 dark:text-emerald-400 font-bold text-xs">
+                          <span className="text-emerald-700 dark:text-emerald-400 font-black text-xs">
                             ✓ Adequate (0)
                           </span>
                         )}
@@ -754,13 +754,15 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
                       {/* Assigned Vendor */}
                       <td className="p-3.5">
-                        <div className="flex items-center space-x-1.5">
-                          <Building2 className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                        <div className="flex items-center space-x-2">
+                          <div className="p-1 rounded-lg bg-amber-500 text-slate-950 shrink-0">
+                            <Building2 className="w-3 h-3" />
+                          </div>
                           <div className="min-w-0">
-                            <span className="font-semibold block truncate max-w-[150px]">
+                            <span className="font-black text-slate-950 dark:text-white block truncate max-w-[170px] text-xs">
                               {item.vendor_name}
                             </span>
-                            <span className="text-[10px] text-slate-400 font-mono">
+                            <span className="text-[10.5px] text-slate-700 dark:text-slate-300 font-mono font-bold block">
                               {item.vendor_phone}
                             </span>
                           </div>

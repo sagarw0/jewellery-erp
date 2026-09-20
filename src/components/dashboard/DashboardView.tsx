@@ -1633,12 +1633,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       }`}
                     >
                       <div className="flex justify-between items-start">
-                        <span className="font-bold text-xs">{n.title}</span>
-                        <span className={`text-[9.5px] font-bold px-2 py-0.2 rounded-full border ${n.badgeColor}`}>
+                        <span className="font-extrabold text-xs text-slate-950 dark:text-white">{n.title}</span>
+                        <span className={`text-[9.5px] font-black px-2 py-0.2 rounded-full border ${n.badgeColor}`}>
                           {n.tag}
                         </span>
                       </div>
-                      <p className="text-[11px] opacity-75">{n.subtitle}</p>
+                      <p className="text-[11px] text-slate-700 dark:text-slate-300 font-semibold">{n.subtitle}</p>
 
                       <div className="flex items-center justify-between pt-1 border-t border-black/5 dark:border-white/10">
                         {n.amount ? (
