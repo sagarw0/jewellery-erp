@@ -246,27 +246,27 @@ export const SubNavbar: React.FC<SubNavbarProps> = ({
         borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 23, 42, 0.08)',
       }}
     >
-      <div className="flex items-center space-x-2 min-w-max">
+      <div className="flex items-center space-x-2.5 min-w-max">
         {/* Crisp Submenu Label Indicator */}
         <div
-          className="flex items-center space-x-1.5 px-2 py-0.5 rounded-lg text-[10.5px] font-bold uppercase tracking-wider shrink-0 border"
+          className="flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-[11px] font-black uppercase tracking-wider shrink-0 border shadow-2xs"
           style={{
-            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(15, 23, 42, 0.04)',
-            color: isDark ? '#e2e8f0' : '#334155',
-            borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)',
+            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.08)',
+            color: isDark ? '#ffffff' : '#0f172a',
+            borderColor: isDark ? 'rgba(255, 255, 255, 0.20)' : 'rgba(15, 23, 42, 0.15)',
           }}
         >
-          <CategoryIcon className="w-3 h-3 opacity-80" />
-          <span>{categoryTitle}</span>
-          <ChevronRight className="w-2.5 h-2.5 opacity-40" />
+          <CategoryIcon className="w-3.5 h-3.5 opacity-90 text-amber-500" />
+          <span className="font-black">{categoryTitle}</span>
+          <ChevronRight className="w-3 h-3 opacity-60" />
         </div>
 
-        {/* Compact Segmented Submenu Strip (Crisp luxury, no fuzzy glow) */}
+        {/* Compact Segmented Submenu Strip (Crisp luxury, high visibility) */}
         <div
-          className="flex items-center p-0.5 rounded-xl border space-x-1 backdrop-blur-md"
+          className="flex items-center p-1 rounded-2xl border space-x-1 backdrop-blur-md shadow-2xs"
           style={{
-            backgroundColor: isDark ? 'rgba(0, 0, 0, 0.40)' : 'rgba(241, 245, 249, 0.85)',
-            borderColor: isDark ? 'rgba(255, 255, 255, 0.10)' : 'rgba(0, 0, 0, 0.06)',
+            backgroundColor: isDark ? 'rgba(0, 0, 0, 0.50)' : 'rgba(241, 245, 249, 0.95)',
+            borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(15, 23, 42, 0.12)',
           }}
         >
           {tabs.map((tab) => {
@@ -277,34 +277,34 @@ export const SubNavbar: React.FC<SubNavbarProps> = ({
               <button
                 key={tab.id}
                 onClick={tab.onClick}
-                className={`relative flex items-center space-x-1.5 px-2.5 py-1 rounded-lg font-semibold text-[11px] transition-all duration-150 cursor-pointer select-none border ${
+                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-xl font-black text-xs transition-all duration-150 cursor-pointer select-none border ${
                   active
                     ? isDark
-                      ? 'bg-amber-400 text-slate-950 font-bold border-amber-300 shadow-2xs'
-                      : 'bg-blue-600 text-white font-bold border-blue-700 shadow-2xs'
+                      ? 'bg-amber-400 text-slate-950 font-black border-amber-300 shadow-sm'
+                      : 'bg-blue-600 text-white font-black border-blue-700 shadow-sm'
                     : isDark
-                    ? 'text-slate-300 hover:text-white hover:bg-white/10 border-transparent'
-                    : 'text-slate-700 hover:text-slate-950 hover:bg-white border-transparent'
+                    ? 'text-slate-200 hover:text-white hover:bg-white/15 border-transparent'
+                    : 'text-slate-950 hover:text-blue-700 hover:bg-white hover:shadow-2xs border-transparent'
                 }`}
               >
                 <TabIcon
-                  className={`w-3 h-3 ${
-                    active ? 'text-inherit' : 'opacity-70'
+                  className={`w-3.5 h-3.5 ${
+                    active ? 'text-inherit' : isDark ? 'text-slate-300' : 'text-slate-800'
                   }`}
                 />
 
-                <span className="truncate">{tab.label}</span>
+                <span className="truncate font-black">{tab.label}</span>
 
                 {/* Refined Keycap */}
                 <span
-                  className={`text-[9px] px-1 py-0.2 rounded font-mono font-bold tracking-tight ${
+                  className={`text-[9.5px] px-1.5 py-0.5 rounded font-mono font-black tracking-tight border ${
                     active
                       ? isDark
-                        ? 'bg-black/20 text-slate-950'
-                        : 'bg-white/25 text-white'
+                        ? 'bg-black/25 text-slate-950 border-black/10'
+                        : 'bg-white/25 text-white border-white/20'
                       : isDark
-                      ? 'bg-white/10 text-slate-300'
-                      : 'bg-slate-200 text-slate-700'
+                      ? 'bg-white/15 text-slate-200 border-white/10'
+                      : 'bg-slate-200/90 text-slate-900 border-slate-300'
                   }`}
                 >
                   {tab.hotkey}

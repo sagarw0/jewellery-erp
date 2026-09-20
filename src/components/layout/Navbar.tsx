@@ -491,10 +491,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         }}
       >
         <div
-          className="flex items-center space-x-1 p-0.5 rounded-2xl border min-w-max transition-all"
+          className="flex items-center space-x-1 p-1 rounded-2xl border min-w-max transition-all shadow-2xs"
           style={{
-            backgroundColor: isDark ? 'rgba(0, 0, 0, 0.40)' : 'rgba(241, 245, 249, 0.90)',
-            borderColor: isDark ? 'rgba(255, 255, 255, 0.10)' : 'rgba(0, 0, 0, 0.06)',
+            backgroundColor: isDark ? 'rgba(0, 0, 0, 0.50)' : 'rgba(241, 245, 249, 0.95)',
+            borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(15, 23, 42, 0.12)',
           }}
         >
           {visibleNavItems.map((item) => {
@@ -504,32 +504,32 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 key={item.id}
                 onClick={() => onSelectSection(item.id)}
-                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-150 cursor-pointer select-none border ${
+                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-black whitespace-nowrap transition-all duration-150 cursor-pointer select-none border ${
                   isActive
                     ? isDark
-                      ? 'bg-amber-400 text-slate-950 font-black border-amber-300 shadow-2xs'
-                      : 'bg-blue-600 text-white font-black border-blue-700 shadow-2xs'
+                      ? 'bg-amber-400 text-slate-950 font-black border-amber-300 shadow-sm'
+                      : 'bg-blue-600 text-white font-black border-blue-700 shadow-sm'
                     : isDark
-                    ? 'text-slate-300 hover:text-white hover:bg-white/10 border-transparent'
-                    : 'text-slate-700 hover:text-slate-950 hover:bg-white border-transparent'
+                    ? 'text-slate-200 hover:text-white hover:bg-white/15 border-transparent'
+                    : 'text-slate-950 hover:text-blue-700 hover:bg-white hover:shadow-2xs border-transparent'
                 }`}
               >
                 <Icon
                   className={`w-3.5 h-3.5 ${
-                    isActive ? 'text-inherit' : 'opacity-70'
+                    isActive ? 'text-inherit' : isDark ? 'text-slate-300' : 'text-slate-800'
                   }`}
                 />
-                <span className="truncate">{item.label}</span>
+                <span className="truncate font-black">{item.label}</span>
                 {item.hotkey && (
                   <span
-                    className={`text-[9px] px-1.5 py-0.2 rounded font-mono font-bold tracking-tight ${
+                    className={`text-[9.5px] px-1.5 py-0.5 rounded font-mono font-black tracking-tight border ${
                       isActive
                         ? isDark
-                          ? 'bg-black/20 text-slate-950'
-                          : 'bg-white/25 text-white'
+                          ? 'bg-black/25 text-slate-950 border-black/10'
+                          : 'bg-white/25 text-white border-white/20'
                         : isDark
-                        ? 'bg-white/10 text-slate-300'
-                        : 'bg-slate-200 text-slate-700'
+                        ? 'bg-white/15 text-slate-200 border-white/10'
+                        : 'bg-slate-200/90 text-slate-900 border-slate-300'
                     }`}
                   >
                     {item.hotkey}
