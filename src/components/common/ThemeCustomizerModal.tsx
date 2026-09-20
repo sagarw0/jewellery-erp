@@ -89,13 +89,16 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/65 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto no-print"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-md animate-in fade-in duration-200 no-print"
       role="dialog"
       aria-modal="true"
     >
       {/* Modal Dialog Card */}
       <div
-        className="relative w-full max-w-4xl rounded-3xl border shadow-2xl overflow-hidden flex flex-col my-auto transition-all duration-300"
+        className="relative w-full max-w-4xl max-h-[88vh] rounded-3xl border shadow-2xl overflow-hidden flex flex-col transition-all duration-300 animate-in zoom-in-95 duration-200"
         style={{
           background: computedTokens.appSurface,
           borderColor: computedTokens.appCardBorder,
@@ -112,7 +115,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
         />
 
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 backdrop-blur-xl">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 backdrop-blur-xl shrink-0">
           <div className="flex items-center space-x-3">
             <div
               className="p-2.5 rounded-2xl flex items-center justify-center shadow-md transition-all"
@@ -168,7 +171,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center px-6 pt-3 pb-1 space-x-2 border-b border-white/10 overflow-x-auto text-xs font-bold">
+        <div className="flex items-center px-6 pt-3 pb-1 space-x-2 border-b border-white/10 overflow-x-auto text-xs font-bold shrink-0">
           <button
             onClick={() => setActiveTab('presets')}
             className={`px-3.5 py-2 rounded-xl flex items-center space-x-1.5 transition-all cursor-pointer whitespace-nowrap ${
@@ -232,7 +235,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 space-y-6 max-h-[60vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 space-y-6 flex-1 overflow-y-auto scrollbar-thin">
           {/* TAB 1: PRESETS */}
           {activeTab === 'presets' && (
             <div className="space-y-4">
@@ -842,7 +845,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="flex items-center justify-between px-6 py-4 border-t border-white/10 backdrop-blur-xl">
+        <div className="flex items-center justify-between px-6 py-4 border-t border-white/10 backdrop-blur-xl shrink-0">
           <div className="text-[11px] opacity-70 flex items-center space-x-1.5">
             <Check className="w-3.5 h-3.5 text-emerald-500" />
             <span>Theme auto-saved to browser localStorage</span>
