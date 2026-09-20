@@ -433,83 +433,91 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
       </div>
 
       {/* 4 Summary KPI Tiles */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
         <div
-          className={`p-3.5 rounded-2xl border ${
-            isDark ? 'bg-[#0f172a]/80 border-white/10' : 'bg-white border-slate-200 shadow-2xs'
+          className={`p-4 rounded-2xl border shadow-sm ${
+            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+            <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Monitored Inventory SKUs
             </span>
-            <Package className="w-4 h-4 text-blue-500" />
+            <div className="p-1.5 rounded-xl bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
+              <Package className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-xl font-black mt-1 text-slate-900 dark:text-white">
-            {totalSKUs} <span className="text-xs font-normal text-slate-500">Items</span>
+          <div className="text-2xl font-black mt-2 font-mono text-slate-950 dark:text-white">
+            {totalSKUs} <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Items</span>
           </div>
-          <span className="text-[10.5px] text-slate-400 block mt-0.5">
+          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mt-1">
             Active showroom target lines
           </span>
         </div>
 
         <div
-          className={`p-3.5 rounded-2xl border ${
-            isDark ? 'bg-[#0f172a]/80 border-white/10' : 'bg-white border-slate-200 shadow-2xs'
+          className={`p-4 rounded-2xl border shadow-sm ${
+            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+            <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Items in Deficit
             </span>
-            <AlertTriangle className="w-4 h-4 text-rose-500" />
+            <div className="p-1.5 rounded-xl bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300">
+              <AlertTriangle className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-xl font-black mt-1 text-rose-600 dark:text-rose-400">
+          <div className="text-2xl font-black mt-2 font-mono text-rose-700 dark:text-rose-400">
             {totalDeficitCount}{' '}
-            <span className="text-xs font-normal text-rose-500">
+            <span className="text-xs font-bold text-rose-600 dark:text-rose-300">
               ({Math.round((totalDeficitCount / (totalSKUs || 1)) * 100)}%)
             </span>
           </div>
-          <span className="text-[10.5px] text-slate-400 block mt-0.5">
+          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mt-1">
             Require maker PO dispatch
           </span>
         </div>
 
         <div
-          className={`p-3.5 rounded-2xl border ${
-            isDark ? 'bg-[#0f172a]/80 border-white/10' : 'bg-white border-slate-200 shadow-2xs'
+          className={`p-4 rounded-2xl border shadow-sm ${
+            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+            <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Total Deficit Quantity
             </span>
-            <Layers className="w-4 h-4 text-amber-500" />
+            <div className="p-1.5 rounded-xl bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+              <Layers className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-xl font-black mt-1 text-amber-600 dark:text-amber-400">
-            +{totalDeficitPcs} <span className="text-xs font-normal text-slate-500">Pcs</span>
+          <div className="text-2xl font-black mt-2 font-mono text-amber-900 dark:text-amber-300">
+            +{totalDeficitPcs} <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Pcs</span>
           </div>
-          <span className="text-[10.5px] text-slate-400 block mt-0.5">
+          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mt-1">
             Shortfall across all categories
           </span>
         </div>
 
         <div
-          className={`p-3.5 rounded-2xl border ${
-            isDark ? 'bg-[#0f172a]/80 border-white/10' : 'bg-white border-slate-200 shadow-2xs'
+          className={`p-4 rounded-2xl border shadow-sm ${
+            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+            <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Estimated Refill Weight
             </span>
-            <Sparkles className="w-4 h-4 text-emerald-500" />
+            <div className="p-1.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+              <Sparkles className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-xl font-black mt-1 text-emerald-600 dark:text-emerald-400">
+          <div className="text-2xl font-black mt-2 font-mono text-emerald-800 dark:text-emerald-400">
             ~{totalDeficitEstWt.toFixed(2)}{' '}
-            <span className="text-xs font-normal text-slate-500">gm</span>
+            <span className="text-xs font-bold text-slate-600 dark:text-slate-400">gm</span>
           </div>
-          <span className="text-[10.5px] text-slate-400 block mt-0.5">
+          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mt-1">
             Approx. bullion casting weight
           </span>
         </div>

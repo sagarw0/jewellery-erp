@@ -221,69 +221,77 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
         </div>
       </div>
 
-      {/* 4 Summary Frosted KPI Metric Tiles */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      {/* 4 Summary KPI Metric Tiles */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
         <div
-          className={`p-3.5 rounded-2xl border ${
-            isDark ? 'bg-[#0f172a]/80 border-white/10' : 'bg-white border-slate-200 shadow-2xs'
+          className={`p-4 rounded-2xl border shadow-sm ${
+            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Total Quantity</span>
-            <Boxes className="w-4 h-4 text-blue-500" />
+            <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">Total Quantity</span>
+            <div className="p-1.5 rounded-xl bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
+              <Boxes className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-xl font-black mt-1 text-slate-900 dark:text-white">
-            {totalQty} <span className="text-xs font-normal text-slate-500">Pcs</span>
+          <div className="text-2xl font-black mt-2 text-slate-950 dark:text-white font-mono">
+            {totalQty} <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Pcs</span>
           </div>
-          <span className="text-[10.5px] text-slate-400 block mt-0.5">Filtered stock inventory</span>
+          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mt-1">Filtered stock inventory</span>
         </div>
 
         <div
-          className={`p-3.5 rounded-2xl border ${
-            isDark ? 'bg-[#0f172a]/80 border-white/10' : 'bg-white border-slate-200 shadow-2xs'
+          className={`p-4 rounded-2xl border shadow-sm ${
+            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Total Gross / Net Wt</span>
-            <Scale className="w-4 h-4 text-amber-500" />
+            <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">Total Gross / Net Wt</span>
+            <div className="p-1.5 rounded-xl bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+              <Scale className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-xl font-black mt-1 text-slate-900 dark:text-white font-mono">
+          <div className="text-2xl font-black mt-2 text-slate-950 dark:text-white font-mono">
             {formatWeight(totalNetWt)}{' '}
-            <span className="text-xs font-normal text-slate-500 font-sans">
+            <span className="text-xs font-bold text-slate-600 dark:text-slate-400 font-sans">
               (Gross: {formatWeight(totalGrossWt)})
             </span>
           </div>
-          <span className="text-[10.5px] text-slate-400 block mt-0.5">Showroom metal weight</span>
+          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mt-1">Showroom metal weight</span>
         </div>
 
         <div
-          className={`p-3.5 rounded-2xl border ${
-            isDark ? 'bg-[#0f172a]/80 border-white/10' : 'bg-white border-slate-200 shadow-2xs'
+          className={`p-4 rounded-2xl border shadow-sm ${
+            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Total Pure Fine Gold</span>
-            <Sparkles className="w-4 h-4 text-amber-500" />
+            <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">Total Pure Fine Gold</span>
+            <div className="p-1.5 rounded-xl bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+              <Sparkles className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-xl font-black mt-1 text-amber-600 dark:text-amber-400 font-mono">
+          <div className="text-2xl font-black mt-2 text-amber-900 dark:text-amber-300 font-mono">
             {formatWeight(totalFineWt)}
           </div>
-          <span className="text-[10.5px] text-slate-400 block mt-0.5">100% fine bullion equivalent</span>
+          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mt-1">100% fine bullion equivalent</span>
         </div>
 
         <div
-          className={`p-3.5 rounded-2xl border ${
-            isDark ? 'bg-[#0f172a]/80 border-white/10' : 'bg-white border-slate-200 shadow-2xs'
+          className={`p-4 rounded-2xl border shadow-sm ${
+            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Stock Valuation</span>
-            <Gem className="w-4 h-4 text-emerald-500" />
+            <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">Stock Valuation</span>
+            <div className="p-1.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+              <Gem className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-xl font-black mt-1 text-emerald-600 dark:text-emerald-400 font-mono">
+          <div className="text-2xl font-black mt-2 text-emerald-800 dark:text-emerald-400 font-mono">
             {formatCurrency(totalValuation)}
           </div>
-          <span className="text-[10.5px] text-slate-400 block mt-0.5">Market rate valuation</span>
+          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mt-1">Market rate valuation</span>
         </div>
       </div>
 

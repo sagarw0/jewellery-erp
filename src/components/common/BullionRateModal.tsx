@@ -218,205 +218,217 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
               {/* Card 1: 24K Pure Gold */}
               <div
-                className={`p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden ${
+                className={`p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden shadow-xs ${
                   isDark
-                    ? 'bg-gradient-to-br from-amber-500/15 via-yellow-500/10 to-transparent border-amber-400/30 text-white'
-                    : 'bg-gradient-to-br from-amber-50 via-yellow-50/60 to-white border-amber-200 text-slate-900'
+                    ? 'bg-[#131b2e] border-amber-500/40 text-white'
+                    : 'bg-white border-amber-300 text-slate-950'
                 }`}
               >
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-400 border border-amber-400/40">
+                    <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border ${
+                      isDark ? 'bg-amber-500/20 text-amber-300 border-amber-400/50' : 'bg-amber-100 text-amber-950 border-amber-300'
+                    }`}>
                       99.9% Fine
                     </span>
-                    <h4 className="text-sm font-semibold mt-1">Gold 24K (Pure)</h4>
+                    <h4 className="text-sm font-bold mt-1.5">Gold 24K (Pure)</h4>
                   </div>
-                  <Coins className="w-5 h-5 text-amber-400" />
+                  <Coins className={`w-5 h-5 ${isDark ? 'text-amber-400' : 'text-amber-600'}`} />
                 </div>
 
-                <div className="my-2">
-                  <div className="text-2xl font-semibold font-mono tracking-tight text-amber-400">
+                <div className="my-2.5">
+                  <div className={`text-2xl font-black font-mono tracking-tight ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
                     ₹{rates.gold24k.toLocaleString('en-IN')}
-                    <span className="text-xs font-normal text-slate-400 ml-1">/ gram</span>
+                    <span className={`text-xs font-semibold ml-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ gram</span>
                   </div>
-                  <div className={`text-xs font-mono font-medium mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    10g (Tola): <span className="font-semibold">₹{rates.gold24kTola.toLocaleString('en-IN')}</span>
+                  <div className={`text-xs font-mono font-medium mt-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                    10g (Tola): <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>₹{rates.gold24kTola.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
-                <div className={`pt-2 border-t flex items-center justify-between text-[10.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
-                  <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>High: ₹{rates.gold24kHigh}</span>
-                  <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Low: ₹{rates.gold24kLow}</span>
+                <div className={`pt-2 border-t flex items-center justify-between text-[11px] font-medium ${isDark ? 'border-white/10 text-slate-300' : 'border-slate-200 text-slate-700'}`}>
+                  <span>High: <b className={isDark ? 'text-white' : 'text-slate-950'}>₹{rates.gold24kHigh}</b></span>
+                  <span>Low: <b className={isDark ? 'text-white' : 'text-slate-950'}>₹{rates.gold24kLow}</b></span>
                 </div>
               </div>
 
               {/* Card 2: 22K Hallmark Gold (916) */}
               <div
-                className={`p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden ${
+                className={`p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden shadow-xs ${
                   isDark
-                    ? 'bg-gradient-to-br from-yellow-500/15 via-amber-500/10 to-transparent border-yellow-400/30 text-white'
-                    : 'bg-gradient-to-br from-yellow-50 via-amber-50/60 to-white border-yellow-200 text-slate-900'
+                    ? 'bg-[#131b2e] border-yellow-500/40 text-white'
+                    : 'bg-white border-yellow-300 text-slate-950'
                 }`}
               >
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-md bg-yellow-500/20 text-yellow-400 border border-yellow-400/40">
+                    <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border ${
+                      isDark ? 'bg-yellow-500/20 text-yellow-300 border-yellow-400/50' : 'bg-yellow-100 text-yellow-950 border-yellow-300'
+                    }`}>
                       91.6% Hallmark (BIS)
                     </span>
-                    <h4 className="text-sm font-semibold mt-1">Gold 22K (916)</h4>
+                    <h4 className="text-sm font-bold mt-1.5">Gold 22K (916)</h4>
                   </div>
-                  <Sparkles className="w-5 h-5 text-yellow-400" />
+                  <Sparkles className={`w-5 h-5 ${isDark ? 'text-yellow-400' : 'text-yellow-600'}`} />
                 </div>
 
-                <div className="my-2">
-                  <div className="text-2xl font-semibold font-mono tracking-tight text-yellow-400">
+                <div className="my-2.5">
+                  <div className={`text-2xl font-black font-mono tracking-tight ${isDark ? 'text-yellow-300' : 'text-yellow-950'}`}>
                     ₹{rates.gold22k.toLocaleString('en-IN')}
-                    <span className="text-xs font-normal text-slate-400 ml-1">/ gram</span>
+                    <span className={`text-xs font-semibold ml-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ gram</span>
                   </div>
-                  <div className={`text-xs font-mono font-medium mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    10g Bar: <span className="font-semibold">₹{rates.gold22kTola.toLocaleString('en-IN')}</span>
+                  <div className={`text-xs font-mono font-medium mt-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                    10g Bar: <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>₹{rates.gold22kTola.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
-                <div className={`pt-2 border-t flex items-center justify-between text-[10.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
-                  <span className={isDark ? 'text-slate-300 font-medium' : 'text-slate-600'}>Standard Jewellery Rate</span>
-                  <span className="text-emerald-400 font-semibold">● Active POS Rate</span>
+                <div className={`pt-2 border-t flex items-center justify-between text-[11px] font-medium ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+                  <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>Standard Jewellery Rate</span>
+                  <span className={`font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>● Active POS Rate</span>
                 </div>
               </div>
 
               {/* Card 3: 18K Diamond Jewellery Gold */}
               <div
-                className={`p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden ${
+                className={`p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden shadow-xs ${
                   isDark
-                    ? 'bg-gradient-to-br from-orange-500/15 via-amber-500/10 to-transparent border-orange-400/30 text-white'
-                    : 'bg-gradient-to-br from-orange-50 via-amber-50/40 to-white border-orange-200 text-slate-900'
+                    ? 'bg-[#131b2e] border-orange-500/40 text-white'
+                    : 'bg-white border-orange-300 text-slate-950'
                 }`}
               >
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-md bg-orange-500/20 text-orange-400 border border-orange-400/40">
+                    <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border ${
+                      isDark ? 'bg-orange-500/20 text-orange-300 border-orange-400/50' : 'bg-orange-100 text-orange-950 border-orange-300'
+                    }`}>
                       75.0% Fine (750)
                     </span>
-                    <h4 className="text-sm font-semibold mt-1">Gold 18K (Diamond)</h4>
+                    <h4 className="text-sm font-bold mt-1.5">Gold 18K (Diamond)</h4>
                   </div>
-                  <Flame className="w-5 h-5 text-orange-400" />
+                  <Flame className={`w-5 h-5 ${isDark ? 'text-orange-400' : 'text-orange-600'}`} />
                 </div>
 
-                <div className="my-2">
-                  <div className="text-2xl font-semibold font-mono tracking-tight text-orange-400">
+                <div className="my-2.5">
+                  <div className={`text-2xl font-black font-mono tracking-tight ${isDark ? 'text-orange-300' : 'text-orange-950'}`}>
                     ₹{rates.gold18k.toLocaleString('en-IN')}
-                    <span className="text-xs font-normal text-slate-400 ml-1">/ gram</span>
+                    <span className={`text-xs font-semibold ml-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ gram</span>
                   </div>
-                  <div className={`text-xs font-mono font-medium mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    10g: <span className="font-semibold">₹{(rates.gold18k * 10).toLocaleString('en-IN')}</span>
+                  <div className={`text-xs font-mono font-medium mt-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                    10g: <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>₹{(rates.gold18k * 10).toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
-                <div className={`pt-2 border-t flex items-center justify-between text-[10.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
-                  <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Rose / White Gold</span>
-                  <span className="text-sky-400 font-medium">Studded Ornaments</span>
+                <div className={`pt-2 border-t flex items-center justify-between text-[11px] font-medium ${isDark ? 'border-white/10 text-slate-300' : 'border-slate-200 text-slate-700'}`}>
+                  <span>Rose / White Gold</span>
+                  <span className={`font-semibold ${isDark ? 'text-sky-300' : 'text-sky-700'}`}>Studded Ornaments</span>
                 </div>
               </div>
 
               {/* Card 4: 14K Studded Gold */}
               <div
-                className={`p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden ${
+                className={`p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden shadow-xs ${
                   isDark
-                    ? 'bg-gradient-to-br from-rose-500/15 via-pink-500/10 to-transparent border-rose-400/30 text-white'
-                    : 'bg-gradient-to-br from-rose-50 via-pink-50/40 to-white border-rose-200 text-slate-900'
+                    ? 'bg-[#131b2e] border-rose-500/40 text-white'
+                    : 'bg-white border-rose-300 text-slate-950'
                 }`}
               >
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-400 border border-rose-400/40">
+                    <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border ${
+                      isDark ? 'bg-rose-500/20 text-rose-300 border-rose-400/50' : 'bg-rose-100 text-rose-950 border-rose-300'
+                    }`}>
                       58.5% Fine (585)
                     </span>
-                    <h4 className="text-sm font-semibold mt-1">Gold 14K (Fashion)</h4>
+                    <h4 className="text-sm font-bold mt-1.5">Gold 14K (Fashion)</h4>
                   </div>
-                  <Sparkles className="w-5 h-5 text-rose-400" />
+                  <Sparkles className={`w-5 h-5 ${isDark ? 'text-rose-400' : 'text-rose-600'}`} />
                 </div>
 
-                <div className="my-2">
-                  <div className="text-2xl font-semibold font-mono tracking-tight text-rose-400">
+                <div className="my-2.5">
+                  <div className={`text-2xl font-black font-mono tracking-tight ${isDark ? 'text-rose-300' : 'text-rose-950'}`}>
                     ₹{rates.gold14k.toLocaleString('en-IN')}
-                    <span className="text-xs font-normal text-slate-400 ml-1">/ gram</span>
+                    <span className={`text-xs font-semibold ml-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ gram</span>
                   </div>
-                  <div className={`text-xs font-mono font-medium mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    10g: <span className="font-semibold">₹{(rates.gold14k * 10).toLocaleString('en-IN')}</span>
+                  <div className={`text-xs font-mono font-medium mt-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                    10g: <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>₹{(rates.gold14k * 10).toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
-                <div className={`pt-2 border-t flex items-center justify-between text-[10.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
-                  <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Lightweight Dailywear</span>
-                  <span className="text-rose-400 font-medium">Modern Luxury</span>
+                <div className={`pt-2 border-t flex items-center justify-between text-[11px] font-medium ${isDark ? 'border-white/10 text-slate-300' : 'border-slate-200 text-slate-700'}`}>
+                  <span>Lightweight Dailywear</span>
+                  <span className={`font-semibold ${isDark ? 'text-rose-300' : 'text-rose-700'}`}>Modern Luxury</span>
                 </div>
               </div>
 
               {/* Card 5: Fine Silver 999 */}
               <div
-                className={`p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden ${
+                className={`p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden shadow-xs ${
                   isDark
-                    ? 'bg-gradient-to-br from-slate-400/20 via-slate-500/10 to-transparent border-slate-300/30 text-white'
-                    : 'bg-gradient-to-br from-slate-100 via-slate-50 to-white border-slate-300 text-slate-900'
+                    ? 'bg-[#131b2e] border-slate-400/40 text-white'
+                    : 'bg-white border-slate-300 text-slate-950'
                 }`}
               >
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-md bg-slate-400/20 text-slate-300 border border-slate-300/40">
+                    <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border ${
+                      isDark ? 'bg-slate-500/20 text-slate-200 border-slate-400/50' : 'bg-slate-200 text-slate-950 border-slate-300'
+                    }`}>
                       99.9% Fine Pure
                     </span>
-                    <h4 className="text-sm font-semibold mt-1">Silver 999 (Pure)</h4>
+                    <h4 className="text-sm font-bold mt-1.5">Silver 999 (Pure)</h4>
                   </div>
-                  <Scale className="w-5 h-5 text-slate-300" />
+                  <Scale className={`w-5 h-5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`} />
                 </div>
 
-                <div className="my-2">
-                  <div className="text-2xl font-semibold font-mono tracking-tight text-slate-200">
+                <div className="my-2.5">
+                  <div className={`text-2xl font-black font-mono tracking-tight ${isDark ? 'text-slate-100' : 'text-slate-950'}`}>
                     ₹{rates.silver999.toFixed(2)}
-                    <span className="text-xs font-normal text-slate-400 ml-1">/ gram</span>
+                    <span className={`text-xs font-semibold ml-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ gram</span>
                   </div>
-                  <div className={`text-xs font-mono font-medium mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    1 Kg Bar: <span className="font-semibold">₹{rates.silverKg.toLocaleString('en-IN')}</span>
+                  <div className={`text-xs font-mono font-medium mt-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                    1 Kg Bar: <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>₹{rates.silverKg.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
-                <div className={`pt-2 border-t flex items-center justify-between text-[10.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
-                  <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>High: ₹{rates.silverHigh}</span>
-                  <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Low: ₹{rates.silverLow}</span>
+                <div className={`pt-2 border-t flex items-center justify-between text-[11px] font-medium ${isDark ? 'border-white/10 text-slate-300' : 'border-slate-200 text-slate-700'}`}>
+                  <span>High: <b className={isDark ? 'text-white' : 'text-slate-950'}>₹{rates.silverHigh}</b></span>
+                  <span>Low: <b className={isDark ? 'text-white' : 'text-slate-950'}>₹{rates.silverLow}</b></span>
                 </div>
               </div>
 
               {/* Card 6: Sterling Silver 925 */}
               <div
-                className={`p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden ${
+                className={`p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden shadow-xs ${
                   isDark
-                    ? 'bg-gradient-to-br from-zinc-400/20 via-zinc-500/10 to-transparent border-zinc-300/30 text-white'
-                    : 'bg-gradient-to-br from-zinc-100 via-zinc-50 to-white border-zinc-300 text-slate-900'
+                    ? 'bg-[#131b2e] border-zinc-400/40 text-white'
+                    : 'bg-white border-zinc-300 text-slate-950'
                 }`}
               >
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-md bg-zinc-400/20 text-zinc-300 border border-zinc-300/40">
+                    <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border ${
+                      isDark ? 'bg-zinc-500/20 text-zinc-200 border-zinc-400/50' : 'bg-zinc-200 text-zinc-950 border-zinc-300'
+                    }`}>
                       92.5% Sterling
                     </span>
-                    <h4 className="text-sm font-semibold mt-1">Silver 925 (Chandi)</h4>
+                    <h4 className="text-sm font-bold mt-1.5">Silver 925 (Chandi)</h4>
                   </div>
-                  <Sparkles className="w-5 h-5 text-zinc-300" />
+                  <Sparkles className={`w-5 h-5 ${isDark ? 'text-zinc-300' : 'text-zinc-600'}`} />
                 </div>
 
-                <div className="my-2">
-                  <div className="text-2xl font-semibold font-mono tracking-tight text-zinc-200">
+                <div className="my-2.5">
+                  <div className={`text-2xl font-black font-mono tracking-tight ${isDark ? 'text-zinc-100' : 'text-slate-950'}`}>
                     ₹{rates.silver925.toFixed(2)}
-                    <span className="text-xs font-normal text-slate-400 ml-1">/ gram</span>
+                    <span className={`text-xs font-semibold ml-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>/ gram</span>
                   </div>
-                  <div className={`text-xs font-mono font-medium mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    1 Kg: <span className="font-semibold">₹{Math.round(rates.silver925 * 1000).toLocaleString('en-IN')}</span>
+                  <div className={`text-xs font-mono font-medium mt-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                    1 Kg: <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>₹{Math.round(rates.silver925 * 1000).toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
-                <div className={`pt-2 border-t flex items-center justify-between text-[10.5px] ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
-                  <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Jewellery & Utensils</span>
-                  <span className="text-zinc-300 font-medium">Standard 925</span>
+                <div className={`pt-2 border-t flex items-center justify-between text-[11px] font-medium ${isDark ? 'border-white/10 text-slate-300' : 'border-slate-200 text-slate-700'}`}>
+                  <span>Jewellery & Utensils</span>
+                  <span className={`font-semibold ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>Standard 925</span>
                 </div>
               </div>
             </div>

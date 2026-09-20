@@ -21,7 +21,7 @@ interface AnalyticsModalProps {
 }
 
 export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose }) => {
-  const { currentTheme } = useTheme();
+  const { currentTheme, isDark } = useTheme();
   const [selectedPeriod, setSelectedPeriod] = useState<'Today' | 'Week' | 'Month' | 'Year'>('Month');
 
   if (!isOpen) return null;
@@ -58,22 +58,28 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
   const currentSold = totalSoldData[selectedPeriod];
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-      <div className={`${currentTheme.cardBg} border ${currentTheme.cardBorder} rounded-2xl w-full max-w-5xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 flex flex-col max-h-[90vh]`}>
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+      <div
+        className={`rounded-3xl w-full max-w-5xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh] border ${
+          isDark
+            ? 'bg-[#0b1324] border-white/15 text-white'
+            : 'bg-white border-slate-300 text-slate-950'
+        }`}
+      >
         {/* Modal Top Header */}
-        <div className="px-6 py-4 bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-700 text-white flex items-center justify-between shadow-md">
+        <div className="px-6 py-4 bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-700 text-white flex items-center justify-between shadow-md shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-xl bg-white/20 backdrop-blur-xs">
+            <div className="p-2.5 rounded-2xl bg-white/20 backdrop-blur-xs">
               <BarChart3 className="w-6 h-6 text-amber-300" />
             </div>
             <div>
-              <h2 className="text-base font-bold tracking-wide flex items-center space-x-2">
+              <h2 className="text-base font-black tracking-wide flex items-center space-x-2">
                 <span>Executive Jewellery Business Analytics</span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-400/30 text-amber-200 border border-amber-300/40 font-mono">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-400/30 text-amber-200 border border-amber-300/40 font-mono font-bold">
                   Live Intelligence
                 </span>
               </h2>
-              <p className="text-xs text-blue-100">
+              <p className="text-xs text-blue-100 font-medium">
                 Top suppliers, job workers (Karagirs), sales volume, and ornament demand trends.
               </p>
             </div>
@@ -81,15 +87,15 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
 
           <div className="flex items-center space-x-3">
             {/* Period Selector Tabs */}
-            <div className="bg-blue-900/40 p-1 rounded-lg flex space-x-1 text-xs">
+            <div className="bg-blue-900/40 p-1 rounded-xl flex space-x-1 text-xs font-bold">
               {(['Today', 'Week', 'Month', 'Year'] as const).map((p) => (
                 <button
                   key={p}
                   onClick={() => setSelectedPeriod(p)}
-                  className={`px-2.5 py-1 rounded-md font-semibold transition-all ${
+                  className={`px-3 py-1 rounded-lg font-black transition-all cursor-pointer ${
                     selectedPeriod === p
-                      ? 'bg-white text-blue-900 shadow-xs font-bold'
-                      : 'text-blue-100 hover:text-white hover:bg-white/10'
+                      ? 'bg-white text-blue-950 shadow-xs font-black'
+                      : 'text-blue-100 hover:text-white hover:bg-white/15'
                   }`}
                 >
                   {p}
@@ -99,7 +105,7 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/10"
+              className="p-2 rounded-xl text-white/80 hover:text-white hover:bg-white/15 transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -107,101 +113,123 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto space-y-6 text-xs text-slate-800">
+        <div className="p-4 sm:p-6 overflow-y-auto space-y-6 flex-1 text-xs">
           {/* Top Performance Strip */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-sky-50/80 border border-sky-200 p-4 rounded-xl">
-              <div className="text-slate-500 font-semibold text-[11px] uppercase">Total Sales Revenue ({selectedPeriod})</div>
-              <div className="text-xl font-bold font-mono text-blue-900 mt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            <div className={`p-4 rounded-2xl border ${
+              isDark ? 'bg-slate-900/90 border-sky-500/40 text-white' : 'bg-sky-50 border-sky-300 text-slate-950 shadow-xs'
+            }`}>
+              <div className="text-slate-600 dark:text-slate-300 font-extrabold text-[11px] uppercase tracking-wider">
+                Total Sales Revenue ({selectedPeriod})
+              </div>
+              <div className="text-xl font-black font-mono text-slate-950 dark:text-sky-300 mt-1.5">
                 {formatCurrency(currentSold.revenue)}
               </div>
-              <div className="text-[10px] text-emerald-700 font-medium mt-1 flex items-center">
-                <TrendingUp className="w-3 h-3 mr-1 inline" />
+              <div className="text-[10.5px] text-emerald-800 dark:text-emerald-400 font-black mt-1 flex items-center">
+                <TrendingUp className="w-3.5 h-3.5 mr-1 inline shrink-0" />
                 <span>+18.4% growth vs previous {selectedPeriod.toLowerCase()}</span>
               </div>
             </div>
 
-            <div className="bg-amber-50/80 border border-amber-200 p-4 rounded-xl">
-              <div className="text-slate-500 font-semibold text-[11px] uppercase">Total Gold Sold ({selectedPeriod})</div>
-              <div className="text-xl font-bold font-mono text-amber-800 mt-1">
+            <div className={`p-4 rounded-2xl border ${
+              isDark ? 'bg-slate-900/90 border-amber-500/40 text-white' : 'bg-amber-50 border-amber-300 text-slate-950 shadow-xs'
+            }`}>
+              <div className="text-slate-600 dark:text-slate-300 font-extrabold text-[11px] uppercase tracking-wider">
+                Total Gold Sold ({selectedPeriod})
+              </div>
+              <div className="text-xl font-black font-mono text-slate-950 dark:text-amber-300 mt-1.5">
                 {formatWeight(currentSold.gold_wt)}
               </div>
-              <div className="text-[10px] text-amber-700 font-medium mt-1">
+              <div className="text-[10.5px] text-amber-800 dark:text-amber-400 font-extrabold mt-1">
                 Avg realization: ₹7,285/g
               </div>
             </div>
 
-            <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl">
-              <div className="text-slate-500 font-semibold text-[11px] uppercase">Total Silver Sold ({selectedPeriod})</div>
-              <div className="text-xl font-bold font-mono text-slate-800 mt-1">
+            <div className={`p-4 rounded-2xl border ${
+              isDark ? 'bg-slate-900/90 border-slate-500/40 text-white' : 'bg-slate-100 border-slate-300 text-slate-950 shadow-xs'
+            }`}>
+              <div className="text-slate-600 dark:text-slate-300 font-extrabold text-[11px] uppercase tracking-wider">
+                Total Silver Sold ({selectedPeriod})
+              </div>
+              <div className="text-xl font-black font-mono text-slate-950 dark:text-white mt-1.5">
                 {formatWeight(currentSold.silver_wt)}
               </div>
-              <div className="text-[10px] text-slate-500 font-medium mt-1">
+              <div className="text-[10.5px] text-slate-600 dark:text-slate-400 font-extrabold mt-1">
                 Avg rate: ₹86.50/g
               </div>
             </div>
 
-            <div className="bg-rose-50/80 border border-rose-200 p-4 rounded-xl">
-              <div className="text-slate-500 font-semibold text-[11px] uppercase">1gm Imitation Sold</div>
-              <div className="text-xl font-bold font-mono text-rose-800 mt-1">
+            <div className={`p-4 rounded-2xl border ${
+              isDark ? 'bg-slate-900/90 border-rose-500/40 text-white' : 'bg-rose-50 border-rose-300 text-slate-950 shadow-xs'
+            }`}>
+              <div className="text-slate-600 dark:text-slate-300 font-extrabold text-[11px] uppercase tracking-wider">
+                1gm Imitation Sold
+              </div>
+              <div className="text-xl font-black font-mono text-slate-950 dark:text-rose-300 mt-1.5">
                 {currentSold.imitation_qty} Pcs
               </div>
-              <div className="text-[10px] text-rose-700 font-medium mt-1">
+              <div className="text-[10.5px] text-rose-800 dark:text-rose-400 font-extrabold mt-1">
                 Fast-moving counter category
               </div>
             </div>
           </div>
 
           {/* Section 1: Most Demanded & Top Sold Ornaments */}
-          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs space-y-3">
-            <div className="flex justify-between items-center border-b border-slate-100 pb-2">
+          <div className={`border rounded-2xl p-4 sm:p-5 shadow-sm space-y-3.5 ${
+            isDark ? 'bg-slate-900/90 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
+          }`}>
+            <div className="flex justify-between items-center border-b border-black/10 dark:border-white/10 pb-2.5">
               <div className="flex items-center space-x-2">
-                <Flame className="w-4 h-4 text-amber-600" />
-                <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider">
+                <Flame className="w-4 h-4 text-amber-500" />
+                <h3 className="font-black text-xs uppercase tracking-wider text-slate-950 dark:text-white">
                   Most Demanded & Ornament-Wise Top Sold
                 </h3>
               </div>
-              <span className="text-[11px] text-slate-500">Ranked by Customer Inquiries & Counter Volume</span>
+              <span className="text-[11px] font-extrabold text-slate-600 dark:text-slate-400">
+                Ranked by Customer Inquiries & Counter Volume
+              </span>
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto border border-slate-300 dark:border-white/15 rounded-xl overflow-hidden">
               <table className="w-full text-left text-xs border-collapse">
-                <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
+                <thead className={`font-black border-b select-none ${
+                  isDark ? 'bg-white/10 border-white/15 text-white' : 'bg-slate-100 border-slate-300 text-slate-950'
+                }`}>
                   <tr>
-                    <th className="p-2.5">Ornament Name</th>
-                    <th className="p-2.5">Category</th>
-                    <th className="p-2.5 text-center">Customer Inquiries</th>
-                    <th className="p-2.5 text-center">Units Sold</th>
-                    <th className="p-2.5">Demand Meter</th>
-                    <th className="p-2.5 text-right">Status</th>
+                    <th className="p-3 border-r border-slate-200 dark:border-white/10">Ornament Name</th>
+                    <th className="p-3 border-r border-slate-200 dark:border-white/10">Category</th>
+                    <th className="p-3 border-r border-slate-200 dark:border-white/10 text-center">Customer Inquiries</th>
+                    <th className="p-3 border-r border-slate-200 dark:border-white/10 text-center">Units Sold</th>
+                    <th className="p-3 border-r border-slate-200 dark:border-white/10">Demand Meter</th>
+                    <th className="p-3 text-right">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-200 dark:divide-white/10">
                   {mostDemanded.map((it, idx) => {
                     const demandScore = Math.round((it.inquiries / 64) * 100);
                     return (
-                      <tr key={idx} className="hover:bg-slate-50/50">
-                        <td className="p-2.5 font-semibold text-slate-900">{it.name}</td>
-                        <td className="p-2.5">
-                          <span className="px-2 py-0.5 rounded bg-sky-100 text-blue-800 font-semibold text-[10px]">
+                      <tr key={idx} className={isDark ? 'hover:bg-white/5' : 'hover:bg-slate-50'}>
+                        <td className="p-3 border-r border-slate-200 dark:border-white/10 font-black text-slate-950 dark:text-white">{it.name}</td>
+                        <td className="p-3 border-r border-slate-200 dark:border-white/10">
+                          <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-950 dark:bg-blue-950/70 dark:text-blue-300 border border-blue-300 dark:border-blue-500/40 font-black text-[10.5px]">
                             {it.category}
                           </span>
                         </td>
-                        <td className="p-2.5 text-center font-mono font-bold text-blue-700">{it.inquiries}</td>
-                        <td className="p-2.5 text-center font-mono font-bold text-emerald-700">{it.sold}</td>
-                        <td className="p-2.5 w-48">
-                          <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                        <td className="p-3 border-r border-slate-200 dark:border-white/10 text-center font-mono font-black text-blue-800 dark:text-blue-300">{it.inquiries}</td>
+                        <td className="p-3 border-r border-slate-200 dark:border-white/10 text-center font-mono font-black text-emerald-800 dark:text-emerald-300">{it.sold}</td>
+                        <td className="p-3 border-r border-slate-200 dark:border-white/10 w-48">
+                          <div className="w-full bg-slate-200 dark:bg-white/15 rounded-full h-2.5 overflow-hidden">
                             <div
-                              className="bg-gradient-to-r from-amber-500 to-rose-500 h-2 rounded-full"
+                              className="bg-gradient-to-r from-amber-500 to-rose-500 h-2.5 rounded-full"
                               style={{ width: `${demandScore}%` }}
                             ></div>
                           </div>
                         </td>
-                        <td className="p-2.5 text-right font-medium">
-                          <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${
+                        <td className="p-3 text-right font-medium">
+                          <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-black border ${
                             it.stock_status.includes('Low Stock') || it.stock_status.includes('Restock')
-                              ? 'bg-rose-100 text-rose-700'
-                              : 'bg-emerald-100 text-emerald-800'
+                              ? 'bg-rose-100 text-rose-950 dark:bg-rose-950/70 dark:text-rose-300 border-rose-300 dark:border-rose-500/40'
+                              : 'bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40'
                           }`}>
                             {it.stock_status}
                           </span>
@@ -217,23 +245,27 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
           {/* Section 2: Top Suppliers & Top Job Workers (Karagirs) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Top Suppliers */}
-            <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs space-y-3">
-              <div className="flex items-center space-x-2 border-b border-slate-100 pb-2">
-                <Truck className="w-4 h-4 text-blue-600" />
-                <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider">
+            <div className={`border rounded-2xl p-4 sm:p-5 shadow-sm space-y-3.5 ${
+              isDark ? 'bg-slate-900/90 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
+            }`}>
+              <div className="flex items-center space-x-2 border-b border-black/10 dark:border-white/10 pb-2.5">
+                <Truck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <h3 className="font-black text-xs uppercase tracking-wider text-slate-950 dark:text-white">
                   Top Bullion & Ornament Suppliers
                 </h3>
               </div>
               <div className="space-y-2">
                 {topSuppliers.map((sup, idx) => (
-                  <div key={idx} className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 flex justify-between items-center">
+                  <div key={idx} className={`p-3 rounded-xl border flex justify-between items-center ${
+                    isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-300'
+                  }`}>
                     <div>
-                      <div className="font-bold text-slate-900">{sup.name}</div>
-                      <div className="text-[10px] text-slate-500">{sup.location} • {sup.orders} Lots Inwarded</div>
+                      <div className="font-black text-xs text-slate-950 dark:text-white">{sup.name}</div>
+                      <div className="text-[10.5px] font-bold text-slate-600 dark:text-slate-400 mt-0.5">{sup.location} • {sup.orders} Lots Inwarded</div>
                     </div>
                     <div className="text-right font-mono">
-                      <div className="font-bold text-blue-800">{formatWeight(sup.total_wt)}</div>
-                      <div className="text-[10px] text-emerald-700 font-bold">★ {sup.rating} Rating</div>
+                      <div className="font-black text-slate-950 dark:text-white text-xs">{formatWeight(sup.total_wt)}</div>
+                      <div className="text-[10.5px] text-emerald-800 dark:text-emerald-400 font-black">★ {sup.rating} Rating</div>
                     </div>
                   </div>
                 ))}
@@ -241,23 +273,27 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
             </div>
 
             {/* Top Job Workers (Karagirs) */}
-            <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs space-y-3">
-              <div className="flex items-center space-x-2 border-b border-slate-100 pb-2">
-                <Hammer className="w-4 h-4 text-amber-600" />
-                <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider">
+            <div className={`border rounded-2xl p-4 sm:p-5 shadow-sm space-y-3.5 ${
+              isDark ? 'bg-slate-900/90 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
+            }`}>
+              <div className="flex items-center space-x-2 border-b border-black/10 dark:border-white/10 pb-2.5">
+                <Hammer className="w-4 h-4 text-amber-500" />
+                <h3 className="font-black text-xs uppercase tracking-wider text-slate-950 dark:text-white">
                   Top Job Workers (Karagir Efficiency)
                 </h3>
               </div>
               <div className="space-y-2">
                 {topKaragirs.map((kg, idx) => (
-                  <div key={idx} className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 flex justify-between items-center">
+                  <div key={idx} className={`p-3 rounded-xl border flex justify-between items-center ${
+                    isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-300'
+                  }`}>
                     <div>
-                      <div className="font-bold text-slate-900">{kg.name}</div>
-                      <div className="text-[10px] text-slate-500">{kg.specialty} • {kg.jobs} Orders Completed</div>
+                      <div className="font-black text-xs text-slate-950 dark:text-white">{kg.name}</div>
+                      <div className="text-[10.5px] font-bold text-slate-600 dark:text-slate-400 mt-0.5">{kg.specialty} • {kg.jobs} Orders Completed</div>
                     </div>
                     <div className="text-right font-mono">
-                      <div className="text-[11px] font-bold text-slate-800">{kg.on_time}% On-Time</div>
-                      <div className="text-[10px] text-emerald-700 font-bold">Loss: {kg.loss_pct}% (A+ Grade)</div>
+                      <div className="text-xs font-black text-slate-950 dark:text-white">{kg.on_time}% On-Time</div>
+                      <div className="text-[10.5px] text-emerald-800 dark:text-emerald-400 font-black">Loss: {kg.loss_pct}% (A+ Grade)</div>
                     </div>
                   </div>
                 ))}
@@ -267,14 +303,16 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-xs">
-          <div className="text-slate-500">
+        <div className={`p-4 border-t flex justify-between items-center text-xs shrink-0 ${
+          isDark ? 'bg-[#070b14] border-white/10 text-slate-300' : 'bg-slate-50 border-slate-300 text-slate-700'
+        }`}>
+          <div className="font-extrabold text-slate-700 dark:text-slate-300">
             Export full reporting from <strong>Reports ➔ MIS Reports</strong> menu.
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow"
+            className="px-5 py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-black text-xs shadow-md cursor-pointer transition"
           >
             Close Analytics
           </button>

@@ -577,26 +577,30 @@ export const UserRoleManagementModal: React.FC<UserRoleManagementModalProps> = (
                     <div className="text-right">
                       {isUserOwner ? (
                         <div
-                          className="px-3 py-1.5 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-300 text-xs font-black flex items-center space-x-1.5 cursor-not-allowed"
+                          className={`px-3 py-1.5 rounded-xl border text-xs font-black flex items-center space-x-1.5 cursor-not-allowed ${
+                            isDark
+                              ? 'bg-amber-500/15 border-amber-400/40 text-amber-300'
+                              : 'bg-amber-100 border-amber-300 text-amber-950'
+                          }`}
                           title="The Owner role is permanently locked to prevent accidental lockouts."
                         >
-                          <Lock className="w-3.5 h-3.5 text-amber-400" />
+                          <Lock className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-amber-700'}`} />
                           <span>Owner (Role Locked)</span>
                         </div>
                       ) : (
                         <div className="flex items-center space-x-2">
-                          <span className="text-[11px] font-bold text-slate-400">Assign Role:</span>
+                          <span className={`text-[11px] font-bold ${isDark ? 'text-slate-400' : 'text-slate-700'}`}>Assign Role:</span>
                           <select
                             value={user.role}
                             onChange={(e) => handleRoleSelect(user, e.target.value as UserRole)}
                             className={`px-3 py-1.5 rounded-xl border text-xs font-extrabold cursor-pointer transition-all ${
                               user.role === 'Manager'
-                                ? 'bg-blue-600/20 border-blue-400 text-blue-400'
+                                ? isDark ? 'bg-blue-600/20 border-blue-400 text-blue-300' : 'bg-blue-100 border-blue-300 text-blue-950'
                                 : user.role === 'Cashier'
-                                ? 'bg-emerald-600/20 border-emerald-400 text-emerald-400'
+                                ? isDark ? 'bg-emerald-600/20 border-emerald-400 text-emerald-300' : 'bg-emerald-100 border-emerald-300 text-emerald-950'
                                 : user.role === 'Accountant'
-                                ? 'bg-purple-600/20 border-purple-400 text-purple-400'
-                                : 'bg-orange-600/20 border-orange-400 text-orange-400'
+                                ? isDark ? 'bg-purple-600/20 border-purple-400 text-purple-300' : 'bg-purple-100 border-purple-300 text-purple-950'
+                                : isDark ? 'bg-orange-600/20 border-orange-400 text-orange-300' : 'bg-orange-100 border-orange-300 text-orange-950'
                             }`}
                           >
                             <option value="Cashier">Cashier (POS & Daybook)</option>
