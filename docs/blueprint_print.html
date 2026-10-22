@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Swarna Jewellery ERP - Functional Blueprint</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    @page {
+      size: A4;
+      margin: 18mm 16mm 20mm 16mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: #0f172a;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Cover / Header Banner */
+    .blueprint-header {
+      border-bottom: 3px solid #b45309;
+      padding-bottom: 18px;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 22pt;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin-top: 0;
+      margin-bottom: 8px;
+      line-height: 1.25;
+      border-left: 6px solid #b45309;
+      padding-left: 14px;
+    }
+
+    h2 {
+      font-size: 15pt;
+      font-weight: 700;
+      color: #1e3a8a;
+      border-bottom: 1.5px solid #cbd5e1;
+      padding-bottom: 6px;
+      margin-top: 32px;
+      margin-bottom: 14px;
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-size: 12.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 24px;
+      margin-bottom: 10px;
+      page-break-after: avoid;
+    }
+
+    h4 {
+      font-size: 11.5pt;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      page-break-after: avoid;
+    }
+
+    p {
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+
+    ul, ol {
+      margin-top: 0;
+      margin-bottom: 12px;
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    strong {
+      color: #020617;
+      font-weight: 700;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid #e2e8f0;
+      margin: 28px 0;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px 0;
+      font-size: 9.5pt;
+      page-break-inside: avoid;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 700;
+      text-align: left;
+      padding: 8px 10px;
+      border: 1px solid #cbd5e1;
+      border-bottom: 2px solid #94a3b8;
+    }
+
+    td {
+      padding: 7px 10px;
+      border: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+
+    /* Code Blocks and Pre */
+    pre {
+      background-color: #090d16;
+      color: #f1f5f9;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+      font-size: 8.5pt;
+      line-height: 1.45;
+      overflow-x: auto;
+      border: 1px solid #1e293b;
+      margin: 14px 0;
+      page-break-inside: avoid;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+      font-size: 8.5pt;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 1.5px 5px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      border: none;
+      padding: 0;
+    }
+
+    /* Math Formula Blocks */
+    .math-block {
+      background-color: #fffdf5;
+      border-left: 4px solid #d97706;
+      border-top: 1px solid #fef3c7;
+      border-right: 1px solid #fef3c7;
+      border-bottom: 1px solid #fef3c7;
+      border-radius: 6px;
+      padding: 9px 15px;
+      margin: 12px 0 16px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 9.5pt;
+      color: #78350f;
+      page-break-inside: avoid;
+    }
+
+    .math-tag {
+      font-size: 7pt;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #b45309;
+      margin-bottom: 3px;
+    }
+
+    .math-inline {
+      background-color: #fef3c7;
+      color: #92400e;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 9pt;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    /* Badges & Tags */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+    }
+
+    /* Section Page Break rules */
+    h2 {
+      break-before: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>SWARNA JEWELLERY ERP — COMPLETE FUNCTIONAL &amp; ARCHITECTURAL BLUEPRINT</h1>
+<p><strong>Document Version:</strong> 2.0.0<br><strong>Classification:</strong> Enterprise Engineering Specification (UI-Agnostic)<br><strong>Scope:</strong> Complete functional workflows, state models, business calculations, data dictionaries, validation rules, relational schemas, and screen-by-screen operations. Zero details omitted.</p>
+<hr>
+<h2>TABLE OF CONTENTS</h2>
+<ol>
+<li><a href="#1-executive-domain-architecture">EXECUTIVE DOMAIN ARCHITECTURE</a><ul>
+<li>1.1 Multi-Branch &amp; Multi-Tenant Model</li>
+<li>1.2 Role-Based Access Control (RBAC) Matrix</li>
+<li>1.3 Jewellery Domain Units &amp; Precision Standards</li>
+<li>1.4 Dual-Ledger Principle (Financial Currency + Pure Metal Fine Weight)</li>
+</ul>
+</li>
+<li><a href="#2-mathematical--business-calculation-engines">MATHEMATICAL &amp; BUSINESS CALCULATION ENGINES</a><ul>
+<li>2.1 Net Weight Engine</li>
+<li>2.2 Fine Bullion Weight Engine</li>
+<li>2.3 Wastage &amp; Fine+Wastage Allowance</li>
+<li>2.4 Making Charges Engine (Per Gram vs Percentage of Value)</li>
+<li>2.5 Line Item Total &amp; Hallmarking (HUID) Fees</li>
+<li>2.6 Indian GST &amp; Statutory Tax Split (CGST/SGST/TDS/TCS)</li>
+<li>2.7 Old Gold (URD) Valuation, Touch Deduction &amp; Exchange Netting</li>
+<li>2.8 Refinery Inward Yield, Melting Loss/Profit &amp; Assayed vs Recovered Fine</li>
+<li>2.9 Multi-Karat Real-Time Bullion Pricing Engine</li>
+<li>2.10 Inventory Valuation Engine (Market Spot, Acquisition Cost, WAC)</li>
+</ul>
+</li>
+<li><a href="#3-exhaustive-screen-by-screen-functional-specifications">EXHAUSTIVE SCREEN-BY-SCREEN FUNCTIONAL SPECIFICATIONS</a><ul>
+<li>3.1 Authentication &amp; Staff Session Management</li>
+<li>3.2 Executive Dashboard &amp; Bullion Analytics Hub</li>
+<li>3.3 Account Master (Chart of Accounts &amp; POS Surcharges)</li>
+<li>3.4 Vendor / Supplier Master Management</li>
+<li>3.5 Karagir / Artisan Master Management</li>
+<li>3.6 Item Creation Master &amp; Batch-to-Piece Division</li>
+<li>3.7 Barcode Tagging Studio &amp; Thermal Print Spooler</li>
+<li>3.8 New Order Booking (7 Sub-Modules)<ul>
+<li>3.8.1 Order Booking &amp; Advance Ledger</li>
+<li>3.8.2 Submit Order to Karagir</li>
+<li>3.8.3 Issue Raw Material to Karagir</li>
+<li>3.8.4 Receive Order &amp; Metal Return from Karagir</li>
+<li>3.8.5 Convert Order to Final Sales Invoice</li>
+<li>3.8.6 Order Status Register &amp; Delivery Tracking</li>
+<li>3.8.7 Customer Advance Management</li>
+</ul>
+</li>
+<li>3.9 Counter POS &amp; Sales Invoicing</li>
+<li>3.10 Purchase Invoicing &amp; Inward Consignments (7 Sub-Modules)<ul>
+<li>3.10.1 Supplier Profile Verification</li>
+<li>3.10.2 Purchase Bill Entry</li>
+<li>3.10.3 Payment &amp; Tax Settlement</li>
+<li>3.10.4 Supplier Ledger Statement</li>
+<li>3.10.5 Account-Cum-Stock Dual Statement</li>
+<li>3.10.6 Purchase Approval Consignment</li>
+<li>3.10.7 Stock-Cash (Vadhgat) Metal Debt Settlement</li>
+</ul>
+</li>
+<li>3.11 Refinery Inward &amp; Scrap Processing (5 Sub-Modules)<ul>
+<li>3.11.1 Refinery Record Setup</li>
+<li>3.11.2 Material Inward Lines &amp; Assay Yield</li>
+<li>3.11.3 Refinery Outward Tracking</li>
+<li>3.11.4 Account-Cum-Stock Refinery Reconciliation</li>
+<li>3.11.5 Weight Reconciliation Summary</li>
+</ul>
+</li>
+<li>3.12 Day Book &amp; 12-Column EOD Audit Register</li>
+<li>3.13 Book Display (9 Financial &amp; Debtor Registers)</li>
+<li>3.14 Account Display (Double-Entry Statement)</li>
+<li>3.15 Stock Inventory Report &amp; Valuation Register</li>
+<li>3.16 Stock Refill &amp; Automated Replenishment Manager</li>
+<li>3.17 Swarna Nidhi (Monthly Gold Savings / Bhishi Scheme)</li>
+<li>3.18 Showroom Messenger &amp; WhatsApp Notification Engine</li>
+<li>3.19 Backup &amp; Disaster Recovery Manager</li>
+<li>3.20 Field Dictionary &amp; Data Mapping</li>
+<li>3.21 System Settings &amp; Showroom Profile</li>
+<li>3.22 AI Copilot &amp; Semantic Tool Calling Engine</li>
+</ul>
+</li>
+<li><a href="#4-complete-relational-database-schema">COMPLETE RELATIONAL DATABASE SCHEMA (POSTGRESQL / SUPABASE DDL)</a></li>
+<li><a href="#5-integration-hardware--api-specifications">INTEGRATION, HARDWARE &amp; API SPECIFICATIONS</a><ul>
+<li>5.1 Weighing Scale RS232/USB Serial Protocol</li>
+<li>5.2 Barcode/RFID Scanner Emulation</li>
+<li>5.3 Thermal Label Printer Protocols (TSPL / ZPL / ESC-POS)</li>
+<li>5.4 WhatsApp Business Cloud API &amp; Web Dispatch</li>
+<li>5.5 Bullion Spot Rate Poller &amp; IBJA/MCX Integration</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>1. EXECUTIVE DOMAIN ARCHITECTURE</h2>
+<h3>1.1 Multi-Branch &amp; Multi-Tenant Model</h3>
+<p>The application operates in a hierarchical multi-branch environment:</p>
+<ul>
+<li><strong>Consolidated Node (<code>all</code>)</strong>: Executive consolidated view that aggregates stock, financials, receivables, and transactions across all branches without cross-polluting physical inventory.</li>
+<li><strong>Branch Nodes (<code>mumbai</code>, <code>pune</code>, <code>thane</code>, <code>workshop_unit</code>)</strong>:<ul>
+<li>Each branch maintains an independent physical stock vault, daily cash drawers, bank account allocations, and staff shifts.</li>
+<li>Every transaction (Sale, Purchase, Order, Voucher) carries an immutable <code>branch_id</code>.</li>
+<li>Stock transfers between branches require an Outward Challan at the originating branch and an Inward Verification Challan at the receiving branch.</li>
+</ul>
+</li>
+</ul>
+<h3>1.2 Role-Based Access Control (RBAC) Matrix</h3>
+<p>Permissions determine access to API endpoints, database operations, and system views:</p>
+<table>
+<thead>
+<tr>
+<th>Module / View</th>
+<th align="center">Owner</th>
+<th align="center">Manager</th>
+<th align="center">Cashier</th>
+<th align="center">Accountant</th>
+<th align="center">Karagir</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Executive Dashboard &amp; Valuation Simulator</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Read-Only</td>
+<td align="center">Read-Only</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Account Master</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Vendor / Supplier Master</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+<td align="center">Read-Only</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Karagir / Artisan Master</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+<td align="center">Read-Only</td>
+<td align="center">Read-Only (Self)</td>
+</tr>
+<tr>
+<td><strong>Item Creation &amp; Master Stock</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Barcode Studio &amp; Label Spooler</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Read/Print</td>
+<td align="center">Denied</td>
+<td align="center">Read/Print</td>
+</tr>
+<tr>
+<td><strong>New Order Booking</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Create/View</td>
+<td align="center">Create/View</td>
+<td align="center">Read (Assigned)</td>
+</tr>
+<tr>
+<td><strong>Sales Invoicing &amp; POS Billing</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Purchase Invoicing</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+<td align="center">Create/View</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Refinery Inward / Outward</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+<td align="center">Create/View</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Day Book &amp; Cashflow</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">View Counter</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Book Display (9 Registers &amp; Debtors)</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Stock Inventory Report</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">View Tags</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Stock Refill Hub</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+<td align="center">Read (Orders)</td>
+</tr>
+<tr>
+<td><strong>Gold Scheme (Swarna Nidhi)</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Payments</td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Showroom Messenger (WhatsApp)</strong></td>
+<td align="center">Full</td>
+<td align="center">Full</td>
+<td align="center">Customer Only</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Backup &amp; Cloud Sync</strong></td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Staff &amp; User Role Management</strong></td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+</tr>
+<tr>
+<td><strong>Field Dictionary &amp; System Config</strong></td>
+<td align="center">Full</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+<td align="center">Denied</td>
+</tr>
+</tbody></table>
+<h3>1.3 Jewellery Domain Units &amp; Precision Standards</h3>
+<ul>
+<li><strong>Weights</strong>:<ul>
+<li>Gold, Silver, Platinum, Raw Metals: Stored in <strong>Grams (<code>g</code>)</strong> with <strong>3 decimal places</strong> of precision (milligram accuracy, e.g., <code>12.345 g</code>).</li>
+<li>Diamonds &amp; Precious Gems: Stored in <strong>Carats (<code>cts</code>)</strong> with <strong>2 decimal places</strong> (<code>1 ct = 0.200 g</code>).</li>
+<li>Pearls / Beads: Stored in <strong>Carats</strong> or <strong>Grams</strong>.</li>
+</ul>
+</li>
+<li><strong>Financial Currencies</strong>:<ul>
+<li>Stored in <strong>INR (₹)</strong> with <strong>2 decimal places</strong> (<code>0.01</code> paisa resolution).</li>
+<li>All intermediary multipliers maintain IEEE 754 double precision and are explicitly rounded to 2 decimal places using Banker&#39;s Rounding or standard arithmetic rounding with epsilon protection: <code>Math.round((val + Number.EPSILON) * 100) / 100</code>.</li>
+</ul>
+</li>
+<li><strong>Purity / Fineness</strong>:<ul>
+<li>Expressed as percentage (<code>%</code>) to <strong>2 decimal places</strong> (e.g., <code>91.60%</code> for 22K, <code>75.00%</code> for 18K, <code>99.90%</code> for 24K, <code>92.50%</code> for Sterling Silver).</li>
+<li>Or Karat format: <code>24K</code>, <code>22K</code>, <code>18K</code>, <code>14K</code>, <code>9K</code>.</li>
+</ul>
+</li>
+<li><strong>Hallmark Identifiers</strong>:<ul>
+<li>BIS HUID: Exactly <strong>6-character alphanumeric string</strong> (e.g., <code>AB1234</code>), validated against regex <code>^[A-Z0-9]{6}$</code>.</li>
+</ul>
+</li>
+</ul>
+<h3>1.4 Dual-Ledger Principle (Financial Currency + Pure Metal Fine Weight)</h3>
+<p>In the bullion and jewellery industry, accounts with suppliers, refineries, and artisans are maintained across <strong>two concurrent ledgers</strong>:</p>
+<ol>
+<li><strong>Cash / Financial Ledger</strong>: Monetary credits and debits (<code>₹ Dr</code> / <code>₹ Cr</code>).</li>
+<li><strong>Metal Ledger</strong>: Pure bullion weight (<code>Fine Grams Dr</code> / <code>Fine Grams Cr</code>).<ul>
+<li>A supplier can be owed <code>₹1,50,000</code> in labor/making charges AND <code>150.250 g</code> of 24K pure gold.</li>
+<li>Payments can be settled either by currency wire (RTGS/NEFT/Cash) or by physical bullion bar delivery (Vadhgat settlement).</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>2. MATHEMATICAL &amp; BUSINESS CALCULATION ENGINES</h2>
+<h3>2.1 Net Weight Engine</h3>
+<p>The net weight represents the chargeable precious metal content after subtracting non-metallic additions:</p>
+<div class="math-block"><div class="math-tag">FORMULA</div>Net Weight = max(0, Gross Weight - Black Beads Weight - Stone Weight - Bag Weight)</div>
+- **Inputs**:
+  - `gross_wt` (Decimal, 3 decimals, mandatory)
+  - `black_beats` (Decimal, 3 decimals, optional, default 0) — used specifically for Mangalsutras
+  - `stone_wt` (Decimal, 3 decimals, optional, default 0) — cz, semi-precious, synthetic stones
+  - `bag_wt` (Decimal, 3 decimals, optional, default 0) — packaging or tag wire deduction
+- **Output**: `net_wt` (Decimal, 3 decimals)
+- **Constraint**: Must be <span class="math-inline"> ≤  gross_wt</span>. If negative, triggers validation error: `ERR_INVALID_NET_WEIGHT`.<h3>2.2 Fine Bullion Weight Engine</h3>
+<p>The pure 24K equivalent weight contained within an alloyed piece:</p>
+<div class="math-block"><div class="math-tag">FORMULA</div>Fine Weight = (Net Weight  ×  Purity ÷ 100)</div>
+- **Inputs**:
+  - `net_wt` (Decimal, 3 decimals)
+  - `purity` (Decimal, 2 decimals, e.g. 91.60)
+- **Output**: `fine_wt` (Decimal, 3 decimals)<h3>2.3 Wastage &amp; Fine+Wastage Allowance</h3>
+<p>Artisans and manufacturers incur metal loss during casting, filing, soldering, and polishing. In wholesale purchasing, wastage is credited to the supplier:</p>
+<div class="math-block"><div class="math-tag">FORMULA</div>Wastage Allowance (g) = (Net Weight  ×  Wastage% ÷ 100)</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Fine + Wastage (g) = Fine Weight + Wastage Allowance (g)</div>
+- **Inputs**:
+  - `net_wt`, `purity`, `wastage_pct`
+- **Output**: `fin_plus_wastage` (Decimal, 3 decimals)
+- **Usage**: Used to debit the showroom's metal ledger when purchasing from manufacturers.<h3>2.4 Making Charges Engine (Per Gram vs Percentage of Value)</h3>
+<p>Making charges represent the fabrication fee. The system supports three computational modes:</p>
+<ol>
+<li><strong>Per Gram Basis</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Making Amount = Net Weight  ×  Making Rate per Gram</div></li>
+<li><strong>Percentage of Metal Value</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Metal Value = Net Weight  ×  Gold Rate per Gram</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Making Amount = (Metal Value  ×  Making% ÷ 100)</div></li>
+<li><strong>Hybrid Mode</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Making Amount = (Net Weight  ×  Making Rate per Gram) + ((Metal Value  ×  Making% ÷ 100))</div></li>
+</ol>
+<ul>
+<li><strong>Output</strong>: <code>mkg_amt</code> (Decimal, 2 decimals)</li>
+</ul>
+<h3>2.5 Line Item Total &amp; Hallmarking (HUID) Fees</h3>
+<div class="math-block"><div class="math-tag">FORMULA</div>Line Item Amount = (Net Weight  ×  Rate) + Stone Amount + Making Amount + Hallmark Charges</div>
+- **Inputs**:
+  - `net_wt` (Decimal, 3 decimals)
+  - `rate` (Decimal, 2 decimals)
+  - `stone_amt` (Decimal, 2 decimals)
+  - `mkg_amt` (Decimal, 2 decimals)
+  - `hallmark_charges` (Decimal, 2 decimals, standard ₹45 per BIS HUID article)
+- **Output**: `item_amt` / `total_amt` (Decimal, 2 decimals)<h3>2.6 Indian GST &amp; Statutory Tax Split (CGST/SGST/TDS/TCS)</h3>
+<ul>
+<li><strong>Standard Jewellery GST Rate</strong>: 3.00%<ul>
+<li><strong>Intra-State Transaction</strong> (Showroom State = Customer/Vendor State):<ul>
+<li><strong>CGST (Central GST / MGST)</strong> = 1.50%</li>
+<li><strong>SGST (State GST / HGST)</strong> = 1.50%</li>
+</ul>
+</li>
+<li><strong>Inter-State Transaction</strong> (Showroom State <span class="math-inline"> ≠ </span> Customer/Vendor State):<ul>
+<li><strong>IGST (Integrated GST)</strong> = 3.00%</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Income Tax TDS (Section 194Q)</strong>: 0.10% on purchases exceeding ₹50 Lakhs.</li>
+<li><strong>Income Tax TCS (Section 206C(1H))</strong>: 0.10% (or 0.075%) on sales receipts exceeding ₹50 Lakhs in a financial year.</li>
+<li><strong>Formulas</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>CGST Amount = (Taxable Subtotal  ×  1.5 ÷ 100)</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>SGST Amount = (Taxable Subtotal  ×  1.5 ÷ 100)</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>GST Total = CGST Amount + SGST Amount</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>TDS Amount = (Taxable Subtotal  ×  TDS% ÷ 100)</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>TCS Amount = ((Taxable Subtotal + GST Total)  ×  TCS% ÷ 100)</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Final Invoice Bill Amount = Taxable Subtotal + GST Total + TCS Amount - Discount</div></li>
+</ul>
+<h3>2.7 Old Gold (URD) Valuation, Touch Deduction &amp; Exchange Netting</h3>
+<p>When a customer trades in old jewellery (Unregistered Dealer / URD purchase):</p>
+<div class="math-block"><div class="math-tag">FORMULA</div>Old Gold Net Wt = Gross Wt - Dust/Enamel/Stone Loss</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Assayed Fine Wt = (Old Gold Net Wt  ×  Tested Touch/Purity ÷ 100)</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Old Gold Valuation Amount = Assayed Fine Wt  ×  Current 24K Bullion Buyback Rate</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Net Payable by Customer = New Jewellery Invoice Total - Old Gold Valuation Amount - Advance Payments</div><h3>2.8 Refinery Inward Yield, Melting Loss/Profit &amp; Assayed vs Recovered Fine</h3>
+<p>When scrap lots are sent to a refinery:</p>
+<div class="math-block"><div class="math-tag">FORMULA</div>Theoretical Fine Weight = (Inward Net Weight  ×  Assayed Touch ÷ 100)</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Variance = Actual Pure 24K Bar Recovered - Theoretical Fine Weight</div>
+- If <span class="math-inline">Variance < 0</span>:
+  <div class="math-block"><div class="math-tag">FORMULA</div>Refinery Melting Loss = |Variance|</div>
+  <div class="math-block"><div class="math-tag">FORMULA</div>Refinery Profit = 0</div>
+- If <span class="math-inline">Variance > 0</span>:
+  <div class="math-block"><div class="math-tag">FORMULA</div>Refinery Profit = Variance</div>
+  <div class="math-block"><div class="math-tag">FORMULA</div>Refinery Melting Loss = 0</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Refining Charges = Gross Weight Melted  ×  Refinery Melting Fee per Gram</div><h3>2.9 Multi-Karat Real-Time Bullion Pricing Engine</h3>
+<p>From the baseline 24K Gold Spot Rate and Silver 999 Rate:</p>
+<ul>
+<li><strong>Gold 24K (999.0)</strong>: <span class="math-inline">Base 24K + Showroom Markup</span></li>
+<li><strong>Gold 22K (916.0)</strong>: <span class="math-inline">Gold 24K  ×  0.916</span></li>
+<li><strong>Gold 18K (750.0)</strong>: <span class="math-inline">Gold 24K  ×  0.750</span></li>
+<li><strong>Gold 14K (585.0)</strong>: <span class="math-inline">Gold 24K  ×  0.585</span></li>
+<li><strong>Gold 24K Tola (10g)</strong>: <span class="math-inline">Gold 24K  ×  10</span></li>
+<li><strong>Gold 22K Tola (10g)</strong>: <span class="math-inline">Gold 22K  ×  10</span></li>
+<li><strong>Silver 999 (Pure)</strong>: <span class="math-inline">Base Silver + Showroom Markup</span></li>
+<li><strong>Silver 925 (Sterling)</strong>: <span class="math-inline">Silver 999  ×  0.925</span></li>
+<li><strong>Silver Bar (1 Kg)</strong>: <span class="math-inline">Silver 999  ×  1000</span></li>
+</ul>
+<h3>2.10 Inventory Valuation Engine</h3>
+<p>The system supports three dynamic inventory valuation models for the stock vault:</p>
+<ol>
+<li><strong>Market Spot Valuation</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Vault Valuation = ∑ (Item Fine Weight  ×  Live 24K Spot Rate)</div></li>
+<li><strong>Acquisition Cost Valuation</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Vault Valuation = ∑ (Item Inward Purchase Cost)</div></li>
+<li><strong>Weighted Average Cost (WAC)</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>WAC Rate = (Total Valuation of Current Stock + Valuation of New Inward Lot ÷ Total Fine Weight in Vault)</div></li>
+</ol>
+<hr>
+<h2>3. EXHAUSTIVE SCREEN-BY-SCREEN FUNCTIONAL SPECIFICATIONS</h2>
+<h3>3.1 Authentication &amp; Staff Session Management</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>AUTH_LOGIN</code></li>
+<li><strong>Purpose</strong>: Authenticates staff members, enforces branch context, loads user roles, and grants access tokens.</li>
+<li><strong>Inputs</strong>:<ul>
+<li><code>employee_code</code> (String, e.g. <code>OWNER-01</code>, <code>CASH-101</code>, mandatory)</li>
+<li><code>password</code> (String, masked, mandatory)</li>
+<li><code>branch_selection</code> (Dropdown: <code>All Branches</code>, <code>Mumbai</code>, <code>Pune</code>, <code>Thane</code>)</li>
+</ul>
+</li>
+<li><strong>Validations</strong>:<ul>
+<li>Employee code must exist and status must be <code>Active</code>.</li>
+<li>Non-owner roles cannot select <code>All Branches</code> (locked to their assigned showroom).</li>
+</ul>
+</li>
+<li><strong>Outputs &amp; Side Effects</strong>:<ul>
+<li>Emits <code>AuthUser</code> object (<code>code</code>, <code>name</code>, <code>role</code>, <code>branchId</code>, <code>token</code>).</li>
+<li>Stores authenticated session in secure local storage / session cookie.</li>
+<li>Triggers the <strong>Stock Refill Daily Alert Modal</strong> if the user is an Owner or Manager logging in for the first time that calendar day.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>3.2 Executive Dashboard &amp; Bullion Analytics Hub</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>VIEW_DASHBOARD</code></li>
+<li><strong>Purpose</strong>: Unified command center providing executive visibility over real-time finances, bullion vault valuation, sales velocity, branch comparison, and active notices.</li>
+<li><strong>Components &amp; Calculations</strong>:<ol>
+<li><strong>Top Header &amp; Live Ticker</strong>:<ul>
+<li>Displays live rates for 24K, 22K 916, 18K, Silver 999, Silver 925, and daily % delta.</li>
+<li>Controls for Branch Filter (<code>all</code>, <code>mumbai</code>, <code>pune</code>, <code>thane</code>).</li>
+<li>Action buttons: Quick Sales Invoice, New Order Booking, New Purchase Inward, Stock Refill Hub, Bullion Rates Center, AI Copilot, Full Analytics.</li>
+</ul>
+</li>
+<li><strong>Top 7 KPI Metric Cards</strong>:<ul>
+<li><code>Cash in Hand</code>: Current physical counter cash = <span class="math-inline">Opening Cash + Cash Received - Cash Paid</span>.</li>
+<li><code>Bank Balances</code>: Sum of all active bank account ledger balances minus OD/CC credit line drawdowns.</li>
+<li><code>Gross Sales Today</code>: Total invoice value generated on current date + total gold grams sold.</li>
+<li><code>Gross Purchases Today</code>: Inward metal value + purchase grams.</li>
+<li><code>Active In-flight Orders</code>: Total pending customer custom orders in workshop pipeline.</li>
+<li><code>Walk-in Clients &amp; Footfall</code>: Showroom visitor counter and counter conversion rate (<span class="math-inline">(Invoices Generated ÷ Total Visitors)  ×  100</span>).</li>
+<li><code>Total Vault Stock Valuation</code>: Current monetary value of inventory at live spot rate.</li>
+</ul>
+</li>
+<li><strong>Bullion Valuation Simulator</strong>:<ul>
+<li>Inputs: User adjusts a dynamic slider or input box for <code>Simulated 24K Rate</code>.</li>
+<li>Derives <code>Simulated 22K Rate</code> <span class="math-inline">= Simulated 24K Rate  ×  0.916</span>.</li>
+<li>Computes:<div class="math-block"><div class="math-tag">FORMULA</div>Projected Vault Value = Total Vault Pure Gold (g)  ×  Simulated 24K Rate</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Simulated Valuation Delta = Projected Vault Value - Base Valuation at Acquisition</div></li>
+</ul>
+</li>
+<li><strong>Multi-Branch Velocity Comparison</strong>:<ul>
+<li>Renders comparative performance metrics across Mumbai Flagship, Pune Camp, and Thane West branches:<ul>
+<li>Revenue (₹)</li>
+<li>Metal Sold (Grams)</li>
+<li>Customer Footfall</li>
+<li>Cash vs Digital Tender Ratio</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Current Stock Vault Breakdown</strong>:<ul>
+<li>5 Category Cards:<ol>
+<li>Pure Gold (999.0)</li>
+<li>Pure Silver (999.0)</li>
+<li>916 Hallmarked Jewellery</li>
+<li>URD / Old Scrap Gold</li>
+<li>1gm Imitation &amp; Silver Articles</li>
+</ol>
+</li>
+<li>For each category: Displays Gross Weight, Net Weight, Fine Metal Weight, and Live Value.</li>
+</ul>
+</li>
+<li><strong>Sales &amp; Invoicing Command Center / Tender Mix</strong>:<ul>
+<li>Real-time aggregation of counter payment channels:<ul>
+<li>UPI (PhonePe, GPay, Paytm)</li>
+<li>Card (Debit / Credit)</li>
+<li>Cash</li>
+<li>Bank Wire (NEFT / RTGS / IMPS)</li>
+</ul>
+</li>
+<li>Displays amount and percentage contribution of each tender mode.</li>
+</ul>
+</li>
+<li><strong>Showroom Alerts &amp; Notice Feed</strong>:<ul>
+<li><code>Order Delivery Due Today</code>: Lists orders where <code>delivery_date = CurrentDate</code> with customer name, phone, balance due, and &quot;View Job Card&quot; action.</li>
+<li><code>Debtor Balance Due</code>: Alerts on customers exceeding credit days or credit limit, with pending monetary amount and pending pure gold grams.</li>
+<li><code>Customer Birthday &amp; Anniversary Today</code>: Automated trigger with &quot;Send WhatsApp Greeting&quot; button.</li>
+<li><code>Swarna Nidhi Scheme Maturity</code>: Alerts for members who completed 11 installments and are eligible for redemption.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3>3.3 Account Master (Chart of Accounts &amp; POS Surcharges)</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>MASTER_ACCOUNTS</code></li>
+<li><strong>Purpose</strong>: Maintains the chart of accounts for double-entry bookkeeping, customers, suppliers, banks, tax heads, and expense categories.</li>
+<li><strong>Fields</strong>:<ul>
+<li><code>account_code</code> (String, unique primary key, e.g. <code>CUST-101</code>, <code>BANK-01</code>)</li>
+<li><code>account_name</code> (String, legal/trade name, mandatory)</li>
+<li><code>account_type</code> (Enum: <code>Assets</code>, <code>Liabilities</code>, <code>Income</code>, <code>Expense</code>)</li>
+<li><code>account_group</code> (Enum: <code>Cash Account</code>, <code>Bank Accounts</code>, <code>Sundry Debtors</code>, <code>Sundry Creditors</code>, <code>CGST</code>, <code>SGST</code>, <code>IGST</code>, <code>Sales Account</code>, <code>Purchase Account</code>, <code>Making Charges Income</code>, <code>Refinery Expense</code>, <code>General Expense</code>)</li>
+<li><code>opening_balance</code> (Decimal, 2 decimals)</li>
+<li><code>balance_type</code> (Enum: <code>Dr</code> [Receivable / Asset / Expense], <code>Cr</code> [Payable / Liability / Income])</li>
+<li><code>card_charges</code> (Object):<ul>
+<li><code>enabled</code> (Boolean)</li>
+<li><code>for_customer_pct</code> (Decimal, surcharge passed to customer, e.g. 1.5%)</li>
+<li><code>for_us_pct</code> (Decimal, merchant discount rate absorbed by showroom, e.g. 1.2%)</li>
+</ul>
+</li>
+<li><code>phone</code> (String, 10-digit mobile)</li>
+<li><code>area</code> (String, locality/city)</li>
+</ul>
+</li>
+<li><strong>Operations</strong>: Create Account, Edit Account, Search &amp; Filter by Group, Delete Account (prevented if ledger entries exist).</li>
+</ul>
+<hr>
+<h3>3.4 Vendor / Supplier Master Management</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>MASTER_VENDORS</code></li>
+<li><strong>Purpose</strong>: Comprehensive vendor registry for bullion dealers, casting units, manufacturers, diamond merchants, and hallmarking centers.</li>
+<li><strong>Fields</strong>:<ul>
+<li><code>vendor_code</code> (String, unique, e.g. <code>SUP-101</code>)</li>
+<li><code>vendor_name</code> (String, company name, mandatory)</li>
+<li><code>contact_person</code> (String)</li>
+<li><code>phone</code>, <code>email</code> (Strings)</li>
+<li><code>gstin</code> (String, 15-character Indian GST identification number, format: <code>^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$</code>)</li>
+<li><code>pan_no</code> (String, 10-character PAN, format: <code>^[A-Z]{5}[0-9]{4}[A-Z]{1}$</code>)</li>
+<li><code>city</code>, <code>state</code>, <code>address</code>, <code>pincode</code> (Strings)</li>
+<li><code>vendor_type</code> (Enum: <code>Bullion Dealer</code>, <code>Manufacturer / Karigar</code>, <code>Casting Unit</code>, <code>Diamond Merchant</code>, <code>Silver Artisan</code>, <code>Wholesaler</code>, <code>Packaging &amp; Others</code>)</li>
+<li><code>bank_name</code>, <code>bank_account_no</code>, <code>ifsc_code</code>, <code>branch_name</code> (Strings)</li>
+<li><code>credit_limit</code> (Decimal, ₹ max allowable debt)</li>
+<li><code>credit_days</code> (Integer, credit payment terms)</li>
+<li><strong>Dual Opening Balances</strong>:<ul>
+<li><code>opening_balance_cash</code> (Decimal, ₹)</li>
+<li><code>balance_type</code> (<code>Cr</code> [We owe vendor], <code>Dr</code> [Vendor owes us / advance])</li>
+<li><code>opening_balance_gold_fine_gm</code> (Decimal, 3 decimals, pure 24K gold balance)</li>
+<li><code>opening_balance_silver_fine_gm</code> (Decimal, 3 decimals, pure silver balance)</li>
+</ul>
+</li>
+<li><code>status</code> (<code>Active</code> / <code>Inactive</code>)</li>
+</ul>
+</li>
+<li><strong>Operations</strong>:<ul>
+<li>Add / Update Vendor Profile.</li>
+<li>View Live Vendor Ledger (Financial ₹ and Fine Metal Grams).</li>
+<li>Quick WhatsApp Contact link.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>3.5 Karagir / Artisan Master Management</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>MASTER_KARAGIRS</code></li>
+<li><strong>Purpose</strong>: Manages goldsmiths, job-workers, setters, and workshops executing custom manufacture and repairs.</li>
+<li><strong>Fields</strong>:<ul>
+<li><code>karagir_code</code> (String, unique, e.g. <code>KARA-101</code>)</li>
+<li><code>karagir_name</code> (String, mandatory)</li>
+<li><code>specialty</code> (Enum: <code>Mangalsutra &amp; Antique Filigree</code>, <code>Bangles, Kada &amp; CNC Machine</code>, <code>Nakas, Temple Jewellery &amp; Choker</code>, <code>Casting Rings, Solitaires &amp; Studs</code>, <code>Micro-Prong Setting &amp; Rhodium</code>, <code>Plain Gold Chains &amp; Kolhapuri Saaj</code>, <code>Silver Articles &amp; Utensils</code>, <code>Diamond Setting Specialist</code>, <code>General Goldsmith</code>)</li>
+<li><code>workshop_name</code>, <code>address</code>, <code>city</code>, <code>state</code>, <code>pincode</code> (Strings)</li>
+<li><code>phone</code>, <code>pan_no</code>, <code>gstin</code> (Strings)</li>
+<li><code>default_making_rate_per_gm</code> (Decimal, standard making fee charged by this artisan)</li>
+<li><code>default_wastage_pct</code> (Decimal, agreed melting/working wastage % allowance)</li>
+<li><strong>Running Metal Balance</strong>:<ul>
+<li><code>opening_balance_gold_fine_gm</code> (Decimal, pure gold weight currently in artisan&#39;s possession)</li>
+<li><code>opening_balance_silver_fine_gm</code> (Decimal)</li>
+<li><code>opening_balance_cash</code> (Decimal, ₹ advance or unpaid labor dues)</li>
+<li><code>balance_type</code> (<code>Cr</code> / <code>Dr</code>)</li>
+</ul>
+</li>
+<li><code>bank_name</code>, <code>account_no</code>, <code>ifsc</code>, <code>branch</code> (Strings)</li>
+<li><code>active_jobs_count</code> (Integer, computed live from open orders assigned)</li>
+</ul>
+</li>
+<li><strong>Operations</strong>:<ul>
+<li>Create / Edit Karagir.</li>
+<li>Issue Metal Voucher.</li>
+<li>View Karagir Job History &amp; Loss Ratio Performance.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>3.6 Item Creation Master &amp; Batch-to-Piece Division</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>MASTER_ITEM_CREATION</code></li>
+<li><strong>Purpose</strong>: Defines master jewellery design catalogs and performs the critical <strong>Batch-to-Piece Stock Division</strong> (breaking down a bulk lot into individual tagged pieces).</li>
+<li><strong>Sub-Tabs</strong>:<ol>
+<li><strong>Create Item Definition</strong>:<ul>
+<li><code>item_name</code> (String, e.g. <code>22K 916 Casted Royal Floral Ring</code>)</li>
+<li><code>item_type</code> (Enum: <code>Ring</code>, <code>Chain</code>, <code>Bangle</code>, <code>Necklace</code>, <code>Mangalsutra</code>, <code>Earring</code>, <code>Coin</code>, <code>Payal</code>, <code>Kada</code>, <code>Pendant</code>, <code>Bracelet</code>)</li>
+<li><code>item_group</code> (Enum: <code>Gold</code>, <code>Silver</code>, <code>1gm Imitation</code>, <code>URD Gold</code>, <code>URD Silver</code>, <code>Diamond</code>, <code>Platinum</code>)</li>
+<li><code>design</code> (Enum: <code>Casted</code>, <code>Handmade</code>, <code>Laser Cut</code>, <code>Filigree</code>, <code>Antique</code>, <code>Plain</code>, <code>Studded</code>)</li>
+<li><code>weight_or_qty</code> (<code>Weight</code> [Precious metals] / <code>QTY</code> [Imitation / Articles])</li>
+<li><code>total_stock_weight</code> (Decimal, 3 decimals, bulk lot weight received from mint/artisan)</li>
+<li><code>remaining_weight</code> (Decimal, 3 decimals, remaining bulk weight available to be converted into tagged pieces)</li>
+<li><code>image_url</code> (Sample ornament design image)</li>
+</ul>
+</li>
+<li><strong>Opening Stock / Batch Division Engine</strong>:<ul>
+<li>Select master item from catalog.</li>
+<li>Adds individual piece rows:<ul>
+<li><code>qty</code> (Integer, default 1)</li>
+<li><code>gross_wt</code> (Decimal, 3 decimals)</li>
+<li><code>black_beats</code>, <code>stone_wt</code>, <code>bag_wt</code> (Decimals, 3 decimals)</li>
+<li><code>diamond_cts</code> (Decimal, 2 decimals)</li>
+<li><code>purity</code> (Decimal, e.g. 91.6)</li>
+<li><code>size</code> (String, e.g. <code>14</code>, <code>2-4</code>, <code>18 inches</code>)</li>
+<li><code>tag_no</code> (Auto-generated unique serial, e.g. <code>OPN-88201</code>)</li>
+</ul>
+</li>
+<li><strong>Calculations &amp; Validations</strong>:<ul>
+<li>Automatically calculates <span class="math-inline">Net Wt</span> and <span class="math-inline">Fine Wt</span>.</li>
+<li>Enforces <strong>Conservation of Mass</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>∑ (Individual Piece Gross Weights)  ≤  Master Item Total Stock Weight</div></li>
+<li>Decrements <code>remaining_weight</code> of master item in real time:<div class="math-block"><div class="math-tag">FORMULA</div>Remaining Weight = Total Stock Weight - ∑ (Piece Gross Weights)</div></li>
+<li>Upon clicking &quot;Save &amp; Convert to Barcode Tags&quot;, generated items are automatically committed to the inventory store and forwarded to the Barcode Tagging Studio.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3>3.7 Barcode Tagging Studio &amp; Thermal Print Spooler</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>MASTER_BARCODE_STUDIO</code></li>
+<li><strong>Purpose</strong>: End-to-end barcode and RFID generation, tag design customization, thermal printing spooling, loose-to-tagged conversion, and split-piece draft management.</li>
+<li><strong>Supported Tag Geometries</strong>:<ul>
+<li>Butterfly Jewellery Tag (Dual wing with center adhesive-free loop)</li>
+<li>Dumbbell Tag (Standard optical barcode label)</li>
+<li>Rat-tail / String Tag</li>
+<li>Cable Tie Tag</li>
+</ul>
+</li>
+<li><strong>Barcode &amp; QR Rendering</strong>:<ul>
+<li>Generates SVG Code 128 / Code 39 bar patterns and 2D QR codes containing JSON payload:
+<code>{&quot;tag&quot;: &quot;TAG-88201&quot;, &quot;net&quot;: 12.350, &quot;pur&quot;: 91.6, &quot;huid&quot;: &quot;AB1234&quot;}</code></li>
+</ul>
+</li>
+<li><strong>Fields on Printed Tag</strong>:<ul>
+<li>Showroom Trade Name (<code>SWARNA</code>)</li>
+<li>Tag Number / Barcode (<code>TAG-88201</code>)</li>
+<li>Item Description (<code>22K Ring Floral</code>)</li>
+<li>Purity Mark (<code>916 / 22K</code>)</li>
+<li>Gross Weight (<code>GW: 14.250g</code>)</li>
+<li>Net Weight (<code>NW: 13.800g</code>)</li>
+<li>Stone Weight / Beads (<code>ST: 0.450g</code>)</li>
+<li>BIS HUID (<code>HUID: AB1234</code>)</li>
+<li>Encoded Making Charge Code or Rate per Gram</li>
+<li>Ornament Size (<code>Sz: 14</code>)</li>
+</ul>
+</li>
+<li><strong>Core Operations</strong>:<ol>
+<li><strong>Batch Tag Print Spooler</strong>: Multi-select tags, preview printable thermal sheet, spool to connected thermal printer (TSC, Zebra, Citizen) via raw ESC/POS, TSPL, or browser print.</li>
+<li><strong>Tag Loose Stock</strong>: Convert loose raw purchases or un-tagged stock into individual barcoded items with serial tracking.</li>
+<li><strong>Split Piece Draft Engine</strong>: Divide a multi-quantity or multi-part jewellery set into separate barcodes while ensuring:<div class="math-block"><div class="math-tag">FORMULA</div>∑ (Split Pieces Net Wt) = Original Set Net Wt</div></li>
+<li><strong>Tag Re-Printing &amp; History</strong>: Track how many times a tag was printed to prevent counterfeit tag duplication.</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3>3.8 New Order Booking (7 Sub-Modules)</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>TRANS_NEW_ORDER</code></li>
+<li><strong>Purpose</strong>: Handles customer bespoke jewellery orders, artisan job-work delegation, material issue/receive ledgers, and invoice conversion.</li>
+</ul>
+<h4>3.8.1 Order Booking &amp; Advance Ledger (Sub-Tab 1)</h4>
+<ul>
+<li><strong>Header Fields</strong>:<ul>
+<li><code>customer_name</code> (String, mandatory)</li>
+<li><code>phone</code> (String, mandatory)</li>
+<li><code>address</code>, <code>area</code>, <code>state</code> (Strings)</li>
+<li><code>aadhar_no</code>, <code>pan_card</code> (Strings, required if order value &gt; ₹2 Lakhs under Indian PMLA guidelines)</li>
+<li><code>bill_type</code> (Enum: <code>Order</code>, <code>Estimate</code>, <code>Tax Invoice</code>)</li>
+<li><code>bill_date</code> (Date, default CurrentDate)</li>
+<li><code>delivery_date</code> (Date, promised delivery, mandatory)</li>
+<li><code>manual_no</code> (String, physical order book receipt number)</li>
+<li><code>salesman</code> (Dropdown of active sales staff)</li>
+<li><code>gst_not_required</code> (Boolean flag)</li>
+<li><code>close_order</code> (Boolean flag)</li>
+<li><code>design_photo</code> (Customer design sample image upload/camera capture)</li>
+</ul>
+</li>
+<li><strong>Ornament Line Items</strong>:<ul>
+<li><code>trans_type</code> (Enum: <code>Order</code>, <code>Repair</code>, <code>Jobwork</code>)</li>
+<li><code>item_name</code> (String)</li>
+<li><code>description</code> (Detailed styling notes, e.g. &quot;Matte finish with rhodium highlight&quot;)</li>
+<li><code>qty</code>, <code>gross_wt</code>, <code>black_beats</code>, <code>stone_wt</code>, <code>stone_amt</code></li>
+<li><code>purity</code> (Dropdown: 91.6, 75.0, 99.5, 92.5)</li>
+<li><code>mkg_per_gm</code>, <code>making_pct</code>, <code>hallm_charges</code> (₹45)</li>
+<li>Computed line item values: <code>net_wt</code>, <code>mkg_amt</code>, <code>item_amt</code>.</li>
+</ul>
+</li>
+<li><strong>Payment &amp; Advance Settlement</strong>:<ul>
+<li><strong>Cash / Bank Advance</strong>:<ul>
+<li><code>cash_received</code>, <code>bank_amt</code>, <code>bank_name</code>, <code>voucher_no</code>, <code>cheque_date</code></li>
+</ul>
+</li>
+<li><strong>Rate Cut Gold Booking (Gold Rate Locking)</strong>:<ul>
+<li>Customer pays advance to lock gold rate on booking day:<ul>
+<li><code>rate_cut_gold_wt</code> (Grams booked)</li>
+<li><code>rate_cut_gold_rate</code> (₹/g locked)</li>
+<li><code>rate_cut_gold_amount</code> <span class="math-inline">= rate_cut_gold_wt  ×  rate_cut_gold_rate</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Old Gold / Scrap Metal Advance</strong>:<ul>
+<li>Customer deposits old gold toward order:<ul>
+<li><code>old_gold_gross_wt</code>, <code>old_gold_dust</code>, <code>old_gold_net_wt</code>, <code>old_gold_purity</code>, <code>old_gold_fin_wt</code>, <code>old_gold_rate</code>, <code>old_gold_amt</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Financial Summary Calculations</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Total Order Value = ∑ (Line Item Amounts)</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Taxes = CalculateTaxes(Total Order Value, gst_not_required)</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Gross Order Total = Total Order Value + GST Amount - Discount</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Total Advance Credited = Cash Advance + Bank Advance + Rate Cut Amount + Old Gold Amount</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Balance Due at Delivery = Gross Order Total - Total Advance Credited</div></li>
+</ul>
+</li>
+</ul>
+<h4>3.8.2 Submit Order to Karagir (Sub-Tab 2)</h4>
+<ul>
+<li>Assigns order to a specialist artisan (<code>karagir_id</code>).</li>
+<li>Specifies:<ul>
+<li><code>issued_metal_type</code> (e.g. <code>24K Gold Bar</code>, <code>916 Grain</code>, <code>999 Fine Silver</code>)</li>
+<li><code>issued_gross_wt</code>, <code>issued_purity</code>, <code>issued_fine_wt</code></li>
+<li><code>alloy_added_wt</code> (Copper/silver alloy mixed for 22K karatage)</li>
+<li><code>karagir_rate_per_gm</code> (Agreed labor rate)</li>
+<li><code>wastage_pct</code> (Agreed melting loss allowance)</li>
+<li><code>promised_date</code> (Artisan delivery deadline)</li>
+<li><code>special_instructions</code> (Carving, setting, sizing notes)</li>
+</ul>
+</li>
+<li>Generates <strong>Karagir Job Card</strong> with printable challan containing design photo and metal accountability slip.</li>
+</ul>
+<h4>3.8.3 Issue Raw Material to Karagir (Sub-Tab 3)</h4>
+<ul>
+<li>Ledger interface debiting pure metal fine weight to the Karagir&#39;s account:<div class="math-block"><div class="math-tag">FORMULA</div>Karagir Metal Balance  ≤ ftarrow Karagir Metal Balance + Issued Fine Weight</div></li>
+<li>Deducts raw bullion bars/granules from the showroom vault.</li>
+</ul>
+<h4>3.8.4 Receive Order &amp; Metal Return from Karagir (Sub-Tab 4)</h4>
+<ul>
+<li>When artisan delivers finished piece:<ul>
+<li><code>received_gross_wt</code></li>
+<li><code>received_net_wt</code></li>
+<li><code>return_scrap_wt</code> (Unused scrap, filings, bench sweepings returned)</li>
+<li><code>received_date</code></li>
+</ul>
+</li>
+<li><strong>Reconciliation Formulas</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Total Metal Accounted = Received Gross Wt + Return Scrap Wt</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Actual Working Loss = Issued Gross Wt - Total Metal Accounted</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Allowed Wastage = (Received Net Wt  ×  Agreed Wastage% ÷ 100)</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Net Variance = Actual Working Loss - Allowed Wastage</div>
+- If <span class="math-inline">Net Variance > 0</span>: Artisan exceeded wastage limit; excess loss is debited to artisan's cash ledger.
+- If Quality Check passes, item status moves to `Ready for Delivery`.</li>
+</ul>
+<h4>3.8.5 Convert Order to Final Sales Invoice (Sub-Tab 5)</h4>
+<ul>
+<li>Automatically transfers order header, items, and deducted advances into the Sales Invoice engine.</li>
+<li>Re-calculates final metal value based on rate-cut locked grams vs market rate on delivery day.</li>
+<li>Collects remaining <code>balance_due</code> via cash, card, or UPI.</li>
+</ul>
+<h4>3.8.6 Order Status Register &amp; Delivery Tracking (Sub-Tab 6)</h4>
+<ul>
+<li>Filterable register of all booked orders by status (<code>Booked</code>, <code>Assigned</code>, <code>In Progress</code>, <code>Received</code>, <code>Ready</code>, <code>Delivered</code>, <code>Cancelled</code>).</li>
+<li>Color-coded delivery alerts for orders due within 24–48 hours.</li>
+</ul>
+<h4>3.8.7 Customer Advance Management (Sub-Tab 7)</h4>
+<ul>
+<li>Dedicated ledger tracking customer advances, rate cut adjustments, and advance refund vouchers in case of cancellation.</li>
+</ul>
+<hr>
+<h3>3.9 Counter POS &amp; Sales Invoicing</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>TRANS_SALES_INVOICE</code></li>
+<li><strong>Purpose</strong>: Fast-paced counter billing terminal supporting barcode scanning, salesman attribution, old gold exchange deduction, multi-tender split, and instant tax invoice generation.</li>
+<li><strong>Invoice Modes</strong>:<ul>
+<li><code>Tax Invoice</code>: Full GST compliance (3% GST split into 1.5% CGST + 1.5% SGST), mandatory for official sales.</li>
+<li><code>Estimate / Quotation</code>: Pro-forma quotation without tax application (<code>gst_pct = 0</code>).</li>
+</ul>
+</li>
+<li><strong>Header Fields</strong>:<ul>
+<li><code>invoice_no</code> (Auto-sequenced, e.g. <code>INV-2026-891</code>)</li>
+<li><code>invoice_date</code> (Date)</li>
+<li><code>salesman_name</code> (Staff dropdown, tracks employee sales commissions)</li>
+<li><code>customer_name</code>, <code>phone</code></li>
+</ul>
+</li>
+<li><strong>Barcode Quick Scan Bar</strong>:<ul>
+<li>Input field listening for barcode scanner input (13-character or alphanumeric tag).</li>
+<li>Pressing <code>Enter</code> automatically looks up the tag in <code>stock_items</code>:<ul>
+<li>Retrieves <code>item_name</code>, <code>gross_wt</code>, <code>black_beats</code>, <code>stone_wt</code>, <code>net_wt</code>, <code>purity</code>, <code>huid</code>.</li>
+<li>Automatically fetches current gold rate corresponding to item purity (e.g. 22K 916 rate).</li>
+<li>Populates making charges from item definition.</li>
+<li>Appends item to invoice items table.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Invoice Item Table</strong>:<ul>
+<li>Columns: <code>#</code>, <code>Item Description</code>, <code>Gross Wt</code>, <code>Net Wt</code>, <code>Purity</code>, <code>Rate/Gm</code>, <code>Making Charges</code>, <code>Hallmark (HUID)</code>, <code>Total Amount</code>, <code>Action</code>.</li>
+</ul>
+</li>
+<li><strong>Financial Settlement Calculations</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Subtotal = ∑ (Item Total Amounts)</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>GST (3%) = Round(Subtotal  ×  0.03, 2)     [If Tax Invoice]</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Total Invoice Bill = Subtotal + GST - Discount</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Net Due = Total Invoice Bill - Old Gold (URD) Credit - Cash Tendered - Bank/UPI/Card Tendered</div></li>
+<li><strong>Actions</strong>:<ul>
+<li><strong>Save &amp; Settle</strong>: Deducts items from inventory vault, creates Day Book entries, updates customer ledger.</li>
+<li><strong>Print Bill</strong>: Triggers 3-inch thermal POS slip or full A4/A5 GST Tax Invoice format.</li>
+<li><strong>WhatsApp Dispatch</strong>: Formats invoice summary and opens direct WhatsApp web chat with customer.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>3.10 Purchase Invoicing &amp; Inward Consignments (7 Sub-Modules)</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>TRANS_PURCHASE_INVOICE</code></li>
+<li><strong>Purpose</strong>: Manages wholesale inventory procurement from bullion dealers, manufacturers, and casting units.</li>
+</ul>
+<h4>3.10.1 Supplier Profile Verification (Sub-Tab 1)</h4>
+<ul>
+<li>Selects supplier and verifies GSTIN, address, credit limit, and current dual balance (Cash ₹ + Fine Gold grams).</li>
+</ul>
+<h4>3.10.2 Purchase Bill Entry (Sub-Tab 2)</h4>
+<ul>
+<li><strong>Header</strong>: <code>supplier_name</code>, <code>invoice_prefix</code>, <code>invoice_no</code>, <code>manual_no</code>, <code>invoice_date</code>, <code>payment_mode</code> (<code>Cash</code> / <code>Credit</code>), <code>gst_not_required</code>, <code>weightwise</code> (toggle between weight-based billing vs piece-based).</li>
+<li><strong>Items</strong>:<ul>
+<li><code>trans_type</code> (Enum: <code>Gold Ornaments</code>, <code>Bullion 24K Bar</code>, <code>Silver 999</code>, <code>Raw Castings</code>)</li>
+<li><code>item_name</code>, <code>qty</code>, <code>gross_wt</code>, <code>black_b</code>, <code>stone_wt</code>, <code>net_wt</code>, <code>purity</code>, <code>rate</code>, <code>amount</code></li>
+<li><code>wastage_pct</code></li>
+<li><code>fin_plus_wastage</code> <span class="math-inline">= CalculateFinePlusWastage(net_wt, purity, wastage_pct)</span></li>
+<li><code>total_amt</code></li>
+<li><code>huid</code> (6-digit hallmarking ID received from supplier)</li>
+</ul>
+</li>
+</ul>
+<h4>3.10.3 Payment &amp; Tax Settlement (Sub-Tab 3)</h4>
+<ul>
+<li>Handles statutory tax deductions:<ul>
+<li>CGST 1.5% + SGST 1.5% (or IGST 3%)</li>
+<li>TDS (Section 194Q): 0.1% on purchase value</li>
+<li>TCS (Section 206C): 0.1%</li>
+</ul>
+</li>
+<li>Payment breakup: <code>by_cash</code>, <code>by_cheque</code>, <code>bank_name</code>, <code>cheque_no</code>, <code>cheque_date</code>.</li>
+<li>Calculates <code>net_balance</code> credited to supplier&#39;s ledger.</li>
+</ul>
+<h4>3.10.4 Supplier Ledger Statement (Sub-Tab 4)</h4>
+<ul>
+<li>Standard financial statement showing invoice credits and payment debits.</li>
+</ul>
+<h4>3.10.5 Account-Cum-Stock Dual Statement (Sub-Tab 5)</h4>
+<ul>
+<li>Simultaneous display of:<ul>
+<li>Financial Ledger (<code>₹ Balance</code>)</li>
+<li>Bullion Metal Ledger (<code>Fine Gold Grams Balance</code>)</li>
+</ul>
+</li>
+</ul>
+<h4>3.10.6 Purchase Approval Consignment (Sub-Tab 6)</h4>
+<ul>
+<li>Manages memo/approval stock brought by travelling salesmen/wholesalers:<ul>
+<li>Goods are held in &quot;Consignment Vault&quot; without affecting showroom balance sheet.</li>
+<li>Showroom can accept specific pieces (converting them into purchase bills) and reject the rest.</li>
+</ul>
+</li>
+</ul>
+<h4>3.10.7 Stock-Cash (Vadhgat) Metal Debt Settlement (Sub-Tab 7)</h4>
+<ul>
+<li>Protocol for settling metal debt owed to bullion suppliers:<ul>
+<li>Option A: Return physical 24K pure bullion bar.</li>
+<li>Option B: Cash settlement (converting pure metal grams into ₹ at today&#39;s bullion market rate).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>3.11 Refinery Inward &amp; Scrap Processing (5 Sub-Modules)</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>TRANS_REFINERY_IN</code></li>
+<li><strong>Purpose</strong>: Controls the outward dispatch of scrap jewellery (customer exchange, workshop bench dust) and the inward receipt of refined 999.9 pure gold bars.</li>
+</ul>
+<h4>3.11.1 Refinery Record Setup (Sub-Tab 1)</h4>
+<ul>
+<li>Header: <code>refinery_name</code>, <code>invoice_no</code>, <code>invoice_date</code>, <code>against_refout_bill_no</code> (links inward batch to outward scrap challan).</li>
+</ul>
+<h4>3.11.2 Material Inward Lines &amp; Assay Yield (Sub-Tab 2)</h4>
+<ul>
+<li>Line items:<ul>
+<li><code>trans_type</code> (e.g. <code>Old Gold Scrap 22K</code>, <code>Melting Bits 18K</code>, <code>Bench Filings</code>)</li>
+<li><code>gross_wt</code>, <code>net_wt</code>, <code>purity</code> (Assayed touch)</li>
+<li><code>fin_wt</code> <span class="math-inline">= net_wt  ×  (purity ÷ 100)</span></li>
+<li><code>rate</code>, <code>amount</code></li>
+<li><code>actual_fine_recovered</code> (Pure metal bar received from refiner)</li>
+<li>Computes <code>refinery_loss</code> and <code>refinery_profit</code>.</li>
+<li><code>making_on_qty</code> (Refining / melting labor charges).</li>
+</ul>
+</li>
+</ul>
+<h4>3.11.3 Refinery Outward Tracking (Sub-Tab 3)</h4>
+<ul>
+<li>Register of unrefined scrap lots currently lying at third-party refineries awaiting assay.</li>
+</ul>
+<h4>3.11.4 Account-Cum-Stock Refinery Reconciliation (Sub-Tab 4)</h4>
+<ul>
+<li>Reconciles metal grams sent vs pure bars received.</li>
+</ul>
+<h4>3.11.5 Weight Reconciliation Summary (Sub-Tab 5)</h4>
+<ul>
+<li>Summary: <code>balance_wgt_grswt</code>, <code>net_wgt</code>, <code>fin_wgt</code>.</li>
+</ul>
+<hr>
+<h3>3.12 Day Book &amp; 12-Column EOD Audit Register</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>ACCOUNTS_DAY_BOOK</code></li>
+<li><strong>Purpose</strong>: Standard Indian Jewellery 12-column End-of-Day cashflow, sales, and scrap audit register.</li>
+<li><strong>Sub-Tabs</strong>:<ol>
+<li><code>Cash Book</code>: Physical counter cash received and paid.</li>
+<li><code>Stock Book</code>: Grams of gold/silver received and issued during the day.</li>
+<li><code>Sales Book</code>: All retail and wholesale sales invoices.</li>
+<li><code>Summary</code>: Daily cash and bank opening vs closing reconciliation.</li>
+</ol>
+</li>
+<li><strong>The 12 Audit Columns</strong>:<ol>
+<li><code>InvoiceType</code> (Sale, Purchase, Order Advance, Receipt, Payment)</li>
+<li><code>Invoice.No</code></li>
+<li><code>Total.Amt</code> (Gross invoice value)</li>
+<li><code>URD.Amt</code> (Old gold scrap trade-in credit deducted)</li>
+<li><code>Net.Amt</code> (Net payable amount)</li>
+<li><code>Cash.Received</code></li>
+<li><code>Cash.Payment</code></li>
+<li><code>Bank.Received</code></li>
+<li><code>Bank.Payment</code></li>
+<li><code>Date</code></li>
+<li><code>Details</code> (Narration, customer/supplier name)</li>
+<li><code>Total Amt without Disc</code> (Pre-discount subtotal)</li>
+</ol>
+</li>
+<li><strong>Reconciliation Engine</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Cash Closing Balance = Cash Opening + ∑ (Cash Received) - ∑ (Cash Payment)</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Bank Closing Balance = Bank Opening + ∑ (Bank Received) - ∑ (Bank Payment)</div></li>
+<li><strong>Export</strong>: Full CSV export of daily audit data.</li>
+</ul>
+<hr>
+<h3>3.13 Book Display (9 Financial &amp; Debtor Registers)</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>ACCOUNTS_BOOK_DISPLAY</code></li>
+<li><strong>Purpose</strong>: Comprehensive financial register providing access to 9 distinct statutory books:<ol>
+<li><code>Sales Book</code></li>
+<li><code>Cash Book</code></li>
+<li><code>Sales Return Book</code></li>
+<li><code>Sundry Debtor Book</code></li>
+<li><code>Purchase Book</code></li>
+<li><code>Sundry Creditor Book</code></li>
+<li><code>Purchase Return Book</code></li>
+<li><code>Credit Limit Locking Register</code></li>
+<li><code>Journal</code></li>
+</ol>
+</li>
+<li><strong>Sundry Debtor Specific Engine</strong>:<ul>
+<li>Displays customer ledger balances with the unique jewellery domain metric: <strong><code>Pending WT</code> (in Grams)</strong>.</li>
+<li>When customers purchase jewellery on credit, showroom can record debt in monetary terms (₹) OR fix the debt as pure gold weight (protecting the showroom against gold price inflation).</li>
+<li>Includes an automated <strong>WhatsApp Statement Reminder</strong> button that compiles outstanding cash and fine gold dues into a formatted reminder message.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>3.14 Account Display (Double-Entry Statement)</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>ACCOUNTS_ACCOUNT_DISPLAY</code></li>
+<li><strong>Purpose</strong>: Individual ledger card viewer displaying standard double-entry Debit (<code>Dr</code>) and Credit (<code>Cr</code>) entries with running balance for any selected account.</li>
+</ul>
+<hr>
+<h3>3.15 Stock Inventory Report &amp; Valuation Register</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>STOCK_REPORT</code></li>
+<li><strong>Purpose</strong>: Vault inventory audit register with dynamic categorization, filtering, and valuation modes.</li>
+<li><strong>Filter Parameters</strong>:<ul>
+<li><code>select_type</code>: <code>All</code>, <code>Gold</code>, <code>Silver</code>, <code>Platinum</code>, <code>Diamond</code>, <code>Imitation</code>, <code>URD Gold</code>, <code>URD Silver</code>.</li>
+<li><code>select_details</code>: <code>All Items</code>, <code>Only Tagged Items</code>, <code>Only Loose Stock</code>.</li>
+<li><code>dont_show_urd_item</code>: Boolean toggle hiding scrap inventory from retail audit.</li>
+<li><code>stock_value_mode</code>:<ul>
+<li><code>Market</code>: Evaluated at live 24K spot rate.</li>
+<li><code>Cost</code>: Evaluated at original purchase cost.</li>
+<li><code>WAC</code>: Weighted Average Cost.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Metrics Calculated</strong>:<ul>
+<li>Total Pieces (<code>Qty</code>)</li>
+<li>Total Gross Weight (<code>g</code>)</li>
+<li>Total Net Weight (<code>g</code>)</li>
+<li>Total Pure Fine Bullion Weight (<code>g</code>)</li>
+<li>Total Stock Valuation (₹)</li>
+</ul>
+</li>
+<li><strong>Export</strong>: Full CSV and print-ready inventory ledger.</li>
+</ul>
+<hr>
+<h3>3.16 Stock Refill &amp; Automated Replenishment Manager</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>STOCK_REFILL_MANAGER</code></li>
+<li><strong>Purpose</strong>: Predictive inventory replenishment hub preventing showroom stockouts in fast-moving jewellery SKUs.</li>
+<li><strong>Core Formula</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Deficit Pieces = max(0, Desired Min Stock - Current Stock)</div></li>
+<li><strong>Urgency Classification</strong>:<ul>
+<li><code>CRITICAL</code> (Red): Current stock <span class="math-inline"> ≤  20%</span> of Desired Stock.</li>
+<li><code>LOW</code> (Amber): Current stock <span class="math-inline"> ≤  50%</span> of Desired Stock.</li>
+<li><code>ADEQUATE</code> (Green): Current stock <span class="math-inline"> ≥ </span> Desired Stock.</li>
+</ul>
+</li>
+<li><strong>Replenishment Calculation</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Estimated Refill Metal Weight (g) = Deficit Pieces  ×  Average Gross Wt per Piece</div>
+<div class="math-block"><div class="math-tag">FORMULA</div>Estimated Procurement Value (₹) = Estimated Refill Metal Weight  ×  Current Gold Rate</div></li>
+<li><strong>Automated Workflow</strong>:<ul>
+<li>System automatically maps each SKU to its preferred Vendor or Karagir.</li>
+<li><strong>1st Login Daily Popup</strong>: Triggers on first manager login, listing all critical deficits.</li>
+<li><strong>1-Click WhatsApp Purchase Order</strong>: Generates a pre-formatted purchase order to the artisan specifying required pieces, purity, target weight, and delivery timeline.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>3.17 Swarna Nidhi (Monthly Gold Savings / Bhishi Scheme)</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>SCHEME_GOLD_SAVINGS</code></li>
+<li><strong>Purpose</strong>: Manages customer monthly deposit schemes (commonly structured as 11+1 Bonus Plan in India).</li>
+<li><strong>Rules &amp; Logic</strong>:<ul>
+<li>Customer commits to fixed monthly installment (e.g. ₹5,000 / month) for 11 months.</li>
+<li>Each monthly installment is converted into pure gold grams based on the spot rate on deposit date:<div class="math-block"><div class="math-tag">FORMULA</div>Gold Accrued (g) = (Installment Amount ÷ Spot 22K Rate on Deposit Day)</div></li>
+<li><strong>Showroom Bonus Contribution</strong>: Upon completing 11 installments, the showroom contributes the 12th installment free as a loyalty bonus.</li>
+<li><strong>Redemption</strong>: Upon maturity, customer redeems total accumulated gold weight towards jewellery purchase with making charge discounts.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>3.18 Showroom Messenger &amp; WhatsApp Notification Engine</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>COMMON_MESSENGER</code></li>
+<li><strong>Purpose</strong>: Central communications dispatcher for customer relationship management, order status alerts, and daily bullion broadcasts.</li>
+<li><strong>Templates</strong>:<ol>
+<li><code>Order Ready for Delivery</code>: Informs customer that custom ornament is ready for trial and collection.</li>
+<li><code>Gold Scheme Due Reminder</code>: Notifies Swarna Nidhi members to deposit monthly installment.</li>
+<li><code>Daily Bullion Rate Broadcast</code>: Morning broadcast of showroom board rates (24K, 22K, Silver).</li>
+<li><code>Debtor Balance Statement</code>: Outstanding ledger balance and fine gold weight reminder.</li>
+<li><code>Birthday / Anniversary Greeting</code>: Automated customer relationship greetings with discount voucher.</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3>3.19 Backup &amp; Disaster Recovery Manager</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>SYSTEM_BACKUP</code></li>
+<li><strong>Purpose</strong>: Safeguards business data across multiple media destinations:<ul>
+<li>Local HDD</li>
+<li>Removable USB Drive</li>
+<li>Google Drive Cloud Storage</li>
+<li>Live Supabase PostgreSQL Database Sync</li>
+</ul>
+</li>
+<li><strong>Features</strong>:<ul>
+<li>Encrypted backup dump generation.</li>
+<li>Verification checksum verification.</li>
+<li>Auto-cloud sync heartbeat monitoring.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>3.20 Field Dictionary &amp; Data Mapping</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>SYSTEM_FIELD_DICTIONARY</code></li>
+<li><strong>Purpose</strong>: Searchable system dictionary documenting all 788+ database fields, data types, business meanings, validation constraints, and calculation dependencies across the ERP.</li>
+</ul>
+<hr>
+<h3>3.21 System Settings &amp; Showroom Profile</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>SYSTEM_SETTINGS</code></li>
+<li><strong>Purpose</strong>: Maintains legal and operational showroom configuration:<ul>
+<li>Showroom Legal Entity Name, Trade Name, Tagline.</li>
+<li>Head Office &amp; Branch Addresses.</li>
+<li>GSTIN, State Code (e.g. 27 for Maharashtra), PAN, TAN.</li>
+<li>BIS Hallmarking License Certification Number.</li>
+<li>Default Tax Rates (GST 3%, TDS 0.1%, TCS 0.1%).</li>
+<li>Default Making Rates &amp; Wastage Percentages.</li>
+<li>Hardware printer configurations (Thermal label dimensions: width, height, margins in mm).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>3.22 AI Copilot &amp; Semantic Tool Calling Engine</h3>
+<ul>
+<li><strong>Screen ID</strong>: <code>SYSTEM_AI_ASSISTANT</code></li>
+<li><strong>Purpose</strong>: Conversational AI assistant integrated via Google Gemini API Function Calling.</li>
+<li><strong>Registered Tools</strong>:<ol>
+<li><code>query_sales_data</code>: Aggregates revenue, order counts, gross margins, and tax totals across date windows.</li>
+<li><code>search_vendor</code>: Queries supplier database by name, phone, GSTIN, or metal balance.</li>
+<li><code>calculate_quotation</code>: Generates complete price estimation for custom jewellery specifications.</li>
+<li><code>stock_refill_alert</code>: Evaluates inventory deficits and generates replenishment orders.</li>
+<li><code>gold_rate_history</code>: Analyzes bullion price trends and computes price moving averages.</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2>4. COMPLETE RELATIONAL DATABASE SCHEMA</h2>
+<p>The following PostgreSQL DDL schema defines the complete database architecture for the application:</p>
+<pre><code class="language-sql">-- ============================================================================
+-- SWARNA JEWELLERY ERP - ENTERPRISE RELATIONAL SCHEMA
+-- ============================================================================
+
+CREATE EXTENSION IF NOT EXISTS &quot;uuid-ossp&quot;;
+
+-- 1. Branches &amp; Showrooms
+CREATE TABLE branches (
+    id VARCHAR(50) PRIMARY KEY,
+    code VARCHAR(20) UNIQUE NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    short_name VARCHAR(100) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    address TEXT NOT NULL,
+    license_no VARCHAR(100),
+    phone VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Staff Users &amp; RBAC
+CREATE TABLE staff_users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    employee_code VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    role VARCHAR(50) NOT NULL CHECK (role IN (&#39;Owner&#39;, &#39;Manager&#39;, &#39;Cashier&#39;, &#39;Accountant&#39;, &#39;Karagir&#39;)),
+    branch_id VARCHAR(50) REFERENCES branches(id),
+    email VARCHAR(150),
+    phone VARCHAR(20),
+    password_hash VARCHAR(255) NOT NULL,
+    status VARCHAR(20) DEFAULT &#39;Active&#39; CHECK (status IN (&#39;Active&#39;, &#39;Suspended&#39;)),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. Account Master &amp; Chart of Accounts
+CREATE TABLE erp_accounts (
+    account_code VARCHAR(50) PRIMARY KEY,
+    account_name VARCHAR(200) NOT NULL,
+    account_type VARCHAR(50) NOT NULL CHECK (account_type IN (&#39;Assets&#39;, &#39;Liabilities&#39;, &#39;Income&#39;, &#39;Expense&#39;)),
+    account_group VARCHAR(100) NOT NULL,
+    opening_balance DECIMAL(15,2) DEFAULT 0.00,
+    balance_type VARCHAR(2) NOT NULL CHECK (balance_type IN (&#39;Dr&#39;, &#39;Cr&#39;)),
+    card_charges_enabled BOOLEAN DEFAULT FALSE,
+    card_charges_customer_pct DECIMAL(5,2) DEFAULT 0.00,
+    card_charges_us_pct DECIMAL(5,2) DEFAULT 0.00,
+    phone VARCHAR(20),
+    area VARCHAR(100),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4. Vendor / Supplier Master
+CREATE TABLE erp_vendors (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    vendor_code VARCHAR(50) UNIQUE NOT NULL,
+    vendor_name VARCHAR(200) NOT NULL,
+    contact_person VARCHAR(150),
+    phone VARCHAR(20) NOT NULL,
+    email VARCHAR(150),
+    gstin VARCHAR(15),
+    pan_no VARCHAR(10),
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    address TEXT,
+    pincode VARCHAR(10),
+    vendor_type VARCHAR(100) NOT NULL,
+    bank_name VARCHAR(150),
+    bank_account_no VARCHAR(50),
+    ifsc_code VARCHAR(20),
+    branch_name VARCHAR(100),
+    credit_limit DECIMAL(15,2) DEFAULT 0.00,
+    credit_days INTEGER DEFAULT 0,
+    opening_balance_cash DECIMAL(15,2) DEFAULT 0.00,
+    balance_type VARCHAR(2) DEFAULT &#39;Cr&#39; CHECK (balance_type IN (&#39;Cr&#39;, &#39;Dr&#39;)),
+    opening_balance_gold_fine_gm DECIMAL(12,3) DEFAULT 0.000,
+    opening_balance_silver_fine_gm DECIMAL(12,3) DEFAULT 0.000,
+    status VARCHAR(20) DEFAULT &#39;Active&#39; CHECK (status IN (&#39;Active&#39;, &#39;Inactive&#39;)),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 5. Karagir / Artisan Master
+CREATE TABLE erp_karagirs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    karagir_code VARCHAR(50) UNIQUE NOT NULL,
+    karagir_name VARCHAR(200) NOT NULL,
+    contact_person VARCHAR(150),
+    phone VARCHAR(20) NOT NULL,
+    email VARCHAR(150),
+    specialty VARCHAR(150) NOT NULL,
+    workshop_name VARCHAR(200),
+    address TEXT NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    pincode VARCHAR(10),
+    pan_no VARCHAR(10),
+    gstin VARCHAR(15),
+    default_making_rate_per_gm DECIMAL(10,2) DEFAULT 0.00,
+    default_wastage_pct DECIMAL(5,2) DEFAULT 0.00,
+    opening_balance_cash DECIMAL(15,2) DEFAULT 0.00,
+    balance_type VARCHAR(2) DEFAULT &#39;Cr&#39; CHECK (balance_type IN (&#39;Cr&#39;, &#39;Dr&#39;)),
+    opening_balance_gold_fine_gm DECIMAL(12,3) DEFAULT 0.000,
+    opening_balance_silver_fine_gm DECIMAL(12,3) DEFAULT 0.000,
+    bank_name VARCHAR(150),
+    bank_account_no VARCHAR(50),
+    ifsc_code VARCHAR(20),
+    branch_name VARCHAR(100),
+    status VARCHAR(20) DEFAULT &#39;Active&#39; CHECK (status IN (&#39;Active&#39;, &#39;Inactive&#39;)),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 6. Master Item Definitions (Batch Catalog)
+CREATE TABLE master_items (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    item_name VARCHAR(200) NOT NULL,
+    item_type VARCHAR(100) NOT NULL,
+    item_group VARCHAR(100) NOT NULL,
+    design VARCHAR(100) NOT NULL,
+    weight_or_qty VARCHAR(10) NOT NULL CHECK (weight_or_qty IN (&#39;Weight&#39;, &#39;QTY&#39;)),
+    total_stock_weight DECIMAL(12,3) DEFAULT 0.000,
+    remaining_weight DECIMAL(12,3) DEFAULT 0.000,
+    image_url TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 7. Inventory Items (Barcoded Pieces)
+CREATE TABLE stock_items (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    branch_id VARCHAR(50) REFERENCES branches(id),
+    tag_no VARCHAR(100) UNIQUE NOT NULL,
+    item_name VARCHAR(200) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    item_type VARCHAR(100),
+    qty INTEGER DEFAULT 1,
+    gross_wt DECIMAL(12,3) NOT NULL,
+    black_beats DECIMAL(12,3) DEFAULT 0.000,
+    stone_wt DECIMAL(12,3) DEFAULT 0.000,
+    bag_wt DECIMAL(12,3) DEFAULT 0.000,
+    net_wt DECIMAL(12,3) NOT NULL,
+    purity DECIMAL(5,2) NOT NULL,
+    fine_wt DECIMAL(12,3) NOT NULL,
+    size VARCHAR(50),
+    huid VARCHAR(6),
+    making_per_gm DECIMAL(10,2) DEFAULT 0.00,
+    making_pct DECIMAL(5,2) DEFAULT 0.00,
+    hallmark_charges DECIMAL(10,2) DEFAULT 45.00,
+    rate_per_gm DECIMAL(12,2) DEFAULT 0.00,
+    total_value DECIMAL(15,2) DEFAULT 0.00,
+    is_urd BOOLEAN DEFAULT FALSE,
+    is_loose BOOLEAN DEFAULT FALSE,
+    is_printed BOOLEAN DEFAULT FALSE,
+    status VARCHAR(30) DEFAULT &#39;In Stock&#39; CHECK (status IN (&#39;In Stock&#39;, &#39;Sold&#39;, &#39;In Workshop&#39;, &#39;Refining&#39;, &#39;Consignment&#39;)),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 8. Customer Order Bookings
+CREATE TABLE orders_header (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    order_no VARCHAR(50) UNIQUE NOT NULL,
+    branch_id VARCHAR(50) REFERENCES branches(id),
+    customer_name VARCHAR(200) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    address TEXT,
+    area VARCHAR(100),
+    state VARCHAR(100),
+    aadhar_no VARCHAR(20),
+    pan_card VARCHAR(15),
+    bill_type VARCHAR(50) DEFAULT &#39;Order&#39;,
+    bill_date DATE NOT NULL,
+    delivery_date DATE NOT NULL,
+    manual_no VARCHAR(50),
+    salesman VARCHAR(150),
+    gst_not_required BOOLEAN DEFAULT FALSE,
+    close_order BOOLEAN DEFAULT FALSE,
+    design_photo TEXT,
+    remark TEXT,
+    status VARCHAR(50) DEFAULT &#39;Booked&#39; CHECK (status IN (&#39;Booked&#39;, &#39;Assigned&#39;, &#39;In Progress&#39;, &#39;Received&#39;, &#39;Ready&#39;, &#39;Delivered&#39;, &#39;Cancelled&#39;)),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE order_items (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    order_id UUID REFERENCES orders_header(id) ON DELETE CASCADE,
+    trans_type VARCHAR(50) NOT NULL,
+    item_name VARCHAR(200) NOT NULL,
+    description TEXT,
+    qty INTEGER DEFAULT 1,
+    gross_wt DECIMAL(12,3) NOT NULL,
+    black_beats DECIMAL(12,3) DEFAULT 0.000,
+    stone_wt DECIMAL(12,3) DEFAULT 0.000,
+    stone_amt DECIMAL(12,2) DEFAULT 0.00,
+    net_wt DECIMAL(12,3) NOT NULL,
+    purity DECIMAL(5,2) NOT NULL,
+    mkg_per_gm DECIMAL(10,2) DEFAULT 0.00,
+    mkg_amt DECIMAL(12,2) DEFAULT 0.00,
+    hallm_charges DECIMAL(10,2) DEFAULT 45.00,
+    making_pct DECIMAL(5,2) DEFAULT 0.00,
+    item_amt DECIMAL(15,2) NOT NULL,
+    image_url TEXT
+);
+
+CREATE TABLE order_payments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    order_id UUID UNIQUE REFERENCES orders_header(id) ON DELETE CASCADE,
+    cash_received DECIMAL(15,2) DEFAULT 0.00,
+    bank_amt DECIMAL(15,2) DEFAULT 0.00,
+    bank_name VARCHAR(150),
+    voucher_no VARCHAR(50),
+    cheque_date DATE,
+    rate_cut_gold_wt DECIMAL(12,3) DEFAULT 0.000,
+    rate_cut_gold_rate DECIMAL(12,2) DEFAULT 0.00,
+    rate_cut_gold_amount DECIMAL(15,2) DEFAULT 0.00,
+    old_gold_gross_wt DECIMAL(12,3) DEFAULT 0.000,
+    old_gold_dust DECIMAL(12,3) DEFAULT 0.000,
+    old_gold_net_wt DECIMAL(12,3) DEFAULT 0.000,
+    old_gold_purity DECIMAL(5,2) DEFAULT 0.00,
+    old_gold_fin_wt DECIMAL(12,3) DEFAULT 0.000,
+    old_gold_rate DECIMAL(12,2) DEFAULT 0.00,
+    old_gold_amt DECIMAL(15,2) DEFAULT 0.00,
+    total_amount DECIMAL(15,2) NOT NULL,
+    discount DECIMAL(15,2) DEFAULT 0.00,
+    gst_pct DECIMAL(5,2) DEFAULT 3.00,
+    gst_amt DECIMAL(15,2) DEFAULT 0.00,
+    advance_amt DECIMAL(15,2) NOT NULL,
+    balance_amount DECIMAL(15,2) NOT NULL
+);
+
+-- 9. Karagir Workshop Assignments &amp; Metal Ledger
+CREATE TABLE karagir_assignments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    order_id UUID REFERENCES orders_header(id),
+    karagir_id UUID REFERENCES erp_karagirs(id),
+    voucher_no VARCHAR(50) UNIQUE NOT NULL,
+    assigned_date DATE NOT NULL,
+    promised_date DATE NOT NULL,
+    issued_metal_type VARCHAR(100) NOT NULL,
+    issued_gross_wt DECIMAL(12,3) NOT NULL,
+    issued_purity DECIMAL(5,2) NOT NULL,
+    issued_fine_wt DECIMAL(12,3) NOT NULL,
+    alloy_added_wt DECIMAL(12,3) DEFAULT 0.000,
+    karagir_rate_per_gm DECIMAL(10,2) NOT NULL,
+    agreed_making_charges DECIMAL(12,2) NOT NULL,
+    wastage_pct DECIMAL(5,2) NOT NULL,
+    special_instructions TEXT,
+    status VARCHAR(50) DEFAULT &#39;Assigned&#39; CHECK (status IN (&#39;Assigned&#39;, &#39;In Progress&#39;, &#39;Received&#39;, &#39;Cancelled&#39;)),
+    received_gross_wt DECIMAL(12,3),
+    received_net_wt DECIMAL(12,3),
+    received_date DATE,
+    return_scrap_wt DECIMAL(12,3) DEFAULT 0.000,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 10. Sales Invoices
+CREATE TABLE sales_invoices (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    invoice_no VARCHAR(50) UNIQUE NOT NULL,
+    branch_id VARCHAR(50) REFERENCES branches(id),
+    bill_mode VARCHAR(20) NOT NULL CHECK (bill_mode IN (&#39;Tax Invoice&#39;, &#39;Estimate&#39;)),
+    salesman_name VARCHAR(150) NOT NULL,
+    customer_name VARCHAR(200) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    invoice_date DATE NOT NULL,
+    subtotal DECIMAL(15,2) NOT NULL,
+    gst_pct DECIMAL(5,2) DEFAULT 3.00,
+    gst_amt DECIMAL(15,2) DEFAULT 0.00,
+    discount DECIMAL(15,2) DEFAULT 0.00,
+    total_bill DECIMAL(15,2) NOT NULL,
+    urd_amount DECIMAL(15,2) DEFAULT 0.00,
+    cash_tendered DECIMAL(15,2) DEFAULT 0.00,
+    bank_tendered DECIMAL(15,2) DEFAULT 0.00,
+    net_due DECIMAL(15,2) DEFAULT 0.00,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE sales_invoice_items (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    invoice_id UUID REFERENCES sales_invoices(id) ON DELETE CASCADE,
+    stock_item_id UUID REFERENCES stock_items(id),
+    item_name VARCHAR(200) NOT NULL,
+    gross_wt DECIMAL(12,3) NOT NULL,
+    net_wt DECIMAL(12,3) NOT NULL,
+    purity DECIMAL(5,2) NOT NULL,
+    rate DECIMAL(12,2) NOT NULL,
+    making_amt DECIMAL(12,2) DEFAULT 0.00,
+    hallmark_charges DECIMAL(10,2) DEFAULT 0.00,
+    total_amt DECIMAL(15,2) NOT NULL
+);
+
+-- 11. Day Book (12-Column Accounting Journal)
+CREATE TABLE daybook_entries (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    branch_id VARCHAR(50) REFERENCES branches(id),
+    entry_date DATE NOT NULL,
+    invoice_type VARCHAR(50) NOT NULL,
+    invoice_no VARCHAR(50) NOT NULL,
+    total_amt DECIMAL(15,2) NOT NULL,
+    urd_amt DECIMAL(15,2) DEFAULT 0.00,
+    net_amt DECIMAL(15,2) NOT NULL,
+    cash_received DECIMAL(15,2) DEFAULT 0.00,
+    cash_payment DECIMAL(15,2) DEFAULT 0.00,
+    bank_received DECIMAL(15,2) DEFAULT 0.00,
+    bank_payment DECIMAL(15,2) DEFAULT 0.00,
+    details TEXT NOT NULL,
+    total_amt_without_disc DECIMAL(15,2) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 12. Stock Refill Replenishment Targets
+CREATE TABLE stock_refill_targets (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    item_name VARCHAR(200) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    purity DECIMAL(5,2) NOT NULL,
+    desired_stock INTEGER NOT NULL,
+    sold_stock INTEGER DEFAULT 0,
+    current_stock INTEGER NOT NULL,
+    gross_wt_per_unit DECIMAL(12,3) NOT NULL,
+    vendor_id UUID REFERENCES erp_vendors(id),
+    vendor_name VARCHAR(200) NOT NULL,
+    vendor_phone VARCHAR(20) NOT NULL,
+    last_refill_date DATE,
+    status VARCHAR(20) DEFAULT &#39;adequate&#39; CHECK (status IN (&#39;critical&#39;, &#39;low&#39;, &#39;adequate&#39;, &#39;surplus&#39;)),
+    urgency VARCHAR(20) DEFAULT &#39;NORMAL&#39; CHECK (urgency IN (&#39;HIGH&#39;, &#39;MEDIUM&#39;, &#39;NORMAL&#39;)),
+    is_ordered BOOLEAN DEFAULT FALSE,
+    last_order_timestamp TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 13. Swarna Nidhi (Gold Savings Scheme)
+CREATE TABLE gold_scheme_members (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    member_no VARCHAR(50) UNIQUE NOT NULL,
+    branch_id VARCHAR(50) REFERENCES branches(id),
+    name VARCHAR(200) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    monthly_amt DECIMAL(15,2) NOT NULL,
+    tenure_months INTEGER DEFAULT 11,
+    installments_paid INTEGER DEFAULT 0,
+    accumulated_amt DECIMAL(15,2) DEFAULT 0.00,
+    gold_wt_accrued DECIMAL(12,3) DEFAULT 0.000,
+    bonus_contribution DECIMAL(15,2) DEFAULT 0.00,
+    status VARCHAR(50) DEFAULT &#39;Active&#39; CHECK (status IN (&#39;Active&#39;, &#39;Matured - Ready for Jewellery Redemption&#39;, &#39;Redeemed&#39;, &#39;Defaulted&#39;)),
+    enrollment_date DATE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+</code></pre>
+<hr>
+<h2>5. INTEGRATION, HARDWARE &amp; API SPECIFICATIONS</h2>
+<h3>5.1 Weighing Scale RS232/USB Serial Protocol</h3>
+<ul>
+<li>Precision balance integration (e.g. Mettler Toledo, Sartorius, Essae, Citizen):</li>
+<li><strong>Baud Rate</strong>: <code>9600 bps</code>, Data Bits: <code>8</code>, Stop Bits: <code>1</code>, Parity: <code>None</code>.</li>
+<li><strong>Data String Format</strong>: <code>ST,GS,+00012.345,g\r\n</code></li>
+<li>The system continuously reads serial COM ports via the Web Serial API (<code>navigator.serial</code>) or WebSocket local bridge agent, parses numeric grams, and auto-populates the <code>gross_wt</code> field in active forms upon stability trigger <code>ST</code>.</li>
+</ul>
+<h3>5.2 Barcode/RFID Scanner Emulation</h3>
+<ul>
+<li>Supports both <strong>HID Keyboard Wedge</strong> mode and <strong>Virtual COM Port (CDC)</strong>.</li>
+<li>Scanners are programmed to send suffix <code>[ENTER]</code> (<code>0x0D</code>), which triggers the <code>handleScanBarcode</code> event listener on POS and stock audit screens.</li>
+</ul>
+<h3>5.3 Thermal Label Printer Protocols (TSPL / ZPL / ESC-POS)</h3>
+<ul>
+<li>Formats tag print jobs in native printer command language for direct thermal transfer onto polyester jewellery labels:</li>
+</ul>
+<pre><code class="language-ts">// Sample TSPL Protocol string for 2-inch Butterfly Jewellery Tag
+const tsplCommand = `
+SIZE 50 mm, 20 mm
+GAP 2 mm, 0 mm
+DIRECTION 1
+CLS
+TEXT 20, 10, &quot;3&quot;, 0, 1, 1, &quot;SWARNA JEWELLERS&quot;
+BARCODE 20, 35, &quot;128&quot;, 30, 0, 0, 2, 4, &quot;${tagNo}&quot;
+TEXT 20, 70, &quot;2&quot;, 0, 1, 1, &quot;${itemShortName} - 916&quot;
+TEXT 20, 90, &quot;2&quot;, 0, 1, 1, &quot;GW:${grossWt}g NW:${netWt}g&quot;
+TEXT 20, 110, &quot;2&quot;, 0, 1, 1, &quot;HUID:${huid}  SZ:${size}&quot;
+PRINT 1, 1
+`;
+</code></pre>
+<h3>5.4 WhatsApp Business Cloud API &amp; Web Dispatch</h3>
+<ul>
+<li>Dispatches transactional notifications through two configurable modes:<ol>
+<li><strong>Direct Web Launch (Zero API Cost)</strong>:
+<code>https://wa.me/{91+phone}?text={URLEncodedTemplate}</code></li>
+<li><strong>WhatsApp Business Cloud API (Meta Graph API)</strong>:<ul>
+<li>Endpoint: <code>POST https://graph.facebook.com/v20.0/{phone_number_id}/messages</code></li>
+<li>Template: Pre-approved HSM templates for <code>order_delivery_reminder</code>, <code>scheme_payment_receipt</code>, and <code>daily_gold_rates</code>.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h3>5.5 Bullion Spot Rate Poller &amp; IBJA/MCX Integration</h3>
+<ul>
+<li><strong>Polling Frequency</strong>: Every 60 seconds during market hours (09:00 AM to 11:30 PM IST).</li>
+<li><strong>Fallback</strong>: Local storage cache retention (<code>swarna_bullion_rates_v2</code>) guarantees that in offline scenarios or API downtime, showroom POS terminals continue operating on the morning&#39;s locked board rate.</li>
+</ul>
+<hr>
+<h2>6. END OF BLUEPRINT</h2>
+<p><em>This document contains the complete functional logic, mathematical formulations, database schemas, validation rules, and integration protocols required to build or replicate the entire Swarna Jewellery ERP application.</em></p>
+
+</body>
+</html>
