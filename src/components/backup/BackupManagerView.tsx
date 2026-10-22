@@ -102,7 +102,7 @@ export const BackupManagerView: React.FC<BackupManagerViewProps> = ({
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Top Toolbar */}
       <div className={`border rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-sm transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <div className="flex items-center space-x-3">
           <div className={`p-2 rounded-lg border ${
@@ -111,10 +111,10 @@ export const BackupManagerView: React.FC<BackupManagerViewProps> = ({
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
-            <h1 className={`text-base font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>
+            <h1 className={`text-base font-bold ${'text-slate-900'}`}>
               Backup & Disaster Recovery Studio
             </h1>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            <p className={`text-xs ${'text-slate-500'}`}>
               All 4 storage destinations preserved (Spec #5). Encrypted database snapshots and restore points.
             </p>
           </div>
@@ -153,9 +153,7 @@ export const BackupManagerView: React.FC<BackupManagerViewProps> = ({
                   ? isDark
                     ? 'bg-amber-400/15 border-amber-400/50 shadow-xs'
                     : 'bg-sky-50/80 border-blue-500 shadow-sm'
-                  : isDark
-                  ? 'bg-[#0f172a]/90 border-white/10 text-white hover:border-white/25'
-                  : 'bg-white border-slate-200 hover:border-sky-300'
+                  : 'bg-white border-slate-300 text-slate-800 shadow-xs'
               }`}
             >
               <div className="flex justify-between items-start">
@@ -178,8 +176,8 @@ export const BackupManagerView: React.FC<BackupManagerViewProps> = ({
               </div>
 
               <div>
-                <h3 className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{media.label}</h3>
-                <p className={`text-xs mt-1 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{media.description}</p>
+                <h3 className={`font-bold text-sm ${'text-slate-900'}`}>{media.label}</h3>
+                <p className={`text-xs mt-1 leading-relaxed ${'text-slate-500'}`}>{media.description}</p>
               </div>
 
               <div className={`pt-2 border-t text-[11px] font-mono space-y-0.5 ${
@@ -195,7 +193,7 @@ export const BackupManagerView: React.FC<BackupManagerViewProps> = ({
 
       {/* Trigger Backup Panel */}
       <div className={`border rounded-xl p-5 shadow-sm space-y-4 transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <div className={`flex justify-between items-center border-b pb-2 ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
           <span className={`font-bold text-xs uppercase tracking-wider ${isDark ? 'text-amber-300' : 'text-blue-900'}`}>
@@ -213,7 +211,7 @@ export const BackupManagerView: React.FC<BackupManagerViewProps> = ({
             className={`flex items-center space-x-2 px-5 py-2.5 font-bold text-xs rounded-lg shadow disabled:opacity-50 cursor-pointer transition-all ${
               isDark
                 ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-bold'
-                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                : 'bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs'
             }`}
           >
             <RefreshCw className={`w-4 h-4 ${isBackingUp ? 'animate-spin' : ''}`} />

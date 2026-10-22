@@ -338,7 +338,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
         {/* Modal Body Form */}
         <div className="p-5 overflow-y-auto space-y-4 text-xs">
           {/* Order Summary Strip */}
-          <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl flex flex-wrap items-center justify-between gap-2">
+          <div className="p-3 bg-blue-50/70 border border-slate-300 rounded-xl flex flex-wrap items-center justify-between gap-2">
             <div>
               <span className="text-[10px] text-blue-700 font-bold uppercase block">
                 Target Customer Order:
@@ -665,7 +665,7 @@ export const AssignKaragirModal: React.FC<AssignKaragirModalProps> = ({
 
             <button
               onClick={() => handleSave(true)}
-              className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-sky-50 text-sky-800 border border-sky-300 hover:bg-sky-100 font-bold text-xs shadow-2xs transition-colors cursor-pointer"
+              className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-sky-50 text-sky-800 border border-slate-300 hover:bg-sky-100 font-bold text-xs shadow-2xs transition-colors cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5 text-sky-600" />
               <span>Save & Print Job Card</span>

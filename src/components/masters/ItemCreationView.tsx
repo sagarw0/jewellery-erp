@@ -351,24 +351,24 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Top Toolbar */}
       <div className={`border rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-sm transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <div className="flex items-center space-x-3">
           <div className={`p-2 rounded-lg border ${
-            isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-blue-50 text-blue-600 border-blue-200'
+            isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-blue-50 text-blue-600 border-slate-300'
           }`}>
             <PackagePlus className="w-5 h-5" />
           </div>
           <div>
-            <h1 className={`text-base font-bold flex items-center space-x-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
+            <h1 className={`text-base font-bold flex items-center space-x-2 ${'text-slate-900'}`}>
               <span>Item Creation & Opening Stock Master</span>
               <span className={`text-xs px-2 py-0.5 rounded font-mono font-bold border ${
-                isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-sky-100 text-blue-800 border-sky-200'
+                isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-sky-100 text-blue-800 border-slate-300'
               }`}>
                 F2 Action
               </span>
             </h1>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            <p className={`text-xs ${'text-slate-500'}`}>
               Create master items, assign total batch weights, divide into individual pieces, and adjust inventory.
             </p>
           </div>
@@ -379,7 +379,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
           <button
             onClick={() => setShowColumnSettings(true)}
             className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold border cursor-pointer transition-all ${
-              isDark ? 'bg-white/10 text-white border-white/15 hover:bg-white/20' : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+              'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-semibold'
             }`}
             title="Grid Settings"
           >
@@ -392,7 +392,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
             className={`flex items-center space-x-1 px-4 py-1.5 rounded-lg text-xs font-bold shadow cursor-pointer transition-all ${
               isDark
                 ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-bold'
-                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                : 'bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs'
             }`}
           >
             <Save className="w-3.5 h-3.5" />
@@ -414,7 +414,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
           <button
             onClick={handleCancel}
             className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-semibold border cursor-pointer transition-all ${
-              isDark ? 'bg-white/10 text-white border-white/15 hover:bg-white/20' : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+              'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-semibold'
             }`}
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -438,7 +438,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
 
       {/* Tabs Strip: 1. Create Item | 2. Opening Stock */}
       <div className={`flex border-b rounded-t-xl px-2 pt-2 space-x-2 shadow-2xs transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-sky-200'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <button
           onClick={() => setActiveTab('create_item')}
@@ -653,7 +653,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
             </div>
 
             {/* 2. Allocated to Pieces */}
-            <div className="bg-sky-50 border border-sky-200 p-3 rounded-xl text-center font-mono">
+            <div className="bg-sky-50 border border-slate-300 p-3 rounded-xl text-center font-mono">
               <span className="text-[10px] text-blue-700 font-bold uppercase block">2. Allocated to Pieces</span>
               <strong className="text-lg text-blue-900 font-semibold">{formatWeight(totalAllocatedGross)}</strong>
               <span className="text-[10px] text-blue-700 block font-sans">{currentItemPieces.length} Pieces Divided</span>
@@ -840,7 +840,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
               {/* Net Wt (Calculated) */}
               <div>
                 <label className="block text-[11px] font-bold text-slate-500 mb-1">Net Weight (g)</label>
-                <div className="w-full px-3 py-2 bg-sky-50 border border-sky-200 rounded-lg text-blue-900 font-mono text-right font-bold">
+                <div className="w-full px-3 py-2 bg-sky-50 border border-slate-300 rounded-lg text-blue-900 font-mono text-right font-bold">
                   {netWt.toFixed(3)} g
                 </div>
               </div>
@@ -991,7 +991,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
       {/* Weight Adjustment Modal */}
       {showWeightAdjustmentModal && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-white border border-sky-200/90 rounded-2xl w-full max-w-md shadow-xl overflow-hidden animate-in fade-in duration-150 text-slate-800">
+          <div className="bg-white border border-slate-300/90 rounded-2xl w-full max-w-md shadow-xl overflow-hidden animate-in fade-in duration-150 text-slate-800">
             <div className="px-5 py-3.5 bg-gradient-to-r from-blue-700 to-sky-600 text-white flex justify-between items-center">
               <span className="font-bold text-sm">Item Weight Adjustment</span>
               <button onClick={() => setShowWeightAdjustmentModal(false)} className="text-white/80 hover:text-white">
@@ -1053,7 +1053,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
                 </div>
               )}
 
-              <div className="p-3 bg-sky-50 border border-sky-200 rounded-xl text-[11px] text-blue-900">
+              <div className="p-3 bg-sky-50 border border-slate-300 rounded-xl text-[11px] text-blue-900">
                 {weightChangeType === 'decrease'
                   ? `✓ ${weightChangeAmount}g will be deducted from active stock and credited to URD Scrap ledger.`
                   : `✓ ${weightChangeAmount}g will be added to stock via ${adjustmentSource === 'urd' ? 'URD Scrap consumption' : 'New Purchase invoice'}.`}
@@ -1074,7 +1074,7 @@ export const ItemCreationView: React.FC<ItemCreationViewProps> = ({ onAddItem, o
                   alert(`Weight adjustment of ${weightChangeAmount}g applied successfully!`);
                   setShowWeightAdjustmentModal(false);
                 }}
-                className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow"
+                className="px-4 py-1.5 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs text-xs font-bold shadow"
               >
                 Apply Adjustment
               </button>

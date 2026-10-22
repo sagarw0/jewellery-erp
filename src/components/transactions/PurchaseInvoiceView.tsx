@@ -691,7 +691,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* 1. TOP CONTROL & METRIC TOOLBAR */}
       <div className={`border rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-sm transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/90 text-slate-900'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <div className="flex items-center space-x-3.5">
           <div className={`p-2.5 rounded-xl text-white shadow-md ${
@@ -701,7 +701,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
           </div>
           <div>
             <div className="flex items-center space-x-2.5">
-              <h1 className={`text-base font-semibold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <h1 className={`text-base font-semibold tracking-tight ${'text-slate-900'}`}>
                 Purchase Invoice
               </h1>
               <span className={`text-xs px-2.5 py-0.5 rounded-full font-mono font-medium border shadow-2xs ${
@@ -715,7 +715,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                 F5
               </span>
             </div>
-            <p className={`text-xs mt-0.5 flex items-center gap-2 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            <p className={`text-xs mt-0.5 flex items-center gap-2 ${'text-slate-500'}`}>
               <span>Wholesale lots inwards</span>
               <span>•</span>
               <span className={`font-medium ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>{header.supplier_name}</span>
@@ -739,7 +739,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                 viewMode === 'tabbed'
                   ? isDark
                     ? 'bg-amber-400/20 text-amber-300 border border-amber-400/40 shadow-xs'
-                    : 'bg-white text-blue-700 shadow-xs border border-blue-200'
+                    : 'bg-white text-blue-700 shadow-xs border border-slate-300'
                   : isDark
                   ? 'text-slate-400 hover:text-white'
                   : 'text-slate-600 hover:text-slate-900'
@@ -772,7 +772,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-semibold shadow-xs active:scale-98 transition-all cursor-pointer ${
               isDark
                 ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-bold'
-                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                : 'bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs'
             }`}
           >
             <Save className="w-3.5 h-3.5" />
@@ -784,7 +784,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-medium border transition-colors cursor-pointer ${
               isDark
                 ? 'bg-white/10 hover:bg-white/15 text-white border-white/15'
-                : 'bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100'
+                : 'bg-sky-50 text-sky-800 border-slate-300 hover:bg-sky-100'
             }`}
           >
             <Printer className="w-3.5 h-3.5" />
@@ -829,7 +829,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
 
       {/* 2. TAB NAVIGATION BAR (When in Tabbed View Mode) */}
       {viewMode === 'tabbed' && (
-        <div className="flex border-b border-sky-200 bg-white rounded-2xl p-1.5 space-x-1 overflow-x-auto scrollbar-none shadow-2xs">
+        <div className="flex border-b border-slate-300 bg-white rounded-2xl p-1.5 space-x-1 overflow-x-auto scrollbar-none shadow-2xs">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -866,10 +866,10 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {/* TAB 1: SUPPLIER PROFILE & MASTER DETAILS */}
         {/* ========================================================== */}
         {(viewMode === 'single_screen' || activeTab === 'supplier') && (
-          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-xs space-y-4">
+          <div className="bg-white border border-slate-300/90 rounded-2xl p-4 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
               <div className="flex items-center space-x-2">
-                <div className="p-1.5 bg-blue-50 rounded-lg text-blue-600 border border-blue-200">
+                <div className="p-1.5 bg-blue-50 rounded-lg text-blue-600 border border-slate-300">
                   <Building2 className="w-4 h-4" />
                 </div>
                 <div>
@@ -891,7 +891,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                     const found = availableVendors.find((s) => s.vendor_code === e.target.value);
                     if (found) handleSelectSupplier(vendorToSupplierProfile(found));
                   }}
-                  className="px-3 py-1.5 bg-sky-50/70 border border-sky-200 rounded-xl text-xs font-semibold text-blue-900 focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                  className="px-3 py-1.5 bg-sky-50/70 border border-slate-300 rounded-xl text-xs font-semibold text-blue-900 focus:ring-2 focus:ring-blue-500 cursor-pointer"
                 >
                   {availableVendors.map((s) => (
                     <option key={s.id} value={s.vendor_code}>
@@ -916,7 +916,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                     });
                     setShowQuickVendorModal(true);
                   }}
-                  className="px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-2xs flex items-center space-x-1 cursor-pointer"
+                  className="px-2.5 py-1.5 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs font-bold text-xs shadow-2xs flex items-center space-x-1 cursor-pointer"
                   title="Add New Vendor to Master"
                 >
                   <Plus className="w-3.5 h-3.5" />
@@ -1062,7 +1062,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
 
             {/* Supplier Balances KPI Strip */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-              <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl">
+              <div className="p-3 bg-blue-50/70 border border-slate-300 rounded-xl">
                 <span className="text-[10px] uppercase font-semibold text-blue-700 block">Opening Balance</span>
                 <span className="text-base font-mono font-semibold text-blue-950">
                   {formatCurrency(currentSupplier.opening_balance)} {currentSupplier.balance_type}
@@ -1096,7 +1096,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {(viewMode === 'single_screen' || activeTab === 'purchase_bill') && (
           <div className="space-y-4">
             {/* Header Form */}
-            <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-sm space-y-3">
+            <div className="bg-white border border-slate-300/90 rounded-2xl p-4 shadow-sm space-y-3">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                 <span className="text-xs font-semibold text-blue-950 uppercase tracking-wider flex items-center gap-1.5">
                   <FileText className="w-4 h-4 text-blue-600" /> Invoice Header & Dispatch Parameters
@@ -1141,7 +1141,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                       const found = availableVendors.find((s) => s.vendor_code === e.target.value);
                       if (found) handleSelectSupplier(vendorToSupplierProfile(found));
                     }}
-                    className="w-full px-2.5 py-1.5 bg-sky-50/60 border border-sky-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 text-xs cursor-pointer shadow-2xs"
+                    className="w-full px-2.5 py-1.5 bg-sky-50/60 border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 text-xs cursor-pointer shadow-2xs"
                   >
                     {availableVendors.map((s) => (
                       <option key={s.id} value={s.vendor_code}>
@@ -1254,13 +1254,13 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
             </div>
 
             {/* Wholesale Items Grid */}
-            <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-sm space-y-3">
+            <div className="bg-white border border-slate-300/90 rounded-2xl p-4 shadow-sm space-y-3">
               <div className="flex justify-between items-center flex-wrap gap-2">
                 <div className="flex items-center space-x-2">
                   <span className="text-xs font-semibold text-blue-950 uppercase tracking-wider">
                     Wholesale Inward Grid ({items.length} lots)
                   </span>
-                  <span className="text-[11px] px-2 py-0.5 bg-sky-50 text-blue-700 font-bold rounded-md border border-sky-200">
+                  <span className="text-[11px] px-2 py-0.5 bg-sky-50 text-blue-700 font-bold rounded-md border border-slate-300">
                     Total Gross: {formatWeight(totalGrossWt)}
                   </span>
                 </div>
@@ -1269,7 +1269,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                 <div className="flex items-center space-x-1.5 flex-wrap">
                   <button
                     onClick={() => addItemRow()}
-                    className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition-colors"
+                    className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs text-xs font-bold shadow-xs transition-colors"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add Purchase Lot</span>
@@ -1501,7 +1501,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {(viewMode === 'single_screen' || activeTab === 'payment') && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
             {/* Payment Method Distribution (Left Col 7) */}
-            <div className="lg:col-span-7 bg-white border border-sky-200/90 rounded-2xl p-4 shadow-sm space-y-3 text-xs">
+            <div className="lg:col-span-7 bg-white border border-slate-300/90 rounded-2xl p-4 shadow-sm space-y-3 text-xs">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                 <span className="font-semibold text-blue-950 uppercase tracking-wider flex items-center gap-1.5">
                   <CreditCard className="w-4 h-4 text-blue-600" /> Payment & Settlement Distribution
@@ -1678,7 +1678,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {/* TAB 4: ACCOUNT DISPLAY / SUPPLIER LEDGER */}
         {/* ========================================================== */}
         {(viewMode === 'single_screen' || activeTab === 'account_display') && (
-          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-xs space-y-4">
+          <div className="bg-white border border-slate-300/90 rounded-2xl p-4 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
               <div className="flex items-center space-x-2">
                 <div className="p-1.5 bg-indigo-50 rounded-lg text-indigo-600 border border-indigo-200">
@@ -1705,7 +1705,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                 </button>
                 <button
                   onClick={() => alert('Exporting statement in CSV/Excel...')}
-                  className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-blue-700 text-xs font-medium border border-sky-200"
+                  className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-blue-700 text-xs font-medium border border-slate-300"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Export CSV</span>
@@ -1759,7 +1759,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {/* TAB 5: STOCK DISPLAY / INVENTORY RECEIVED */}
         {/* ========================================================== */}
         {(viewMode === 'single_screen' || activeTab === 'account_cum_stock_display') && (
-          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-xs space-y-4">
+          <div className="bg-white border border-slate-300/90 rounded-2xl p-4 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
               <div className="flex items-center space-x-2">
                 <div className="p-1.5 bg-emerald-50 rounded-lg text-emerald-600 border border-emerald-200">
@@ -1778,7 +1778,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
               {onNavigateToBarcode && (
                 <button
                   onClick={onNavigateToBarcode}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium shadow-xs transition-colors"
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs text-xs font-medium shadow-xs transition-colors"
                 >
                   <Tag className="w-3.5 h-3.5" />
                   <span>Open Barcode Studio (F3)</span>
@@ -1798,7 +1798,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
                 <span className="text-base font-mono font-semibold text-indigo-950">223.300 g</span>
                 <span className="text-[10px] text-indigo-600 block mt-0.5">18 Pcs Bangles/Jhumkas</span>
               </div>
-              <div className="p-3 bg-sky-50/70 border border-sky-200 rounded-xl">
+              <div className="p-3 bg-sky-50/70 border border-slate-300 rounded-xl">
                 <span className="text-[10px] uppercase font-bold text-sky-800 block">18K Diamond Studded</span>
                 <span className="text-base font-mono font-semibold text-sky-950">14.200 g</span>
                 <span className="text-[10px] text-sky-600 block mt-0.5">2 Pairs Solitaires</span>
@@ -1862,7 +1862,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {/* TAB 6: CONSIGNMENT & APPROVAL INWARDS */}
         {/* ========================================================== */}
         {(viewMode === 'single_screen' || activeTab === 'purchase_consignment') && (
-          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-xs space-y-4">
+          <div className="bg-white border border-slate-300/90 rounded-2xl p-4 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
               <div className="flex items-center space-x-2">
                 <div className="p-1.5 bg-amber-50 rounded-lg text-amber-600 border border-amber-200">
@@ -1988,7 +1988,7 @@ export const PurchaseInvoiceView: React.FC<PurchaseInvoiceViewProps> = ({
         {/* TAB 7: CASH & METAL SETTLEMENT / BHAV CUT */}
         {/* ========================================================== */}
         {(viewMode === 'single_screen' || activeTab === 'stock_cash_settlement') && (
-          <div className="bg-white border border-sky-200/90 rounded-2xl p-4 shadow-xs space-y-4">
+          <div className="bg-white border border-slate-300/90 rounded-2xl p-4 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
               <div className="flex items-center space-x-2">
                 <div className="p-1.5 bg-indigo-50 rounded-lg text-indigo-600 border border-indigo-200">

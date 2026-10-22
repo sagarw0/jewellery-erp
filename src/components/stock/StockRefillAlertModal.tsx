@@ -166,9 +166,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
       <div
         className={`w-full max-w-5xl max-h-[92vh] flex flex-col rounded-3xl border shadow-2xl overflow-hidden transition-all duration-300 ${
-          isDark
-            ? 'bg-[#0b1324] border-white/15 text-white'
-            : 'bg-white border-slate-200 text-slate-900'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         {/* Modal Top Header */}
@@ -188,10 +186,10 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
                 <h2 className="text-lg font-bold tracking-normal">
                   Morning Stock Refill & Inventory Alert
                 </h2>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-400/30">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-rose-500/15 text-rose-600 text-rose-700 border border-rose-400/30">
                   {deficitItems.length} Deficit SKUs
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-400/30 hidden sm:inline-block">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/15 text-amber-700 text-amber-700 border border-amber-400/30 hidden sm:inline-block">
                   First Login Today
                 </span>
               </div>
@@ -237,7 +235,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
         {/* Formula Cards & Metrics Banner */}
         <div
           className={`p-4 sm:p-5 border-b ${
-            isDark ? 'bg-[#0f172a]/70 border-white/10' : 'bg-slate-50/90 border-slate-200'
+            'bg-white border-slate-300 text-slate-900 font-medium'
           }`}
         >
           {/* Visual Formula Card Highlight */}
@@ -252,7 +250,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
               <div className="p-1.5 rounded-xl bg-amber-500 text-slate-950 font-bold shadow-2xs">
                 <Calculator className="w-4 h-4" />
               </div>
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-900 dark:text-amber-300">
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-900 text-amber-700">
                 Live Inventory Rule:
               </span>
             </div>
@@ -268,7 +266,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
               >
                 <span>Desired Stock</span>
               </div>
-              <span className="text-base font-bold text-slate-900 dark:text-white">−</span>
+              <span className="text-base font-bold text-slate-900 text-slate-900">−</span>
               <div
                 className={`px-3 py-1.5 rounded-xl border flex items-center space-x-1.5 font-semibold ${
                   isDark
@@ -278,7 +276,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
               >
                 <span>Sold Stock</span>
               </div>
-              <span className="text-base font-bold text-slate-900 dark:text-white">=</span>
+              <span className="text-base font-bold text-slate-900 text-slate-900">=</span>
               <div
                 className={`px-3 py-1.5 rounded-xl border flex items-center space-x-1.5 font-semibold ${
                   isDark
@@ -288,7 +286,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
               >
                 <span>Current Stock</span>
               </div>
-              <span className="text-base font-bold text-slate-900 dark:text-white">➔</span>
+              <span className="text-base font-bold text-slate-900 text-slate-900">➔</span>
               <div
                 className={`px-3 py-1.5 rounded-xl border flex items-center space-x-1.5 font-semibold ${
                   isDark
@@ -303,10 +301,10 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
             {/* Quick summary numbers */}
             <div className="flex items-center space-x-3 text-xs font-sans">
               <div className="text-right">
-                <span className="text-[11px] block text-slate-700 dark:text-slate-300 font-semibold">
+                <span className="text-[11px] block text-slate-700 text-slate-700 font-semibold">
                   Total Shortfall
                 </span>
-                <span className="font-bold text-sm text-rose-700 dark:text-rose-300 font-mono">
+                <span className="font-bold text-sm text-rose-700 text-rose-700 font-mono">
                   {totalDeficitPcs} Pcs (~{totalDeficitEstWt.toFixed(1)}g)
                 </span>
               </div>
@@ -339,9 +337,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
                   <div
                     key={item.id}
                     className={`p-4 rounded-2xl border transition-all duration-200 relative group flex flex-col justify-between ${
-                      isDark
-                        ? 'bg-[#0f172a]/90 border-white/10 hover:border-amber-400/40 shadow-md'
-                        : 'bg-white border-slate-200/90 hover:border-amber-300 shadow-xs'
+                      'bg-white border-slate-300 text-slate-800 shadow-xs'
                     }`}
                   >
                     <div>
@@ -351,19 +347,19 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
                           <span
                             className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
                               item.status === 'critical'
-                                ? 'bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-400/50'
+                                ? 'bg-rose-500/20 text-rose-700 text-rose-700 border border-rose-400/50'
                                 : 'bg-amber-500/20 text-amber-900 dark:text-amber-200 border border-amber-400/50'
                             }`}
                           >
                             {item.status === 'critical' ? '🔴 Critical Deficit' : '🟡 Low Stock'}
                           </span>
-                          <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-slate-200 dark:bg-white/15 text-slate-900 dark:text-white border border-slate-300 dark:border-white/20">
+                          <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-slate-200  text-slate-900 text-slate-900 border border-slate-300 ">
                             {item.category} • {item.purity}%
                           </span>
                         </div>
 
                         {isOrdered && (
-                          <span className="flex items-center space-x-1 text-[10.5px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+                          <span className="flex items-center space-x-1 text-[10.5px] font-semibold text-emerald-700 text-emerald-700 bg-emerald-500/15 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
                             <Check className="w-3.5 h-3.5" />
                             <span>Ordered</span>
                           </span>
@@ -371,41 +367,41 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
                       </div>
 
                       {/* Item Title - High Contrast & Clearly Visible */}
-                      <h4 className="text-base font-bold text-slate-950 dark:text-white leading-snug mb-3 tracking-normal">
+                      <h4 className="text-base font-bold text-slate-950 text-slate-900 leading-snug mb-3 tracking-normal">
                         {item.item_name || 'Jewellery Stock Item'}
                       </h4>
 
                       {/* The Mathematical Cards Strip */}
-                      <div className="grid grid-cols-4 gap-1.5 p-2.5 rounded-xl bg-slate-100/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-center mb-3">
+                      <div className="grid grid-cols-4 gap-1.5 p-2.5 rounded-xl bg-slate-100/90  border border-slate-200  text-center mb-3">
                         <div>
-                          <span className="text-[10px] uppercase font-medium text-slate-700 dark:text-slate-300 block">
+                          <span className="text-[10px] uppercase font-medium text-slate-700 text-slate-700 block">
                             Desired
                           </span>
-                          <span className="text-xs sm:text-sm font-bold text-blue-700 dark:text-blue-300">
+                          <span className="text-xs sm:text-sm font-bold text-blue-700 text-blue-700">
                             {item.desired_stock} pcs
                           </span>
                         </div>
                         <div>
-                          <span className="text-[10px] uppercase font-medium text-slate-700 dark:text-slate-300 block">
+                          <span className="text-[10px] uppercase font-medium text-slate-700 text-slate-700 block">
                             Sold
                           </span>
-                          <span className="text-xs sm:text-sm font-bold text-rose-700 dark:text-rose-300">
+                          <span className="text-xs sm:text-sm font-bold text-rose-700 text-rose-700">
                             {item.sold_stock} pcs
                           </span>
                         </div>
                         <div>
-                          <span className="text-[10px] uppercase font-medium text-slate-700 dark:text-slate-300 block">
+                          <span className="text-[10px] uppercase font-medium text-slate-700 text-slate-700 block">
                             Current
                           </span>
-                          <span className="text-xs sm:text-sm font-bold text-emerald-700 dark:text-emerald-300">
+                          <span className="text-xs sm:text-sm font-bold text-emerald-700 text-emerald-700">
                             {item.current_stock} pcs
                           </span>
                         </div>
-                        <div className="bg-amber-500/20 dark:bg-amber-500/30 rounded-lg p-1 border border-amber-400/40">
+                        <div className="bg-amber-500/20  rounded-lg p-1 border border-amber-400/40">
                           <span className="text-[10px] uppercase font-bold text-amber-950 dark:text-amber-200 block">
                             Refill
                           </span>
-                          <span className="text-xs sm:text-sm font-bold text-amber-800 dark:text-amber-300">
+                          <span className="text-xs sm:text-sm font-bold text-amber-800 text-amber-700">
                             +{deficitQty} pcs
                           </span>
                         </div>
@@ -413,11 +409,11 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
 
                       {/* Stock Level Progress Bar */}
                       <div className="space-y-1 mb-3">
-                        <div className="flex items-center justify-between text-[11px] font-semibold text-slate-700 dark:text-slate-300">
+                        <div className="flex items-center justify-between text-[11px] font-semibold text-slate-700 text-slate-700">
                           <span>Stock Availability</span>
                           <span className="font-bold">{stockHealthPct}% of Desired Level</span>
                         </div>
-                        <div className="w-full h-2.5 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
+                        <div className="w-full h-2.5 rounded-full bg-slate-200  overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all duration-300 ${
                               stockHealthPct <= 25 ? 'bg-rose-500' : 'bg-amber-500'
@@ -436,31 +432,29 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
                             <Building2 className="w-3.5 h-3.5" />
                           </div>
                           <div className="min-w-0">
-                            <span className="text-[10px] font-semibold text-slate-600 dark:text-slate-300 block leading-tight uppercase tracking-wider">
+                            <span className="text-[10px] font-semibold text-slate-600 text-slate-700 block leading-tight uppercase tracking-wider">
                               Assigned Maker / Supplier:
                             </span>
-                            <span className="font-bold text-slate-950 dark:text-white block text-xs truncate">
+                            <span className="font-bold text-slate-950 text-slate-900 block text-xs truncate">
                               {item.vendor_name || 'Direct Artisan Workshop'}
                             </span>
                           </div>
                         </div>
-                        <div className="flex items-center space-x-1.5 font-mono text-xs font-bold text-emerald-700 dark:text-emerald-300 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-500/40 shrink-0">
-                          <Phone className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                        <div className="flex items-center space-x-1.5 font-mono text-xs font-bold text-emerald-700 text-emerald-700 px-2.5 py-1 rounded-lg bg-emerald-50  border border-emerald-300  shrink-0">
+                          <Phone className="w-3.5 h-3.5 text-emerald-600 text-emerald-700" />
                           <span>{item.vendor_phone}</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Action Row: WhatsApp 1-Click Refill & Copy Button */}
-                    <div className="pt-2 border-t border-slate-200 dark:border-white/10 flex items-center justify-between gap-2">
+                    <div className="pt-2 border-t border-slate-200  flex items-center justify-between gap-2">
                       <button
                         onClick={() => handleCopyMessage(item)}
                         className={`px-2.5 py-1.5 rounded-xl text-xs font-semibold border flex items-center space-x-1 transition-all cursor-pointer ${
                           copiedId === item.id
-                            ? 'bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-500/20 dark:text-emerald-300'
-                            : isDark
-                            ? 'bg-white/5 text-slate-300 hover:bg-white/10 border-white/10'
-                            : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-300  text-emerald-700'
+                            : 'bg-white border-slate-300 text-slate-900 font-medium'
                         }`}
                         title="Copy pre-formatted order message to clipboard"
                       >
@@ -499,7 +493,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP v2.6)_`;
             isDark ? 'bg-[#070b14]/90 border-white/10' : 'bg-slate-50 border-slate-200'
           }`}
         >
-          <div className="flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
+          <div className="flex items-center space-x-2 text-xs text-slate-500 text-slate-600">
             <Clock className="w-4 h-4 text-amber-500" />
             <span>
               Alert recorded for today • Next reminder tomorrow morning at 09:00 AM

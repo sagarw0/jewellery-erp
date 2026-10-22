@@ -133,9 +133,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
       {/* Top Toolbar */}
       <div
         className={`p-4 rounded-2xl border flex flex-wrap items-center justify-between gap-3 shadow-xs ${
-          isDark
-            ? 'bg-[#0f172a]/90 border-white/10 text-white'
-            : 'bg-white border-slate-200 text-slate-900 shadow-2xs'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         <div className="flex items-center space-x-3.5">
@@ -147,11 +145,11 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
               <h1 className="text-base font-bold tracking-normal">
                 Loose and Tagged Item Stock Valuation Report
               </h1>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-400/30">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-amber-500/15 text-amber-700 text-amber-700 border border-amber-400/30">
                 {filteredItems.length} SKUs Active
               </span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-slate-500 text-slate-600">
               Live inventory balances, purity audit, URD scrap filters, and real-time fine gold valuation.
             </p>
           </div>
@@ -161,7 +159,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
           {onNavigateToRefill && (
             <button
               onClick={onNavigateToRefill}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-400/40 text-xs font-semibold transition-all cursor-pointer"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 text-amber-700 border border-amber-400/40 text-xs font-semibold transition-all cursor-pointer"
             >
               <SlidersHorizontal className="w-3.5 h-3.5 text-amber-500" />
               <span>Stock Refill Targets</span>
@@ -171,9 +169,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
           <button
             onClick={() => setShowColumnSettings(true)}
             className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-xl text-xs font-mono font-semibold border transition-all cursor-pointer ${
-              isDark
-                ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
-                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
             title="Grid Column Settings"
           >
@@ -184,9 +180,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
           <button
             onClick={handleExportCSV}
             className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-              isDark
-                ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
-                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           >
             <Download className="w-3.5 h-3.5 text-blue-500" />
@@ -196,9 +190,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
           <button
             onClick={() => window.print()}
             className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-              isDark
-                ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
-                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           >
             <Printer className="w-3.5 h-3.5" />
@@ -211,80 +203,80 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
         <div
           className={`p-4 rounded-2xl border shadow-sm ${
-            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
+            'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Total Quantity</span>
-            <div className="p-1.5 rounded-xl bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
+            <span className="text-xs font-bold text-slate-800 text-slate-800 uppercase tracking-wider">Total Quantity</span>
+            <div className="p-1.5 rounded-xl bg-blue-100 text-blue-700  text-blue-700">
               <Boxes className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold mt-2 text-slate-950 dark:text-white font-mono">
-            {totalQty} <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">Pcs</span>
+          <div className="text-2xl font-bold mt-2 text-slate-950 text-slate-900 font-mono">
+            {totalQty} <span className="text-xs font-semibold text-slate-600 text-slate-600">Pcs</span>
           </div>
-          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 block mt-1">Filtered stock inventory</span>
+          <span className="text-[11px] font-medium text-slate-600 text-slate-600 block mt-1">Filtered stock inventory</span>
         </div>
 
         <div
           className={`p-4 rounded-2xl border shadow-sm ${
-            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
+            'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Total Gross / Net Wt</span>
-            <div className="p-1.5 rounded-xl bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+            <span className="text-xs font-bold text-slate-800 text-slate-800 uppercase tracking-wider">Total Gross / Net Wt</span>
+            <div className="p-1.5 rounded-xl bg-amber-100 text-amber-800  text-amber-700">
               <Scale className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold mt-2 text-slate-950 dark:text-white font-mono">
+          <div className="text-2xl font-bold mt-2 text-slate-950 text-slate-900 font-mono">
             {formatWeight(totalNetWt)}{' '}
-            <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 font-sans">
+            <span className="text-xs font-semibold text-slate-600 text-slate-600 font-sans">
               (Gross: {formatWeight(totalGrossWt)})
             </span>
           </div>
-          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 block mt-1">Showroom metal weight</span>
+          <span className="text-[11px] font-medium text-slate-600 text-slate-600 block mt-1">Showroom metal weight</span>
         </div>
 
         <div
           className={`p-4 rounded-2xl border shadow-sm ${
-            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
+            'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Total Pure Fine Gold</span>
-            <div className="p-1.5 rounded-xl bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+            <span className="text-xs font-bold text-slate-800 text-slate-800 uppercase tracking-wider">Total Pure Fine Gold</span>
+            <div className="p-1.5 rounded-xl bg-amber-100 text-amber-800  text-amber-700">
               <Sparkles className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold mt-2 text-amber-900 dark:text-amber-300 font-mono">
+          <div className="text-2xl font-bold mt-2 text-amber-900 text-amber-700 font-mono">
             {formatWeight(totalFineWt)}
           </div>
-          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 block mt-1">100% fine bullion equivalent</span>
+          <span className="text-[11px] font-medium text-slate-600 text-slate-600 block mt-1">100% fine bullion equivalent</span>
         </div>
 
         <div
           className={`p-4 rounded-2xl border shadow-sm ${
-            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
+            'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Stock Valuation</span>
-            <div className="p-1.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+            <span className="text-xs font-bold text-slate-800 text-slate-800 uppercase tracking-wider">Stock Valuation</span>
+            <div className="p-1.5 rounded-xl bg-emerald-100 text-emerald-800  text-emerald-700">
               <Gem className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold mt-2 text-emerald-800 dark:text-emerald-400 font-mono">
+          <div className="text-2xl font-bold mt-2 text-emerald-800 text-emerald-700 font-mono">
             {formatCurrency(totalValuation)}
           </div>
-          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 block mt-1">Market rate valuation</span>
+          <span className="text-[11px] font-medium text-slate-600 text-slate-600 block mt-1">Market rate valuation</span>
         </div>
       </div>
 
       {/* Filter Parameters Strip */}
       <div
         className={`p-4 rounded-2xl border shadow-xs space-y-3 text-xs ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-slate-200 text-slate-800'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3">
@@ -294,7 +286,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
               value={reportType}
               onChange={(e) => setReportType(e.target.value)}
               className={`w-full px-2.5 py-1.5 rounded-xl border text-xs ${
-                isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             >
               <option value="Item wise">Item wise</option>
@@ -310,7 +302,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
               className={`w-full px-2.5 py-1.5 rounded-xl border text-xs ${
-                isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             >
               <option value="all">All Categories</option>
@@ -327,7 +319,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
               value={reportDetails}
               onChange={(e) => setReportDetails(e.target.value)}
               className={`w-full px-2.5 py-1.5 rounded-xl border text-xs ${
-                isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             >
               <option value="Only Tag Details">Only Tag Details</option>
@@ -342,7 +334,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
               value={reportFormat}
               onChange={(e) => setReportFormat(e.target.value)}
               className={`w-full px-2.5 py-1.5 rounded-xl border text-xs ${
-                isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             >
               <option value="Format 1">Format 1 (Detailed)</option>
@@ -356,7 +348,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
               value={reportPer}
               onChange={(e) => setReportPer(e.target.value)}
               className={`w-full px-2.5 py-1.5 rounded-xl border text-xs ${
-                isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             >
               <option value="Fine Wt.">Fine Wt.</option>
@@ -371,7 +363,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
               value={stockValueMode}
               onChange={(e) => setStockValueMode(e.target.value as any)}
               className={`w-full px-2.5 py-1.5 rounded-xl border text-xs ${
-                isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             >
               <option value="Market">Market Rate</option>
@@ -402,9 +394,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search stock by item name, barcode tag #, purity, or category..."
             className={`w-full pl-9 pr-4 py-2 rounded-xl text-xs border transition-all ${
-              isDark
-                ? 'bg-white/5 border-white/15 text-white placeholder-slate-500 focus:border-amber-400'
-                : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-500'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           />
         </div>
@@ -413,7 +403,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
       {/* Main Stock Table */}
       <div
         className={`rounded-2xl border overflow-hidden shadow-xs ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-200'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         <div className="overflow-x-auto">
@@ -463,7 +453,7 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
                 </th>
                 <th
                   onClick={() => handleSort('net_wt')}
-                  className="p-3.5 text-right w-28 cursor-pointer hover:text-amber-500 font-bold text-blue-600 dark:text-blue-400"
+                  className="p-3.5 text-right w-28 cursor-pointer hover:text-amber-500 font-bold text-blue-600 text-blue-700"
                 >
                   Net Wt.
                 </th>
@@ -475,13 +465,13 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
                 </th>
                 <th
                   onClick={() => handleSort('fine_wt')}
-                  className="p-3.5 text-right w-28 cursor-pointer hover:text-amber-500 font-bold text-amber-600 dark:text-amber-400"
+                  className="p-3.5 text-right w-28 cursor-pointer hover:text-amber-500 font-bold text-amber-600 text-amber-700"
                 >
                   Fine Wt.
                 </th>
                 <th
                   onClick={() => handleSort('total_value')}
-                  className="p-3.5 text-right pr-4 w-36 cursor-pointer hover:text-amber-500 font-bold text-emerald-600 dark:text-emerald-400"
+                  className="p-3.5 text-right pr-4 w-36 cursor-pointer hover:text-amber-500 font-bold text-emerald-600 text-emerald-700"
                 >
                   Stock Value
                 </th>
@@ -508,41 +498,41 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
                   >
                     <td className="p-3.5 pl-4 text-center text-slate-400">{idx + 1}</td>
                     <td className="p-3.5 font-sans">
-                      <div className="font-bold text-slate-900 dark:text-white">{item.item_name}</div>
+                      <div className="font-bold text-slate-900 text-slate-900">{item.item_name}</div>
                       <div className="text-[10.5px] text-slate-400 font-mono flex items-center space-x-2 mt-0.5">
-                        <span className="px-1.5 py-0.2 rounded bg-slate-100 dark:bg-white/10">
+                        <span className="px-1.5 py-0.2 rounded bg-slate-100 ">
                           Tag: {item.tag_no || 'Loose'}
                         </span>
                         {item.huid && (
-                          <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+                          <span className="text-emerald-600 text-emerald-700 font-bold">
                             HUID: {item.huid}
                           </span>
                         )}
                       </div>
                     </td>
                     <td className="p-3.5 text-center font-sans">
-                      <span className="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300">
+                      <span className="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-slate-100  text-slate-700 text-slate-700">
                         {item.category}
                       </span>
                     </td>
-                    <td className="p-3.5 text-center font-semibold text-slate-800 dark:text-slate-200">
+                    <td className="p-3.5 text-center font-semibold text-slate-800 text-slate-800">
                       {item.qty}
                     </td>
-                    <td className="p-3.5 text-right text-slate-600 dark:text-slate-300">
+                    <td className="p-3.5 text-right text-slate-600 text-slate-700">
                       {formatWeight(item.gross_wt)}
                     </td>
-                    <td className="p-3.5 text-right font-bold text-blue-600 dark:text-blue-400">
+                    <td className="p-3.5 text-right font-bold text-blue-600 text-blue-700">
                       {formatWeight(item.net_wt)}
                     </td>
                     <td className="p-3.5 text-center">
-                      <span className="px-2 py-0.5 rounded font-bold bg-amber-500/10 text-amber-700 dark:text-amber-300">
+                      <span className="px-2 py-0.5 rounded font-bold bg-amber-500/10 text-amber-700 text-amber-700">
                         {item.purity}%
                       </span>
                     </td>
-                    <td className="p-3.5 text-right font-bold text-amber-600 dark:text-amber-400">
+                    <td className="p-3.5 text-right font-bold text-amber-600 text-amber-700">
                       {formatWeight(item.fine_wt)}
                     </td>
-                    <td className="p-3.5 text-right pr-4 font-bold text-emerald-600 dark:text-emerald-400">
+                    <td className="p-3.5 text-right pr-4 font-bold text-emerald-600 text-emerald-700">
                       {formatCurrency(item.total_value)}
                     </td>
                   </tr>
@@ -563,14 +553,14 @@ export const StockReportView: React.FC<StockReportViewProps> = ({
                 </td>
                 <td className="p-3.5 text-center">{totalQty} Pcs</td>
                 <td className="p-3.5 text-right">{formatWeight(totalGrossWt)}</td>
-                <td className="p-3.5 text-right text-blue-600 dark:text-blue-400">
+                <td className="p-3.5 text-right text-blue-600 text-blue-700">
                   {formatWeight(totalNetWt)}
                 </td>
                 <td className="p-3.5 text-center">—</td>
-                <td className="p-3.5 text-right text-amber-600 dark:text-amber-400">
+                <td className="p-3.5 text-right text-amber-600 text-amber-700">
                   {formatWeight(totalFineWt)}
                 </td>
-                <td className="p-3.5 text-right pr-4 text-emerald-600 dark:text-emerald-400">
+                <td className="p-3.5 text-right pr-4 text-emerald-600 text-emerald-700">
                   {formatCurrency(totalValuation)}
                 </td>
               </tr>

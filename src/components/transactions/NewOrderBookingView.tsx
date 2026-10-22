@@ -588,9 +588,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
       {/* Top Action Toolbar */}
       <div
         className={`p-3.5 rounded-xl flex flex-wrap items-center justify-between gap-3 shadow-sm border ${
-          isDark
-            ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs'
-            : 'bg-white border-sky-200/80 text-slate-800'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         <div className="flex items-center space-x-3">
@@ -598,27 +596,27 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
             className={`p-2 rounded-lg border ${
               isDark
                 ? 'bg-amber-400/10 text-amber-400 border-amber-400/20'
-                : 'bg-blue-50 text-blue-600 border-blue-200'
+                : 'bg-blue-50 text-blue-600 border-slate-300'
             }`}
           >
             <Receipt className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className={`text-base font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>
+              <h1 className={`text-base font-bold ${'text-slate-900'}`}>
                 New Order Booking
               </h1>
               <span
                 className={`text-xs px-2 py-0.5 rounded font-mono font-bold border ${
                   isDark
                     ? 'bg-amber-400/20 text-amber-300 border-amber-400/30'
-                    : 'bg-blue-100 text-blue-800 border-blue-200'
+                    : 'bg-blue-100 text-blue-800 border-slate-300'
                 }`}
               >
                 {selectedOrderId ? orders.find((o) => o.id === selectedOrderId)?.order_no : 'NEW BOOKING'}
               </span>
             </div>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            <p className={`text-xs ${'text-slate-500'}`}>
               Simplified & sorted order flow. All 45+ fields preserved and accessible.
             </p>
           </div>
@@ -692,7 +690,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
             className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
               isDark
                 ? 'bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border-sky-500/20'
-                : 'bg-sky-50 hover:bg-sky-100 text-sky-800 border-sky-200'
+                : 'bg-sky-50 hover:bg-sky-100 text-sky-800 border-slate-300'
             }`}
           >
             <Printer className="w-3.5 h-3.5 text-sky-400" />
@@ -749,9 +747,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
       {/* 7 Workflow Sub-Tabs */}
       <div
         className={`flex border-b rounded-t-xl px-2 pt-2 space-x-1 overflow-x-auto scrollbar-none shadow-2xs ${
-          isDark
-            ? 'bg-[#0f172a]/95 border-white/10'
-            : 'bg-white border-sky-200'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         {tabs.map((tab) => (
@@ -777,7 +773,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
       {activeTab === 'new_order_booking' && (
         <div className="space-y-4">
           {/* SECTION 1: SORTED CUSTOMER & ORDER DETAILS */}
-          <div className="bg-white border border-sky-200/80 rounded-xl p-4 shadow-sm space-y-3">
+          <div className="bg-white border border-slate-300/80 rounded-xl p-4 shadow-sm space-y-3">
             <div className="flex items-center justify-between border-b border-slate-100 pb-2">
               <span className="text-xs font-bold text-blue-900 uppercase tracking-wider flex items-center space-x-1.5">
                 <User className="w-3.5 h-3.5 text-blue-600" />
@@ -852,7 +848,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                   type="date"
                   value={header.delivery_date}
                   onChange={(e) => setHeader({ ...header, delivery_date: e.target.value })}
-                  className="w-full px-2 py-1.5 bg-sky-50 border border-sky-300 rounded-lg text-blue-900 font-mono font-bold focus:border-blue-500 focus:outline-none text-[11px]"
+                  className="w-full px-2 py-1.5 bg-sky-50 border border-slate-300 rounded-lg text-blue-900 font-mono font-bold focus:border-blue-500 focus:outline-none text-[11px]"
                 />
               </div>
             </div>
@@ -1029,7 +1025,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                       <button
                         type="button"
                         onClick={() => setEnlargedPhotoUrl(designPhoto)}
-                        className="px-2.5 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 text-xs font-semibold flex items-center space-x-1 cursor-pointer"
+                        className="px-2.5 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-800 border border-slate-300 text-xs font-semibold flex items-center space-x-1 cursor-pointer"
                       >
                         <Eye className="w-3.5 h-3.5 text-sky-600" />
                         <span>Preview</span>
@@ -1083,7 +1079,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
           </div>
 
           {/* SECTION 2: SORTED ORDER ITEM GRID (Spec #22) */}
-          <div className="bg-white border border-sky-200/80 rounded-xl p-4 shadow-sm space-y-3">
+          <div className="bg-white border border-slate-300/80 rounded-xl p-4 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-blue-900 uppercase tracking-wider flex items-center space-x-1.5">
                 <Calculator className="w-3.5 h-3.5 text-blue-600" />
@@ -1091,7 +1087,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
               </span>
               <button
                 onClick={addItemRow}
-                className="flex items-center space-x-1 px-3 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-bold border border-blue-200 transition-colors"
+                className="flex items-center space-x-1 px-3 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-bold border border-slate-300 transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add Item Line</span>
@@ -1225,7 +1221,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
           {/* SECTION 3: SORTED SETTLEMENT & BILLING SUMMARY */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Advance Deposit & Old Gold Trade */}
-            <div className="bg-white border border-sky-200/80 rounded-xl p-4 shadow-sm space-y-3 text-xs">
+            <div className="bg-white border border-slate-300/80 rounded-xl p-4 shadow-sm space-y-3 text-xs">
               <span className="font-bold text-blue-900 uppercase tracking-wider block border-b border-slate-100 pb-1.5 flex items-center space-x-1.5">
                 <CreditCard className="w-3.5 h-3.5 text-blue-600" />
                 <span>Advance & Old Gold (URD)</span>
@@ -1276,7 +1272,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
             </div>
 
             {/* Tax & Discount Breakdown */}
-            <div className="bg-white border border-sky-200/80 rounded-xl p-4 shadow-sm space-y-3 text-xs">
+            <div className="bg-white border border-slate-300/80 rounded-xl p-4 shadow-sm space-y-3 text-xs">
               <span className="font-bold text-blue-900 uppercase tracking-wider block border-b border-slate-100 pb-1.5">
                 Taxes & Concessions
               </span>
@@ -1330,7 +1326,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
       {/* TAB 2: SUBMIT ORDER TO KARAGIR */}
       {activeTab === 'submit_order_to_karagir' && (
-        <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+        <div className="bg-white border border-slate-300/80 rounded-2xl p-5 shadow-sm space-y-4">
           {/* Summary KPIs */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
@@ -1351,7 +1347,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
               <span className="text-[10px] text-amber-700">Allocated to workshops</span>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200">
+            <div className="p-3.5 rounded-xl bg-blue-50 border border-slate-300">
               <span className="text-[10.5px] font-bold text-blue-800 uppercase tracking-tight block">
                 Active in Workshop
               </span>
@@ -1542,7 +1538,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
                                 <button
                                   onClick={() => handleOpenJobCard(ord)}
-                                  className="px-2 py-1 rounded-lg bg-sky-50 text-sky-800 border border-sky-300 hover:bg-sky-100 font-bold text-[10px] flex items-center space-x-1 cursor-pointer"
+                                  className="px-2 py-1 rounded-lg bg-sky-50 text-sky-800 border border-slate-300 hover:bg-sky-100 font-bold text-[10px] flex items-center space-x-1 cursor-pointer"
                                   title="Print Workshop Job Card"
                                 >
                                   <Printer className="w-3 h-3 text-sky-600" />
@@ -1583,7 +1579,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
       {/* TAB 3: ISSUE MATERIAL TO KARAGIR */}
       {activeTab === 'issue_material_to_karagir' && (
-        <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+        <div className="bg-white border border-slate-300/80 rounded-2xl p-5 shadow-sm space-y-4">
           <div className="flex flex-wrap justify-between items-center border-b border-slate-100 pb-3 gap-2">
             <div>
               <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider flex items-center space-x-2">
@@ -1723,7 +1719,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
       {/* TAB 4: RECEIVE ORDER FROM KARAGIR */}
       {activeTab === 'receive_order_from_karagir' && (
-        <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+        <div className="bg-white border border-slate-300/80 rounded-2xl p-5 shadow-sm space-y-4">
           <div className="border-b border-slate-100 pb-3">
             <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider flex items-center space-x-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -1816,7 +1812,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
       {/* TAB 5: SALES INVOICE CONVERSION */}
       {activeTab === 'new_order_sales_invoice' && (
-        <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+        <div className="bg-white border border-slate-300/80 rounded-2xl p-5 shadow-sm space-y-4">
           <div className="border-b border-slate-100 pb-3 flex justify-between items-center">
             <div>
               <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
@@ -1826,7 +1822,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                 Convert delivered and hallmarked custom jewellery orders into official GST Tax Invoices.
               </p>
             </div>
-            <span className="text-xs font-mono font-bold text-blue-900 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200">
+            <span className="text-xs font-mono font-bold text-blue-900 bg-blue-50 px-2.5 py-1 rounded-lg border border-slate-300">
               {orders.length} Total Bookings
             </span>
           </div>
@@ -1873,7 +1869,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
                           setSelectedOrderId(ord.id);
                           setShowPrint(true);
                         }}
-                        className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] shadow-2xs"
+                        className="px-2.5 py-1 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs font-bold text-[11px] shadow-2xs"
                       >
                         Create Invoice
                       </button>
@@ -1888,7 +1884,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
       {/* TAB 6: ORDER REPORT */}
       {activeTab === 'new_order_report' && (
-        <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+        <div className="bg-white border border-slate-300/80 rounded-2xl p-5 shadow-sm space-y-4">
           <div className="border-b border-slate-100 pb-3 flex flex-wrap justify-between items-center gap-2">
             <div>
               <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
@@ -1968,7 +1964,7 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
 
       {/* TAB 7: ADVANCE LEDGER */}
       {activeTab === 'advance' && (
-        <div className="bg-white border border-sky-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+        <div className="bg-white border border-slate-300/80 rounded-2xl p-5 shadow-sm space-y-4">
           <div className="border-b border-slate-100 pb-3 flex justify-between items-center">
             <div>
               <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">

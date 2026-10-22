@@ -272,7 +272,7 @@ export const UserRoleManagementModal: React.FC<UserRoleManagementModalProps> = (
               className={`p-3 rounded-2xl border flex items-center justify-center shadow-xs ${
                 isDark
                   ? 'bg-amber-400/15 border-amber-400/30 text-amber-300'
-                  : 'bg-blue-50 border-blue-200 text-blue-600'
+                  : 'bg-blue-50 border-slate-300 text-blue-600'
               }`}
             >
               <Users className="w-6 h-6" />
@@ -662,7 +662,7 @@ export const UserRoleManagementModal: React.FC<UserRoleManagementModalProps> = (
         {/* Footer Actions */}
         <div
           className={`p-4 border-t flex items-center justify-between text-xs ${
-            isDark ? 'bg-[#0f172a]/70 border-white/10 text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-600'
+            'bg-white border-slate-300 text-slate-900 font-medium'
           }`}
         >
           <div className="flex items-center space-x-2">

@@ -185,48 +185,22 @@ export const Navbar: React.FC<NavbarProps> = ({
     BRANCHES_CONFIG.find((b) => b.id === selectedBranch) || BRANCHES_CONFIG[0];
 
   return (
-    <header
-      className={`sticky top-0 z-40 no-print transition-colors duration-200 border-b backdrop-blur-xl ${
-        isDark
-          ? 'bg-[#070b14]/95 border-white/10 text-white shadow-md'
-          : 'bg-white/95 border-slate-200/90 text-slate-800 shadow-2xs'
-      }`}
-    >
+    <header className="sticky top-0 z-40 no-print border-b bg-white border-slate-300 text-slate-800 shadow-xs">
       {/* Top Utility Bar: Brand, Live Rates & Switchers */}
-      <div
-        className={`px-4 py-2 flex items-center justify-between text-xs border-b ${
-          isDark
-            ? 'bg-[#070b14]/90 border-white/10 text-white'
-            : 'bg-white/95 border-slate-200/80 text-slate-900'
-        }`}
-      >
+      <div className="px-4 py-2 flex items-center justify-between text-xs border-b bg-white border-slate-200 text-slate-800">
         {/* Brand */}
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2.5">
-            <div
-              className="p-2 rounded-xl flex items-center justify-center shadow-xs"
-              style={{
-                backgroundColor: computedTokens.appPrimary,
-                color: computedTokens.appPrimaryText,
-              }}
-            >
+            <div className="p-2 rounded-lg flex items-center justify-center bg-blue-700 text-white shadow-xs">
               <Gem className="w-4 h-4 text-inherit" />
             </div>
             <div>
               <div className="flex items-center space-x-1.5">
-                <span
-                  className={`font-bold tracking-wide uppercase text-sm font-sans ${
-                    isDark ? 'text-white' : 'text-slate-950'
-                  }`}
-                >
+                <span className="font-bold tracking-wide uppercase text-sm font-sans text-slate-900">
                   SWARNA ERP
                 </span>
               </div>
-              <span
-                className={`text-[10.5px] font-medium block ${
-                  isDark ? 'text-slate-400' : 'text-slate-600'
-                }`}
-              >
+              <span className="text-[10.5px] font-medium block text-slate-500">
                 ogaworld.in • Enterprise Suite
               </span>
             </div>
@@ -240,51 +214,31 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={onOpenBullionRates}
             role="button"
             tabIndex={0}
-            className={`hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-xl border cursor-pointer transition-all duration-150 group ${
-              isDark
-                ? 'bg-white/10 hover:bg-white/15 border-white/20 text-white'
-                : 'bg-white hover:bg-amber-50 border-amber-300 text-slate-950 shadow-2xs'
-            }`}
+            className="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-800 cursor-pointer transition-colors shadow-xs"
             title="Click to open Live Bullion Rates Center & Showroom Board"
           >
-            <div
-              className={`flex items-center space-x-1.5 pr-1.5 border-r ${
-                isDark
-                  ? 'border-white/15 text-amber-400'
-                  : 'border-amber-300 text-amber-900 font-bold'
-              }`}
-            >
+            <div className="flex items-center space-x-1.5 pr-2 border-r border-slate-300 text-amber-700 font-semibold">
               <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
               <TrendingUp className="w-3.5 h-3.5 text-amber-600" />
-              <span
-                className={`text-[10.5px] font-bold uppercase tracking-wide ${
-                  isDark ? 'text-amber-300' : 'text-amber-950'
-                }`}
-              >
+              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-800">
                 Rates:
               </span>
             </div>
 
             <div className="flex items-center space-x-2 font-mono text-[11px]">
               <div className="flex items-center space-x-1">
-                <span className={isDark ? 'text-amber-300' : 'text-amber-900 font-semibold'}>
-                  24K:
-                </span>
-                <span className="font-bold">₹{gold24kRate.toLocaleString('en-IN')}</span>
+                <span className="text-slate-600 font-semibold">24K:</span>
+                <span className="font-bold text-slate-900">₹{gold24kRate.toLocaleString('en-IN')}</span>
               </div>
-              <span className={isDark ? 'text-white/30' : 'text-slate-300'}>•</span>
+              <span className="text-slate-300">•</span>
               <div className="flex items-center space-x-1">
-                <span className={isDark ? 'text-amber-300' : 'text-amber-900 font-semibold'}>
-                  22K:
-                </span>
-                <span className="font-bold">₹{gold22kRate.toLocaleString('en-IN')}</span>
+                <span className="text-slate-600 font-semibold">22K:</span>
+                <span className="font-bold text-slate-900">₹{gold22kRate.toLocaleString('en-IN')}</span>
               </div>
-              <span className={isDark ? 'text-white/30' : 'text-slate-300'}>•</span>
+              <span className="text-slate-300">•</span>
               <div className="flex items-center space-x-1">
-                <span className={isDark ? 'text-slate-300' : 'text-slate-700 font-semibold'}>
-                  Sil:
-                </span>
-                <span className="font-bold">₹{silverRate.toLocaleString('en-IN')}/g</span>
+                <span className="text-slate-600 font-semibold">Sil:</span>
+                <span className="font-bold text-slate-900">₹{silverRate.toLocaleString('en-IN')}/g</span>
               </div>
             </div>
           </div>
@@ -292,30 +246,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Executive Analytics */}
           <button
             onClick={onOpenAnalytics}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl font-bold text-xs transition-all cursor-pointer bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-2xs"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg font-semibold text-xs transition-colors cursor-pointer bg-blue-700 hover:bg-blue-800 text-white shadow-xs"
             title="Executive Analytics (F1)"
           >
-            <BarChart3 className="w-3.5 h-3.5 text-amber-300" />
+            <BarChart3 className="w-3.5 h-3.5 text-white" />
             <span className="hidden md:inline">Analytics</span>
-            <span className="text-[9.5px] bg-white/20 px-1 py-0.2 rounded font-mono">F1</span>
-          </button>
-
-          {/* Theme & UI Customizer Modal Trigger */}
-          <button
-            onClick={() => setIsCustomizerOpen(true)}
-            className={`px-3 py-1.5 rounded-xl border flex items-center space-x-2 cursor-pointer transition-all ${
-              isDark
-                ? 'bg-white/10 text-white hover:bg-white/20 border-white/20'
-                : 'bg-white text-slate-800 hover:bg-slate-50 border-slate-300 font-bold shadow-2xs'
-            }`}
-            title="Open Global Theme & UI Customizer (3 Luxury Themes & Color Customizer)"
-          >
-            <Palette className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
-            <span className="text-[11px] font-bold hidden sm:inline">Theme</span>
-            <div
-              className="w-3 h-3 rounded-full border border-white shadow-2xs shrink-0"
-              style={{ backgroundColor: computedTokens.appPrimary }}
-            />
+            <span className="text-[9.5px] bg-blue-900/50 text-white px-1 py-0.2 rounded font-mono">F1</span>
           </button>
 
           {/* Dynamic Role Switcher & User Profile */}
@@ -323,11 +259,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="relative pl-1">
               <button
                 onClick={() => setShowRoleDropdown(!showRoleDropdown)}
-                className={`flex items-center space-x-2 px-2.5 py-1 rounded-xl border text-left cursor-pointer transition-all ${
-                  isDark
-                    ? 'bg-white/10 text-white border-white/20 hover:bg-white/15'
-                    : 'bg-white text-slate-900 border-slate-300 hover:bg-slate-50 shadow-2xs'
-                }`}
+                className="flex items-center space-x-2 px-2.5 py-1.5 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-800 text-left cursor-pointer transition-colors shadow-xs"
                 title={
                   activeRole === 'Owner'
                     ? 'Showroom Owner - Click to manage employee roles'
@@ -336,16 +268,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <div className="text-right">
                   <div className="font-bold text-[11px] leading-tight flex items-center justify-end space-x-1">
-                    <UserCheck className="w-3 h-3 text-emerald-500 inline shrink-0" />
-                    <span className="truncate max-w-[100px]">{currentUser.name}</span>
+                    <UserCheck className="w-3 h-3 text-emerald-600 inline shrink-0" />
+                    <span className="truncate max-w-[100px] text-slate-900">{currentUser.name}</span>
                   </div>
                   <div
                     className={`text-[9.5px] font-bold uppercase tracking-wider flex items-center justify-end space-x-0.5 ${
                       activeRole === 'Owner'
-                        ? 'text-amber-600 dark:text-amber-300'
+                        ? 'text-amber-700'
                         : activeRole === 'Cashier'
-                        ? 'text-emerald-600 dark:text-emerald-300'
-                        : 'text-blue-600 dark:text-sky-300'
+                        ? 'text-emerald-700'
+                        : 'text-blue-700'
                     }`}
                   >
                     <span>{activeRole}</span>
@@ -357,25 +289,19 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {/* Role Switcher & Management Menu */}
               {showRoleDropdown && (
-                <div
-                  className={`absolute right-0 mt-2 w-72 rounded-2xl p-2.5 border shadow-2xl z-50 animate-in fade-in duration-150 ${
-                    isDark
-                      ? 'bg-[#0f172a]/98 border-white/20 text-white backdrop-blur-2xl'
-                      : 'bg-white border-slate-200 text-slate-900 backdrop-blur-2xl shadow-xl'
-                  }`}
-                >
-                  <div className="flex items-center justify-between px-2.5 py-1.5 border-b border-white/10 mb-2">
+                <div className="absolute right-0 mt-2 w-72 rounded-xl p-2.5 border border-slate-300 bg-white text-slate-800 shadow-xl z-50">
+                  <div className="flex items-center justify-between px-2.5 py-1.5 border-b border-slate-200 mb-2">
                     <div>
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">
                         User & Access Control
                       </span>
-                      <span className="text-xs font-bold truncate block">
+                      <span className="text-xs font-bold text-slate-900 truncate block">
                         {currentUser.name} ({activeRole})
                       </span>
                     </div>
                     <button
                       onClick={() => setShowRoleDropdown(false)}
-                      className="text-xs text-slate-400 hover:text-white p-1"
+                      className="text-xs text-slate-400 hover:text-slate-700 p-1"
                     >
                       ✕
                     </button>
@@ -389,13 +315,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                           setShowRoleDropdown(false);
                           onOpenUserRoleManagement();
                         }}
-                        className="w-full p-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-slate-950 font-bold text-xs flex items-center justify-between shadow-xs cursor-pointer transition-all"
+                        className="w-full p-2.5 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-semibold text-xs flex items-center justify-between shadow-xs cursor-pointer transition-colors"
                       >
                         <div className="flex items-center space-x-2">
-                          <ShieldCheck className="w-4 h-4 text-slate-950" />
+                          <ShieldCheck className="w-4 h-4 text-white" />
                           <span>Manage Staff Roles</span>
                         </div>
-                        <span className="text-[10px] bg-black/20 text-slate-950 px-1.5 py-0.5 rounded font-mono">
+                        <span className="text-[10px] bg-blue-900/60 text-white px-1.5 py-0.5 rounded font-mono">
                           Owner
                         </span>
                       </button>
@@ -405,7 +331,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {/* Perspective testing quick switch for Owner */}
                   {activeRole === 'Owner' && (
                     <div className="space-y-1">
-                      <div className="px-2 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      <div className="px-2 py-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                         Test Role Perspective:
                       </div>
                       {(['Owner', 'Manager', 'Cashier', 'Accountant', 'Karagir'] as UserRole[]).map(
@@ -418,13 +344,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                                 if (onChangeUserRole) onChangeUserRole(role);
                                 setShowRoleDropdown(false);
                               }}
-                              className={`w-full p-2 rounded-xl text-left transition-all flex items-center justify-between cursor-pointer ${
+                              className={`w-full p-2 rounded-lg text-left transition-colors flex items-center justify-between cursor-pointer ${
                                 isSelected
-                                  ? isDark
-                                    ? 'bg-amber-400/20 text-amber-300 border border-amber-400/40 font-bold'
-                                    : 'bg-blue-50 text-blue-900 border border-blue-300 font-bold'
-                                  : isDark
-                                  ? 'hover:bg-white/10 text-slate-200'
+                                  ? 'bg-blue-50 text-blue-700 border border-blue-200 font-bold'
                                   : 'hover:bg-slate-50 text-slate-700'
                               }`}
                             >
@@ -448,16 +370,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                   {/* Non-Owner Notice */}
                   {activeRole !== 'Owner' && (
-                    <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-[11px] text-slate-400 space-y-1 mb-2">
-                      <div className="font-bold text-slate-300">Staff Access Level</div>
-                      <div>Roles and permissions are managed by the Showroom Owner (<span className="text-amber-400 font-bold">Sagar Wadkar</span>).</div>
+                    <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-[11px] text-slate-600 space-y-1 mb-2">
+                      <div className="font-bold text-slate-800">Staff Access Level</div>
+                      <div>Roles and permissions are managed by the Showroom Owner (<span className="text-blue-700 font-bold">Sagar Wadkar</span>).</div>
                     </div>
                   )}
 
-                  <div className="pt-2 mt-1 border-t border-white/10 flex justify-between items-center px-1">
+                  <div className="pt-2 mt-1 border-t border-slate-200 flex justify-between items-center px-1">
                     <button
                       onClick={onLogout}
-                      className="text-[11px] font-bold text-rose-500 hover:text-rose-400 hover:underline flex items-center space-x-1 cursor-pointer"
+                      className="text-[11px] font-bold text-rose-600 hover:text-rose-800 hover:underline flex items-center space-x-1 cursor-pointer"
                     >
                       <LogOut className="w-3 h-3" />
                       <span>Sign Out</span>
@@ -471,11 +393,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Hotkey Cheat Sheet */}
           <button
             onClick={() => setShowHotkeys(!showHotkeys)}
-            className={`p-1.5 rounded-xl border transition-colors ${
-              isDark
-                ? 'text-slate-300 hover:text-white hover:bg-white/10 border-white/15'
-                : 'text-slate-600 hover:text-blue-600 hover:bg-slate-100 border-slate-200'
-            }`}
+            className="p-1.5 rounded-lg border border-slate-300 text-slate-700 hover:text-blue-700 hover:bg-slate-100 transition-colors"
             title="ERP Keyboard Shortcuts (F1-F12)"
           >
             <Keyboard className="w-3.5 h-3.5" />
@@ -483,20 +401,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Main Navigation Bar (Horizontal Top Menus - Crisp luxury, no fuzzy glow) */}
-      <nav
-        className="px-4 py-1.5 flex items-center justify-between overflow-x-auto scrollbar-none transition-all duration-200"
-        style={{
-          backgroundColor: isDark ? 'rgba(7, 11, 20, 0.98)' : 'rgba(255, 255, 255, 0.98)',
-        }}
-      >
-        <div
-          className="flex items-center space-x-1 p-1 rounded-2xl border min-w-max transition-all shadow-2xs"
-          style={{
-            backgroundColor: isDark ? 'rgba(0, 0, 0, 0.50)' : 'rgba(241, 245, 249, 0.95)',
-            borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(15, 23, 42, 0.12)',
-          }}
-        >
+      {/* Main Navigation Bar */}
+      <nav className="px-4 py-1.5 flex items-center justify-between overflow-x-auto scrollbar-none bg-white">
+        <div className="flex items-center space-x-1 p-1 rounded-xl border border-slate-200 bg-slate-100 min-w-max shadow-2xs">
           {visibleNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentSection === item.id;
@@ -504,32 +411,24 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 key={item.id}
                 onClick={() => onSelectSection(item.id)}
-                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-150 cursor-pointer select-none border ${
+                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer select-none border ${
                   isActive
-                    ? isDark
-                      ? 'bg-amber-400 text-slate-950 font-bold border-amber-300 shadow-sm'
-                      : 'bg-blue-600 text-white font-bold border-blue-700 shadow-sm'
-                    : isDark
-                    ? 'text-slate-200 hover:text-white hover:bg-white/15 border-transparent'
-                    : 'text-slate-950 hover:text-blue-700 hover:bg-white hover:shadow-2xs border-transparent'
+                    ? 'bg-blue-700 text-white font-bold border-blue-700 shadow-xs'
+                    : 'text-slate-700 hover:text-blue-700 hover:bg-white border-transparent'
                 }`}
               >
                 <Icon
                   className={`w-3.5 h-3.5 ${
-                    isActive ? 'text-inherit' : isDark ? 'text-slate-300' : 'text-slate-800'
+                    isActive ? 'text-white' : 'text-slate-600'
                   }`}
                 />
-                <span className="truncate font-semibold">{item.label}</span>
+                <span className="truncate">{item.label}</span>
                 {item.hotkey && (
                   <span
                     className={`text-[9.5px] px-1.5 py-0.5 rounded font-mono font-semibold tracking-normal border ${
                       isActive
-                        ? isDark
-                          ? 'bg-black/25 text-slate-950 border-black/10'
-                          : 'bg-white/25 text-white border-white/20'
-                        : isDark
-                        ? 'bg-white/15 text-slate-200 border-white/10'
-                        : 'bg-slate-200/90 text-slate-900 border-slate-300'
+                        ? 'bg-blue-900/40 text-white border-blue-600'
+                        : 'bg-slate-200 text-slate-700 border-slate-300'
                     }`}
                   >
                     {item.hotkey}
@@ -543,74 +442,46 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Hotkeys Floating Cheat Sheet */}
       {showHotkeys && (
-        <div
-          className={`absolute right-4 top-20 border rounded-2xl shadow-xl p-4 w-76 z-50 text-xs animate-in fade-in duration-150 ${
-            isDark
-              ? 'bg-[#0f172a]/95 backdrop-blur-2xl border-white/20 text-white'
-              : 'bg-white border-slate-200 text-slate-800 shadow-xl'
-          }`}
-        >
-          <div className="flex justify-between items-center pb-2 mb-2 border-b border-white/10">
-            <span className="font-bold flex items-center space-x-1.5">
-              <Keyboard className="w-4 h-4 text-amber-400" />
+        <div className="absolute right-4 top-20 border border-slate-300 rounded-xl shadow-xl p-4 w-76 z-50 text-xs bg-white text-slate-800">
+          <div className="flex justify-between items-center pb-2 mb-2 border-b border-slate-200">
+            <span className="font-bold flex items-center space-x-1.5 text-slate-900">
+              <Keyboard className="w-4 h-4 text-blue-700" />
               <span>Keyboard Hotkeys (F1–F12)</span>
             </span>
             <button
               onClick={() => setShowHotkeys(false)}
-              className="p-1 rounded opacity-70 hover:opacity-100"
+              className="p-1 rounded text-slate-400 hover:text-slate-700"
             >
               ✕
             </button>
           </div>
           <div className="space-y-1.5 font-mono text-[11px]">
-            <div className="flex justify-between items-center py-0.5 border-b border-white/5">
-              <span className="font-bold px-1.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300">F1</span>
-              <span className="font-sans">Executive Analytics</span>
-            </div>
-            <div className="flex justify-between items-center py-0.5 border-b border-white/5">
-              <span className="font-bold px-1.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300">F2</span>
-              <span className="font-sans">Item Creation Master</span>
-            </div>
-            <div className="flex justify-between items-center py-0.5 border-b border-white/5">
-              <span className="font-bold px-1.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300">F3</span>
-              <span className="font-sans">Barcode Studio</span>
-            </div>
-            <div className="flex justify-between items-center py-0.5 border-b border-white/5">
-              <span className="font-bold px-1.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300">F4</span>
-              <span className="font-sans">Sales Invoice / POS</span>
-            </div>
-            <div className="flex justify-between items-center py-0.5 border-b border-white/5">
-              <span className="font-bold px-1.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300">F5</span>
-              <span className="font-sans">Purchase Invoice</span>
-            </div>
-            <div className="flex justify-between items-center py-0.5 border-b border-white/5">
-              <span className="font-bold px-1.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300">F6</span>
-              <span className="font-sans">Refinery In</span>
-            </div>
-            <div className="flex justify-between items-center py-0.5 border-b border-white/5">
-              <span className="font-bold px-1.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300">F7</span>
-              <span className="font-sans">New Order Booking</span>
-            </div>
-            <div className="flex justify-between items-center py-0.5 border-b border-white/5">
-              <span className="font-bold px-1.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300">F8</span>
-              <span className="font-sans">Account Master</span>
-            </div>
-            <div className="flex justify-between items-center py-0.5 border-b border-white/5">
-              <span className="font-bold px-1.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300">F9</span>
-              <span className="font-sans">Stock Report</span>
-            </div>
-            <div className="flex justify-between items-center py-0.5 border-b border-white/5">
-              <span className="font-bold px-1.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300">F10</span>
-              <span className="font-sans">Day Book</span>
-            </div>
-            <div className="flex justify-between items-center py-0.5 border-b border-white/5">
-              <span className="font-bold px-1.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300">F11</span>
-              <span className="font-sans">Debtors Ledger</span>
-            </div>
-            <div className="flex justify-between items-center py-0.5">
-              <span className="font-bold px-1.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300">F12</span>
-              <span className="font-sans">USB Backup Manager</span>
-            </div>
+            {[
+              { key: 'F1', label: 'Executive Analytics' },
+              { key: 'F2', label: 'Item Creation Master' },
+              { key: 'F3', label: 'Barcode Studio' },
+              { key: 'F4', label: 'Sales Invoice / POS' },
+              { key: 'F5', label: 'Purchase Invoice' },
+              { key: 'F6', label: 'Refinery In' },
+              { key: 'F7', label: 'New Order Booking' },
+              { key: 'F8', label: 'Account Master' },
+              { key: 'F9', label: 'Stock Report' },
+              { key: 'F10', label: 'Day Book' },
+              { key: 'F11', label: 'Debtors Ledger' },
+              { key: 'F12', label: 'USB Backup Manager' },
+            ].map((hk, idx, arr) => (
+              <div
+                key={hk.key}
+                className={`flex justify-between items-center py-1 ${
+                  idx < arr.length - 1 ? 'border-b border-slate-100' : ''
+                }`}
+              >
+                <span className="font-bold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                  {hk.key}
+                </span>
+                <span className="font-sans text-slate-700">{hk.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       )}

@@ -136,110 +136,24 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className={`min-h-screen ${currentTheme.bgGradient} flex flex-col justify-center items-center p-4 sm:p-6 ${currentTheme.textPrimary} transition-colors duration-300 relative`}>
-      {/* Top Floating Theme Switcher */}
-      <div className="absolute top-4 right-4 z-50">
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => setShowThemePicker(!showThemePicker)}
-            className={`px-3 py-1.5 rounded-xl border shadow-xs flex items-center space-x-2 cursor-pointer transition-all ${
-              isDark
-                ? 'bg-white/10 text-white hover:bg-white/20 border-white/20 backdrop-blur-md'
-                : 'bg-white/90 text-slate-700 hover:bg-white border-slate-300 shadow-sm'
-            }`}
-            title="Switch ERP Theme"
-          >
-            <Palette className={`w-3.5 h-3.5 ${isDark ? 'text-sky-300' : 'text-blue-600'}`} />
-            <span className="text-xs font-semibold">{currentTheme.name}</span>
-            <div
-              className="w-3 h-3 rounded-full border border-white shadow-2xs"
-              style={{ backgroundColor: currentTheme.swatchPrimary }}
-            />
-            <ChevronDown className={`w-3 h-3 ${isDark ? 'text-slate-300' : 'text-slate-400'}`} />
-          </button>
-
-          {showThemePicker && (
-            <div className={`absolute right-0 mt-2 w-72 rounded-2xl p-3 border shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150 ${
-              isDark
-                ? 'bg-[#111827]/95 border-white/20 text-white backdrop-blur-2xl'
-                : 'bg-white border-slate-200 text-slate-800'
-            }`}>
-              <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10">
-                <span className="text-xs font-bold flex items-center space-x-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Choose ERP Theme</span>
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setShowThemePicker(false)}
-                  className="text-xs text-slate-400 hover:text-white"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div className="space-y-1 max-h-60 overflow-y-auto">
-                {Object.values(THEMES)
-                  .filter((theme) => theme.id !== 'custom')
-                  .map((theme) => (
-                  <button
-                    key={theme.id}
-                    type="button"
-                    onClick={() => {
-                      setTheme(theme.id as ThemeId);
-                      setShowThemePicker(false);
-                    }}
-                    className={`w-full p-2 rounded-lg text-left flex items-center justify-between transition-colors ${
-                      currentTheme.id === theme.id
-                        ? isDark ? 'bg-white/15 text-white font-bold' : 'bg-blue-50 text-blue-900 font-bold border border-blue-200'
-                        : isDark ? 'hover:bg-white/10 text-slate-300' : 'hover:bg-slate-100 text-slate-700'
-                    }`}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <div
-                        className="w-3.5 h-3.5 rounded-full border border-white/30"
-                        style={{ backgroundColor: theme.swatchPrimary }}
-                      />
-                      <span className="text-xs">{theme.name}</span>
-                    </div>
-                    {currentTheme.id === theme.id && (
-                      <CheckCircle2 className={`w-3.5 h-3.5 ${isDark ? 'text-sky-400' : 'text-blue-600'}`} />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
+    <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-center items-center p-4 sm:p-6 text-[#1E293B] relative">
       {/* Container Card */}
-      <div className={`w-full max-w-md ${
-        isDark
-          ? 'bg-white/[0.08] backdrop-blur-2xl backdrop-saturate-200 border border-white/20 shadow-2xl shadow-black/40 ring-1 ring-white/10'
-          : 'bg-white border border-slate-200/90 shadow-xl shadow-slate-900/5'
-      } rounded-2xl overflow-hidden transition-all`}>
+      <div className="w-full max-w-md bg-white border border-slate-300 shadow-sm rounded-xl overflow-hidden transition-all">
         {/* Header Branding */}
-        <div className={`px-6 py-6 text-white text-center relative overflow-hidden ${
-          isDark
-            ? 'bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 border-b border-white/15'
-            : 'bg-gradient-to-r from-blue-600 via-sky-600 to-blue-700'
-        }`}>
-          <div className="absolute -right-8 -top-8 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+        <div className="px-6 py-6 text-white text-center bg-blue-700 relative overflow-hidden">
           <div className="flex justify-center mb-2">
-            <div className="p-2.5 rounded-xl bg-white/20 backdrop-blur border border-white/30 shadow-inner">
-              <Gem className="w-8 h-8 text-amber-300 animate-pulse" />
+            <div className="p-2.5 rounded-lg bg-white/20 border border-white/30 shadow-inner">
+              <Gem className="w-8 h-8 text-white" />
             </div>
           </div>
           <h1 className="text-xl font-bold tracking-wider uppercase font-sans">
             SWARNA ERP
           </h1>
-          <p className="text-xs text-sky-100 mt-1 font-medium">
+          <p className="text-xs text-blue-100 mt-1 font-medium">
             Jewellery Enterprise Management Platform
           </p>
-          <div className="mt-2 inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-white/15 text-[11px] text-sky-100 border border-white/20">
-            <ShieldCheck className="w-3 h-3 text-amber-300" />
+          <div className="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-0.5 rounded-full bg-white/15 text-[11px] text-white border border-white/20">
+            <ShieldCheck className="w-3.5 h-3.5 text-blue-200" />
             <span>Staff Secure Authentication</span>
           </div>
         </div>
@@ -247,11 +161,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
         {/* Form Body */}
         <div className="p-6 sm:p-8 space-y-5">
           {errorMsg && (
-            <div className={`p-3 rounded-lg text-xs font-medium flex items-center space-x-2 ${
-              isDark
-                ? 'bg-rose-950/50 border border-rose-500/40 text-rose-200'
-                : 'bg-rose-50 border border-rose-200 text-rose-700'
-            }`}>
+            <div className="p-3 rounded-lg text-xs font-medium flex items-center space-x-2 bg-rose-50 border border-rose-200 text-rose-700">
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
               <span>{errorMsg}</span>
             </div>
@@ -260,36 +170,28 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
           <form onSubmit={handleSubmit} className="space-y-4 text-xs">
             {/* 1. Employee Code */}
             <div>
-              <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${
-                isDark ? 'text-slate-200' : 'text-slate-700'
-              }`}>
+              <label className="block text-[11px] font-bold uppercase tracking-wider mb-1.5 text-slate-700">
                 Employee Code <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
-                <User className={`w-4 h-4 absolute left-3 top-2.5 ${isDark ? 'text-sky-400' : 'text-sky-500'}`} />
+                <User className="w-4 h-4 absolute left-3 top-2.5 text-slate-500" />
                 <input
                   type="text"
-                  placeholder="e.g. EMP-101"
+                  placeholder="e.g. OWNER-01"
                   value={employeeCode}
                   onChange={(e) => setEmployeeCode(e.target.value)}
-                  className={`w-full pl-9 pr-3 py-2 rounded-lg font-semibold transition-colors focus:outline-none ${
-                    isDark
-                      ? 'bg-white/[0.09] border border-white/20 text-white placeholder-slate-400 focus:border-sky-400 focus:bg-white/[0.14]'
-                      : 'bg-slate-50 border border-slate-300 text-slate-900 focus:border-blue-500 focus:bg-white'
-                  }`}
+                  className="w-full pl-9 pr-3 py-2 rounded-lg font-semibold bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
                 />
               </div>
             </div>
 
             {/* 2. Branch Selection */}
             <div>
-              <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${
-                isDark ? 'text-slate-200' : 'text-slate-700'
-              }`}>
+              <label className="block text-[11px] font-bold uppercase tracking-wider mb-1.5 text-slate-700">
                 Showroom Branch <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
-                <Building2 className={`w-4 h-4 absolute left-3 top-2.5 ${isDark ? 'text-sky-400' : 'text-sky-500'}`} />
+                <Building2 className="w-4 h-4 absolute left-3 top-2.5 text-slate-500" />
                 <select
                   value={branch}
                   onChange={(e) => {
@@ -297,14 +199,10 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                     setBranch(e.target.value);
                     if (selected) setBranchId(selected.id);
                   }}
-                  className={`w-full pl-9 pr-3 py-2 rounded-lg font-medium transition-colors focus:outline-none ${
-                    isDark
-                      ? 'bg-white/[0.09] border border-white/20 text-white focus:border-sky-400 focus:bg-[#1f2937]'
-                      : 'bg-slate-50 border border-slate-300 text-slate-900 focus:border-blue-500 focus:bg-white'
-                  }`}
+                  className="w-full pl-9 pr-3 py-2 rounded-lg font-medium bg-white border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
                 >
                   {BRANCHES_LIST.map((b) => (
-                    <option key={b.id} value={b.label} className={isDark ? 'bg-[#1f2937] text-white' : 'bg-white text-slate-900'}>
+                    <option key={b.id} value={b.label} className="bg-white text-slate-900">
                       {b.label}
                     </option>
                   ))}
@@ -314,28 +212,22 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
 
             {/* 3. Password Authentication */}
             <div>
-              <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${
-                isDark ? 'text-slate-200' : 'text-slate-700'
-              }`}>
+              <label className="block text-[11px] font-bold uppercase tracking-wider mb-1.5 text-slate-700">
                 Password <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
-                <Lock className={`w-4 h-4 absolute left-3 top-2.5 ${isDark ? 'text-sky-400' : 'text-sky-500'}`} />
+                <Lock className="w-4 h-4 absolute left-3 top-2.5 text-slate-500" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter employee password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`w-full pl-9 pr-10 py-2 rounded-lg transition-colors focus:outline-none ${
-                    isDark
-                      ? 'bg-white/[0.09] border border-white/20 text-white placeholder-slate-400 focus:border-sky-400 focus:bg-white/[0.14]'
-                      : 'bg-slate-50 border border-slate-300 text-slate-900 focus:border-blue-500 focus:bg-white'
-                  }`}
+                  className="w-full pl-9 pr-10 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors font-medium"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className={`absolute right-3 top-2.5 ${isDark ? 'text-slate-300 hover:text-white' : 'text-slate-400 hover:text-slate-600'}`}
+                  className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-700"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -346,7 +238,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full py-2.5 px-4 ${currentTheme.primaryBtn} text-xs font-bold rounded-lg flex items-center justify-center space-x-2 transition-all cursor-pointer disabled:opacity-70 mt-2`}
+              className="w-full py-2.5 px-4 bg-blue-700 hover:bg-blue-800 text-white text-xs font-semibold rounded-lg flex items-center justify-center space-x-2 transition-colors cursor-pointer disabled:opacity-70 mt-2 shadow-xs"
             >
               {isLoading ? (
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -360,10 +252,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
           </form>
 
           {/* Quick Demo Login Chips with Role details */}
-          <div className={`pt-4 border-t ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
-            <span className={`block text-[11px] font-semibold uppercase tracking-wider mb-2 text-center ${
-              isDark ? 'text-slate-300' : 'text-slate-400'
-            }`}>
+          <div className="pt-4 border-t border-slate-200">
+            <span className="block text-[11px] font-semibold uppercase tracking-wider mb-2 text-center text-slate-500">
               Quick Switch Demo Roles
             </span>
             <div className="grid grid-cols-1 gap-1.5">
@@ -372,37 +262,33 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                   key={user.code}
                   type="button"
                   onClick={() => handleQuickDemo(user)}
-                  className={`p-2 rounded-xl text-left transition-all flex items-center justify-between group cursor-pointer ${
+                  className={`p-2 rounded-lg text-left transition-colors flex items-center justify-between group cursor-pointer border ${
                     employeeCode === user.code
-                      ? isDark
-                        ? 'bg-amber-500/20 border-2 border-amber-400 text-white shadow-xs'
-                        : 'bg-blue-50 border-2 border-blue-500 text-slate-950 shadow-xs'
-                      : isDark
-                      ? 'bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white'
-                      : 'bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800'
+                      ? 'bg-blue-50 border-blue-600 text-slate-950 shadow-2xs'
+                      : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-800'
                   }`}
                 >
                   <div className="min-w-0 pr-2">
                     <div className="font-bold text-xs flex items-center space-x-1.5 flex-wrap">
-                      <span className={isDark ? 'text-white' : 'text-slate-900'}>{user.name}</span>
+                      <span className="text-slate-900">{user.name}</span>
                       <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono font-bold ${
                         user.role === 'Owner'
-                          ? 'bg-amber-400/25 text-amber-900 dark:text-amber-300 border border-amber-400/40'
+                          ? 'bg-amber-100 text-amber-800 border border-amber-300'
                           : user.role === 'Cashier'
-                          ? 'bg-emerald-400/25 text-emerald-900 dark:text-emerald-300 border border-emerald-400/40'
-                          : 'bg-sky-400/25 text-sky-900 dark:text-sky-300 border border-sky-400/40'
+                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                          : 'bg-blue-100 text-blue-800 border border-blue-300'
                       }`}>
                         {user.role} ({user.code})
                       </span>
                     </div>
-                    <div className={`text-[10px] truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                    <div className="text-[10px] truncate text-slate-500">
                       {user.desc}
                     </div>
                   </div>
                   <span className={`text-[10px] font-bold shrink-0 ${
                     employeeCode === user.code
-                      ? isDark ? 'text-amber-300' : 'text-blue-700'
-                      : isDark ? 'text-slate-400 group-hover:text-white' : 'text-slate-500 group-hover:text-slate-900'
+                      ? 'text-blue-700'
+                      : 'text-slate-500 group-hover:text-slate-800'
                   }`}>
                     {employeeCode === user.code ? '✓ Active' : 'Select →'}
                   </span>
@@ -413,11 +299,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
         </div>
 
         {/* Footer Security Badges */}
-        <div className={`px-6 py-3 border-t text-center text-[10px] flex items-center justify-center space-x-2 ${
-          isDark
-            ? 'bg-black/20 border-white/10 text-slate-400'
-            : 'bg-slate-50 border-slate-100 text-slate-500'
-        }`}>
+        <div className="px-6 py-3 border-t text-center text-[10px] flex items-center justify-center space-x-2 bg-slate-50 border-slate-200 text-slate-500">
           <span>BIS Hallmark License: HM-916-MH-4421</span>
           <span>•</span>
           <span>FY 2026-27 Active</span>

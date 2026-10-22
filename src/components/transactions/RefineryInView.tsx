@@ -189,9 +189,7 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
       {/* Top Toolbar */}
       <div
         className={`p-3.5 rounded-xl flex flex-wrap items-center justify-between gap-3 shadow-sm border ${
-          isDark
-            ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs'
-            : 'bg-white border-sky-200/80 text-slate-800'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         <div className="flex items-center space-x-3">
@@ -206,7 +204,7 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className={`text-base font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>
+              <h1 className={`text-base font-bold ${'text-slate-900'}`}>
                 Refinery Inward
               </h1>
               <span
@@ -219,7 +217,7 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
                 {header.invoice_no}
               </span>
             </div>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            <p className={`text-xs ${'text-slate-500'}`}>
               Melting scrap recovery, fine pure weight yield, and assayer accounts.
             </p>
           </div>
@@ -239,7 +237,7 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
             className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
               isDark
                 ? 'bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border-sky-500/20'
-                : 'bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100'
+                : 'bg-sky-50 text-sky-800 border-slate-300 hover:bg-sky-100'
             }`}
           >
             <Printer className="w-3.5 h-3.5 text-sky-400" />
@@ -268,7 +266,7 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
       </div>
 
       {/* Header Form */}
-      <div className="bg-white border border-sky-200/80 rounded-xl p-4 shadow-sm space-y-3">
+      <div className="bg-white border border-slate-300/80 rounded-xl p-4 shadow-sm space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
           <div>
             <label className="block text-[11px] font-bold text-slate-600 mb-1">
@@ -327,7 +325,7 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-sky-200/80 rounded-xl p-4 shadow-sm space-y-3">
+      <div className="bg-white border border-slate-300/80 rounded-xl p-4 shadow-sm space-y-3">
         <div className="overflow-x-auto border border-slate-200 rounded-lg">
           <table className="w-full text-left text-xs border-collapse">
             <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">

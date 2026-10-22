@@ -42,19 +42,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       <div className={`border rounded-xl p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <div className="flex items-center space-x-3">
           <div className={`p-2 rounded-lg border ${
-            isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-blue-50 text-blue-600 border-blue-200'
+            isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-blue-50 text-blue-600 border-slate-300'
           }`}>
             <Settings className="w-5 h-5" />
           </div>
           <div>
-            <h1 className={`text-base font-bold flex items-center space-x-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
+            <h1 className={`text-base font-bold flex items-center space-x-2 ${'text-slate-900'}`}>
               <span>ERP System & Financial Settings</span>
             </h1>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            <p className={`text-xs ${'text-slate-500'}`}>
               Configure showroom profile, statutory BIS Hallmark license, GST tax heads, and staff access roles.
             </p>
           </div>
@@ -80,7 +80,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             className={`flex items-center space-x-1.5 px-4 py-2 font-bold text-xs rounded-lg shadow transition-all cursor-pointer ${
               isDark
                 ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-bold'
-                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                : 'bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs'
             }`}
           >
             <Save className="w-4 h-4" />
@@ -92,7 +92,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Showroom Profile */}
         <div className={`border rounded-xl p-5 shadow-sm space-y-3 text-xs transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}>
           <div className={`flex items-center space-x-2 border-b pb-2 ${
             isDark ? 'text-amber-300 border-white/10' : 'text-blue-700 border-slate-100'
@@ -103,62 +103,62 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
           <div className="space-y-2.5">
             <div>
-              <label className={`text-[11px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Showroom Name</label>
+              <label className={`text-[11px] font-bold ${'text-slate-700'}`}>Showroom Name</label>
               <input
                 type="text"
                 value={showroomName}
                 onChange={(e) => setShowroomName(e.target.value)}
                 className={`w-full px-3 py-1.5 rounded-lg font-semibold border outline-hidden ${
-                  isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                  'bg-white border-slate-300 text-slate-900 font-medium'
                 }`}
               />
             </div>
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className={`text-[11px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>GSTIN No</label>
+                <label className={`text-[11px] font-bold ${'text-slate-700'}`}>GSTIN No</label>
                 <input
                   type="text"
                   value={gstin}
                   onChange={(e) => setGstin(e.target.value)}
                   className={`w-full px-3 py-1.5 rounded-lg font-mono font-bold border outline-hidden ${
-                    isDark ? 'bg-white/5 border-white/15 text-amber-300' : 'bg-slate-50 border-slate-300 text-blue-800'
+                    'bg-white border-slate-300 text-slate-900 font-medium'
                   }`}
                 />
               </div>
               <div>
-                <label className={`text-[11px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>BIS Hallmark License</label>
+                <label className={`text-[11px] font-bold ${'text-slate-700'}`}>BIS Hallmark License</label>
                 <input
                   type="text"
                   value={bisLicense}
                   onChange={(e) => setBisLicense(e.target.value)}
                   className={`w-full px-3 py-1.5 rounded-lg font-mono font-bold border outline-hidden ${
-                    isDark ? 'bg-white/5 border-white/15 text-amber-300' : 'bg-slate-50 border-slate-300 text-amber-800'
+                    'bg-white border-slate-300 text-slate-900 font-medium'
                   }`}
                 />
               </div>
             </div>
 
             <div>
-              <label className={`text-[11px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Showroom Address</label>
+              <label className={`text-[11px] font-bold ${'text-slate-700'}`}>Showroom Address</label>
               <input
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 className={`w-full px-3 py-1.5 rounded-lg border outline-hidden ${
-                  isDark ? 'bg-white/5 border-white/15 text-slate-200' : 'bg-slate-50 border-slate-300 text-slate-800'
+                  'bg-white border-slate-300 text-slate-900 font-medium'
                 }`}
               />
             </div>
 
             <div>
-              <label className={`text-[11px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Phone Numbers</label>
+              <label className={`text-[11px] font-bold ${'text-slate-700'}`}>Phone Numbers</label>
               <input
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className={`w-full px-3 py-1.5 rounded-lg border outline-hidden ${
-                  isDark ? 'bg-white/5 border-white/15 text-slate-200' : 'bg-slate-50 border-slate-300 text-slate-800'
+                  'bg-white border-slate-300 text-slate-900 font-medium'
                 }`}
               />
             </div>
@@ -168,7 +168,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         {/* Rates & Taxes */}
         <div className="space-y-4">
           <div className={`border rounded-xl p-5 shadow-sm space-y-3 text-xs transition-all ${
-            isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+            'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}>
             <div className={`flex items-center space-x-2 border-b pb-2 ${
               isDark ? 'text-amber-300 border-white/10' : 'text-amber-700 border-slate-100'
@@ -179,7 +179,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <label className={`text-[11px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Gold 24K Pure</label>
+                <label className={`text-[11px] font-bold ${'text-slate-700'}`}>Gold 24K Pure</label>
                 <input
                   type="number"
                   value={rate24k}
@@ -190,7 +190,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 />
               </div>
               <div>
-                <label className={`text-[11px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Gold 22K 916</label>
+                <label className={`text-[11px] font-bold ${'text-slate-700'}`}>Gold 22K 916</label>
                 <input
                   type="number"
                   value={rate22k}
@@ -201,13 +201,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 />
               </div>
               <div>
-                <label className={`text-[11px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Silver 92.5</label>
+                <label className={`text-[11px] font-bold ${'text-slate-700'}`}>Silver 92.5</label>
                 <input
                   type="number"
                   value={rateSil}
                   onChange={(e) => setRateSil(parseFloat(e.target.value) || 0)}
                   className={`w-full px-2.5 py-1.5 rounded-lg font-mono text-center font-bold border outline-hidden ${
-                    isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                    'bg-white border-slate-300 text-slate-900 font-medium'
                   }`}
                 />
               </div>
@@ -215,7 +215,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           </div>
 
           <div className={`border rounded-xl p-5 shadow-sm space-y-3 text-xs transition-all ${
-            isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+            'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}>
             <div className={`flex items-center space-x-2 border-b pb-2 ${
               isDark ? 'text-amber-300 border-white/10' : 'text-blue-700 border-slate-100'
@@ -226,47 +226,47 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <label className={`text-[11px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>GST (Jewellery %)</label>
+                <label className={`text-[11px] font-bold ${'text-slate-700'}`}>GST (Jewellery %)</label>
                 <input
                   type="number"
                   step={0.5}
                   value={gstPct}
                   onChange={(e) => setGstPct(parseFloat(e.target.value) || 3.0)}
                   className={`w-full px-2.5 py-1.5 rounded-lg font-mono text-center font-bold border outline-hidden ${
-                    isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                    'bg-white border-slate-300 text-slate-900 font-medium'
                   }`}
                 />
-                <span className={`text-[10px] block text-center mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                <span className={`text-[10px] block text-center mt-0.5 ${'text-slate-500'}`}>
                   1.5% CGST + 1.5% SGST
                 </span>
               </div>
               <div>
-                <label className={`text-[11px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>TDS %</label>
+                <label className={`text-[11px] font-bold ${'text-slate-700'}`}>TDS %</label>
                 <input
                   type="number"
                   step={0.1}
                   value={tdsPct}
                   onChange={(e) => setTdsPct(parseFloat(e.target.value) || 0.1)}
                   className={`w-full px-2.5 py-1.5 rounded-lg font-mono text-center font-bold border outline-hidden ${
-                    isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                    'bg-white border-slate-300 text-slate-900 font-medium'
                   }`}
                 />
-                <span className={`text-[10px] block text-center mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                <span className={`text-[10px] block text-center mt-0.5 ${'text-slate-500'}`}>
                   Section 194Q
                 </span>
               </div>
               <div>
-                <label className={`text-[11px] font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>TCS %</label>
+                <label className={`text-[11px] font-bold ${'text-slate-700'}`}>TCS %</label>
                 <input
                   type="number"
                   step={0.1}
                   value={tcsPct}
                   onChange={(e) => setTcsPct(parseFloat(e.target.value) || 1.0)}
                   className={`w-full px-2.5 py-1.5 rounded-lg font-mono text-center font-bold border outline-hidden ${
-                    isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                    'bg-white border-slate-300 text-slate-900 font-medium'
                   }`}
                 />
-                <span className={`text-[10px] block text-center mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                <span className={`text-[10px] block text-center mt-0.5 ${'text-slate-500'}`}>
                   Cash above ₹2L
                 </span>
               </div>

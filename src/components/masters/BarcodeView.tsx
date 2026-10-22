@@ -1158,24 +1158,24 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Top Studio Toolbar */}
       <div className={`border rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-sm no-print transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <div className="flex items-center space-x-3">
           <div className={`p-2 rounded-lg border shadow-2xs ${
-            isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-blue-50 text-blue-600 border-blue-200'
+            isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-blue-50 text-blue-600 border-slate-300'
           }`}>
             <Barcode className="w-5 h-5" />
           </div>
           <div>
-            <h1 className={`text-base font-bold flex items-center space-x-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
+            <h1 className={`text-base font-bold flex items-center space-x-2 ${'text-slate-900'}`}>
               <span>Jewellery Barcode & RFID Tag Studio</span>
               <span className={`text-xs px-2 py-0.5 rounded font-mono font-bold border ${
-                isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-sky-100 text-blue-800 border-sky-200'
+                isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-sky-100 text-blue-800 border-slate-300'
               }`}>
                 F3 Studio
               </span>
             </h1>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            <p className={`text-xs ${'text-slate-500'}`}>
               List format barcode manager showing item names, live stock allocation, batch division, and 1D/2D thermal printing.
             </p>
           </div>
@@ -1185,7 +1185,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
           <button
             onClick={handleExportCSV}
             className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-semibold border cursor-pointer transition-all ${
-              isDark ? 'bg-white/10 text-white border-white/15 hover:bg-white/20' : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+              'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-semibold'
             }`}
             title="Export Barcode List to CSV"
           >
@@ -1196,7 +1196,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
           <button
             onClick={() => setShowColumnSettings(true)}
             className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold border cursor-pointer transition-all ${
-              isDark ? 'bg-white/10 text-white border-white/15 hover:bg-white/20' : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+              'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-semibold'
             }`}
             title="Grid Column Settings"
           >
@@ -1226,7 +1226,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
 
       {/* Navigation Tabs */}
       <div className={`flex border-b rounded-t-xl px-2 pt-2 space-x-2 shadow-2xs no-print transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-sky-200'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <button
           onClick={() => setActiveTab('print_studio')}
@@ -1447,7 +1447,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                 </button>
 
                 {selectedTagIds.length > 0 && (
-                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 font-bold border border-blue-200 font-mono">
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 font-bold border border-slate-300 font-mono">
                     ✓ {selectedTagIds.length} item(s) selected
                   </span>
                 )}
@@ -1604,7 +1604,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
 
                             {/* Tag / Barcode No */}
                             <td className="p-2.5 border-r border-slate-200 font-bold text-blue-900 font-mono">
-                              <span className="px-2 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-900 inline-block">
+                              <span className="px-2 py-0.5 rounded bg-blue-50 border border-slate-300 text-blue-900 inline-block">
                                 {tag.tag_no}
                               </span>
                             </td>
@@ -1688,7 +1688,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                                 <button
                                   type="button"
                                   onClick={() => handlePrintSingle(tag)}
-                                  className="p-1 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 cursor-pointer"
+                                  className="p-1 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 border border-slate-300 cursor-pointer"
                                   title="Print this single barcode tag"
                                 >
                                   <Printer className="w-3.5 h-3.5" />
@@ -1870,7 +1870,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
               <strong className="text-base text-slate-900">{formatWeight(initialBatchWeight)}</strong>
             </div>
 
-            <div className="bg-sky-50 border border-sky-200 p-3 rounded-xl text-center font-mono">
+            <div className="bg-sky-50 border border-slate-300 p-3 rounded-xl text-center font-mono">
               <span className="text-[10px] text-blue-700 font-bold uppercase block">Allocated to Tags</span>
               <strong className="text-base text-blue-900">{formatWeight(totalAllocatedGrossWt)}</strong>
             </div>
@@ -1961,7 +1961,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                   <button
                     type="button"
                     onClick={handleAddOpeningTag}
-                    className="w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs shadow flex items-center justify-center space-x-1 cursor-pointer"
+                    className="w-full py-1.5 px-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs font-bold rounded-lg text-xs shadow flex items-center justify-center space-x-1 cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add Piece</span>
@@ -2059,7 +2059,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
               <strong className="text-base text-amber-700 font-semibold">{formatWeight(looseStats.totalFine)}</strong>
               <span className="text-[10px] text-slate-400 block font-sans">24K / 99.9% Equivalent</span>
             </div>
-            <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200 shadow-2xs font-mono">
+            <div className="p-3 rounded-xl bg-blue-50/70 border border-slate-300 shadow-2xs font-mono">
               <span className="text-[10px] text-blue-800 font-bold uppercase block">Selected Lots</span>
               <strong className="text-base text-blue-900 font-semibold">{selectedLooseIds.length}</strong>
               <span className="text-[10px] text-blue-700 block font-sans">For Batch Transfer</span>
@@ -2158,7 +2158,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                 <button
                   type="button"
                   onClick={() => setShowInwardModal(true)}
-                  className="w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs flex items-center justify-center space-x-1.5 shadow-xs cursor-pointer transition-all"
+                  className="w-full py-1.5 px-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs font-bold rounded-lg text-xs flex items-center justify-center space-x-1.5 shadow-xs cursor-pointer transition-all"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>+ Inward New Lot</span>
@@ -2187,7 +2187,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                 </button>
 
                 {selectedLooseIds.length > 0 && (
-                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 font-bold border border-blue-200 font-mono">
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 font-bold border border-slate-300 font-mono">
                     ✓ {selectedLooseIds.length} lot(s) selected
                   </span>
                 )}
@@ -2387,7 +2387,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                               type="text"
                               value={lot.target_tag_no}
                               onChange={(e) => handleUpdateLooseField(lot.id, 'target_tag_no', e.target.value)}
-                              className="w-full px-1.5 py-0.5 bg-blue-50/50 hover:bg-white focus:bg-white border border-blue-200 focus:border-blue-500 rounded font-bold font-mono text-xs text-blue-900 focus:outline-none"
+                              className="w-full px-1.5 py-0.5 bg-blue-50/50 hover:bg-white focus:bg-white border border-slate-300 focus:border-blue-500 rounded font-bold font-mono text-xs text-blue-900 focus:outline-none"
                             />
                           </td>
 
@@ -2428,7 +2428,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                               <button
                                 type="button"
                                 onClick={() => handleSingleTransfer(lot)}
-                                className="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] shadow-2xs flex items-center space-x-1 cursor-pointer transition-all"
+                                className="px-2.5 py-1 rounded bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs font-bold text-[11px] shadow-2xs flex items-center space-x-1 cursor-pointer transition-all"
                                 title="Transfer 1:1 to Single Barcode Tag"
                               >
                                 <Tag className="w-3 h-3" />
@@ -2505,7 +2505,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                         <td className="p-2 border-r border-slate-200 text-slate-600">{h.date}</td>
                         <td className="p-2 border-r border-slate-200 font-sans text-slate-900">{h.from_lot}</td>
                         <td className="p-2 border-r border-slate-200 font-bold text-blue-900">
-                          <span className="px-1.5 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-900">
+                          <span className="px-1.5 py-0.5 rounded bg-blue-50 border border-slate-300 text-blue-900">
                             {h.to_tag}
                           </span>
                         </td>
@@ -2671,7 +2671,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                             type="text"
                             value={p.tag_no}
                             onChange={(e) => handleUpdateSplitPiece(p.id, 'tag_no', e.target.value)}
-                            className="w-full px-1.5 py-0.5 bg-blue-50/40 border border-blue-200 rounded font-mono font-bold text-blue-900 text-xs focus:bg-white focus:outline-none"
+                            className="w-full px-1.5 py-0.5 bg-blue-50/40 border border-slate-300 rounded font-mono font-bold text-blue-900 text-xs focus:bg-white focus:outline-none"
                           />
                         </td>
                         <td className="p-2 border-r border-slate-200 text-right">
@@ -2907,7 +2907,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                     type="text"
                     value={newInwardItem.target_tag_no}
                     onChange={(e) => setNewInwardItem({ ...newInwardItem, target_tag_no: e.target.value })}
-                    className="w-full px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-lg text-blue-900 font-mono font-bold focus:bg-white focus:border-blue-500 focus:outline-none"
+                    className="w-full px-3 py-1.5 bg-blue-50 border border-slate-300 rounded-lg text-blue-900 font-mono font-bold focus:bg-white focus:border-blue-500 focus:outline-none"
                   />
                 </div>
 
@@ -2957,7 +2957,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
               <button
                 type="button"
                 onClick={handleSaveNewInward}
-                className="px-5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow flex items-center space-x-1.5 cursor-pointer"
+                className="px-5 py-1.5 bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs font-bold rounded-lg shadow flex items-center space-x-1.5 cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Save to Loose Inventory List</span>
@@ -3005,7 +3005,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow flex items-center space-x-1.5 cursor-pointer"
+                  className="px-4 py-1.5 bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs rounded-lg text-xs font-semibold shadow flex items-center space-x-1.5 cursor-pointer"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Send to Printer</span>
@@ -3181,7 +3181,7 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="px-5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow flex items-center space-x-1 cursor-pointer"
+                  className="px-5 py-1.5 bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs font-bold rounded-lg shadow flex items-center space-x-1 cursor-pointer"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Print Now</span>

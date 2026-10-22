@@ -32,7 +32,7 @@ export const MessengerView: React.FC = () => {
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       <div className={`border rounded-xl p-4 flex items-center justify-between shadow-sm transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <div className="flex items-center space-x-3">
           <div className={`p-2 rounded-lg border ${
@@ -41,10 +41,10 @@ export const MessengerView: React.FC = () => {
             <MessageSquare className="w-5 h-5" />
           </div>
           <div>
-            <h1 className={`text-base font-bold flex items-center space-x-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
+            <h1 className={`text-base font-bold flex items-center space-x-2 ${'text-slate-900'}`}>
               <span>Showroom Messenger & WhatsApp Hub</span>
             </h1>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            <p className={`text-xs ${'text-slate-500'}`}>
               Automated customer messaging for order readiness, Karagir job challans, and daily gold rates.
             </p>
           </div>
@@ -60,18 +60,18 @@ export const MessengerView: React.FC = () => {
       </div>
 
       <div className={`border rounded-xl p-5 shadow-sm space-y-4 text-xs transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            <label className={`block text-[11px] font-bold mb-1 ${'text-slate-700'}`}>
               Message Template
             </label>
             <select
               value={template}
               onChange={(e) => handleTemplateChange(e.target.value)}
               className={`w-full px-3 py-2 rounded-lg text-xs border outline-hidden ${
-                isDark ? 'bg-[#0f172a] border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-800'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             >
               <option value="order_update">Order Ready for Delivery</option>
@@ -81,7 +81,7 @@ export const MessengerView: React.FC = () => {
           </div>
 
           <div>
-            <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            <label className={`block text-[11px] font-bold mb-1 ${'text-slate-700'}`}>
               Customer / Party Name
             </label>
             <input
@@ -89,13 +89,13 @@ export const MessengerView: React.FC = () => {
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
               className={`w-full px-3 py-2 rounded-lg text-xs border outline-hidden ${
-                isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             />
           </div>
 
           <div>
-            <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            <label className={`block text-[11px] font-bold mb-1 ${'text-slate-700'}`}>
               Mobile No.
             </label>
             <input
@@ -103,14 +103,14 @@ export const MessengerView: React.FC = () => {
               value={customerPhone}
               onChange={(e) => setCustomerPhone(e.target.value)}
               className={`w-full px-3 py-2 rounded-lg font-mono font-bold text-xs border outline-hidden ${
-                isDark ? 'bg-white/5 border-white/15 text-amber-300' : 'bg-slate-50 border-slate-300 text-blue-800'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             />
           </div>
         </div>
 
         <div>
-          <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+          <label className={`block text-[11px] font-bold mb-1 ${'text-slate-700'}`}>
             Message Body
           </label>
           <textarea
@@ -118,9 +118,7 @@ export const MessengerView: React.FC = () => {
             value={customText}
             onChange={(e) => setCustomText(e.target.value)}
             className={`w-full px-3 py-2.5 rounded-lg text-xs font-sans border outline-hidden leading-relaxed ${
-              isDark
-                ? 'bg-white/5 border-white/15 text-white placeholder-slate-500 focus:border-amber-400'
-                : 'bg-slate-50 border-slate-300 text-slate-900 focus:border-blue-500 focus:bg-white'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           />
         </div>

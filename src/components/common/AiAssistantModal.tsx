@@ -544,9 +544,7 @@ Ask any full-sentence query or command:
       <div className="fixed bottom-4 right-4 z-50 pointer-events-auto select-none transition-all duration-300 animate-in fade-in slide-in-from-bottom-3">
         <div
           className={`flex items-center space-x-3 px-4 py-2.5 rounded-2xl shadow-2xl border backdrop-blur-xl transition-all ${
-            isDark
-              ? 'bg-[#0f172a]/95 border-amber-400/50 text-white shadow-black/80 ring-1 ring-amber-400/20'
-              : 'bg-white/95 border-sky-300 text-slate-800 shadow-xl shadow-sky-950/10'
+            'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}
         >
           <button
@@ -571,7 +569,7 @@ Ask any full-sentence query or command:
             </div>
           </button>
 
-          <div className="flex items-center space-x-1 border-l pl-2.5 border-slate-200 dark:border-white/10">
+          <div className="flex items-center space-x-1 border-l pl-2.5 border-slate-200 ">
             <button
               onClick={() => setIsMinimized(false)}
               className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
@@ -617,9 +615,7 @@ Ask any full-sentence query or command:
             ? 'w-full sm:w-[840px] md:w-[960px] lg:w-[1080px] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] h-[min(780px,calc(100dvh-2.5rem))] max-h-[calc(100dvh-1.5rem)]'
             : 'w-full sm:w-[540px] md:w-[600px] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] h-[min(660px,calc(100dvh-2.5rem))] max-h-[calc(100dvh-1.5rem)]'
         } ${
-          isDark
-            ? 'bg-[#0f172a]/95 backdrop-blur-2xl border-white/20 text-white shadow-2xl shadow-black/80'
-            : 'bg-white/95 backdrop-blur-xl border-sky-200/90 text-slate-800 shadow-2xl shadow-sky-950/20'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
         onClick={(e) => e.stopPropagation()}
       >
@@ -760,7 +756,7 @@ Ask any full-sentence query or command:
                 >
                   {/* Tool Call Executed Badge */}
                   {msg.toolCallExecuted && (
-                    <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 mb-2 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-700 dark:text-blue-300 text-[10px] font-mono font-bold">
+                    <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 mb-2 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-700 text-blue-700 text-[10px] font-mono font-bold">
                       <Zap className="w-3 h-3 text-amber-500" />
                       <span>LLM Tool Executed:</span>
                       <span className="font-bold text-blue-900 dark:text-blue-100">
@@ -786,7 +782,7 @@ Ask any full-sentence query or command:
 
                   {/* Disambiguation Choice Chips */}
                   {msg.isDisambiguation && msg.disambiguationOptions && msg.disambiguationOptions.length > 0 && (
-                    <div className="my-3 p-3 rounded-2xl border border-amber-300/80 bg-amber-50/70 dark:bg-amber-950/30 dark:border-amber-500/30 space-y-2">
+                    <div className="my-3 p-3 rounded-2xl border border-amber-300/80 bg-amber-50/70   space-y-2">
                       <span className="text-[11px] font-bold text-amber-950 dark:text-amber-200 block">
                         {msg.disambiguationPrompt || 'Multiple records found. Please choose an option:'}
                       </span>
@@ -795,10 +791,10 @@ Ask any full-sentence query or command:
                           <button
                             key={opt.id}
                             onClick={() => handleProcessInput(opt.payload)}
-                            className="p-2.5 rounded-xl border border-amber-200 bg-white hover:bg-amber-100/80 dark:bg-white/10 dark:hover:bg-white/20 text-left transition-all cursor-pointer shadow-2xs group flex flex-col justify-between"
+                            className="p-2.5 rounded-xl border border-amber-200 bg-white hover:bg-amber-100/80  dark:hover:bg-white/20 text-left transition-all cursor-pointer shadow-2xs group flex flex-col justify-between"
                           >
                             <div className="flex items-center justify-between">
-                              <span className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-blue-600">
+                              <span className="font-bold text-xs text-slate-900 text-slate-900 group-hover:text-blue-600">
                                 {opt.title}
                               </span>
                               {opt.badge && (
@@ -807,7 +803,7 @@ Ask any full-sentence query or command:
                                 </span>
                               )}
                             </div>
-                            <span className="text-[10.5px] text-slate-500 dark:text-slate-300 mt-0.5">
+                            <span className="text-[10.5px] text-slate-500 text-slate-700 mt-0.5">
                               {opt.subtitle}
                             </span>
                           </button>
@@ -818,7 +814,7 @@ Ask any full-sentence query or command:
 
                   {/* Client Navigation Notification */}
                   {msg.clientNavigation && (
-                    <div className="my-2 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-400/30 text-emerald-900 dark:text-emerald-300 flex items-center justify-between text-xs font-bold">
+                    <div className="my-2 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-400/30 text-emerald-900 text-emerald-700 flex items-center justify-between text-xs font-bold">
                       <div className="flex items-center space-x-2">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                         <span>Redirected to {msg.clientNavigation.screenName} ({msg.clientNavigation.shortcut})</span>
@@ -856,7 +852,7 @@ Ask any full-sentence query or command:
                             className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer flex items-center space-x-1 ${
                               isDark
                                 ? 'bg-white/15 hover:bg-white/25 text-amber-300 border border-white/20'
-                                : 'bg-white hover:bg-blue-50 text-blue-900 border border-blue-200 shadow-2xs'
+                                : 'bg-white hover:bg-blue-50 text-blue-900 border border-slate-300 shadow-2xs'
                             }`}
                           >
                             <span>{chip.label}</span>
@@ -879,7 +875,7 @@ Ask any full-sentence query or command:
               <Bot className="w-4 h-4 text-blue-600 animate-spin" />
               <div className="text-xs">
                 <span className="font-bold block">Evaluating Intent & Function Tools...</span>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400">Context reasoning in progress</span>
+                <span className="text-[10px] text-slate-500 text-slate-600">Context reasoning in progress</span>
               </div>
             </div>
           )}
@@ -894,11 +890,11 @@ Ask any full-sentence query or command:
               }`}
             >
               {/* Step Progress Tracker */}
-              <div className="flex items-center justify-between pb-2 mb-3 border-b border-amber-200/60 dark:border-white/10">
+              <div className="flex items-center justify-between pb-2 mb-3 border-b border-amber-200/60 ">
                 <div className="flex items-center space-x-2">
                   <span className="text-base">{currentWorkflow.icon}</span>
                   <div>
-                    <span className="font-bold text-xs uppercase tracking-wider text-amber-700 dark:text-amber-400 block">
+                    <span className="font-bold text-xs uppercase tracking-wider text-amber-700 text-amber-700 block">
                       {currentWorkflow.name}
                     </span>
                     <span className="text-[10px] text-slate-500 font-mono">
@@ -908,7 +904,7 @@ Ask any full-sentence query or command:
                 </div>
 
                 <div className="flex items-center space-x-1.5">
-                  <div className="w-24 bg-slate-200 dark:bg-white/20 rounded-full h-1.5 overflow-hidden">
+                  <div className="w-24 bg-slate-200  rounded-full h-1.5 overflow-hidden">
                     <div
                       className="bg-gradient-to-r from-amber-500 to-blue-600 h-full rounded-full transition-all duration-300"
                       style={{
@@ -927,11 +923,11 @@ Ask any full-sentence query or command:
 
               {/* Step Question Prompt */}
               <div className="space-y-1 mb-3">
-                <h4 className="font-bold text-sm text-slate-900 dark:text-white flex items-center space-x-1.5">
+                <h4 className="font-bold text-sm text-slate-900 text-slate-900 flex items-center space-x-1.5">
                   <span>{stepQuestionText}</span>
                 </h4>
                 {currentStep.subtext && (
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  <p className="text-[11px] text-slate-500 text-slate-600">
                     {currentStep.subtext}
                   </p>
                 )}
@@ -1032,7 +1028,7 @@ Ask any full-sentence query or command:
               </div>
 
               {/* Step Navigation Controls */}
-              <div className="flex items-center justify-between pt-2 border-t border-amber-200/50 dark:border-white/10 text-[11px]">
+              <div className="flex items-center justify-between pt-2 border-t border-amber-200/50  text-[11px]">
                 <button
                   type="button"
                   disabled={activeTask.stepIndex === 0}
@@ -1040,7 +1036,7 @@ Ask any full-sentence query or command:
                   className={`flex items-center space-x-1 px-2 py-1 rounded transition-colors ${
                     activeTask.stepIndex === 0
                       ? 'text-slate-400 opacity-50 cursor-not-allowed'
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-white/20 cursor-pointer'
+                      : 'text-slate-600 text-slate-700 hover:bg-white/20 cursor-pointer'
                   }`}
                 >
                   <ArrowLeft className="w-3 h-3" />
@@ -1050,7 +1046,7 @@ Ask any full-sentence query or command:
                 <button
                   type="button"
                   onClick={() => handleStepSubmit()}
-                  className="text-blue-700 dark:text-amber-400 hover:underline font-medium cursor-pointer"
+                  className="text-blue-700 text-amber-700 hover:underline font-medium cursor-pointer"
                 >
                   Accept Default &rarr;
                 </button>
@@ -1096,9 +1092,7 @@ Ask any full-sentence query or command:
                 }
                 disabled={Boolean(activeTask) || isThinking}
                 className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium outline-hidden transition-all ${
-                  isDark
-                    ? 'bg-white/10 border-white/15 text-white placeholder:text-slate-500 focus:border-amber-400'
-                    : 'bg-slate-50 border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:bg-white'
+                  'bg-white border-slate-300 text-slate-900 font-medium'
                 } disabled:opacity-50`}
               />
             </div>
@@ -1120,10 +1114,10 @@ Ask any full-sentence query or command:
               <span>Full-Sentence Semantic Function Calling Active</span>
             </span>
             <div className="flex items-center space-x-2 font-mono">
-              <span className="px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-white/10 text-slate-600 dark:text-slate-300 font-semibold">
+              <span className="px-1.5 py-0.5 rounded bg-slate-200/70  text-slate-600 text-slate-700 font-semibold">
                 Esc: Close
               </span>
-              <span className="px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-white/10 text-slate-600 dark:text-slate-300">
+              <span className="px-1.5 py-0.5 rounded bg-slate-200/70  text-slate-600 text-slate-700">
                 Ctrl+Space
               </span>
             </div>

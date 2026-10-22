@@ -239,36 +239,17 @@ export const SubNavbar: React.FC<SubNavbarProps> = ({
   const CategoryIcon = categoryIcon;
 
   return (
-    <div
-      className="px-4 py-1.5 flex items-center justify-between text-xs overflow-x-auto scrollbar-none transition-all duration-200 border-b no-print backdrop-blur-md"
-      style={{
-        backgroundColor: isDark ? 'rgba(10, 15, 26, 0.95)' : 'rgba(255, 255, 255, 0.92)',
-        borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 23, 42, 0.08)',
-      }}
-    >
+    <div className="px-4 py-2 flex items-center justify-between text-xs overflow-x-auto scrollbar-none border-b border-slate-300 bg-white no-print">
       <div className="flex items-center space-x-2.5 min-w-max">
-        {/* Crisp Submenu Label Indicator */}
-        <div
-          className="flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-[11px] font-bold uppercase tracking-wide shrink-0 border shadow-2xs"
-          style={{
-            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.08)',
-            color: isDark ? '#ffffff' : '#0f172a',
-            borderColor: isDark ? 'rgba(255, 255, 255, 0.20)' : 'rgba(15, 23, 42, 0.15)',
-          }}
-        >
-          <CategoryIcon className="w-3.5 h-3.5 opacity-90 text-amber-500" />
-          <span className="font-bold">{categoryTitle}</span>
-          <ChevronRight className="w-3 h-3 opacity-60" />
+        {/* Category Indicator */}
+        <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold uppercase tracking-wide shrink-0 border border-slate-300 bg-slate-100 text-slate-800 shadow-2xs">
+          <CategoryIcon className="w-3.5 h-3.5 text-blue-700" />
+          <span>{categoryTitle}</span>
+          <ChevronRight className="w-3 h-3 text-slate-400" />
         </div>
 
-        {/* Compact Segmented Submenu Strip (Crisp luxury, high visibility) */}
-        <div
-          className="flex items-center p-1 rounded-2xl border space-x-1 backdrop-blur-md shadow-2xs"
-          style={{
-            backgroundColor: isDark ? 'rgba(0, 0, 0, 0.50)' : 'rgba(241, 245, 249, 0.95)',
-            borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(15, 23, 42, 0.12)',
-          }}
-        >
+        {/* Segmented Submenu Strip */}
+        <div className="flex items-center p-1 rounded-xl border border-slate-200 bg-slate-100 space-x-1 shadow-2xs">
           {tabs.map((tab) => {
             const TabIcon = tab.icon;
             const active = tab.isActive;
@@ -277,34 +258,26 @@ export const SubNavbar: React.FC<SubNavbarProps> = ({
               <button
                 key={tab.id}
                 onClick={tab.onClick}
-                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-xl font-semibold text-xs transition-all duration-150 cursor-pointer select-none border ${
+                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-lg font-semibold text-xs transition-colors cursor-pointer select-none border ${
                   active
-                    ? isDark
-                      ? 'bg-amber-400 text-slate-950 font-bold border-amber-300 shadow-sm'
-                      : 'bg-blue-600 text-white font-bold border-blue-700 shadow-sm'
-                    : isDark
-                    ? 'text-slate-200 hover:text-white hover:bg-white/15 border-transparent'
-                    : 'text-slate-950 hover:text-blue-700 hover:bg-white hover:shadow-2xs border-transparent'
+                    ? 'bg-blue-700 text-white font-bold border-blue-700 shadow-xs'
+                    : 'text-slate-700 hover:text-blue-700 hover:bg-white border-transparent'
                 }`}
               >
                 <TabIcon
                   className={`w-3.5 h-3.5 ${
-                    active ? 'text-inherit' : isDark ? 'text-slate-300' : 'text-slate-800'
+                    active ? 'text-white' : 'text-slate-600'
                   }`}
                 />
 
-                <span className="truncate font-semibold">{tab.label}</span>
+                <span className="truncate">{tab.label}</span>
 
-                {/* Refined Keycap */}
+                {/* Keycap */}
                 <span
                   className={`text-[9.5px] px-1.5 py-0.5 rounded font-mono font-semibold tracking-normal border ${
                     active
-                      ? isDark
-                        ? 'bg-black/25 text-slate-950 border-black/10'
-                        : 'bg-white/25 text-white border-white/20'
-                      : isDark
-                      ? 'bg-white/15 text-slate-200 border-white/10'
-                      : 'bg-slate-200/90 text-slate-900 border-slate-300'
+                      ? 'bg-blue-900/40 text-white border-blue-600'
+                      : 'bg-slate-200 text-slate-700 border-slate-300'
                   }`}
                 >
                   {tab.hotkey}
@@ -316,8 +289,8 @@ export const SubNavbar: React.FC<SubNavbarProps> = ({
       </div>
 
       {/* Right Function Key Hint */}
-      <div className="hidden lg:flex items-center space-x-1.5 text-[10px] font-medium opacity-60 pr-2">
-        <Command className="w-2.5 h-2.5" />
+      <div className="hidden lg:flex items-center space-x-1.5 text-[10px] font-medium text-slate-500 pr-2">
+        <Command className="w-2.5 h-2.5 text-slate-400" />
         <span>Submenu Function Keys</span>
       </div>
     </div>

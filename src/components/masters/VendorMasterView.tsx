@@ -423,10 +423,10 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
       {/* KPI Cards Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <div className={`p-4 rounded-2xl border transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-slate-300 shadow-sm'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}>
           <div className={`flex items-center justify-between text-xs font-bold mb-1 ${
-            isDark ? 'text-slate-300' : 'text-slate-700'
+            'text-slate-700'
           }`}>
             <span>Active Suppliers</span>
             <Building2 className={`w-4 h-4 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
@@ -440,10 +440,10 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
         </div>
 
         <div className={`p-4 rounded-2xl border transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-slate-300 shadow-sm'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}>
           <div className={`flex items-center justify-between text-xs font-bold mb-1 ${
-            isDark ? 'text-slate-300' : 'text-slate-700'
+            'text-slate-700'
           }`}>
             <span>Outstanding Payable (₹)</span>
             <CreditCard className="w-4 h-4 text-amber-500" />
@@ -457,10 +457,10 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
         </div>
 
         <div className={`p-4 rounded-2xl border transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-slate-300 shadow-sm'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}>
           <div className={`flex items-center justify-between text-xs font-bold mb-1 ${
-            isDark ? 'text-slate-300' : 'text-slate-700'
+            'text-slate-700'
           }`}>
             <span>Fine Gold Due (g)</span>
             <Coins className="w-4 h-4 text-amber-500" />
@@ -474,10 +474,10 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
         </div>
 
         <div className={`p-4 rounded-2xl border transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white shadow-xs' : 'bg-white border-slate-300 shadow-sm'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}>
           <div className={`flex items-center justify-between text-xs font-bold mb-1 ${
-            isDark ? 'text-slate-300' : 'text-slate-700'
+            'text-slate-700'
           }`}>
             <span>Fine Silver Due (g)</span>
             <Scale className={`w-4 h-4 ${isDark ? 'text-slate-400' : 'text-slate-600'}`} />
@@ -493,7 +493,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
 
       {/* Filter and Search Bar */}
       <div className={`p-3 rounded-2xl border flex flex-col md:flex-row items-center justify-between gap-3 ${
-        isDark ? 'bg-[#0f172a]/80 border-white/10' : 'bg-white border-slate-300 shadow-xs'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <div className="relative flex-1 w-full">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" />
@@ -503,9 +503,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by vendor name, code (SUP-101), mobile, GSTIN, city..."
             className={`w-full pl-9 pr-4 py-2 rounded-xl text-xs outline-hidden border transition-all font-medium ${
-              isDark
-                ? 'bg-white/5 border-white/15 text-white placeholder:text-slate-500 focus:border-amber-400'
-                : 'bg-slate-50 border-slate-300 text-slate-950 placeholder:text-slate-500 focus:border-blue-600 focus:bg-white'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           />
         </div>
@@ -515,7 +513,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
             className={`text-xs font-bold px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
-              isDark ? 'bg-[#0f172a] text-white border-white/15' : 'bg-slate-50 text-slate-900 border-slate-300'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           >
             <option value="all">All Vendor Categories</option>
@@ -528,7 +526,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
             className={`text-xs font-bold px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
-              isDark ? 'bg-[#0f172a] text-white border-white/15' : 'bg-slate-50 text-slate-900 border-slate-300'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           >
             <option value="all">All Status</option>
@@ -541,7 +539,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
             className={`text-xs font-bold px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
-              isDark ? 'bg-[#0f172a] text-white border-white/15' : 'bg-slate-50 text-slate-900 border-slate-300'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           >
             <option value="name">Sort by Name</option>
@@ -553,7 +551,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
 
       {/* Vendors Interactive Data Table */}
       <div className={`rounded-2xl border overflow-hidden transition-all shadow-sm ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-300'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
@@ -577,7 +575,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                     <p className="font-bold text-slate-800 text-sm">No vendors found matching your filter</p>
                     <button
                       onClick={handleOpenAdd}
-                      className="mt-3 px-4 py-2 rounded-lg bg-blue-600 text-white font-bold text-xs cursor-pointer shadow-sm hover:bg-blue-700"
+                      className="mt-3 px-4 py-2 rounded-lg bg-blue-700 text-white font-bold shadow-xs text-xs cursor-pointer shadow-sm hover:bg-blue-700"
                     >
                       + Create First Vendor
                     </button>
@@ -729,11 +727,11 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/50 backdrop-blur-xs">
           <div className={`w-full max-w-3xl rounded-3xl shadow-2xl border flex flex-col max-h-[90vh] overflow-hidden ${
-            isDark ? 'bg-[#0f172a] border-white/20 text-white' : 'bg-white border-slate-200 text-slate-900'
+            'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}>
             {/* Modal Header */}
             <div className={`px-5 py-4 border-b flex items-center justify-between shrink-0 ${
-              isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}>
               <div className="flex items-center space-x-3">
                 <div className="p-2 rounded-xl bg-blue-600 text-white shadow-xs">
@@ -765,7 +763,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 onClick={() => setActiveFormTab('basic')}
                 className={`pb-2.5 px-2 border-b-2 transition-all cursor-pointer flex items-center space-x-1.5 ${
                   activeFormTab === 'basic'
-                    ? 'border-blue-600 text-blue-600 dark:text-amber-400 dark:border-amber-400'
+                    ? 'border-blue-600 text-blue-600 text-amber-700 '
                     : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
               >
@@ -777,7 +775,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 onClick={() => setActiveFormTab('gst')}
                 className={`pb-2.5 px-2 border-b-2 transition-all cursor-pointer flex items-center space-x-1.5 ${
                   activeFormTab === 'gst'
-                    ? 'border-blue-600 text-blue-600 dark:text-amber-400 dark:border-amber-400'
+                    ? 'border-blue-600 text-blue-600 text-amber-700 '
                     : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
               >
@@ -789,7 +787,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 onClick={() => setActiveFormTab('bank')}
                 className={`pb-2.5 px-2 border-b-2 transition-all cursor-pointer flex items-center space-x-1.5 ${
                   activeFormTab === 'bank'
-                    ? 'border-blue-600 text-blue-600 dark:text-amber-400 dark:border-amber-400'
+                    ? 'border-blue-600 text-blue-600 text-amber-700 '
                     : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
               >
@@ -801,7 +799,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 onClick={() => setActiveFormTab('balance')}
                 className={`pb-2.5 px-2 border-b-2 transition-all cursor-pointer flex items-center space-x-1.5 ${
                   activeFormTab === 'balance'
-                    ? 'border-blue-600 text-blue-600 dark:text-amber-400 dark:border-amber-400'
+                    ? 'border-blue-600 text-blue-600 text-amber-700 '
                     : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
               >
@@ -825,7 +823,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, vendor_code: e.target.value.toUpperCase() })}
                       placeholder="e.g. SUP-108"
                       className={`w-full px-3 py-2 rounded-xl border font-mono outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                       required
                     />
@@ -844,7 +842,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, vendor_name: e.target.value })}
                       placeholder="e.g. Zaveri Bullion & Refinery"
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                       required
                     />
@@ -861,7 +859,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       value={formState.vendor_type || 'Bullion Dealer'}
                       onChange={(e) => setFormState({ ...formState, vendor_type: e.target.value as VendorType })}
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
-                        isDark ? 'bg-[#0f172a] border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     >
                       {VENDOR_TYPES.map((t) => (
@@ -880,7 +878,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, contact_person: e.target.value })}
                       placeholder="e.g. Hareshbhai Zaveri"
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -895,7 +893,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
                       placeholder="e.g. +91 98201 98201"
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                       required
                     />
@@ -914,7 +912,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                       placeholder="e.g. accounts@zaveri.in"
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -927,7 +925,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       value={formState.status || 'Active'}
                       onChange={(e) => setFormState({ ...formState, status: e.target.value as 'Active' | 'Inactive' })}
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
-                        isDark ? 'bg-[#0f172a] border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     >
                       <option value="Active">Active (सक्रिय - खरेदीसाठी उपलब्ध)</option>
@@ -951,7 +949,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => handleGstinChange(e.target.value)}
                       placeholder="e.g. 27AAACZ1234F1Z5"
                       className={`w-full px-3 py-2 rounded-xl border font-mono uppercase outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                     <span className="text-[10px] text-slate-400 mt-1 block">
@@ -970,7 +968,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, pan_no: e.target.value.toUpperCase() })}
                       placeholder="e.g. AAACZ1234F"
                       className={`w-full px-3 py-2 rounded-xl border font-mono uppercase outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -983,7 +981,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       value={formState.state || 'Maharashtra (27)'}
                       onChange={(e) => setFormState({ ...formState, state: e.target.value })}
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
-                        isDark ? 'bg-[#0f172a] border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     >
                       {Object.values(GST_STATE_CODES).map((st) => (
@@ -1002,7 +1000,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, city: e.target.value })}
                       placeholder="e.g. Mumbai / Rajkot / Surat / Coimbatore"
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -1017,7 +1015,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, address: e.target.value })}
                       placeholder="e.g. Shop 14, Bullion Complex, Shaikh Memon Street, Zaveri Bazaar"
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -1033,7 +1031,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, pincode: e.target.value })}
                       placeholder="e.g. 400002"
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -1053,7 +1051,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, bank_name: e.target.value })}
                       placeholder="e.g. HDFC Bank Ltd / State Bank of India"
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -1068,7 +1066,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, bank_account_no: e.target.value })}
                       placeholder="e.g. 50200089211244"
                       className={`w-full px-3 py-2 rounded-xl border font-mono outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -1084,7 +1082,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, ifsc_code: e.target.value.toUpperCase() })}
                       placeholder="e.g. HDFC0000145"
                       className={`w-full px-3 py-2 rounded-xl border font-mono uppercase outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -1099,7 +1097,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, branch_name: e.target.value })}
                       placeholder="e.g. Fort Mumbai / Connaught Place"
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -1118,7 +1116,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       value={formState.opening_balance_cash || 0}
                       onChange={(e) => setFormState({ ...formState, opening_balance_cash: parseFloat(e.target.value) || 0 })}
                       className={`w-full px-3 py-2 rounded-xl border font-mono outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -1131,7 +1129,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       value={formState.balance_type || 'Cr'}
                       onChange={(e) => setFormState({ ...formState, balance_type: e.target.value as 'Cr' | 'Dr' })}
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden cursor-pointer ${
-                        isDark ? 'bg-[#0f172a] border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     >
                       <option value="Cr">Cr - Payable (आपण पुरवठादारास देणे / We owe)</option>
@@ -1150,7 +1148,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, opening_balance_gold_fine_gm: parseFloat(e.target.value) || 0 })}
                       placeholder="e.g. 125.450"
                       className={`w-full px-3 py-2 rounded-xl border font-mono outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                     <span className="text-[10px] text-slate-400 mt-0.5 block">
@@ -1169,7 +1167,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, opening_balance_silver_fine_gm: parseFloat(e.target.value) || 0 })}
                       placeholder="e.g. 2450.000"
                       className={`w-full px-3 py-2 rounded-xl border font-mono outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -1183,7 +1181,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       value={formState.credit_limit || 0}
                       onChange={(e) => setFormState({ ...formState, credit_limit: parseFloat(e.target.value) || 0 })}
                       className={`w-full px-3 py-2 rounded-xl border font-mono outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -1197,7 +1195,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       value={formState.credit_days || 0}
                       onChange={(e) => setFormState({ ...formState, credit_days: parseInt(e.target.value, 10) || 0 })}
                       className={`w-full px-3 py-2 rounded-xl border font-mono outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -1212,7 +1210,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                       onChange={(e) => setFormState({ ...formState, notes: e.target.value })}
                       placeholder="e.g. Primary bullion dealer for 24K bars, delivers within 2 hours of booking"
                       className={`w-full px-3 py-2 rounded-xl border outline-hidden ${
-                        isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+                        'bg-white border-slate-300 text-slate-900 font-medium'
                       }`}
                     />
                   </div>
@@ -1232,7 +1230,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                         else if (activeFormTab === 'bank') setActiveFormTab('gst');
                         else if (activeFormTab === 'gst') setActiveFormTab('basic');
                       }}
-                      className="px-3 py-1.5 rounded-xl border border-slate-300 dark:border-white/20 hover:bg-slate-100 dark:hover:bg-white/10 font-medium cursor-pointer"
+                      className="px-3 py-1.5 rounded-xl border border-slate-300  hover:bg-slate-100 dark:hover:bg-white/10 font-medium cursor-pointer"
                     >
                       &larr; Previous Step
                     </button>
@@ -1245,7 +1243,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                         else if (activeFormTab === 'gst') setActiveFormTab('bank');
                         else if (activeFormTab === 'bank') setActiveFormTab('balance');
                       }}
-                      className="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-white/10 hover:bg-slate-300 font-bold cursor-pointer"
+                      className="px-3 py-1.5 rounded-xl bg-slate-200  hover:bg-slate-300 font-bold cursor-pointer"
                     >
                       Next Step &rarr;
                     </button>
@@ -1256,7 +1254,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                   <button
                     type="button"
                     onClick={() => setShowModal(false)}
-                    className="px-4 py-2 rounded-xl border border-slate-300 dark:border-white/20 hover:bg-slate-100 dark:hover:bg-white/10 font-medium cursor-pointer"
+                    className="px-4 py-2 rounded-xl border border-slate-300  hover:bg-slate-100 dark:hover:bg-white/10 font-medium cursor-pointer"
                   >
                     Cancel
                   </button>

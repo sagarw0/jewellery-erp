@@ -333,7 +333,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
       {/* Top Header & Action Toolbar */}
       <div
         className={`p-4 rounded-2xl border flex flex-wrap items-center justify-between gap-3 shadow-xs ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-200'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         <div className="flex items-center space-x-3.5">
@@ -342,14 +342,14 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base font-bold tracking-normal text-slate-900 dark:text-white">
+              <h1 className="text-base font-bold tracking-normal text-slate-900 text-slate-900">
                 Stock Refill & Desired Targets Management Hub
               </h1>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-400/30">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-amber-500/15 text-amber-700 text-amber-700 border border-amber-400/30">
                 Formula Enabled
               </span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-slate-500 text-slate-600">
               Configure target minimum stock levels for every SKU, calculate sold vs available floor deficit, and dispatch WhatsApp purchase orders to makers.
             </p>
           </div>
@@ -359,7 +359,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
           {onOpenAlertModal && (
             <button
               onClick={onOpenAlertModal}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-400/40 text-xs font-semibold transition-all cursor-pointer"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 text-amber-700 border border-amber-400/40 text-xs font-semibold transition-all cursor-pointer"
               title="Preview the Morning First-Login Popup Alert"
             >
               <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
@@ -378,9 +378,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
           <button
             onClick={handleExportCSV}
             className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-              isDark
-                ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
-                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           >
             <Download className="w-3.5 h-3.5 text-blue-500" />
@@ -390,9 +388,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
           <button
             onClick={() => window.print()}
             className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-              isDark
-                ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
-                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           >
             <Printer className="w-3.5 h-3.5" />
@@ -410,14 +406,14 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
         }`}
       >
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-xl bg-amber-500/20 text-amber-700 dark:text-amber-300">
+          <div className="p-2 rounded-xl bg-amber-500/20 text-amber-700 text-amber-700">
             <Calculator className="w-4 h-4" />
           </div>
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 block">
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-800 text-amber-700 block">
               Core Inventory Math:
             </span>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400">
+            <span className="text-[11px] text-slate-500 text-slate-600">
               Floor balance is dynamically updated as sales invoices are billed.
             </span>
           </div>
@@ -425,19 +421,19 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
         {/* Formula Representation */}
         <div className="flex items-center flex-wrap gap-2 text-xs font-mono font-bold justify-center">
-          <div className="px-3 py-1.5 rounded-xl border bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-400/30">
+          <div className="px-3 py-1.5 rounded-xl border bg-blue-500/10 text-blue-700 text-blue-700 border-blue-400/30">
             Desired Stock (Target)
           </div>
           <span className="text-base font-bold opacity-60">−</span>
-          <div className="px-3 py-1.5 rounded-xl border bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-400/30">
+          <div className="px-3 py-1.5 rounded-xl border bg-rose-500/10 text-rose-700 text-rose-700 border-rose-400/30">
             Sold Stock
           </div>
           <span className="text-base font-bold opacity-60">=</span>
-          <div className="px-3 py-1.5 rounded-xl border bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-400/30">
+          <div className="px-3 py-1.5 rounded-xl border bg-emerald-500/10 text-emerald-700 text-emerald-700 border-emerald-400/30">
             Current Stock (Available)
           </div>
           <span className="text-base font-bold opacity-60">➔</span>
-          <div className="px-3 py-1.5 rounded-xl border bg-amber-500/20 text-amber-900 dark:text-amber-300 border-amber-400/50">
+          <div className="px-3 py-1.5 rounded-xl border bg-amber-500/20 text-amber-900 text-amber-700 border-amber-400/50">
             Shortfall to Refill
           </div>
         </div>
@@ -447,88 +443,88 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
         <div
           className={`p-4 rounded-2xl border shadow-sm ${
-            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
+            'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-800 text-slate-800 uppercase tracking-wider">
               Monitored Inventory SKUs
             </span>
-            <div className="p-1.5 rounded-xl bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
+            <div className="p-1.5 rounded-xl bg-blue-100 text-blue-700  text-blue-700">
               <Package className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold mt-2 font-mono text-slate-950 dark:text-white">
-            {totalSKUs} <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">Items</span>
+          <div className="text-2xl font-bold mt-2 font-mono text-slate-950 text-slate-900">
+            {totalSKUs} <span className="text-xs font-semibold text-slate-600 text-slate-600">Items</span>
           </div>
-          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 block mt-1">
+          <span className="text-[11px] font-medium text-slate-600 text-slate-600 block mt-1">
             Active showroom target lines
           </span>
         </div>
 
         <div
           className={`p-4 rounded-2xl border shadow-sm ${
-            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
+            'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-800 text-slate-800 uppercase tracking-wider">
               Items in Deficit
             </span>
-            <div className="p-1.5 rounded-xl bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300">
+            <div className="p-1.5 rounded-xl bg-rose-100 text-rose-700  text-rose-700">
               <AlertTriangle className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold mt-2 font-mono text-rose-700 dark:text-rose-400">
+          <div className="text-2xl font-bold mt-2 font-mono text-rose-700 text-rose-700">
             {totalDeficitCount}{' '}
-            <span className="text-xs font-semibold text-rose-600 dark:text-rose-300">
+            <span className="text-xs font-semibold text-rose-600 text-rose-700">
               ({Math.round((totalDeficitCount / (totalSKUs || 1)) * 100)}%)
             </span>
           </div>
-          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 block mt-1">
+          <span className="text-[11px] font-medium text-slate-600 text-slate-600 block mt-1">
             Require maker PO dispatch
           </span>
         </div>
 
         <div
           className={`p-4 rounded-2xl border shadow-sm ${
-            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
+            'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-800 text-slate-800 uppercase tracking-wider">
               Total Deficit Quantity
             </span>
-            <div className="p-1.5 rounded-xl bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+            <div className="p-1.5 rounded-xl bg-amber-100 text-amber-800  text-amber-700">
               <Layers className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold mt-2 font-mono text-amber-900 dark:text-amber-300">
-            +{totalDeficitPcs} <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">Pcs</span>
+          <div className="text-2xl font-bold mt-2 font-mono text-amber-900 text-amber-700">
+            +{totalDeficitPcs} <span className="text-xs font-semibold text-slate-600 text-slate-600">Pcs</span>
           </div>
-          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 block mt-1">
+          <span className="text-[11px] font-medium text-slate-600 text-slate-600 block mt-1">
             Shortfall across all categories
           </span>
         </div>
 
         <div
           className={`p-4 rounded-2xl border shadow-sm ${
-            isDark ? 'bg-[#0f172a]/95 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
+            'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-800 text-slate-800 uppercase tracking-wider">
               Estimated Refill Weight
             </span>
-            <div className="p-1.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+            <div className="p-1.5 rounded-xl bg-emerald-100 text-emerald-800  text-emerald-700">
               <Sparkles className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold mt-2 font-mono text-emerald-800 dark:text-emerald-400">
+          <div className="text-2xl font-bold mt-2 font-mono text-emerald-800 text-emerald-700">
             ~{totalDeficitEstWt.toFixed(2)}{' '}
-            <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">gm</span>
+            <span className="text-xs font-semibold text-slate-600 text-slate-600">gm</span>
           </div>
-          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 block mt-1">
+          <span className="text-[11px] font-medium text-slate-600 text-slate-600 block mt-1">
             Approx. bullion casting weight
           </span>
         </div>
@@ -537,7 +533,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
       {/* Search & Filter Strip */}
       <div
         className={`p-3 rounded-2xl border flex flex-wrap items-center justify-between gap-3 ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-200 shadow-2xs'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         <div className="flex items-center space-x-2 flex-1 min-w-[240px]">
@@ -549,9 +545,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by ornament name, supplier or category..."
               className={`w-full pl-9 pr-3 py-1.5 rounded-xl text-xs border transition-all ${
-                isDark
-                  ? 'bg-white/5 border-white/15 text-white placeholder-slate-500 focus:border-amber-400'
-                  : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-500'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             />
           </div>
@@ -571,9 +565,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
-              isDark
-                ? 'bg-white/5 border-white/15 text-white'
-                : 'bg-slate-50 border-slate-300 text-slate-800'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           >
             <option value="all">All Categories</option>
@@ -584,13 +576,13 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
           </select>
 
           {/* Status Filter */}
-          <div className="flex items-center space-x-1 p-0.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs">
+          <div className="flex items-center space-x-1 p-0.5 rounded-xl bg-slate-100  border border-slate-200  text-xs">
             <button
               onClick={() => setStatusFilter('all')}
               className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
                 statusFilter === 'all'
-                  ? 'bg-white dark:bg-amber-500 text-slate-900 dark:text-slate-950 shadow-2xs'
-                  : 'text-slate-500 hover:text-slate-800 dark:text-slate-400'
+                  ? 'bg-white  text-slate-900 dark:text-slate-950 shadow-2xs'
+                  : 'text-slate-500 hover:text-slate-800 text-slate-600'
               }`}
             >
               All ({totalSKUs})
@@ -600,7 +592,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
               className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
                 statusFilter === 'deficit_only'
                   ? 'bg-rose-500 text-white shadow-2xs'
-                  : 'text-slate-500 hover:text-rose-600 dark:text-slate-400'
+                  : 'text-slate-500 hover:text-rose-600 text-slate-600'
               }`}
             >
               Deficit Only ({totalDeficitCount})
@@ -610,7 +602,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
               className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
                 statusFilter === 'adequate'
                   ? 'bg-emerald-500 text-white shadow-2xs'
-                  : 'text-slate-500 hover:text-emerald-600 dark:text-slate-400'
+                  : 'text-slate-500 hover:text-emerald-600 text-slate-600'
               }`}
             >
               Healthy ({totalSKUs - totalDeficitCount})
@@ -622,7 +614,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
       {/* Main Stock Refill Management Table */}
       <div
         className={`rounded-2xl border overflow-hidden shadow-xs ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-200'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         <div className="overflow-x-auto">
@@ -674,11 +666,11 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                       }`}
                     >
                       {/* Item Name */}
-                      <td className="p-3.5 pl-4 font-bold text-slate-950 dark:text-white">
+                      <td className="p-3.5 pl-4 font-bold text-slate-950 text-slate-900">
                         <div className="flex items-center space-x-2">
                           <div>
-                            <span className="block text-xs font-bold text-slate-950 dark:text-white">{item.item_name}</span>
-                            <span className="text-[10.5px] text-slate-600 dark:text-slate-300 font-semibold">
+                            <span className="block text-xs font-bold text-slate-950 text-slate-900">{item.item_name}</span>
+                            <span className="text-[10.5px] text-slate-600 text-slate-700 font-semibold">
                               Unit Wt: ~{item.gross_wt_per_unit || 15}g
                             </span>
                           </div>
@@ -687,7 +679,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
 
                       {/* Category & Purity */}
                       <td className="p-3.5 text-center">
-                        <span className="px-2.5 py-0.5 rounded-full font-mono text-[10.5px] font-semibold bg-slate-200 dark:bg-white/15 text-slate-900 dark:text-white border border-slate-300 dark:border-white/20">
+                        <span className="px-2.5 py-0.5 rounded-full font-mono text-[10.5px] font-semibold bg-slate-200  text-slate-900 text-slate-900 border border-slate-300 ">
                           {item.category} • {item.purity}%
                         </span>
                       </td>
@@ -701,7 +693,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                               min="0"
                               value={editDesiredQty}
                               onChange={(e) => setEditDesiredQty(Number(e.target.value))}
-                              className="w-16 px-2 py-1 text-center font-bold text-xs rounded border border-amber-500 bg-amber-50 text-amber-950 dark:bg-amber-950/40 dark:text-amber-200"
+                              className="w-16 px-2 py-1 text-center font-bold text-xs rounded border border-amber-500 bg-amber-50 text-amber-950  dark:text-amber-200"
                             />
                             <button
                               onClick={() => handleSaveEdit(item)}
@@ -722,17 +714,17 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                           <div className="flex items-center justify-center space-x-1.5 group">
                             <button
                               onClick={() => handleQuickAdjustDesired(item, -1)}
-                              className="w-5 h-5 rounded flex items-center justify-center bg-slate-200 dark:bg-white/10 text-slate-600 dark:text-slate-300 hover:bg-amber-500 hover:text-black opacity-0 group-hover:opacity-100 transition-opacity"
+                              className="w-5 h-5 rounded flex items-center justify-center bg-slate-200  text-slate-600 text-slate-700 hover:bg-amber-500 hover:text-black opacity-0 group-hover:opacity-100 transition-opacity"
                               title="Decrease desired target by 1"
                             >
                               -
                             </button>
-                            <span className="font-mono font-bold text-xs text-blue-700 dark:text-blue-300 min-w-[32px] text-center">
+                            <span className="font-mono font-bold text-xs text-blue-700 text-blue-700 min-w-[32px] text-center">
                               {item.desired_stock} pcs
                             </span>
                             <button
                               onClick={() => handleQuickAdjustDesired(item, +1)}
-                              className="w-5 h-5 rounded flex items-center justify-center bg-slate-200 dark:bg-white/10 text-slate-600 dark:text-slate-300 hover:bg-amber-500 hover:text-black opacity-0 group-hover:opacity-100 transition-opacity"
+                              className="w-5 h-5 rounded flex items-center justify-center bg-slate-200  text-slate-600 text-slate-700 hover:bg-amber-500 hover:text-black opacity-0 group-hover:opacity-100 transition-opacity"
                               title="Increase desired target by 1"
                             >
                               +
@@ -749,23 +741,23 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                       </td>
 
                       {/* Sold Stock */}
-                      <td className="p-3.5 text-center font-mono font-bold text-rose-700 dark:text-rose-300">
+                      <td className="p-3.5 text-center font-mono font-bold text-rose-700 text-rose-700">
                         {item.sold_stock} pcs
                       </td>
 
                       {/* Current Stock */}
-                      <td className="p-3.5 text-center font-mono font-bold text-emerald-700 dark:text-emerald-300">
+                      <td className="p-3.5 text-center font-mono font-bold text-emerald-700 text-emerald-700">
                         {item.current_stock} pcs
                       </td>
 
                       {/* Shortfall Deficit */}
                       <td className="p-3.5 text-center">
                         {hasDeficit ? (
-                          <span className="px-2.5 py-1 rounded-xl font-mono font-bold text-xs bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-400/40">
+                          <span className="px-2.5 py-1 rounded-xl font-mono font-bold text-xs bg-rose-500/20 text-rose-700 text-rose-700 border border-rose-400/40">
                             +{deficit} pcs (~{(deficit * (item.gross_wt_per_unit || 15)).toFixed(1)}g)
                           </span>
                         ) : (
-                          <span className="text-emerald-700 dark:text-emerald-400 font-bold text-xs">
+                          <span className="text-emerald-700 text-emerald-700 font-bold text-xs">
                             ✓ Adequate (0)
                           </span>
                         )}
@@ -778,10 +770,10 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                             <Building2 className="w-3 h-3" />
                           </div>
                           <div className="min-w-0">
-                            <span className="font-bold text-slate-950 dark:text-white block truncate max-w-[170px] text-xs">
+                            <span className="font-bold text-slate-950 text-slate-900 block truncate max-w-[170px] text-xs">
                               {item.vendor_name}
                             </span>
-                            <span className="text-[10.5px] text-slate-700 dark:text-slate-300 font-mono font-semibold block">
+                            <span className="text-[10.5px] text-slate-700 text-slate-700 font-mono font-semibold block">
                               {item.vendor_phone}
                             </span>
                           </div>
@@ -793,10 +785,10 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                         <span
                           className={`px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
                             item.status === 'critical'
-                              ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-400/30'
+                              ? 'bg-rose-500/15 text-rose-600 text-rose-700 border border-rose-400/30'
                               : item.status === 'low'
-                              ? 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-400/30'
-                              : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-400/30'
+                              ? 'bg-amber-500/15 text-amber-700 text-amber-700 border border-amber-400/30'
+                              : 'bg-emerald-500/15 text-emerald-600 text-emerald-700 border border-emerald-400/30'
                           }`}
                         >
                           {item.status === 'critical'
@@ -848,7 +840,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
           <div
             className={`w-full max-w-lg rounded-3xl border shadow-2xl p-6 space-y-4 ${
-              isDark ? 'bg-[#0f172a] border-white/20 text-white' : 'bg-white border-slate-200 text-slate-900'
+              'bg-white border-slate-300 text-slate-800 shadow-xs'
             }`}
           >
             <div className="flex items-center justify-between border-b pb-3">
@@ -883,7 +875,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                   value={customOrderQty}
                   onChange={(e) => setCustomOrderQty(Number(e.target.value))}
                   className={`w-full px-3 py-1.5 rounded-xl border font-semibold ${
-                    isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
+                    'bg-white border-slate-300 text-slate-900 font-medium'
                   }`}
                 />
               </div>
@@ -892,7 +884,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                 <label className="block text-[11px] font-semibold text-slate-400 mb-1">
                   Est. Casting Weight (gm)
                 </label>
-                <div className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 font-mono font-semibold">
+                <div className="px-3 py-1.5 rounded-xl bg-slate-100  font-mono font-semibold">
                   ~{(customOrderQty * (previewItem.gross_wt_per_unit || 15)).toFixed(2)} gm
                 </div>
               </div>
@@ -907,7 +899,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                 value={customNotes}
                 onChange={(e) => setCustomNotes(e.target.value)}
                 className={`w-full p-2.5 rounded-xl border text-xs ${
-                  isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300'
+                  'bg-white border-slate-300 text-slate-900 font-medium'
                 }`}
                 placeholder="Add special instructions or delivery deadlines..."
               />
@@ -957,7 +949,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
           <div
             className={`w-full max-w-lg rounded-3xl border shadow-2xl p-6 space-y-4 ${
-              isDark ? 'bg-[#0f172a] border-white/20 text-white' : 'bg-white border-slate-200 text-slate-900'
+              'bg-white border-slate-300 text-slate-800 shadow-xs'
             }`}
           >
             <div className="flex items-center justify-between border-b pb-3">
@@ -987,7 +979,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                   onChange={(e) => setNewItemName(e.target.value)}
                   placeholder="e.g. 22K 916 Royal Peacock Kada Pair"
                   className={`w-full px-3 py-2 rounded-xl border ${
-                    isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
+                    'bg-white border-slate-300 text-slate-900 font-medium'
                   }`}
                 />
               </div>
@@ -1001,7 +993,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                     value={newItemCategory}
                     onChange={(e) => setNewItemCategory(e.target.value)}
                     className={`w-full px-3 py-2 rounded-xl border ${
-                      isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
+                      'bg-white border-slate-300 text-slate-900 font-medium'
                     }`}
                   >
                     <option value="Gold">Gold</option>
@@ -1021,7 +1013,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                     value={newItemPurity}
                     onChange={(e) => setNewItemPurity(Number(e.target.value))}
                     className={`w-full px-3 py-2 rounded-xl border font-mono ${
-                      isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
+                      'bg-white border-slate-300 text-slate-900 font-medium'
                     }`}
                   />
                 </div>
@@ -1038,7 +1030,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                     value={newItemDesired}
                     onChange={(e) => setNewItemDesired(Number(e.target.value))}
                     className={`w-full px-3 py-2 rounded-xl border font-semibold ${
-                      isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
+                      'bg-white border-slate-300 text-slate-900 font-medium'
                     }`}
                   />
                 </div>
@@ -1053,7 +1045,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                     value={newItemSold}
                     onChange={(e) => setNewItemSold(Number(e.target.value))}
                     className={`w-full px-3 py-2 rounded-xl border font-semibold ${
-                      isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
+                      'bg-white border-slate-300 text-slate-900 font-medium'
                     }`}
                   />
                 </div>
@@ -1068,7 +1060,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                     value={newItemCurrent}
                     onChange={(e) => setNewItemCurrent(Number(e.target.value))}
                     className={`w-full px-3 py-2 rounded-xl border font-semibold ${
-                      isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
+                      'bg-white border-slate-300 text-slate-900 font-medium'
                     }`}
                   />
                 </div>
@@ -1085,7 +1077,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                     onChange={(e) => setNewItemVendor(e.target.value)}
                     placeholder="Supplier name"
                     className={`w-full px-3 py-2 rounded-xl border ${
-                      isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
+                      'bg-white border-slate-300 text-slate-900 font-medium'
                     }`}
                   />
                 </div>
@@ -1100,7 +1092,7 @@ _Authorized by: ${currentUser?.name || 'Inventory Manager'} (Swarna ERP Enterpri
                     onChange={(e) => setNewItemPhone(e.target.value)}
                     placeholder="9820123456"
                     className={`w-full px-3 py-2 rounded-xl border font-mono ${
-                      isDark ? 'bg-white/5 border-white/15' : 'bg-slate-50 border-slate-300'
+                      'bg-white border-slate-300 text-slate-900 font-medium'
                     }`}
                   />
                 </div>

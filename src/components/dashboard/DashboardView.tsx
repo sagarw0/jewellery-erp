@@ -448,10 +448,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         visual: (
           <GoldBars3DVisual className="w-full h-24 sm:h-28 transition-transform group-hover:scale-105 duration-300 drop-shadow-md" />
         ),
-        cardBg: isDark
-          ? 'bg-[#0f172a]/80 border-white/15 text-white'
-          : 'bg-white/96 border-slate-200/80 text-slate-950 shadow-xs',
-        borderColor: isDark ? 'border-amber-500/30' : 'border-amber-200 hover:border-amber-400',
+        cardBg: 'bg-white border-slate-300 text-slate-800 shadow-xs',
+        borderColor: 'border-slate-300 hover:border-blue-700',
         badge: isDark
           ? 'bg-amber-500/20 text-amber-300 border-amber-400/40'
           : 'bg-amber-100 text-amber-950 border border-amber-300 font-bold',
@@ -470,10 +468,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         visual: (
           <SilverBars3DVisual className="w-full h-24 sm:h-28 transition-transform group-hover:scale-105 duration-300 drop-shadow-md" />
         ),
-        cardBg: isDark
-          ? 'bg-[#0f172a]/80 border-white/15 text-white'
-          : 'bg-white/96 border-slate-200/80 text-slate-950 shadow-xs',
-        borderColor: isDark ? 'border-sky-500/30' : 'border-sky-200 hover:border-sky-400',
+        cardBg: 'bg-white border-slate-300 text-slate-800 shadow-xs',
+        borderColor: 'border-slate-300 hover:border-blue-700',
         badge: isDark
           ? 'bg-sky-500/20 text-sky-300 border-sky-400/40'
           : 'bg-sky-100 text-sky-950 border border-sky-300 font-bold',
@@ -492,10 +488,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         visual: (
           <GoldScrap3DVisual className="w-full h-24 sm:h-28 transition-transform group-hover:scale-105 duration-300 drop-shadow-md" />
         ),
-        cardBg: isDark
-          ? 'bg-[#0f172a]/80 border-white/15 text-white'
-          : 'bg-white/96 border-slate-200/80 text-slate-950 shadow-xs',
-        borderColor: isDark ? 'border-amber-600/30' : 'border-amber-200 hover:border-amber-500',
+        cardBg: 'bg-white border-slate-300 text-slate-800 shadow-xs',
+        borderColor: 'border-slate-300 hover:border-blue-700',
         badge: isDark
           ? 'bg-amber-600/20 text-amber-300 border-amber-400/40'
           : 'bg-amber-100 text-amber-950 border border-amber-300 font-bold',
@@ -514,10 +508,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         visual: (
           <SilverScrap3DVisual className="w-full h-24 sm:h-28 transition-transform group-hover:scale-105 duration-300 drop-shadow-md" />
         ),
-        cardBg: isDark
-          ? 'bg-[#0f172a]/80 border-white/15 text-white'
-          : 'bg-white/96 border-slate-200/80 text-slate-950 shadow-xs',
-        borderColor: isDark ? 'border-slate-500/30' : 'border-slate-200 hover:border-slate-400',
+        cardBg: 'bg-white border-slate-300 text-slate-800 shadow-xs',
+        borderColor: 'border-slate-300 hover:border-blue-700',
         badge: isDark
           ? 'bg-slate-500/20 text-slate-200 border-slate-400/40'
           : 'bg-slate-100 text-slate-900 border border-slate-300 font-bold',
@@ -536,10 +528,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         visual: (
           <ImitationBar3DVisual className="w-full h-24 sm:h-28 transition-transform group-hover:scale-105 duration-300 drop-shadow-md" />
         ),
-        cardBg: isDark
-          ? 'bg-[#0f172a]/80 border-white/15 text-white'
-          : 'bg-white/96 border-slate-200/80 text-slate-950 shadow-xs',
-        borderColor: isDark ? 'border-pink-500/30' : 'border-pink-200 hover:border-pink-400',
+        cardBg: 'bg-white border-slate-300 text-slate-800 shadow-xs',
+        borderColor: 'border-slate-300 hover:border-blue-700',
         badge: isDark
           ? 'bg-pink-500/20 text-pink-300 border-pink-400/40'
           : 'bg-pink-100 text-pink-950 border border-pink-300 font-bold',
@@ -563,9 +553,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   // Payment Tender Breakdown Data
   const tenderMix = [
-    { label: 'UPI / QR Pay', amount: branchData.todaySales * 0.44, pct: 44, color: 'bg-emerald-500', textColor: 'text-emerald-600 dark:text-emerald-300' },
+    { label: 'UPI / QR Pay', amount: branchData.todaySales * 0.44, pct: 44, color: 'bg-emerald-500', textColor: 'text-emerald-600 text-emerald-800' },
     { label: 'Debit / Credit Card', amount: branchData.todaySales * 0.28, pct: 28, color: 'bg-blue-500', textColor: 'text-blue-600 dark:text-blue-300' },
-    { label: 'Cash In Hand', amount: branchData.todaySales * 0.18, pct: 18, color: 'bg-amber-500', textColor: 'text-amber-600 dark:text-amber-300' },
+    { label: 'Cash In Hand', amount: branchData.todaySales * 0.18, pct: 18, color: 'bg-amber-500', textColor: 'text-amber-600 text-amber-800' },
     { label: 'Old Gold (URD) Scrap', amount: branchData.todaySales * 0.10, pct: 10, color: 'bg-purple-500', textColor: 'text-purple-600 dark:text-purple-300' },
   ];
 
@@ -582,9 +572,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       actionType: 'order',
       phone: '9820011223',
       name: 'Mrs. Sunita Deshmukh',
-      badgeColor: isDark
-        ? 'bg-blue-500/20 text-blue-300 border-blue-400/40 font-bold'
-        : 'bg-blue-100 text-blue-900 border-blue-300 font-bold',
+      badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200 font-bold',
     },
     {
       id: 'n-2',
@@ -597,9 +585,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       actionType: 'reminder',
       phone: '9811055432',
       name: 'Rajesh Gems & Bullion',
-      badgeColor: isDark
-        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40 font-bold'
-        : 'bg-emerald-100 text-emerald-900 border-emerald-300 font-bold',
+      badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200 font-bold',
     },
     {
       id: 'n-3',
@@ -611,9 +597,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       actionType: 'wish',
       phone: '9842299881',
       name: 'Mrs. Ananya Kulkarni',
-      badgeColor: isDark
-        ? 'bg-pink-500/20 text-pink-300 border-pink-400/40 font-bold'
-        : 'bg-pink-100 text-pink-900 border-pink-300 font-bold',
+      badgeColor: 'bg-rose-50 text-rose-700 border-rose-200 font-bold',
     },
     {
       id: 'n-4',
@@ -625,9 +609,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       actionType: 'anniversary',
       phone: '9825044321',
       name: 'Mr. & Mrs. Deepak Mehta',
-      badgeColor: isDark
-        ? 'bg-purple-500/20 text-purple-300 border-purple-400/40 font-bold'
-        : 'bg-purple-100 text-purple-900 border-purple-300 font-bold',
+      badgeColor: 'bg-purple-50 text-purple-700 border-purple-200 font-bold',
     },
     {
       id: 'n-5',
@@ -640,9 +622,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       actionType: 'bhishi',
       phone: '9833012345',
       name: 'Swarna Nidhi Group A',
-      badgeColor: isDark
-        ? 'bg-amber-500/20 text-amber-300 border-amber-400/40 font-bold'
-        : 'bg-amber-100 text-amber-900 border-amber-300 font-bold',
+      badgeColor: 'bg-amber-50 text-amber-700 border-amber-200 font-bold',
     },
   ];
 
@@ -701,40 +681,21 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   return (
     <div className="space-y-4 sm:space-y-5 animate-in fade-in duration-200">
       {/* Branch Active Context Ribbon */}
-      <div
-        className={`p-3 rounded-2xl border flex flex-wrap items-center justify-between gap-2.5 backdrop-blur-xl ${
-          isDark
-            ? 'bg-[#0f172a]/85 border-white/15 text-white'
-            : 'bg-white/96 border-slate-200/90 text-slate-900 shadow-xs'
-        }`}
-      >
+      <div className="p-3.5 rounded-xl border border-slate-300 bg-white text-slate-800 shadow-xs flex flex-wrap items-center justify-between gap-2.5">
         <div className="flex items-center space-x-2.5">
-          <div
-            className="p-2 rounded-xl"
-            style={{
-              backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(15,23,42,0.06)',
-            }}
-          >
-            <Building2 className={`w-4 h-4 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
+          <div className="p-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200">
+            <Building2 className="w-4 h-4 text-blue-700" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
               <span className="font-bold text-xs sm:text-sm">{branchData.branchName}</span>
               <span
-                className={`text-[9.5px] font-mono px-2 py-0.2 rounded-full font-bold border ${
-                  selectedBranch === 'all'
-                    ? isDark
-                      ? 'bg-amber-400/20 text-amber-300 border-amber-400/40'
-                      : 'bg-amber-100 text-amber-950 border-amber-400'
-                    : isDark
-                    ? 'bg-sky-400/20 text-sky-300 border-sky-400/40'
-                    : 'bg-blue-100 text-blue-950 border-blue-400'
-                }`}
+                className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border ${selectedBranch === "all" ? "bg-amber-50 text-amber-800 border-amber-300" : "bg-blue-50 text-blue-800 border-blue-200"}`}
               >
                 {selectedBranch === 'all' ? 'Multi-Branch Consolidated' : 'Single Showroom'}
               </span>
             </div>
-            <div className="text-[11px] font-semibold text-slate-800 dark:text-slate-300">
+            <div className="text-[11px] font-medium text-slate-600">
               Real-time stock valuation, sales ledger & till balance synchronized
             </div>
           </div>
@@ -742,7 +703,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
         {/* Quick Branch Switcher Buttons */}
         {onSelectBranch && (
-          <div className="flex items-center space-x-1.5 p-1 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10">
+          <div className="flex items-center space-x-1.5 p-1 rounded-lg bg-slate-100 border border-slate-200">
             {[
               { id: 'all' as BranchId, label: 'All Branches' },
               { id: 'mumbai' as BranchId, label: 'Mumbai' },
@@ -752,15 +713,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <button
                 key={b.id}
                 onClick={() => onSelectBranch(b.id)}
-                className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  selectedBranch === b.id
-                    ? isDark
-                      ? 'bg-amber-400 text-slate-950 font-bold shadow-xs'
-                      : 'bg-blue-600 text-white font-bold shadow-xs'
-                    : isDark
-                    ? 'text-slate-200 hover:text-white bg-white/10 hover:bg-white/20'
-                    : 'text-slate-950 hover:text-blue-700 bg-white hover:bg-slate-50 border border-slate-300 shadow-2xs'
-                }`}
+                className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${selectedBranch === b.id ? "bg-blue-700 text-white font-bold shadow-xs" : "text-slate-700 hover:text-blue-700 hover:bg-white"}`}
               >
                 {b.label}
               </button>
@@ -771,7 +724,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
       {/* Interactive Perspective Selector Strip & Bullion Simulator Controls */}
       <div className="flex items-center justify-between flex-wrap gap-2.5 pt-0.5">
-        <div className="flex items-center space-x-1.5 p-1 rounded-2xl bg-white/90 dark:bg-white/5 border border-slate-300 dark:border-white/15 text-xs overflow-x-auto shadow-2xs backdrop-blur-md">
+        <div className="flex items-center space-x-1 p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs overflow-x-auto shadow-xs">
           {[
             { id: 'overview', label: 'Executive 360°', icon: Sparkles },
             { id: 'vault', label: 'Bullion Vault & 3D', icon: Coins },
@@ -785,15 +738,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <button
                 key={tab.id}
                 onClick={() => setDashboardPerspective(tab.id as any)}
-                className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl font-semibold text-xs transition-all cursor-pointer ${
-                  isTabActive
-                    ? isDark
-                      ? 'bg-amber-400 text-slate-950 font-bold shadow-xs'
-                      : 'bg-blue-600 text-white font-bold shadow-xs'
-                    : isDark
-                    ? 'text-slate-200 hover:text-white hover:bg-white/15'
-                    : 'text-slate-950 hover:text-blue-700 hover:bg-white hover:shadow-2xs'
-                }`}
+                className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg font-semibold text-xs transition-colors cursor-pointer ${isTabActive ? "bg-blue-700 text-white font-bold shadow-xs" : "text-slate-700 hover:text-blue-700 hover:bg-white"}`}
               >
                 <Icon className="w-3.5 h-3.5" />
                 <span>{tab.label}</span>
@@ -802,40 +747,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           })}
         </div>
 
-        {/* Live Rates Quick Trigger, Card Styling & Stock Refill Indicator */}
+        {/* Live Rates Quick Trigger & Stock Refill Indicator */}
         <div className="flex items-center space-x-2 flex-wrap gap-y-1">
-          <button
-            onClick={() => openCustomizerWithTab?.('card_typography')}
-            className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer shadow-2xs ${
-              isDark
-                ? 'bg-blue-500/20 text-blue-300 border-blue-400/50 hover:bg-blue-500/30'
-                : 'bg-blue-100 text-blue-950 border-blue-400 hover:bg-blue-200'
-            }`}
-            title="Customize Card Text Color, Size, Boldness & Italic Style"
-          >
-            <SlidersHorizontal className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-            <span>Card Styling</span>
-            {(cardTypography?.textSize !== 'medium' ||
-              cardTypography?.fontWeight !== 'bold' ||
-              cardTypography?.isItalic ||
-              Boolean(cardTypography?.titleColorHex) ||
-              Boolean(cardTypography?.valueColorHex) ||
-              Boolean(cardTypography?.labelColorHex)) && (
-              <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
-            )}
-          </button>
-
           {onOpenStockRefill && (
             <button
               onClick={onOpenStockRefill}
-              className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer shadow-2xs ${
-                isDark
-                  ? 'bg-rose-500/20 text-rose-300 border-rose-400/50 hover:bg-rose-500/30'
-                  : 'bg-rose-100 text-rose-950 border-rose-400 hover:bg-rose-200'
-              }`}
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 text-xs font-semibold transition-colors cursor-pointer shadow-xs"
               title="Manage Desired Stock Refill Targets & Auto Reorder"
             >
-              <Package className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+              <Package className="w-3.5 h-3.5 text-blue-700" />
               <span>Stock Refill Hub</span>
             </button>
           )}
@@ -843,14 +763,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {onOpenBullionRates && (
             <button
               onClick={onOpenBullionRates}
-              className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer shadow-2xs ${
-                isDark
-                  ? 'bg-amber-500/20 text-amber-300 border-amber-400/50 hover:bg-amber-500/30'
-                  : 'bg-amber-100 text-amber-950 border-amber-400 hover:bg-amber-200'
-              }`}
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 text-xs font-semibold transition-colors cursor-pointer shadow-xs"
               title="Open Live Showroom Bullion Rates Board"
             >
-              <TrendingUp className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <TrendingUp className="w-3.5 h-3.5 text-amber-700" />
               <span>Live Bullion Board</span>
             </button>
           )}
@@ -874,18 +790,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <Wallet className="w-3.5 h-3.5" />
               </div>
               <span
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-900 truncate`}
                 style={getCardTitleStyle()}
               >
                 Today's Cash
               </span>
             </div>
-            <ArrowUpRight className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-emerald-600 text-emerald-700 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
             <div
-              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-emerald-300`}
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-emerald-800 font-bold`}
               style={getCardValueStyle()}
             >
               {formatCurrency(branchData.cashInHand)}
@@ -894,7 +810,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="flex items-center space-x-1">
             <span
-              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40`}
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-emerald-100 text-emerald-950  text-emerald-800 border border-emerald-300 `}
               style={getCardLabelStyle()}
             >
               Till Reconciled
@@ -917,18 +833,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <Building className="w-3.5 h-3.5" />
               </div>
               <span
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-900 truncate`}
                 style={getCardTitleStyle()}
               >
                 Bank Balances
               </span>
             </div>
-            <ArrowUpRight className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-sky-600 text-blue-700 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
             <div
-              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-sky-300`}
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 text-blue-800`}
               style={getCardValueStyle()}
             >
               {formatCurrency(branchData.bankTotal)}
@@ -937,7 +853,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="flex items-center space-x-1">
             <span
-              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-sky-100 text-sky-950 dark:bg-sky-950/70 dark:text-sky-300 border border-sky-300 dark:border-sky-500/40`}
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-sky-100 text-sky-950  text-blue-800 border border-sky-300 `}
               style={getCardLabelStyle()}
             >
               {branchData.bankAccounts.length} Active Accounts
@@ -960,18 +876,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <TrendingUp className="w-3.5 h-3.5" />
               </div>
               <span
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-900 truncate`}
                 style={getCardTitleStyle()}
               >
                 Today's Sales
               </span>
             </div>
-            <ArrowUpRight className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-amber-600 text-amber-700 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
             <div
-              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-amber-300`}
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-amber-800 font-bold`}
               style={getCardValueStyle()}
             >
               {formatCurrency(branchData.todaySales)}
@@ -980,7 +896,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="flex items-center space-x-1">
             <span
-              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40`}
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-emerald-100 text-emerald-950  text-emerald-800 border border-emerald-300 `}
               style={getCardLabelStyle()}
             >
               ↑ 12.4% vs yday
@@ -1003,18 +919,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <ShoppingBag className="w-3.5 h-3.5" />
               </div>
               <span
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-900 truncate`}
                 style={getCardTitleStyle()}
               >
                 Purchases
               </span>
             </div>
-            <ArrowUpRight className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400 shrink-0" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-rose-600 text-rose-700 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
             <div
-              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-rose-300`}
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-rose-800 font-bold`}
               style={getCardValueStyle()}
             >
               {formatCurrency(branchData.todayPurchase)}
@@ -1023,7 +939,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="flex items-center space-x-1">
             <span
-              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-rose-100 text-rose-950 dark:bg-rose-950/70 dark:text-rose-300 border border-rose-300 dark:border-rose-500/40`}
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-rose-100 text-rose-950  text-rose-800 border border-rose-300 `}
               style={getCardLabelStyle()}
             >
               Bullion Inward
@@ -1046,18 +962,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <Package className="w-3.5 h-3.5" />
               </div>
               <span
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-900 truncate`}
                 style={getCardTitleStyle()}
               >
                 Pending Orders
               </span>
             </div>
-            <ArrowUpRight className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-indigo-600 text-indigo-700 shrink-0" />
           </div>
 
           <div className="my-auto pt-1">
             <div
-              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-indigo-300`}
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-indigo-800 font-bold`}
               style={getCardValueStyle()}
             >
               {branchData.pendingOrders} Orders
@@ -1066,7 +982,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="flex items-center space-x-1">
             <span
-              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-indigo-100 text-indigo-950 dark:bg-indigo-950/70 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-500/40`}
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-indigo-100 text-indigo-950  text-indigo-800 border border-indigo-300 `}
               style={getCardLabelStyle()}
             >
               2 Due Today
@@ -1088,7 +1004,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <UserPlus className="w-3.5 h-3.5" />
               </div>
               <span
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-900 truncate`}
                 style={getCardTitleStyle()}
               >
                 New Walk-ins
@@ -1098,7 +1014,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="my-auto pt-1">
             <div
-              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-teal-300`}
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-teal-800 font-bold`}
               style={getCardValueStyle()}
             >
               {branchData.visitors} Visitors
@@ -1107,7 +1023,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="flex items-center space-x-1">
             <span
-              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-teal-100 text-teal-950 dark:bg-teal-950/70 dark:text-teal-300 border border-teal-300 dark:border-teal-500/40`}
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-teal-100 text-teal-950  text-teal-800 border border-teal-300 `}
               style={getCardLabelStyle()}
             >
               New Profiles
@@ -1129,7 +1045,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <Users className="w-3.5 h-3.5" />
               </div>
               <span
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white truncate`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-900 truncate`}
                 style={getCardTitleStyle()}
               >
                 Total Guests
@@ -1139,7 +1055,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="my-auto pt-1">
             <div
-              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-slate-950 dark:text-violet-300`}
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-purple-800 font-bold`}
               style={getCardValueStyle()}
             >
               {branchData.footfall} Guests
@@ -1148,7 +1064,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="flex items-center space-x-1">
             <span
-              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-violet-100 text-violet-950 dark:bg-violet-950/70 dark:text-violet-300 border border-violet-300 dark:border-violet-500/40`}
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-violet-100 text-violet-950  text-purple-800 border border-violet-300 `}
               style={getCardLabelStyle()}
             >
               Showroom Total
@@ -1167,19 +1083,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               : 'bg-white/96 border-slate-200/90 text-slate-950 shadow-xs'
           }`}
         >
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-black/5 dark:border-white/10 pb-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-black/5  pb-3">
             <div className="flex items-center space-x-2.5">
               <div className="p-2 rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 text-white shadow-xs">
                 <SlidersHorizontal className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wide flex items-center space-x-2 text-slate-950 dark:text-white">
+                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wide flex items-center space-x-2 text-slate-900">
                   <span>Interactive Bullion Valuation Simulator</span>
                   <span className={`text-[10px] font-mono px-2 py-0.2 rounded-full font-semibold border ${isDark ? 'bg-amber-500/20 text-amber-300 border-amber-400/40' : 'bg-amber-100 text-amber-950 border-amber-300'}`}>
                     Live MCX Delta
                   </span>
                 </h3>
-                <p className="text-[11px] text-slate-800 dark:text-slate-300 font-semibold">
+                <p className="text-[11px] text-slate-800 text-slate-700 font-semibold">
                   Simulate gold/silver rate shifts & project showroom inventory valuation impact
                 </p>
               </div>
@@ -1188,7 +1104,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             {rateSimulatorDelta !== 0 && (
               <button
                 onClick={() => setRateSimulatorDelta(0)}
-                className="flex items-center space-x-1 px-2.5 py-1 rounded-xl text-xs font-semibold bg-slate-200 dark:bg-white/10 hover:opacity-80 transition cursor-pointer"
+                className="flex items-center space-x-1 px-2.5 py-1 rounded-xl text-xs font-semibold bg-slate-200  hover:opacity-80 transition cursor-pointer"
               >
                 <RotateCcw className="w-3 h-3" />
                 <span>Reset Live</span>
@@ -1199,7 +1115,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {/* Quick Simulation Delta Chips & Slider */}
           <div className="space-y-2.5">
             <div className="flex items-center justify-between flex-wrap gap-2 text-xs">
-              <span className="font-bold text-slate-950 dark:text-slate-100">Quick Rate Adjustment:</span>
+              <span className="font-bold text-slate-900">Quick Rate Adjustment:</span>
               <div className="flex items-center space-x-1.5 flex-wrap">
                 {[-500, -250, -100, 0, 100, 250, 500, 1000].map((delta) => (
                   <button
@@ -1211,10 +1127,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                           ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-xs'
                           : 'bg-blue-600 text-white border-blue-600 font-bold shadow-xs'
                         : delta === 0
-                        ? 'bg-slate-200 text-slate-950 dark:bg-white/15 dark:text-slate-200 border-slate-300 dark:border-white/20'
+                        ? 'bg-slate-200 text-slate-800 border-slate-300 '
                         : delta > 0
-                        ? 'bg-emerald-100 text-emerald-950 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/30'
-                        : 'bg-rose-100 text-rose-950 dark:bg-rose-950/60 dark:text-rose-300 border-rose-300 dark:border-rose-500/30'
+                        ? 'bg-emerald-100 text-emerald-950  text-emerald-800 border-emerald-300 '
+                        : 'bg-rose-100 text-rose-950  text-rose-800 border-rose-300 '
                     }`}
                   >
                     {delta === 0 ? 'Live (₹0)' : delta > 0 ? `+₹${delta}` : `-₹${Math.abs(delta)}`}
@@ -1225,7 +1141,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             {/* Range Slider */}
             <div className="flex items-center space-x-3 pt-1">
-              <span className="text-[11px] font-mono text-rose-700 dark:text-rose-400 font-bold">-₹1,000</span>
+              <span className="text-[11px] font-mono text-rose-700 text-rose-700 font-bold">-₹1,000</span>
               <input
                 type="range"
                 min="-1000"
@@ -1233,9 +1149,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 step="25"
                 value={rateSimulatorDelta}
                 onChange={(e) => setRateSimulatorDelta(Number(e.target.value))}
-                className="flex-1 accent-amber-500 cursor-pointer h-2 bg-slate-200 dark:bg-white/10 rounded-lg appearance-none"
+                className="flex-1 accent-amber-500 cursor-pointer h-2 bg-slate-200  rounded-lg appearance-none"
               />
-              <span className="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">+₹1,000</span>
+              <span className="text-[11px] font-mono text-emerald-700 text-emerald-700 font-bold">+₹1,000</span>
             </div>
           </div>
 
@@ -1249,19 +1165,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           >
             <div>
               <div
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-950 dark:text-slate-200`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-800`}
                 style={getCardTitleStyle()}
               >
                 Simulated 24K Rate
               </div>
               <div
-                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 text-amber-950 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-500/40 inline-block shadow-2xs`}
+                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 text-amber-950 text-amber-800 bg-amber-100/90  px-2.5 py-1 rounded-xl border border-amber-300  inline-block shadow-2xs`}
                 style={getCardValueStyle()}
               >
                 ₹{simulatedGold24k.toLocaleString('en-IN')}/g
               </div>
               <div
-                className={`${labelSizeClass} font-bold text-slate-800 dark:text-slate-300 mt-1`}
+                className={`${labelSizeClass} font-bold text-slate-800 text-slate-700 mt-1`}
                 style={getCardLabelStyle()}
               >
                 Base: ₹{gold24kRate.toLocaleString('en-IN')}
@@ -1270,19 +1186,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             <div>
               <div
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-950 dark:text-slate-200`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-800`}
                 style={getCardTitleStyle()}
               >
                 Simulated 22K (916)
               </div>
               <div
-                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 text-amber-950 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-500/40 inline-block shadow-2xs`}
+                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 text-amber-950 text-amber-800 bg-amber-100/90  px-2.5 py-1 rounded-xl border border-amber-300  inline-block shadow-2xs`}
                 style={getCardValueStyle()}
               >
                 ₹{simulatedGold22k.toLocaleString('en-IN')}/g
               </div>
               <div
-                className={`${labelSizeClass} font-bold text-slate-800 dark:text-slate-300 mt-1`}
+                className={`${labelSizeClass} font-bold text-slate-800 text-slate-700 mt-1`}
                 style={getCardLabelStyle()}
               >
                 Base: ₹{gold22kRate.toLocaleString('en-IN')}
@@ -1291,19 +1207,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             <div>
               <div
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-950 dark:text-slate-200`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-800`}
                 style={getCardTitleStyle()}
               >
                 Projected Vault Total
               </div>
               <div
-                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 text-emerald-950 dark:text-emerald-300 bg-emerald-100/90 dark:bg-emerald-950/60 px-2.5 py-1 rounded-xl border border-emerald-300 dark:border-emerald-500/40 inline-block shadow-2xs`}
+                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 text-emerald-950 text-emerald-800 bg-emerald-100/90  px-2.5 py-1 rounded-xl border border-emerald-300  inline-block shadow-2xs`}
                 style={getCardValueStyle()}
               >
                 {formatCurrency(simulatedVaultTotal)}
               </div>
               <div
-                className={`${labelSizeClass} font-bold text-slate-800 dark:text-slate-300 mt-1`}
+                className={`${labelSizeClass} font-bold text-slate-800 text-slate-700 mt-1`}
                 style={getCardLabelStyle()}
               >
                 Fine Wt: {formatWeight(branchData.goldFineWt)}
@@ -1312,7 +1228,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             <div>
               <div
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-950 dark:text-slate-200`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-800`}
                 style={getCardTitleStyle()}
               >
                 Simulated Valuation Delta
@@ -1320,20 +1236,20 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div
                 className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 inline-flex items-center justify-center space-x-1 px-2.5 py-1 rounded-xl border shadow-2xs ${
                   valuationDelta >= 0
-                    ? 'bg-emerald-100 text-emerald-950 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40'
-                    : 'bg-rose-100 text-rose-950 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-300 dark:border-rose-500/40'
+                    ? 'bg-emerald-100 text-emerald-950  text-emerald-800 border border-emerald-300 '
+                    : 'bg-rose-100 text-rose-950  text-rose-800 border border-rose-300 '
                 }`}
                 style={getCardValueStyle()}
               >
                 {valuationDelta >= 0 ? (
-                  <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-emerald-700 dark:text-emerald-300" />
+                  <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-emerald-700 text-emerald-800" />
                 ) : (
-                  <ArrowDownRight className="w-3.5 h-3.5 shrink-0 text-rose-700 dark:text-rose-300" />
+                  <ArrowDownRight className="w-3.5 h-3.5 shrink-0 text-rose-700 text-rose-800" />
                 )}
                 <span>{formatCurrency(Math.abs(valuationDelta))}</span>
               </div>
               <div
-                className={`${labelSizeClass} font-bold font-mono mt-1 text-slate-900 dark:text-slate-200`}
+                className={`${labelSizeClass} font-bold font-mono mt-1 text-slate-900 text-slate-800`}
                 style={getCardLabelStyle()}
               >
                 {valuationDelta >= 0 ? `+${valuationDeltaPct.toFixed(2)}%` : `${valuationDeltaPct.toFixed(2)}%`}
@@ -1350,20 +1266,20 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               : 'bg-white/98 border-slate-300 text-slate-950 shadow-sm'
           }`}
         >
-          <div className="flex justify-between items-center border-b border-black/5 dark:border-white/10 pb-3">
+          <div className="flex justify-between items-center border-b border-black/5  pb-3">
             <div className="flex items-center space-x-2.5">
               <div className="p-2 rounded-xl bg-blue-500/20 text-blue-600 dark:text-blue-400">
                 <Building className="w-4 h-4" />
               </div>
               <h3
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-950 dark:text-white`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-900`}
                 style={getCardTitleStyle()}
               >
                 Multi-Branch Velocity Comparison
               </h3>
             </div>
             <span
-              className={`${labelSizeClass} font-bold text-slate-800 dark:text-slate-300`}
+              className={`${labelSizeClass} font-bold text-slate-800 text-slate-700`}
               style={getCardLabelStyle()}
             >
               3 Locations Active
@@ -1393,7 +1309,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <div>
                   <div className="flex items-center space-x-1.5">
                     <span
-                      className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white`}
+                      className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-900`}
                       style={getCardTitleStyle()}
                     >
                       {b.name}
@@ -1405,7 +1321,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     )}
                   </div>
                   <div
-                    className={`${labelSizeClass} font-bold text-slate-800 dark:text-slate-300 font-mono mt-0.5`}
+                    className={`${labelSizeClass} font-bold text-slate-800 text-slate-700 font-mono mt-0.5`}
                     style={getCardLabelStyle()}
                   >
                     Fine Gold: {formatWeight(b.fineWt)} • Velocity Share: {b.share}
@@ -1414,13 +1330,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
                 <div className="text-right font-mono">
                   <div
-                    className={`${subValueSizeClass} ${cardWeightClass} text-slate-950 dark:text-white`}
+                    className={`${subValueSizeClass} ${cardWeightClass} text-slate-900`}
                     style={getCardValueStyle()}
                   >
                     {formatCurrency(b.sales)}
                   </div>
                   <div
-                    className={`${labelSizeClass} text-emerald-900 dark:text-emerald-400 font-bold`}
+                    className={`${labelSizeClass} text-emerald-900 text-emerald-700 font-bold`}
                     style={getCardLabelStyle()}
                   >
                     Today's Inflow
@@ -1431,14 +1347,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           {/* Daily Sales Target Pace Bar */}
-          <div className="pt-2 border-t border-black/5 dark:border-white/10 space-y-1.5">
+          <div className="pt-2 border-t border-black/5  space-y-1.5">
             <div className="flex justify-between items-center text-xs font-bold">
-              <span className="text-slate-950 dark:text-slate-200 font-bold">Daily Showroom Target:</span>
-              <span className="font-mono text-slate-950 dark:text-white font-bold">
+              <span className="text-slate-800 font-bold">Daily Showroom Target:</span>
+              <span className="font-mono text-slate-900 font-bold">
                 {targetAchievedPct.toFixed(1)}% ({formatCurrency(branchData.todaySales)} / {formatCurrency(dailyTarget)})
               </span>
             </div>
-            <div className="w-full bg-slate-200 dark:bg-white/10 rounded-full h-2.5 overflow-hidden">
+            <div className="w-full bg-slate-200  rounded-full h-2.5 overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-blue-500 via-amber-400 to-emerald-500 transition-all duration-500 rounded-full"
                 style={{ width: `${targetAchievedPct}%` }}
@@ -1460,14 +1376,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           }`}
         >
           {/* Header Bar */}
-          <div className="flex flex-wrap justify-between items-center border-b border-black/5 dark:border-white/10 pb-3 gap-3">
+          <div className="flex flex-wrap justify-between items-center border-b border-black/5  pb-3 gap-3">
             <div className="flex items-center space-x-3">
               <div className="p-2.5 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-600 text-white shadow-sm">
                 <Coins className="w-5 h-5" />
               </div>
               <div>
                 <div className="flex items-center space-x-2 flex-wrap">
-                  <h2 className="text-sm sm:text-base font-bold uppercase tracking-wide text-slate-950 dark:text-white">
+                  <h2 className="text-sm sm:text-base font-bold uppercase tracking-wide text-slate-900">
                     CURRENT STOCK VAULT BREAKDOWN
                   </h2>
                   <button
@@ -1482,13 +1398,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     <span>Live Bullion Market</span>
                   </button>
                 </div>
-                <p className="text-xs text-slate-800 dark:text-slate-300 font-semibold mt-0.5">
+                <p className="text-xs text-slate-800 text-slate-700 font-semibold mt-0.5">
                   Pure Gold 24K:{' '}
-                  <span className="font-bold text-slate-950 dark:text-white">₹{simulatedGold24k.toLocaleString('en-IN')}/g</span> •
+                  <span className="font-bold text-slate-900">₹{simulatedGold24k.toLocaleString('en-IN')}/g</span> •
                   22K (916):{' '}
-                  <span className="font-bold text-slate-950 dark:text-white">₹{simulatedGold22k.toLocaleString('en-IN')}/g</span> •
+                  <span className="font-bold text-slate-900">₹{simulatedGold22k.toLocaleString('en-IN')}/g</span> •
                   Silver:{' '}
-                  <span className="font-bold text-slate-950 dark:text-white">₹{simulatedSilver.toLocaleString('en-IN')}/g</span>
+                  <span className="font-bold text-slate-900">₹{simulatedSilver.toLocaleString('en-IN')}/g</span>
                 </p>
               </div>
             </div>
@@ -1501,8 +1417,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     : 'bg-sky-100 text-sky-950 border-sky-300'
                 }`}
               >
-                <span className="text-slate-900 dark:text-slate-300 mr-1 font-bold">Fine Metal:</span>
-                <span className="font-bold text-slate-950 dark:text-white">{formatWeight(branchData.goldFineWt)}</span>
+                <span className="text-slate-900 text-slate-700 mr-1 font-bold">Fine Metal:</span>
+                <span className="font-bold text-slate-900">{formatWeight(branchData.goldFineWt)}</span>
               </div>
 
               <div
@@ -1512,8 +1428,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     : 'bg-emerald-100 text-emerald-950 border-emerald-300'
                 }`}
               >
-                <span className="text-slate-900 dark:text-slate-300 mr-1 font-bold">Vault Valuation:</span>
-                <span className="font-bold text-slate-950 dark:text-white">{formatCurrency(simulatedVaultTotal)}</span>
+                <span className="text-slate-900 text-slate-700 mr-1 font-bold">Vault Valuation:</span>
+                <span className="font-bold text-slate-900">{formatCurrency(simulatedVaultTotal)}</span>
               </div>
             </div>
           </div>
@@ -1530,14 +1446,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <div className="flex justify-between items-start">
                   <div className="min-w-0 pr-1">
                     <div
-                      className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} truncate text-slate-950 dark:text-white`}
+                      className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} truncate text-slate-900`}
                       style={getCardTitleStyle()}
                       title={stk.name}
                     >
                       {stk.name}
                     </div>
                     <div
-                      className={`${labelSizeClass} font-bold text-slate-700 dark:text-slate-300`}
+                      className={`${labelSizeClass} font-bold text-slate-700 text-slate-700`}
                       style={getCardLabelStyle()}
                     >
                       {stk.purity_label}
@@ -1560,13 +1476,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   }`}
                 >
                   <span
-                    className={`${labelSizeClass} font-bold text-slate-800 dark:text-slate-300`}
+                    className={`${labelSizeClass} font-bold text-slate-800 text-slate-700`}
                     style={getCardLabelStyle()}
                   >
                     Est. Value:
                   </span>
                   <span
-                    className={`${subValueSizeClass} ${cardWeightClass} font-mono text-slate-950 dark:text-amber-300`}
+                    className={`${subValueSizeClass} ${cardWeightClass} font-mono text-amber-800 font-bold`}
                     style={getCardValueStyle()}
                   >
                     {formatCurrency(stk.valuation)}
@@ -1583,13 +1499,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 >
                   <div className="flex justify-between items-center text-[10.5px]">
                     <span
-                      className={`font-sans font-bold ${labelSizeClass} text-slate-800 dark:text-slate-300`}
+                      className={`font-sans font-bold ${labelSizeClass} text-slate-800 text-slate-700`}
                       style={getCardLabelStyle()}
                     >
                       Gross Wt:
                     </span>
                     <span
-                      className={`font-bold ${labelSizeClass} text-slate-950 dark:text-white`}
+                      className={`font-bold ${labelSizeClass} text-slate-900`}
                       style={getCardValueStyle()}
                     >
                       {formatWeight(stk.gross_wt)}
@@ -1597,27 +1513,27 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   </div>
                   <div className="flex justify-between items-center text-[10.5px]">
                     <span
-                      className={`font-sans font-bold ${labelSizeClass} text-slate-800 dark:text-slate-300`}
+                      className={`font-sans font-bold ${labelSizeClass} text-slate-800 text-slate-700`}
                       style={getCardLabelStyle()}
                     >
                       Net Wt:
                     </span>
                     <span
-                      className={`font-bold ${labelSizeClass} text-slate-950 dark:text-white`}
+                      className={`font-bold ${labelSizeClass} text-slate-900`}
                       style={getCardValueStyle()}
                     >
                       {formatWeight(stk.net_wt)}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center pt-1 border-t border-black/10 dark:border-white/10 font-bold text-[10.5px]">
+                  <div className="flex justify-between items-center pt-1 border-t border-black/10  font-bold text-[10.5px]">
                     <span
-                      className={`font-sans font-bold ${labelSizeClass} text-slate-950 dark:text-slate-200`}
+                      className={`font-sans font-bold ${labelSizeClass} text-slate-800`}
                       style={getCardTitleStyle()}
                     >
                       Fine Metal:
                     </span>
                     <span
-                      className={`font-bold ${labelSizeClass} text-amber-950 dark:text-amber-300`}
+                      className={`font-bold ${labelSizeClass} text-amber-950 text-amber-800`}
                       style={getCardValueStyle()}
                     >
                       {formatWeight(stk.fine_wt)}
@@ -1639,13 +1555,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               : 'bg-white/98 border-slate-300 text-slate-950 shadow-sm'
           }`}
         >
-          <div className="flex justify-between items-center border-b border-black/5 dark:border-white/10 pb-3">
+          <div className="flex justify-between items-center border-b border-black/5  pb-3">
             <div className="flex items-center space-x-2.5">
-              <div className="p-2 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400">
+              <div className="p-2 rounded-xl bg-amber-500/20 text-amber-600 text-amber-700">
                 <ShoppingBag className="w-4 h-4" />
               </div>
               <h3
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-950 dark:text-white`}
+                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-900`}
                 style={getCardTitleStyle()}
               >
                 Sales & Invoicing Command Center
@@ -1674,7 +1590,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               >
                 <div className="flex items-center justify-between text-xs font-bold">
                   <span
-                    className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white`}
+                    className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-900`}
                     style={getCardTitleStyle()}
                   >
                     {t.label}
@@ -1682,11 +1598,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <span
                     className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full border ${
                       t.label.includes('UPI')
-                        ? 'bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40'
+                        ? 'bg-emerald-100 text-emerald-950  text-emerald-800 border-emerald-300 '
                         : t.label.includes('Card')
                         ? 'bg-blue-100 text-blue-950 dark:bg-blue-950/70 dark:text-blue-300 border-blue-300 dark:border-blue-500/40'
                         : t.label.includes('Cash')
-                        ? 'bg-amber-100 text-amber-950 dark:bg-amber-950/70 dark:text-amber-300 border-amber-300 dark:border-amber-500/40'
+                        ? 'bg-amber-100 text-amber-950  text-amber-800 border-amber-300 '
                         : 'bg-purple-100 text-purple-950 dark:bg-purple-950/70 dark:text-purple-300 border border-purple-300 dark:border-purple-500/40'
                     }`}
                   >
@@ -1694,12 +1610,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   </span>
                 </div>
                 <div
-                  className={`${valueSizeClass} ${cardWeightClass} font-mono mt-2 text-slate-950 dark:text-white tracking-normal`}
+                  className={`${valueSizeClass} ${cardWeightClass} font-mono mt-2 text-slate-900 tracking-normal`}
                   style={getCardValueStyle()}
                 >
                   {formatCurrency(t.amount)}
                 </div>
-                <div className="w-full bg-slate-200 dark:bg-white/10 rounded-full h-2 mt-3 overflow-hidden">
+                <div className="w-full bg-slate-200  rounded-full h-2 mt-3 overflow-hidden">
                   <div className={`h-full ${t.color} rounded-full`} style={{ width: `${t.pct}%` }} />
                 </div>
               </div>
@@ -1724,12 +1640,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   : 'bg-white/98 border-slate-300 text-slate-950 shadow-sm'
               }`}
             >
-              <div className="flex justify-between items-center border-b border-black/5 dark:border-white/10 pb-3">
+              <div className="flex justify-between items-center border-b border-black/5  pb-3">
                 <div className="flex items-center space-x-2.5">
                   <div className="p-2 rounded-xl bg-blue-500/20 text-blue-600 dark:text-blue-400">
                     <CreditCard className="w-4 h-4" />
                   </div>
-                  <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wide text-slate-950 dark:text-white">
+                  <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wide text-slate-900">
                     Financial Balances (Cash & Bank)
                   </h2>
                 </div>
@@ -1757,27 +1673,27 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     <Wallet className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="font-bold text-xs sm:text-sm text-slate-950 dark:text-white">
+                    <div className="font-bold text-xs sm:text-sm text-slate-900">
                       Physical Cash in Hand (Showroom Till)
                     </div>
-                    <div className="text-[10.5px] font-medium text-slate-700 dark:text-slate-300">
+                    <div className="text-[10.5px] font-medium text-slate-700 text-slate-700">
                       Opening balance + Counter collections reconciled
                     </div>
                   </div>
                 </div>
-                <div className="text-lg sm:text-xl font-bold font-mono text-emerald-950 dark:text-emerald-300">
+                <div className="text-lg sm:text-xl font-bold font-mono text-emerald-950 text-emerald-800">
                   {formatCurrency(branchData.cashInHand)}
                 </div>
               </div>
 
               {/* Cash in Bank Table */}
               <div className="space-y-2">
-                <div className="text-xs font-bold uppercase tracking-wide text-slate-800 dark:text-slate-200 flex items-center justify-between">
+                <div className="text-xs font-bold uppercase tracking-wide text-slate-800 text-slate-800 flex items-center justify-between">
                   <span>Cash in Bank (Individual Accounts)</span>
                   <span>{branchData.bankAccounts.length} Linked Accounts</span>
                 </div>
 
-                <div className="overflow-x-auto border border-slate-300 dark:border-white/15 rounded-2xl overflow-hidden bg-white dark:bg-slate-900/90 shadow-2xs">
+                <div className="overflow-x-auto border border-slate-300  rounded-2xl overflow-hidden bg-white  shadow-2xs">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead
                       className={`font-bold border-b select-none ${
@@ -1787,23 +1703,23 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       }`}
                     >
                       <tr>
-                        <th className="p-3 border-r border-slate-200 dark:border-white/10">Bank Name & Branch</th>
-                        <th className="p-3 border-r border-slate-200 dark:border-white/10 w-28 text-center">A/c No</th>
-                        <th className="p-3 border-r border-slate-200 dark:border-white/10 w-20 text-center">Type</th>
+                        <th className="p-3 border-r border-slate-200 ">Bank Name & Branch</th>
+                        <th className="p-3 border-r border-slate-200  w-28 text-center">A/c No</th>
+                        <th className="p-3 border-r border-slate-200  w-20 text-center">Type</th>
                         <th className="p-3 text-right w-32">Balance (₹)</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-200 dark:divide-white/10 font-mono text-xs">
+                    <tbody className="divide-y divide-slate-200  font-mono text-xs">
                       {branchData.bankAccounts.map((b, idx) => (
                         <tr
                           key={idx}
                           className={isDark ? 'hover:bg-white/5' : 'hover:bg-slate-50'}
                         >
-                          <td className="p-3 border-r border-slate-200 dark:border-white/10 font-sans font-bold text-slate-950 dark:text-white flex items-center space-x-2">
+                          <td className="p-3 border-r border-slate-200  font-sans font-bold text-slate-900 flex items-center space-x-2">
                             <span className={`w-2.5 h-2.5 rounded-full ${b.iconColor}`} />
                             <span>{b.bank_name}</span>
                           </td>
-                          <td className="p-3 border-r border-slate-200 dark:border-white/10 text-center text-slate-800 dark:text-slate-200 font-medium">
+                          <td className="p-3 border-r border-slate-200  text-center text-slate-800 text-slate-800 font-medium">
                             <button
                               onClick={() => handleCopyAccount(b.account_no)}
                               className="inline-flex items-center space-x-1 hover:underline cursor-pointer"
@@ -1817,12 +1733,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                               )}
                             </button>
                           </td>
-                          <td className="p-3 border-r border-slate-200 dark:border-white/10 text-center">
+                          <td className="p-3 border-r border-slate-200  text-center">
                             <span className={`px-2 py-0.5 rounded-full text-[9.5px] font-semibold border ${b.badgeColor}`}>
                               {b.type}
                             </span>
                           </td>
-                          <td className="p-3 text-right font-bold text-slate-950 dark:text-white text-sm">
+                          <td className="p-3 text-right font-bold text-slate-900 text-sm">
                             {formatCurrency(b.balance)}
                           </td>
                         </tr>
@@ -1839,7 +1755,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         <td colSpan={3} className="p-3 font-sans uppercase text-right font-bold">
                           Total Cash in Bank:
                         </td>
-                        <td className="p-3 text-right font-bold text-slate-950 dark:text-white text-sm">
+                        <td className="p-3 text-right font-bold text-slate-900 text-sm">
                           {formatCurrency(branchData.bankTotal)}
                         </td>
                       </tr>
@@ -1861,12 +1777,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   : 'bg-white/96 border-slate-200/90 text-slate-950 shadow-xs'
               }`}
             >
-              <div className="flex justify-between items-center border-b border-black/5 dark:border-white/10 pb-3">
+              <div className="flex justify-between items-center border-b border-black/5  pb-3">
                 <div className="flex items-center space-x-2.5">
-                  <div className="p-2 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400">
+                  <div className="p-2 rounded-xl bg-amber-500/20 text-amber-600 text-amber-700">
                     <Bell className="w-4 h-4" />
                   </div>
-                  <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wide text-slate-950 dark:text-white">
+                  <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wide text-slate-900">
                     Showroom Alerts & Notices
                   </h2>
                 </div>
@@ -1927,7 +1843,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               {/* Notices List */}
               <div className="space-y-2 max-h-[340px] overflow-y-auto pr-1">
                 {filteredNotices.length === 0 ? (
-                  <div className="p-6 text-center text-xs font-bold text-slate-900 dark:text-slate-200">
+                  <div className="p-6 text-center text-xs font-bold text-slate-900 text-slate-800">
                     No notices match your current search query.
                   </div>
                 ) : (
@@ -1942,7 +1858,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     >
                       <div className="flex justify-between items-start">
                         <span
-                          className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-950 dark:text-white`}
+                          className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} text-slate-900`}
                           style={getCardTitleStyle()}
                         >
                           {n.title}
@@ -1952,23 +1868,23 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         </span>
                       </div>
                       <p
-                        className={`${labelSizeClass} font-semibold text-slate-900 dark:text-slate-200`}
+                        className={`${labelSizeClass} font-semibold text-slate-900 text-slate-800`}
                         style={getCardLabelStyle()}
                       >
                         {n.subtitle}
                       </p>
 
-                      <div className="flex items-center justify-between pt-1 border-t border-black/5 dark:border-white/10">
+                      <div className="flex items-center justify-between pt-1 border-t border-black/5 ">
                         {n.amount ? (
                           <div
-                            className={`${subValueSizeClass} font-mono font-bold text-emerald-950 dark:text-emerald-300`}
+                            className={`${subValueSizeClass} font-mono font-bold text-emerald-950 text-emerald-800`}
                             style={getCardValueStyle()}
                           >
                             Amount: {formatCurrency(n.amount)}
                           </div>
                         ) : (
                           <div
-                            className={`${labelSizeClass} text-slate-700 dark:text-slate-300 font-semibold`}
+                            className={`${labelSizeClass} text-slate-700 text-slate-700 font-semibold`}
                             style={getCardLabelStyle()}
                           >
                             Action pending
@@ -1984,9 +1900,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                           }`}
                         >
                           {n.type === 'birthday' || n.type === 'anniversary' || n.type === 'receivable' ? (
-                            <MessageCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                            <MessageCircle className="w-3.5 h-3.5 text-emerald-600 text-emerald-700" />
                           ) : (
-                            <ExternalLink className="w-3.5 h-3.5 text-blue-600 dark:text-sky-400" />
+                            <ExternalLink className="w-3.5 h-3.5 text-blue-600 text-blue-700" />
                           )}
                           <span>{n.actionLabel}</span>
                         </button>

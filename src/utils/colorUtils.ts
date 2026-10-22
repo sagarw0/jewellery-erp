@@ -208,100 +208,38 @@ export function generateBgGradient(baseHex: string, brightnessDelta: number): {
  * Compute the complete design token set dynamically based on user selections
  */
 export function computeThemeTokens(
-  bgBaseHex: string,
-  accentHex: string,
-  brightnessDelta: number, // -50 to +50
-  glassBlur: GlassBlurIntensity = 'standard',
-  cornerRadius: CardCornerRadius = 'squircle',
-  shadowDepth: ShadowGlowDepth = 'deep'
+  _bgBaseHex?: string,
+  _accentHex?: string,
+  _brightnessDelta?: number,
+  _glassBlur?: GlassBlurIntensity,
+  _cornerRadius?: CardCornerRadius,
+  _shadowDepth?: ShadowGlowDepth
 ): ThemeTokens {
-  const { gradient, effectiveBg, isDark } = generateBgGradient(bgBaseHex, brightnessDelta);
-  const accentRgb = hexToRgb(accentHex);
-  const accentLum = getRelativeLuminance(accentRgb.r, accentRgb.g, accentRgb.b);
-  const primaryText = accentLum < 0.5 ? '#ffffff' : '#0f172a';
-  const primaryGlow = `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.45)`;
-
-  const primaryHover = adjustColorLightness(accentHex, isDark ? 10 : -10);
-
-  // Blur string
-  let blurVal = '24px';
-  if (glassBlur === 'low') blurVal = '12px';
-  else if (glassBlur === 'ultra') blurVal = '36px';
-  else if (glassBlur === 'solid') blurVal = '0px';
-
-  // Radius string
-  let radiusVal = '1.25rem'; // squircle 20px
-  if (cornerRadius === 'standard') radiusVal = '0.75rem'; // 12px
-  else if (cornerRadius === 'ultra') radiusVal = '1.75rem'; // 28px
-
-  // Shadow calculation
-  let shadowVal = isDark
-    ? '0 12px 36px 0 rgba(0, 0, 0, 0.45)'
-    : '0 12px 40px 0 rgba(15, 23, 42, 0.08), 0 1px 3px 0 rgba(0, 0, 0, 0.02)';
-
-  if (shadowDepth === 'minimal') {
-    shadowVal = isDark ? '0 4px 12px 0 rgba(0,0,0,0.3)' : '0 4px 12px 0 rgba(15,23,42,0.04)';
-  } else if (shadowDepth === 'glow') {
-    shadowVal = isDark
-      ? `0 14px 44px 0 rgba(0, 0, 0, 0.6), 0 0 25px 0 ${primaryGlow}`
-      : `0 14px 40px 0 rgba(15, 23, 42, 0.10), 0 0 20px 0 ${primaryGlow}`;
-  }
-
-  if (isDark) {
-    // Dark mode design tokens
-    return {
-      appBg: effectiveBg,
-      appBgGradient: gradient,
-      appSurface: glassBlur === 'solid' ? '#0f172a' : 'rgba(15, 23, 42, 0.85)',
-      appSurfaceGlass: glassBlur === 'solid' ? '#1e293b' : 'rgba(30, 41, 59, 0.70)',
-      appHeaderBg: glassBlur === 'solid' ? '#070b14' : 'rgba(15, 23, 42, 0.92)',
-      appPrimary: accentHex,
-      appPrimaryHover: primaryHover,
-      appPrimaryText: primaryText,
-      appPrimaryGlow: primaryGlow,
-      appAccent: accentHex,
-      appAccentBg: `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.20)`,
-      appTextPrimary: '#f8fafc',
-      appTextSecondary: '#cbd5e1',
-      appTextMuted: '#94a3b8',
-      appBorder: 'rgba(255, 255, 255, 0.14)',
-      appCardBorder: 'rgba(255, 255, 255, 0.16)',
-      appCardShadow: shadowVal,
-      appInputBg: glassBlur === 'solid' ? '#0f172a' : 'rgba(15, 23, 42, 0.75)',
-      appInputBorder: 'rgba(255, 255, 255, 0.20)',
-      appTableHeaderBg: glassBlur === 'solid' ? '#1e293b' : 'rgba(30, 41, 59, 0.80)',
-      appBlur: blurVal,
-      appRadius: radiusVal,
-      isDark: true,
-    };
-  } else {
-    // Light mode design tokens (Apple Frosted Glass Clarity)
-    return {
-      appBg: effectiveBg,
-      appBgGradient: gradient,
-      appSurface: glassBlur === 'solid' ? '#ffffff' : 'rgba(255, 255, 255, 0.96)',
-      appSurfaceGlass: glassBlur === 'solid' ? '#f8fafc' : 'rgba(255, 255, 255, 0.88)',
-      appHeaderBg: glassBlur === 'solid' ? '#ffffff' : 'rgba(255, 255, 255, 0.94)',
-      appPrimary: accentHex,
-      appPrimaryHover: primaryHover,
-      appPrimaryText: primaryText,
-      appPrimaryGlow: primaryGlow,
-      appAccent: accentHex,
-      appAccentBg: `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.12)`,
-      appTextPrimary: '#0f172a',
-      appTextSecondary: '#334155',
-      appTextMuted: '#64748b',
-      appBorder: 'rgba(15, 23, 42, 0.12)',
-      appCardBorder: 'rgba(255, 255, 255, 0.98)',
-      appCardShadow: shadowVal,
-      appInputBg: '#ffffff',
-      appInputBorder: '#cbd5e1',
-      appTableHeaderBg: 'rgba(241, 245, 249, 0.90)',
-      appBlur: blurVal,
-      appRadius: radiusVal,
-      isDark: false,
-    };
-  }
+  return {
+    appBg: '#F8FAFC',
+    appBgGradient: 'none',
+    appSurface: '#FFFFFF',
+    appSurfaceGlass: '#FFFFFF',
+    appHeaderBg: '#FFFFFF',
+    appPrimary: '#1D4ED8',
+    appPrimaryHover: '#1E40AF',
+    appPrimaryText: '#FFFFFF',
+    appPrimaryGlow: 'rgba(29, 78, 216, 0.15)',
+    appAccent: '#1D4ED8',
+    appAccentBg: '#DBEAFE',
+    appTextPrimary: '#1E293B',
+    appTextSecondary: '#475569',
+    appTextMuted: '#64748B',
+    appBorder: '#CBD5E1',
+    appCardBorder: '#CBD5E1',
+    appCardShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)',
+    appInputBg: '#FFFFFF',
+    appInputBorder: '#CBD5E1',
+    appTableHeaderBg: '#F1F5F9',
+    appBlur: '0px',
+    appRadius: '0.5rem',
+    isDark: false,
+  };
 }
 
 /**

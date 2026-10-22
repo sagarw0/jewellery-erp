@@ -123,17 +123,17 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Top Toolbar */}
       <div className={`border rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-sm transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <div className="flex items-center space-x-3">
           <div className={`p-2 rounded-lg border ${
-            isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-blue-50 text-blue-600 border-blue-200'
+            isDark ? 'bg-amber-400/20 text-amber-300 border-amber-400/30' : 'bg-blue-50 text-blue-600 border-slate-300'
           }`}>
             <Users className="w-5 h-5" />
           </div>
           <div>
-            <h1 className={`text-base font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>Account Master</h1>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            <h1 className={`text-base font-bold ${'text-slate-900'}`}>Account Master</h1>
+            <p className={`text-xs ${'text-slate-500'}`}>
               Account Code, Group classification, Opening balances, and Card Charge surcharges (% Customer, % For Us).
             </p>
           </div>
@@ -143,9 +143,7 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
           <button
             onClick={handleNew}
             className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
-              isDark
-                ? 'bg-white/10 text-white border-white/15 hover:bg-white/20'
-                : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+              'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-semibold'
             }`}
           >
             <Plus className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
@@ -157,7 +155,7 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
             className={`flex items-center space-x-1 px-4 py-1.5 rounded-lg text-xs font-bold shadow transition-all cursor-pointer ${
               isDark
                 ? 'bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-bold'
-                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                : 'bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs'
             }`}
           >
             <span>Save (Alt+S)</span>
@@ -197,7 +195,7 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
         {/* Left: Searchable Directory */}
         <div className={`md:col-span-4 border rounded-xl p-4 shadow-sm space-y-3 transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}>
           <div className="relative">
             <Search className={`w-3.5 h-3.5 absolute left-2.5 top-2.5 ${isDark ? 'text-slate-400' : 'text-slate-400'}`} />
@@ -207,9 +205,7 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className={`w-full pl-8 pr-3 py-1.5 rounded-lg text-xs outline-hidden border transition-all ${
-                isDark
-                  ? 'bg-white/5 border-white/15 text-white placeholder-slate-500 focus:border-amber-400 focus:bg-white/10'
-                  : 'bg-slate-50 border-slate-300 text-slate-800 placeholder-slate-400 focus:bg-white focus:border-blue-500'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             />
           </div>
@@ -224,22 +220,20 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
                     ? isDark
                       ? 'bg-amber-400/20 border-amber-400/50 text-white shadow-2xs'
                       : 'bg-blue-50/80 border-blue-400 text-blue-900 shadow-2xs'
-                    : isDark
-                    ? 'bg-white/5 border-white/10 hover:bg-white/10 text-slate-300'
-                    : 'bg-slate-50/50 border-slate-200/70 hover:bg-sky-50/40 text-slate-700'
+                    : 'bg-white border-slate-300 text-slate-900 font-medium'
                 }`}
               >
                 <div className="flex justify-between items-center">
-                  <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{acc.account_name}</span>
+                  <span className={`font-bold ${'text-slate-900'}`}>{acc.account_name}</span>
                   <span className={`font-mono text-[10px] px-1.5 py-0.5 rounded font-bold border ${
                     isDark
                       ? 'bg-amber-400/20 text-amber-300 border-amber-400/30'
-                      : 'bg-sky-100 text-blue-700 border-sky-200'
+                      : 'bg-sky-100 text-blue-700 border-slate-300'
                   }`}>
                     {acc.account_code}
                   </span>
                 </div>
-                <div className={`flex justify-between items-center text-[10px] mt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                <div className={`flex justify-between items-center text-[10px] mt-1 ${'text-slate-500'}`}>
                   <span>{acc.account_group}</span>
                   <span className={`font-mono font-semibold ${isDark ? 'text-amber-300' : 'text-slate-700'}`}>
                     {formatCurrency(acc.opening_balance)} {acc.balance_type}
@@ -252,7 +246,7 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
 
         {/* Right: Master Fields Form */}
         <div className={`md:col-span-8 border rounded-xl p-5 shadow-sm space-y-4 transition-all ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}>
           <div className={`border-b pb-2 ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
             <span className={`font-bold text-xs uppercase tracking-wider ${
@@ -264,7 +258,7 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
-              <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              <label className={`block text-[11px] font-bold mb-1 ${'text-slate-700'}`}>
                 Account Code <span className="text-rose-500">*</span>
               </label>
               <input
@@ -272,15 +266,13 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
                 value={formData.account_code}
                 onChange={(e) => setFormData({ ...formData, account_code: e.target.value })}
                 className={`w-full px-3 py-1.5 rounded-lg font-mono font-bold border outline-hidden ${
-                  isDark
-                    ? 'bg-white/5 border-white/15 text-amber-300 focus:border-amber-400'
-                    : 'bg-slate-50 border-slate-300 text-blue-800 focus:border-blue-500'
+                  'bg-white border-slate-300 text-slate-900 font-medium'
                 }`}
               />
             </div>
 
             <div>
-              <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              <label className={`block text-[11px] font-bold mb-1 ${'text-slate-700'}`}>
                 Account Name <span className="text-rose-500">*</span>
               </label>
               <input
@@ -288,24 +280,20 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
                 value={formData.account_name}
                 onChange={(e) => setFormData({ ...formData, account_name: e.target.value })}
                 className={`w-full px-3 py-1.5 rounded-lg font-semibold border outline-hidden ${
-                  isDark
-                    ? 'bg-white/5 border-white/15 text-white focus:border-amber-400'
-                    : 'bg-slate-50 border-slate-300 text-slate-900 focus:border-blue-500'
+                  'bg-white border-slate-300 text-slate-900 font-medium'
                 }`}
               />
             </div>
 
             <div>
-              <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              <label className={`block text-[11px] font-bold mb-1 ${'text-slate-700'}`}>
                 Account Type
               </label>
               <select
                 value={formData.account_type}
                 onChange={(e) => setFormData({ ...formData, account_type: e.target.value })}
                 className={`w-full px-3 py-1.5 rounded-lg border outline-hidden ${
-                  isDark
-                    ? 'bg-[#0f172a] border-white/15 text-white focus:border-amber-400'
-                    : 'bg-slate-50 border-slate-300 text-slate-800 focus:border-blue-500'
+                  'bg-white border-slate-300 text-slate-900 font-medium'
                 }`}
               >
                 <option value="Retail Customer">Retail Customer</option>
@@ -319,16 +307,14 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
             </div>
 
             <div>
-              <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              <label className={`block text-[11px] font-bold mb-1 ${'text-slate-700'}`}>
                 Account Group
               </label>
               <select
                 value={formData.account_group}
                 onChange={(e) => setFormData({ ...formData, account_group: e.target.value })}
                 className={`w-full px-3 py-1.5 rounded-lg border outline-hidden ${
-                  isDark
-                    ? 'bg-[#0f172a] border-white/15 text-white focus:border-amber-400'
-                    : 'bg-slate-50 border-slate-300 text-slate-800 focus:border-blue-500'
+                  'bg-white border-slate-300 text-slate-900 font-medium'
                 }`}
               >
                 {ACCOUNT_GROUPS.map((grp) => (
@@ -340,7 +326,7 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
             </div>
 
             <div>
-              <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              <label className={`block text-[11px] font-bold mb-1 ${'text-slate-700'}`}>
                 Opening Balance (₹)
               </label>
               <div className="flex space-x-2">
@@ -349,18 +335,14 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
                   value={formData.opening_balance}
                   onChange={(e) => setFormData({ ...formData, opening_balance: parseFloat(e.target.value) || 0 })}
                   className={`w-2/3 px-3 py-1.5 rounded-lg font-mono text-right border outline-hidden ${
-                    isDark
-                      ? 'bg-white/5 border-white/15 text-white focus:border-amber-400'
-                      : 'bg-slate-50 border-slate-300 text-slate-900 focus:border-blue-500'
+                    'bg-white border-slate-300 text-slate-900 font-medium'
                   }`}
                 />
                 <select
                   value={formData.balance_type}
                   onChange={(e) => setFormData({ ...formData, balance_type: e.target.value as 'Dr' | 'Cr' })}
                   className={`w-1/3 px-2 py-1.5 rounded-lg font-bold border outline-hidden ${
-                    isDark
-                      ? 'bg-[#0f172a] border-white/15 text-amber-300 focus:border-amber-400'
-                      : 'bg-slate-50 border-slate-300 text-slate-800 focus:border-blue-500'
+                    'bg-white border-slate-300 text-slate-900 font-medium'
                   }`}
                 >
                   <option value="Dr">Dr</option>
@@ -374,7 +356,7 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
           <div className={`p-4 rounded-xl space-y-3 text-xs border transition-all ${
             isDark
               ? 'bg-white/5 border-white/10 text-white'
-              : 'bg-sky-50/60 border-sky-200 text-slate-900'
+              : 'bg-sky-50/60 border-slate-300 text-slate-900'
           }`}>
             <span className={`font-bold uppercase tracking-wider block flex items-center space-x-1.5 ${
               isDark ? 'text-amber-300' : 'text-blue-900'
@@ -385,7 +367,7 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                <label className={`block text-[11px] mb-1 ${'text-slate-700'}`}>
                   For Customer in %
                 </label>
                 <input
@@ -410,7 +392,7 @@ export const AccountMasterView: React.FC<AccountMasterViewProps> = ({
               </div>
 
               <div>
-                <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                <label className={`block text-[11px] mb-1 ${'text-slate-700'}`}>
                   For Us in %
                 </label>
                 <input

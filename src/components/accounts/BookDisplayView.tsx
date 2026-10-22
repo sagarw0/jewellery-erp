@@ -103,9 +103,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
       {/* Top Toolbar */}
       <div
         className={`p-4 rounded-2xl border flex flex-wrap items-center justify-between gap-3 shadow-xs ${
-          isDark
-            ? 'bg-[#0f172a]/90 border-white/10 text-white'
-            : 'bg-white border-slate-200 text-slate-900 shadow-2xs'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         <div className="flex items-center space-x-3.5">
@@ -115,12 +113,12 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
           <div>
             <div className="flex items-center space-x-2">
               <h1 className="text-base font-bold tracking-normal">Book Display Register & Debtors</h1>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-400/30">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-blue-500/15 text-blue-700 text-blue-700 border border-blue-400/30">
                 9 Ledger Books
               </span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Financial registers with Sundry Debtors ledger and pure gold bullion <strong className="text-rose-600 dark:text-rose-400 font-mono font-bold">Pending WT</strong> in grams.
+            <p className="text-xs text-slate-500 text-slate-600">
+              Financial registers with Sundry Debtors ledger and pure gold bullion <strong className="text-rose-600 text-rose-700 font-mono font-bold">Pending WT</strong> in grams.
             </p>
           </div>
         </div>
@@ -129,9 +127,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
           <button
             onClick={() => setShowColumnSettings(true)}
             className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-xl text-xs font-mono font-semibold border transition-all cursor-pointer ${
-              isDark
-                ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
-                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           >
             <Sliders className="w-3.5 h-3.5 text-blue-500" />
@@ -141,9 +137,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
           <button
             onClick={handleExportCSV}
             className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-              isDark
-                ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
-                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           >
             <Download className="w-3.5 h-3.5 text-blue-500" />
@@ -153,9 +147,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
           <button
             onClick={() => window.print()}
             className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-              isDark
-                ? 'bg-white/5 text-slate-200 hover:bg-white/10 border-white/10'
-                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-300 shadow-2xs'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           >
             <Printer className="w-3.5 h-3.5" />
@@ -164,7 +156,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
 
           <button
             onClick={() => setShowHelp(true)}
-            className="p-2 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-semibold border border-amber-400/40 hover:bg-amber-500/20 cursor-pointer"
+            className="p-2 rounded-xl bg-amber-500/10 text-amber-700 text-amber-700 text-xs font-semibold border border-amber-400/40 hover:bg-amber-500/20 cursor-pointer"
           >
             <HelpCircle className="w-4 h-4" />
           </button>
@@ -181,7 +173,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
       {/* Book Type Selectors & Date Range Strip */}
       <div
         className={`p-4 rounded-2xl border space-y-3 shadow-xs ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-slate-200 text-slate-900'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 scrollbar-none">
@@ -193,8 +185,8 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
                 bookType === type
                   ? isDark
                     ? 'bg-amber-400 text-slate-950 font-bold shadow-xs'
-                    : 'bg-blue-600 text-white font-bold shadow-xs'
-                  : 'bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10'
+                    : 'bg-blue-700 text-white font-bold shadow-xs shadow-xs'
+                  : 'bg-slate-100  text-slate-600 text-slate-600 hover:bg-slate-200 dark:hover:bg-white/10'
               }`}
             >
               {type}
@@ -202,7 +194,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
           ))}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-200 dark:border-white/10 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-200  text-xs">
           <div>
             <label className="block text-[11px] font-bold text-slate-400 mb-1">From Date</label>
             <input
@@ -210,7 +202,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
               value={fromDate}
               onChange={(e) => setFromDate(e.target.value)}
               className={`w-full px-2.5 py-1.5 rounded-xl border font-mono ${
-                isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             />
           </div>
@@ -222,7 +214,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
               value={toDate}
               onChange={(e) => setToDate(e.target.value)}
               className={`w-full px-2.5 py-1.5 rounded-xl border font-mono ${
-                isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300'
+                'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             />
           </div>
@@ -237,7 +229,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by customer name, code or phone..."
                 className={`w-full pl-8 pr-3 py-1.5 rounded-xl border text-xs ${
-                  isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300'
+                  'bg-white border-slate-300 text-slate-900 font-medium'
                 }`}
               />
             </div>
@@ -248,7 +240,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
       {/* Main Table */}
       <div
         className={`rounded-2xl border overflow-hidden shadow-xs ${
-          isDark ? 'bg-[#0f172a]/90 border-white/10' : 'bg-white border-slate-200'
+          'bg-white border-slate-300 text-slate-800 shadow-xs'
         }`}
       >
         <div className="overflow-x-auto">
@@ -265,7 +257,7 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
                 <th className="p-3.5 min-w-[200px]">Customer Name</th>
                 <th className="p-3.5 font-mono">Account Code</th>
                 <th className="p-3.5 text-right font-bold">Current Balance (₹)</th>
-                <th className="p-3.5 text-right font-bold text-rose-600 dark:text-rose-400">
+                <th className="p-3.5 text-right font-bold text-rose-600 text-rose-700">
                   Pending WT (gm)
                 </th>
                 <th className="p-3.5">Contact Phone</th>
@@ -288,19 +280,19 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
                     }`}
                   >
                     <td className="p-3.5 pl-4 text-center text-slate-400">{idx + 1}</td>
-                    <td className="p-3.5 font-sans font-bold text-slate-900 dark:text-white">
+                    <td className="p-3.5 font-sans font-bold text-slate-900 text-slate-900">
                       {row.customer_name}
                     </td>
-                    <td className="p-3.5 font-bold text-blue-600 dark:text-blue-400">
+                    <td className="p-3.5 font-bold text-blue-600 text-blue-700">
                       {row.code}
                     </td>
-                    <td className="p-3.5 text-right font-bold text-slate-900 dark:text-white">
+                    <td className="p-3.5 text-right font-bold text-slate-900 text-slate-900">
                       {formatCurrency(row.balance)}
                     </td>
-                    <td className="p-3.5 text-right font-bold text-rose-600 dark:text-rose-400">
+                    <td className="p-3.5 text-right font-bold text-rose-600 text-rose-700">
                       {formatWeight(row.pending_wt)}
                     </td>
-                    <td className="p-3.5 font-sans text-slate-600 dark:text-slate-300">
+                    <td className="p-3.5 font-sans text-slate-600 text-slate-700">
                       {row.phone}
                     </td>
                     <td className="p-3.5 text-right pr-4">
@@ -329,10 +321,10 @@ export const BookDisplayView: React.FC<BookDisplayViewProps> = ({ debtors, onClo
                 <td colSpan={3} className="p-3.5 pl-4 uppercase font-sans tracking-wider">
                   Total Outstanding ({filteredDebtors.length} Customers)
                 </td>
-                <td className="p-3.5 text-right text-emerald-600 dark:text-emerald-400">
+                <td className="p-3.5 text-right text-emerald-600 text-emerald-700">
                   {formatCurrency(totalBalance)}
                 </td>
-                <td className="p-3.5 text-right text-rose-600 dark:text-rose-400">
+                <td className="p-3.5 text-right text-rose-600 text-rose-700">
                   {formatWeight(totalPendingWt)}
                 </td>
                 <td colSpan={2} className="p-3.5 text-right pr-4 text-slate-400 font-sans">

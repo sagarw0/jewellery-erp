@@ -585,8 +585,7 @@ export function App() {
 
   return (
     <div
-      style={{ backgroundColor: 'var(--color-bg, #b8cadc)' }}
-      className={`min-h-screen ${currentTheme.textPrimary} flex flex-col font-sans selection:bg-sky-200`}
+      className="min-h-screen bg-[#F8FAFC] text-[#1E293B] flex flex-col font-sans selection:bg-blue-100 selection:text-blue-900"
     >
       {/* Top Navbar */}
       <Navbar
@@ -846,24 +845,18 @@ export function App() {
       </main>
 
       {/* Enterprise Status Footer */}
-      <footer
-        className={`px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2 no-print border-t ${
-          isDark
-            ? 'bg-[#070b14]/95 border-white/10 text-slate-400'
-            : 'bg-white border-sky-200 text-slate-500'
-        }`}
-      >
+      <footer className="px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2 no-print border-t bg-white border-slate-300 text-slate-600">
         <div className="flex items-center space-x-3">
-          <span className="flex items-center space-x-1.5 text-emerald-500 font-medium">
+          <span className="flex items-center space-x-1.5 text-emerald-700 font-medium">
             <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
             <span>Cloud Database: Connected (fbmbvnvnfypkkrpslnag.supabase.co)</span>
           </span>
-          <span className={isDark ? 'text-slate-700' : 'text-slate-300'}>|</span>
-          <span className={`font-mono ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+          <span className="text-slate-300">|</span>
+          <span className="font-mono text-slate-700 font-medium">
             Branch: {currentUser.branch}
           </span>
-          <span className={`${isDark ? 'text-slate-700' : 'text-slate-300'} hidden sm:inline`}>|</span>
-          <span className={`font-mono ${isDark ? 'text-slate-300' : 'text-slate-600'} hidden sm:inline`}>
+          <span className="text-slate-300 hidden sm:inline">|</span>
+          <span className="font-mono text-slate-600 hidden sm:inline">
             HM-916-MH-4421
           </span>
         </div>
@@ -871,12 +864,12 @@ export function App() {
         <div className="flex items-center space-x-3 text-[11px] font-mono">
           <button
             onClick={() => setCurrentSection('field_dictionary')}
-            className={`${isDark ? 'text-amber-400 hover:text-amber-300' : 'text-blue-700 hover:text-blue-900'} underline`}
+            className="text-blue-700 hover:text-blue-900 underline font-medium"
           >
             Field Preservation Audit (Spec #40-41)
           </button>
           <span>•</span>
-          <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>Domain: ogaworld.in</span>
+          <span className="text-slate-500">Domain: ogaworld.in</span>
         </div>
       </footer>
 
@@ -887,17 +880,17 @@ export function App() {
       {!showAiAssistant && (
         <button
           onClick={() => setShowAiAssistant(true)}
-          className="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-full bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-800 text-slate-950 font-bold shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center space-x-2.5 border-2 border-amber-300 group no-print"
+          className="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-full bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center space-x-2.5 border border-blue-600 group no-print"
           title="Swarna AI ERP Copilot (Ctrl+Space)"
         >
           <span className="relative flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-400"></span>
           </span>
-          <Sparkles className="w-5 h-5 text-slate-950 group-hover:rotate-12 transition-transform" />
+          <Sparkles className="w-5 h-5 text-white group-hover:rotate-12 transition-transform" />
           <div className="text-left hidden sm:block">
-            <span className="text-xs font-bold tracking-wider block leading-tight">AI Copilot</span>
-            <span className="text-[9px] font-mono text-slate-900/80 font-normal leading-tight">Ctrl+Space</span>
+            <span className="text-xs font-bold tracking-wider block leading-tight text-white">AI Copilot</span>
+            <span className="text-[9px] font-mono text-blue-100 font-normal leading-tight">Ctrl+Space</span>
           </div>
         </button>
       )}

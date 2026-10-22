@@ -144,7 +144,7 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
 
           <button
             onClick={handleSave}
-            className="flex items-center space-x-1 px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow cursor-pointer"
+            className="flex items-center space-x-1 px-4 py-1.5 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs text-xs font-bold shadow cursor-pointer"
           >
             <Save className="w-3.5 h-3.5" />
             <span>Save & Settle</span>
@@ -181,11 +181,11 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
 
       {/* Bill Controls Strip: Tax Invoice vs Estimate & Salesman Name */}
       <div className={`border rounded-xl p-4 shadow-sm grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-sky-200/80 text-slate-800'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         {/* Bill Type Mode Selection */}
         <div>
-          <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+          <label className={`block text-[11px] font-bold mb-1 ${'text-slate-700'}`}>
             Invoice Mode <span className="text-rose-500">*</span>
           </label>
           <div className="grid grid-cols-2 gap-2">
@@ -197,9 +197,7 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
                   ? isDark
                     ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-2xs'
                     : 'bg-emerald-50 border-emerald-400 text-emerald-800 shadow-2xs'
-                  : isDark
-                  ? 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10'
-                  : 'bg-slate-50 border-slate-200 text-slate-600'
+                  : 'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             >
               Tax Invoice (3% GST)
@@ -212,9 +210,7 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
                   ? isDark
                     ? 'bg-amber-400/20 border-amber-400 text-amber-300 shadow-2xs'
                     : 'bg-amber-50 border-amber-400 text-amber-800 shadow-2xs'
-                  : isDark
-                  ? 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10'
-                  : 'bg-slate-50 border-slate-200 text-slate-600'
+                  : 'bg-white border-slate-300 text-slate-900 font-medium'
               }`}
             >
               Estimate / Quotation
@@ -224,7 +220,7 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
 
         {/* Salesman Name */}
         <div>
-          <label className={`block text-[11px] font-bold mb-1 flex items-center space-x-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+          <label className={`block text-[11px] font-bold mb-1 flex items-center space-x-1 ${'text-slate-700'}`}>
             <User className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
             <span>Salesman Name <span className="text-rose-500">*</span></span>
           </label>
@@ -232,7 +228,7 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
             value={salesmanName}
             onChange={(e) => setSalesmanName(e.target.value)}
             className={`w-full px-2.5 py-1.5 rounded-lg font-bold border outline-hidden ${
-              isDark ? 'bg-[#0f172a] border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           >
             <option value="Pooja Sharma (EMP-204)">Pooja Sharma (EMP-204)</option>
@@ -245,26 +241,26 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
 
         {/* Customer Name */}
         <div>
-          <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Customer Name</label>
+          <label className={`block text-[11px] font-bold mb-1 ${'text-slate-700'}`}>Customer Name</label>
           <input
             type="text"
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
             className={`w-full px-2.5 py-1.5 rounded-lg font-semibold border outline-hidden ${
-              isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           />
         </div>
 
         {/* Phone */}
         <div>
-          <label className={`block text-[11px] font-bold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Mobile No</label>
+          <label className={`block text-[11px] font-bold mb-1 ${'text-slate-700'}`}>Mobile No</label>
           <input
             type="text"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className={`w-full px-2.5 py-1.5 rounded-lg font-mono border outline-hidden ${
-              isDark ? 'bg-white/5 border-white/15 text-white' : 'bg-slate-50 border-slate-300 text-slate-900'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}
           />
         </div>
@@ -274,7 +270,7 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
       <div className={`border rounded-xl p-3 flex items-center justify-between gap-3 text-xs transition-all ${
         isDark
           ? 'bg-white/5 border-white/10 text-white'
-          : 'bg-gradient-to-r from-blue-50 to-sky-50 border border-sky-200 text-slate-900'
+          : 'bg-gradient-to-r from-blue-50 to-sky-50 border border-slate-300 text-slate-900'
       }`}>
         <form onSubmit={handleScanBarcode} className="flex items-center space-x-2 flex-1">
           <Barcode className={`w-5 h-5 ${isDark ? 'text-amber-400' : 'text-blue-600'}`} />
@@ -294,25 +290,25 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
             className={`px-3 py-1.5 font-bold rounded-lg cursor-pointer transition-all ${
               isDark
                 ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-bold hover:from-amber-500 hover:to-yellow-600'
-                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                : 'bg-blue-700 hover:bg-blue-800 text-white font-semibold shadow-xs'
             }`}
           >
             Add
           </button>
         </form>
-        <span className={`text-[11px] hidden sm:inline font-mono ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+        <span className={`text-[11px] hidden sm:inline font-mono ${'text-slate-500'}`}>
           Gold 22K 916: ₹{goldRate.toLocaleString('en-IN')}/g
         </span>
       </div>
 
       {/* Items Table */}
       <div className={`border rounded-xl p-4 shadow-sm space-y-3 transition-all ${
-        isDark ? 'bg-[#0f172a]/90 border-white/10 text-white' : 'bg-white border-slate-200'
+        'bg-white border-slate-300 text-slate-800 shadow-xs'
       }`}>
         <div className={`overflow-x-auto border rounded-lg ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
           <table className="w-full text-left text-xs border-collapse">
             <thead className={`font-bold border-b ${
-              isDark ? 'bg-white/10 text-slate-200 border-white/10' : 'bg-slate-50 text-slate-700 border-slate-200'
+              'bg-white border-slate-300 text-slate-900 font-medium'
             }`}>
               <tr>
                 <th className={`p-2.5 border-r w-10 text-center ${isDark ? 'border-white/10' : 'border-slate-200'}`}>#</th>
@@ -385,7 +381,7 @@ export const SalesInvoiceView: React.FC<SalesInvoiceViewProps> = ({ onClose, gol
 
         {/* Tendered Payments */}
         <div className={`p-4 rounded-xl space-y-2 border transition-all ${
-          isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-sky-50/70 border-sky-200'
+          isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-sky-50/70 border-slate-300'
         }`}>
           <span className={`font-bold font-sans block ${isDark ? 'text-slate-200' : 'text-blue-900'}`}>Customer Tender</span>
           <div className="grid grid-cols-2 gap-2">

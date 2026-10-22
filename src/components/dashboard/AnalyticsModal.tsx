@@ -67,7 +67,7 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
         }`}
       >
         {/* Modal Top Header */}
-        <div className="px-6 py-4 bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-700 text-white flex items-center justify-between shadow-md shrink-0">
+        <div className="px-6 py-4 bg-blue-700 text-white flex items-center justify-between shadow-md shrink-0">
           <div className="flex items-center space-x-3">
             <div className="p-2.5 rounded-2xl bg-white/20 backdrop-blur-xs">
               <BarChart3 className="w-6 h-6 text-amber-300" />
@@ -119,13 +119,13 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
             <div className={`p-4 rounded-2xl border ${
               isDark ? 'bg-slate-900/90 border-sky-500/40 text-white' : 'bg-sky-50 border-sky-300 text-slate-950 shadow-xs'
             }`}>
-              <div className="text-slate-600 dark:text-slate-300 font-semibold text-[11px] uppercase tracking-wider">
+              <div className="text-slate-600 text-slate-700 font-semibold text-[11px] uppercase tracking-wider">
                 Total Sales Revenue ({selectedPeriod})
               </div>
-              <div className="text-xl font-bold font-mono text-slate-950 dark:text-sky-300 mt-1.5">
+              <div className="text-xl font-bold font-mono text-slate-950 text-blue-800 mt-1.5">
                 {formatCurrency(currentSold.revenue)}
               </div>
-              <div className="text-[10.5px] text-emerald-800 dark:text-emerald-400 font-semibold mt-1 flex items-center">
+              <div className="text-[10.5px] text-emerald-800 text-emerald-700 font-semibold mt-1 flex items-center">
                 <TrendingUp className="w-3.5 h-3.5 mr-1 inline shrink-0" />
                 <span>+18.4% growth vs previous {selectedPeriod.toLowerCase()}</span>
               </div>
@@ -134,10 +134,10 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
             <div className={`p-4 rounded-2xl border ${
               isDark ? 'bg-slate-900/90 border-amber-500/40 text-white' : 'bg-amber-50 border-amber-300 text-slate-950 shadow-xs'
             }`}>
-              <div className="text-slate-600 dark:text-slate-300 font-semibold text-[11px] uppercase tracking-wider">
+              <div className="text-slate-600 text-slate-700 font-semibold text-[11px] uppercase tracking-wider">
                 Total Gold Sold ({selectedPeriod})
               </div>
-              <div className="text-xl font-bold font-mono text-slate-950 dark:text-amber-300 mt-1.5">
+              <div className="text-xl font-bold font-mono text-slate-950 text-amber-800 mt-1.5">
                 {formatWeight(currentSold.gold_wt)}
               </div>
               <div className="text-[10.5px] text-amber-800 dark:text-amber-400 font-semibold mt-1">
@@ -148,13 +148,13 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
             <div className={`p-4 rounded-2xl border ${
               isDark ? 'bg-slate-900/90 border-slate-500/40 text-white' : 'bg-slate-100 border-slate-300 text-slate-950 shadow-xs'
             }`}>
-              <div className="text-slate-600 dark:text-slate-300 font-semibold text-[11px] uppercase tracking-wider">
+              <div className="text-slate-600 text-slate-700 font-semibold text-[11px] uppercase tracking-wider">
                 Total Silver Sold ({selectedPeriod})
               </div>
-              <div className="text-xl font-bold font-mono text-slate-950 dark:text-white mt-1.5">
+              <div className="text-xl font-bold font-mono text-slate-950 text-slate-900 mt-1.5">
                 {formatWeight(currentSold.silver_wt)}
               </div>
-              <div className="text-[10.5px] text-slate-600 dark:text-slate-400 font-semibold mt-1">
+              <div className="text-[10.5px] text-slate-600 text-slate-600 font-semibold mt-1">
                 Avg rate: ₹86.50/g
               </div>
             </div>
@@ -162,10 +162,10 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
             <div className={`p-4 rounded-2xl border ${
               isDark ? 'bg-slate-900/90 border-rose-500/40 text-white' : 'bg-rose-50 border-rose-300 text-slate-950 shadow-xs'
             }`}>
-              <div className="text-slate-600 dark:text-slate-300 font-semibold text-[11px] uppercase tracking-wider">
+              <div className="text-slate-600 text-slate-700 font-semibold text-[11px] uppercase tracking-wider">
                 1gm Imitation Sold
               </div>
-              <div className="text-xl font-bold font-mono text-slate-950 dark:text-rose-300 mt-1.5">
+              <div className="text-xl font-bold font-mono text-slate-950 text-rose-800 mt-1.5">
                 {currentSold.imitation_qty} Pcs
               </div>
               <div className="text-[10.5px] text-rose-800 dark:text-rose-400 font-semibold mt-1">
@@ -178,46 +178,46 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
           <div className={`border rounded-2xl p-4 sm:p-5 shadow-sm space-y-3.5 ${
             isDark ? 'bg-slate-900/90 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
           }`}>
-            <div className="flex justify-between items-center border-b border-black/10 dark:border-white/10 pb-2.5">
+            <div className="flex justify-between items-center border-b border-black/10  pb-2.5">
               <div className="flex items-center space-x-2">
                 <Flame className="w-4 h-4 text-amber-500" />
-                <h3 className="font-bold text-xs uppercase tracking-wider text-slate-950 dark:text-white">
+                <h3 className="font-bold text-xs uppercase tracking-wider text-slate-950 text-slate-900">
                   Most Demanded & Ornament-Wise Top Sold
                 </h3>
               </div>
-              <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">
+              <span className="text-[11px] font-semibold text-slate-600 text-slate-600">
                 Ranked by Customer Inquiries & Counter Volume
               </span>
             </div>
 
-            <div className="overflow-x-auto border border-slate-300 dark:border-white/15 rounded-xl overflow-hidden">
+            <div className="overflow-x-auto border border-slate-300  rounded-xl overflow-hidden">
               <table className="w-full text-left text-xs border-collapse">
                 <thead className={`font-bold border-b select-none ${
                   isDark ? 'bg-white/10 border-white/15 text-white' : 'bg-slate-100 border-slate-300 text-slate-950'
                 }`}>
                   <tr>
-                    <th className="p-3 border-r border-slate-200 dark:border-white/10">Ornament Name</th>
-                    <th className="p-3 border-r border-slate-200 dark:border-white/10">Category</th>
-                    <th className="p-3 border-r border-slate-200 dark:border-white/10 text-center">Customer Inquiries</th>
-                    <th className="p-3 border-r border-slate-200 dark:border-white/10 text-center">Units Sold</th>
-                    <th className="p-3 border-r border-slate-200 dark:border-white/10">Demand Meter</th>
+                    <th className="p-3 border-r border-slate-200 ">Ornament Name</th>
+                    <th className="p-3 border-r border-slate-200 ">Category</th>
+                    <th className="p-3 border-r border-slate-200  text-center">Customer Inquiries</th>
+                    <th className="p-3 border-r border-slate-200  text-center">Units Sold</th>
+                    <th className="p-3 border-r border-slate-200 ">Demand Meter</th>
                     <th className="p-3 text-right">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-white/10">
+                <tbody className="divide-y divide-slate-200 ">
                   {mostDemanded.map((it, idx) => {
                     const demandScore = Math.round((it.inquiries / 64) * 100);
                     return (
                       <tr key={idx} className={isDark ? 'hover:bg-white/5' : 'hover:bg-slate-50'}>
-                        <td className="p-3 border-r border-slate-200 dark:border-white/10 font-semibold text-slate-950 dark:text-white">{it.name}</td>
-                        <td className="p-3 border-r border-slate-200 dark:border-white/10">
-                          <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-950 dark:bg-blue-950/70 dark:text-blue-300 border border-blue-300 dark:border-blue-500/40 font-semibold text-[10.5px]">
+                        <td className="p-3 border-r border-slate-200  font-semibold text-slate-950 text-slate-900">{it.name}</td>
+                        <td className="p-3 border-r border-slate-200 ">
+                          <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-950  text-blue-700 border border-blue-300  font-semibold text-[10.5px]">
                             {it.category}
                           </span>
                         </td>
-                        <td className="p-3 border-r border-slate-200 dark:border-white/10 text-center font-mono font-bold text-blue-800 dark:text-blue-300">{it.inquiries}</td>
-                        <td className="p-3 border-r border-slate-200 dark:border-white/10 text-center font-mono font-bold text-emerald-800 dark:text-emerald-300">{it.sold}</td>
-                        <td className="p-3 border-r border-slate-200 dark:border-white/10 w-48">
+                        <td className="p-3 border-r border-slate-200  text-center font-mono font-bold text-blue-800 text-blue-700">{it.inquiries}</td>
+                        <td className="p-3 border-r border-slate-200  text-center font-mono font-bold text-emerald-800 text-emerald-700">{it.sold}</td>
+                        <td className="p-3 border-r border-slate-200  w-48">
                           <div className="w-full bg-slate-200 dark:bg-white/15 rounded-full h-2.5 overflow-hidden">
                             <div
                               className="bg-gradient-to-r from-amber-500 to-rose-500 h-2.5 rounded-full"
@@ -228,8 +228,8 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
                         <td className="p-3 text-right font-medium">
                           <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-semibold border ${
                             it.stock_status.includes('Low Stock') || it.stock_status.includes('Restock')
-                              ? 'bg-rose-100 text-rose-950 dark:bg-rose-950/70 dark:text-rose-300 border-rose-300 dark:border-rose-500/40'
-                              : 'bg-emerald-100 text-emerald-950 dark:bg-emerald-950/70 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40'
+                              ? 'bg-rose-100 text-rose-950  text-rose-800 border-rose-300 '
+                              : 'bg-emerald-100 text-emerald-950  text-emerald-700 border-emerald-300 '
                           }`}>
                             {it.stock_status}
                           </span>
@@ -248,9 +248,9 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
             <div className={`border rounded-2xl p-4 sm:p-5 shadow-sm space-y-3.5 ${
               isDark ? 'bg-slate-900/90 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
             }`}>
-              <div className="flex items-center space-x-2 border-b border-black/10 dark:border-white/10 pb-2.5">
+              <div className="flex items-center space-x-2 border-b border-black/10  pb-2.5">
                 <Truck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <h3 className="font-bold text-xs uppercase tracking-wider text-slate-950 dark:text-white">
+                <h3 className="font-bold text-xs uppercase tracking-wider text-slate-950 text-slate-900">
                   Top Bullion & Ornament Suppliers
                 </h3>
               </div>
@@ -260,12 +260,12 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
                     isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-300'
                   }`}>
                     <div>
-                      <div className="font-semibold text-xs text-slate-950 dark:text-white">{sup.name}</div>
-                      <div className="text-[10.5px] font-medium text-slate-600 dark:text-slate-400 mt-0.5">{sup.location} • {sup.orders} Lots Inwarded</div>
+                      <div className="font-semibold text-xs text-slate-950 text-slate-900">{sup.name}</div>
+                      <div className="text-[10.5px] font-medium text-slate-600 text-slate-600 mt-0.5">{sup.location} • {sup.orders} Lots Inwarded</div>
                     </div>
                     <div className="text-right font-mono">
-                      <div className="font-bold text-slate-950 dark:text-white text-xs">{formatWeight(sup.total_wt)}</div>
-                      <div className="text-[10.5px] text-emerald-800 dark:text-emerald-400 font-semibold">★ {sup.rating} Rating</div>
+                      <div className="font-bold text-slate-950 text-slate-900 text-xs">{formatWeight(sup.total_wt)}</div>
+                      <div className="text-[10.5px] text-emerald-800 text-emerald-700 font-semibold">★ {sup.rating} Rating</div>
                     </div>
                   </div>
                 ))}
@@ -276,9 +276,9 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
             <div className={`border rounded-2xl p-4 sm:p-5 shadow-sm space-y-3.5 ${
               isDark ? 'bg-slate-900/90 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
             }`}>
-              <div className="flex items-center space-x-2 border-b border-black/10 dark:border-white/10 pb-2.5">
+              <div className="flex items-center space-x-2 border-b border-black/10  pb-2.5">
                 <Hammer className="w-4 h-4 text-amber-500" />
-                <h3 className="font-bold text-xs uppercase tracking-wider text-slate-950 dark:text-white">
+                <h3 className="font-bold text-xs uppercase tracking-wider text-slate-950 text-slate-900">
                   Top Job Workers (Karagir Efficiency)
                 </h3>
               </div>
@@ -288,12 +288,12 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
                     isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-300'
                   }`}>
                     <div>
-                      <div className="font-semibold text-xs text-slate-950 dark:text-white">{kg.name}</div>
-                      <div className="text-[10.5px] font-medium text-slate-600 dark:text-slate-400 mt-0.5">{kg.specialty} • {kg.jobs} Orders Completed</div>
+                      <div className="font-semibold text-xs text-slate-950 text-slate-900">{kg.name}</div>
+                      <div className="text-[10.5px] font-medium text-slate-600 text-slate-600 mt-0.5">{kg.specialty} • {kg.jobs} Orders Completed</div>
                     </div>
                     <div className="text-right font-mono">
-                      <div className="text-xs font-bold text-slate-950 dark:text-white">{kg.on_time}% On-Time</div>
-                      <div className="text-[10.5px] text-emerald-800 dark:text-emerald-400 font-semibold">Loss: {kg.loss_pct}% (A+ Grade)</div>
+                      <div className="text-xs font-bold text-slate-950 text-slate-900">{kg.on_time}% On-Time</div>
+                      <div className="text-[10.5px] text-emerald-800 text-emerald-700 font-semibold">Loss: {kg.loss_pct}% (A+ Grade)</div>
                     </div>
                   </div>
                 ))}
@@ -306,7 +306,7 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
         <div className={`p-4 border-t flex justify-between items-center text-xs shrink-0 ${
           isDark ? 'bg-[#070b14] border-white/10 text-slate-300' : 'bg-slate-50 border-slate-300 text-slate-700'
         }`}>
-          <div className="font-medium text-slate-700 dark:text-slate-300">
+          <div className="font-medium text-slate-700 text-slate-700">
             Export full reporting from <strong>Reports ➔ MIS Reports</strong> menu.
           </div>
           <button
