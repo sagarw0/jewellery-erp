@@ -215,15 +215,15 @@ export function computeThemeTokens(
   _cornerRadius?: CardCornerRadius,
   _shadowDepth?: ShadowGlowDepth
 ): ThemeTokens {
-  const isDarkTheme = bgBaseHex === '#171C1F';
+  const isDarkTheme = bgBaseHex === '#14171A' || bgBaseHex === '#171C1F';
 
   if (isDarkTheme) {
     return {
-      appBg: '#171C1F',
+      appBg: '#14171A',
       appBgGradient: 'none',
-      appSurface: '#292F32',
-      appSurfaceGlass: '#292F32',
-      appHeaderBg: '#202629',
+      appSurface: '#22272C',
+      appSurfaceGlass: '#22272C',
+      appHeaderBg: '#1A1F24',
       appPrimary: '#55D6C2',
       appPrimaryHover: '#70E1D2',
       appPrimaryText: '#142321',
@@ -232,15 +232,15 @@ export function computeThemeTokens(
       appAccentBg: 'rgba(85, 214, 194, 0.15)',
       appTextPrimary: '#F8FAFC',
       appTextSecondary: '#CBD5E1',
-      appTextMuted: '#AAB6BE',
-      appBorder: '#414B4F',
-      appCardBorder: '#414B4F',
-      appCardShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.35)',
-      appInputBg: '#202629',
-      appInputBorder: '#414B4F',
-      appTableHeaderBg: '#202629',
+      appTextMuted: '#94A3B8',
+      appBorder: '#2E363D',
+      appCardBorder: '#2E363D',
+      appCardShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.45)',
+      appInputBg: '#1A1F24',
+      appInputBorder: '#2E363D',
+      appTableHeaderBg: '#1A1F24',
       appBlur: '0px',
-      appRadius: '0.5rem',
+      appRadius: '0.75rem',
       isDark: true,
     };
   }

@@ -410,7 +410,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             onClick={handleOpenAdd}
             className={`px-4 py-2 rounded-xl font-bold text-xs shadow-md flex items-center space-x-2 transition-all cursor-pointer active:scale-95 ${
               isDark
-                ? 'bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-slate-950 font-bold'
+                ? 'bg-[#55D6C2] hover:bg-[#70E1D2] text-[#142321] font-bold shadow-sm'
                 : 'bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white'
             }`}
           >
@@ -756,15 +756,19 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
 
             {/* Modal Tabs */}
             <div className={`flex border-b px-5 pt-2 space-x-4 text-xs font-bold overflow-x-auto shrink-0 ${
-              isDark ? 'border-white/10 bg-[#0b1120]' : 'border-slate-200 bg-slate-100/60'
+              isDark ? 'border-[#2E363D] bg-[#1A1F24]' : 'border-slate-200 bg-slate-100/60'
             }`}>
               <button
                 type="button"
                 onClick={() => setActiveFormTab('basic')}
                 className={`pb-2.5 px-2 border-b-2 transition-all cursor-pointer flex items-center space-x-1.5 ${
                   activeFormTab === 'basic'
-                    ? 'border-blue-600 text-blue-600 text-amber-700 '
-                    : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                    ? isDark
+                      ? 'border-[#55D6C2] text-[#55D6C2]'
+                      : 'border-blue-600 text-blue-600 font-bold'
+                    : isDark
+                    ? 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
                 <Building2 className="w-3.5 h-3.5" />
@@ -775,8 +779,12 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 onClick={() => setActiveFormTab('gst')}
                 className={`pb-2.5 px-2 border-b-2 transition-all cursor-pointer flex items-center space-x-1.5 ${
                   activeFormTab === 'gst'
-                    ? 'border-blue-600 text-blue-600 text-amber-700 '
-                    : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                    ? isDark
+                      ? 'border-[#55D6C2] text-[#55D6C2]'
+                      : 'border-blue-600 text-blue-600 font-bold'
+                    : isDark
+                    ? 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
                 <MapPin className="w-3.5 h-3.5" />
@@ -787,8 +795,12 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 onClick={() => setActiveFormTab('bank')}
                 className={`pb-2.5 px-2 border-b-2 transition-all cursor-pointer flex items-center space-x-1.5 ${
                   activeFormTab === 'bank'
-                    ? 'border-blue-600 text-blue-600 text-amber-700 '
-                    : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                    ? isDark
+                      ? 'border-[#55D6C2] text-[#55D6C2]'
+                      : 'border-blue-600 text-blue-600 font-bold'
+                    : isDark
+                    ? 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
                 <CreditCard className="w-3.5 h-3.5" />
@@ -799,8 +811,12 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 onClick={() => setActiveFormTab('balance')}
                 className={`pb-2.5 px-2 border-b-2 transition-all cursor-pointer flex items-center space-x-1.5 ${
                   activeFormTab === 'balance'
-                    ? 'border-blue-600 text-blue-600 text-amber-700 '
-                    : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                    ? isDark
+                      ? 'border-[#55D6C2] text-[#55D6C2]'
+                      : 'border-blue-600 text-blue-600 font-bold'
+                    : isDark
+                    ? 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
                 <Scale className="w-3.5 h-3.5" />

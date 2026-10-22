@@ -54,7 +54,7 @@ export const THEME_PRESETS: Record<ThemeId, {
     name: 'Modern Dark',
     subtitle: 'Charcoal, dark slate, teal & turquoise enterprise dark theme',
     isDark: true,
-    bgBaseHex: '#171C1F',
+    bgBaseHex: '#14171A',
     accentHex: '#55D6C2',
     swatchPrimary: '#55D6C2',
     swatchSecondary: '#43B8B5',
@@ -112,28 +112,28 @@ export function buildThemeConfig(presetId: ThemeId, tokens: ThemeTokens): ThemeC
       isDark: true,
       swatchPrimary: '#55D6C2',
       swatchSecondary: '#43B8B5',
-      bgBaseHex: '#171C1F',
-      bgGradient: 'bg-[#171C1F] text-[#F8FAFC]',
-      cardBg: 'bg-[#292F32] border border-[#414B4F] text-[#F8FAFC] shadow-sm',
-      cardBorder: 'border-[#414B4F]',
+      bgBaseHex: '#14171A',
+      bgGradient: 'bg-[#14171A] text-[#F8FAFC]',
+      cardBg: 'bg-[#22272C] border border-[#2E363D] text-[#F8FAFC] shadow-md',
+      cardBorder: 'border-[#2E363D]',
       cardHover: 'hover:border-[#55D6C2] transition-colors',
       primaryBtn: 'bg-[#55D6C2] hover:bg-[#70E1D2] text-[#142321] font-semibold shadow-xs active:scale-[0.99] transition-all',
-      secondaryBtn: 'bg-[#202629] hover:bg-[#323A3D] text-[#CBD5E1] border border-[#414B4F] font-medium transition-all',
+      secondaryBtn: 'bg-[#1A1F24] hover:bg-[#2A3138] text-[#CBD5E1] border border-[#2E363D] font-medium transition-all',
       accentText: 'text-[#55D6C2] font-bold',
       badgeBg: 'bg-[#55D6C2]/15 text-[#55D6C2] border border-[#55D6C2]/30 font-medium',
-      headerBg: 'bg-[#202629] border-b border-[#414B4F] text-[#F8FAFC]',
-      appBg: '#171C1F',
+      headerBg: 'bg-[#1A1F24] border-b border-[#2E363D] text-[#F8FAFC]',
+      appBg: '#14171A',
       textPrimary: 'text-[#F8FAFC]',
       textSecondary: 'text-[#CBD5E1]',
-      textMuted: 'text-[#AAB6BE]',
-      subnavBg: 'bg-[#202629] border-b border-[#414B4F] text-[#CBD5E1]',
+      textMuted: 'text-[#94A3B8]',
+      subnavBg: 'bg-[#1A1F24] border-b border-[#2E363D] text-[#CBD5E1]',
       activePill: 'bg-[#55D6C2] text-[#142321] font-semibold shadow-xs',
-      inputBorder: 'border-[#414B4F] focus:border-[#55D6C2] focus:ring-1 focus:ring-[#55D6C2]',
-      inputBg: 'bg-[#202629] text-[#F8FAFC] placeholder-[#AAB6BE]',
-      tableHeaderBg: 'bg-[#202629] text-[#CBD5E1] font-semibold border-b border-[#414B4F]',
-      tableRowHover: 'hover:bg-[#323A3D]/50',
-      glassCard: 'bg-[#292F32] border border-[#414B4F] text-[#F8FAFC] shadow-sm',
-      glassBorder: 'border-[#414B4F]',
+      inputBorder: 'border-[#2E363D] focus:border-[#55D6C2] focus:ring-1 focus:ring-[#55D6C2]',
+      inputBg: 'bg-[#1A1F24] text-[#F8FAFC] placeholder-[#8B97A2]',
+      tableHeaderBg: 'bg-[#1A1F24] text-[#CBD5E1] font-semibold border-b border-[#2E363D]',
+      tableRowHover: 'hover:bg-[#2A3138]',
+      glassCard: 'bg-[#22272C] border border-[#2E363D] text-[#F8FAFC] shadow-md',
+      glassBorder: 'border-[#2E363D]',
     };
   }
 
@@ -556,7 +556,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     >
       <div
         className={`density-${density} min-h-screen ${
-          isDark ? 'bg-[#171C1F] text-[#F8FAFC]' : 'bg-[#F8FAFC] text-[#1E293B]'
+          isDark ? 'bg-[#14171A] text-[#F8FAFC]' : 'bg-[#F8FAFC] text-[#1E293B]'
         } antialiased transition-colors duration-150`}
       >
         {children}
