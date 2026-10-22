@@ -41,18 +41,28 @@ export const THEME_PRESETS: Record<ThemeId, {
 }> = {
   'apple-glass': {
     id: 'apple-glass',
-    name: 'Enterprise Clean Light',
-    subtitle: 'Standardized enterprise design system with #1D4ED8 brand and solid #FFFFFF cards',
+    name: 'Existing Theme',
+    subtitle: 'Standardized enterprise design system with solid white surfaces',
     isDark: false,
     bgBaseHex: '#F8FAFC',
     accentHex: '#1D4ED8',
     swatchPrimary: '#1D4ED8',
     swatchSecondary: '#3B82F6',
   },
+  'modern-dark': {
+    id: 'modern-dark',
+    name: 'Modern Dark',
+    subtitle: 'Charcoal, dark slate, teal & turquoise enterprise dark theme',
+    isDark: true,
+    bgBaseHex: '#171C1F',
+    accentHex: '#55D6C2',
+    swatchPrimary: '#55D6C2',
+    swatchSecondary: '#43B8B5',
+  },
   'royal-gold': {
     id: 'royal-gold',
-    name: 'Enterprise Clean Light',
-    subtitle: 'Standardized enterprise design system with #1D4ED8 brand and solid #FFFFFF cards',
+    name: 'Existing Theme',
+    subtitle: 'Standardized enterprise design system with solid white surfaces',
     isDark: false,
     bgBaseHex: '#F8FAFC',
     accentHex: '#1D4ED8',
@@ -61,8 +71,8 @@ export const THEME_PRESETS: Record<ThemeId, {
   },
   'sapphire-glass': {
     id: 'sapphire-glass',
-    name: 'Enterprise Clean Light',
-    subtitle: 'Standardized enterprise design system with #1D4ED8 brand and solid #FFFFFF cards',
+    name: 'Existing Theme',
+    subtitle: 'Standardized enterprise design system with solid white surfaces',
     isDark: false,
     bgBaseHex: '#F8FAFC',
     accentHex: '#1D4ED8',
@@ -71,8 +81,8 @@ export const THEME_PRESETS: Record<ThemeId, {
   },
   'obsidian-velvet': {
     id: 'obsidian-velvet',
-    name: 'Enterprise Clean Light',
-    subtitle: 'Standardized enterprise design system with #1D4ED8 brand and solid #FFFFFF cards',
+    name: 'Existing Theme',
+    subtitle: 'Standardized enterprise design system with solid white surfaces',
     isDark: false,
     bgBaseHex: '#F8FAFC',
     accentHex: '#1D4ED8',
@@ -81,8 +91,8 @@ export const THEME_PRESETS: Record<ThemeId, {
   },
   'custom': {
     id: 'custom',
-    name: 'Enterprise Clean Light',
-    subtitle: 'Standardized enterprise design system with #1D4ED8 brand and solid #FFFFFF cards',
+    name: 'Existing Theme',
+    subtitle: 'Standardized enterprise design system with solid white surfaces',
     isDark: false,
     bgBaseHex: '#F8FAFC',
     accentHex: '#1D4ED8',
@@ -94,6 +104,40 @@ export const THEME_PRESETS: Record<ThemeId, {
 export function buildThemeConfig(presetId: ThemeId, tokens: ThemeTokens): ThemeConfig {
   const preset = THEME_PRESETS[presetId] || THEME_PRESETS['apple-glass'];
 
+  if (tokens.isDark || presetId === 'modern-dark') {
+    return {
+      id: presetId,
+      name: 'Modern Dark',
+      subtitle: 'Charcoal, dark slate, teal & turquoise enterprise dark theme',
+      isDark: true,
+      swatchPrimary: '#55D6C2',
+      swatchSecondary: '#43B8B5',
+      bgBaseHex: '#171C1F',
+      bgGradient: 'bg-[#171C1F] text-[#F8FAFC]',
+      cardBg: 'bg-[#292F32] border border-[#414B4F] text-[#F8FAFC] shadow-sm',
+      cardBorder: 'border-[#414B4F]',
+      cardHover: 'hover:border-[#55D6C2] transition-colors',
+      primaryBtn: 'bg-[#55D6C2] hover:bg-[#70E1D2] text-[#142321] font-semibold shadow-xs active:scale-[0.99] transition-all',
+      secondaryBtn: 'bg-[#202629] hover:bg-[#323A3D] text-[#CBD5E1] border border-[#414B4F] font-medium transition-all',
+      accentText: 'text-[#55D6C2] font-bold',
+      badgeBg: 'bg-[#55D6C2]/15 text-[#55D6C2] border border-[#55D6C2]/30 font-medium',
+      headerBg: 'bg-[#202629] border-b border-[#414B4F] text-[#F8FAFC]',
+      appBg: '#171C1F',
+      textPrimary: 'text-[#F8FAFC]',
+      textSecondary: 'text-[#CBD5E1]',
+      textMuted: 'text-[#AAB6BE]',
+      subnavBg: 'bg-[#202629] border-b border-[#414B4F] text-[#CBD5E1]',
+      activePill: 'bg-[#55D6C2] text-[#142321] font-semibold shadow-xs',
+      inputBorder: 'border-[#414B4F] focus:border-[#55D6C2] focus:ring-1 focus:ring-[#55D6C2]',
+      inputBg: 'bg-[#202629] text-[#F8FAFC] placeholder-[#AAB6BE]',
+      tableHeaderBg: 'bg-[#202629] text-[#CBD5E1] font-semibold border-b border-[#414B4F]',
+      tableRowHover: 'hover:bg-[#323A3D]/50',
+      glassCard: 'bg-[#292F32] border border-[#414B4F] text-[#F8FAFC] shadow-sm',
+      glassBorder: 'border-[#414B4F]',
+    };
+  }
+
+  // Existing Theme - 100% preserved
   return {
     id: presetId,
     name: preset.name,
@@ -138,6 +182,9 @@ interface ThemeContextType {
   customConfig: CustomThemeConfig;
   computedTokens: ThemeTokens;
   isDark: boolean;
+  themeMode: 'existing' | 'modern-dark';
+  setThemeMode: (mode: 'existing' | 'modern-dark') => void;
+  toggleTheme: () => void;
   density: UiDensity;
   isCustomizerOpen: boolean;
   customizerTab: CustomizerTab;
@@ -183,6 +230,9 @@ const ThemeContext = createContext<ThemeContextType>({
   customConfig: DEFAULT_CUSTOM_CONFIG,
   computedTokens: computeThemeTokens('#F8FAFC', '#1D4ED8', 0),
   isDark: false,
+  themeMode: 'existing',
+  setThemeMode: () => {},
+  toggleTheme: () => {},
   density: 'comfortable',
   isCustomizerOpen: false,
   customizerTab: 'presets',
@@ -452,6 +502,21 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     resetCardTypography();
   };
 
+  const themeMode: 'existing' | 'modern-dark' =
+    customConfig.presetId === 'modern-dark' || isDark ? 'modern-dark' : 'existing';
+
+  const setThemeMode = (mode: 'existing' | 'modern-dark') => {
+    if (mode === 'modern-dark') {
+      applyPreset('modern-dark');
+    } else {
+      applyPreset('apple-glass');
+    }
+  };
+
+  const toggleTheme = () => {
+    setThemeMode(themeMode === 'existing' ? 'modern-dark' : 'existing');
+  };
+
   return (
     <ThemeContext.Provider
       value={{
@@ -459,6 +524,9 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         customConfig,
         computedTokens,
         isDark,
+        themeMode,
+        setThemeMode,
+        toggleTheme,
         density,
         isCustomizerOpen,
         customizerTab,
@@ -487,7 +555,9 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       }}
     >
       <div
-        className={`density-${density} min-h-screen bg-[#F8FAFC] text-[#1E293B] antialiased`}
+        className={`density-${density} min-h-screen ${
+          isDark ? 'bg-[#171C1F] text-[#F8FAFC]' : 'bg-[#F8FAFC] text-[#1E293B]'
+        } antialiased transition-colors duration-150`}
       >
         {children}
       </div>

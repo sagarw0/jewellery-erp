@@ -102,6 +102,274 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.20) !important;
 }
 
+/* ==========================================================================
+   MODERN DARK THEME — SCOPED STYLES & TOKENS
+   Active ONLY when [data-theme="modern-dark"] or .theme-modern-dark is set.
+   Existing Theme is 100% untouched and preserved.
+   ========================================================================== */
+
+[data-theme="modern-dark"],
+.theme-modern-dark {
+  color-scheme: dark;
+  --color-bg: #171C1F;
+  --color-bg-secondary: #202629;
+  --color-surface: #292F32;
+  --color-surface-glass: #292F32;
+  --color-surface-elevated: #323A3D;
+  --color-header-bg: #202629;
+  --color-primary: #55D6C2;
+  --color-primary-hover: #70E1D2;
+  --color-primary-text: #142321;
+  --color-accent: #55D6C2;
+  --color-accent-bg: rgba(85, 214, 194, 0.15);
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted: #AAB6BE;
+  --color-border: #414B4F;
+  --color-card-border: #414B4F;
+  --color-card-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.35);
+  --color-input-bg: #202629;
+  --color-input-border: #414B4F;
+  --color-table-header-bg: #202629;
+  --color-status-success: #6FE0B5;
+  --color-status-warning: #F4B183;
+  --color-status-error: #FF8585;
+}
+
+/* Modern Dark - Surfaces & Backgrounds */
+[data-theme="modern-dark"] body,
+.theme-modern-dark body {
+  background-color: #171C1F !important;
+  color: #F8FAFC !important;
+}
+
+[data-theme="modern-dark"] .bg-white,
+.theme-modern-dark .bg-white {
+  background-color: #292F32 !important;
+  color: #F8FAFC;
+}
+
+[data-theme="modern-dark"] .bg-slate-50,
+.theme-modern-dark .bg-slate-50,
+[data-theme="modern-dark"] .bg-slate-100,
+.theme-modern-dark .bg-slate-100 {
+  background-color: #202629 !important;
+}
+
+[data-theme="modern-dark"] .bg-slate-200,
+.theme-modern-dark .bg-slate-200 {
+  background-color: #323A3D !important;
+}
+
+/* Modern Dark - Borders */
+[data-theme="modern-dark"] .border-slate-100,
+.theme-modern-dark .border-slate-100,
+[data-theme="modern-dark"] .border-slate-200,
+.theme-modern-dark .border-slate-200,
+[data-theme="modern-dark"] .border-slate-300,
+.theme-modern-dark .border-slate-300 {
+  border-color: #414B4F !important;
+}
+
+/* Modern Dark - Typography */
+[data-theme="modern-dark"] .text-slate-900,
+.theme-modern-dark .text-slate-900,
+[data-theme="modern-dark"] .text-slate-800,
+.theme-modern-dark .text-slate-800 {
+  color: #F8FAFC !important;
+}
+
+[data-theme="modern-dark"] .text-slate-700,
+.theme-modern-dark .text-slate-700,
+[data-theme="modern-dark"] .text-slate-600,
+.theme-modern-dark .text-slate-600 {
+  color: #CBD5E1 !important;
+}
+
+[data-theme="modern-dark"] .text-slate-500,
+.theme-modern-dark .text-slate-500,
+[data-theme="modern-dark"] .text-slate-400,
+.theme-modern-dark .text-slate-400 {
+  color: #AAB6BE !important;
+}
+
+/* Modern Dark - Primary Brand & Buttons */
+[data-theme="modern-dark"] .bg-blue-700,
+.theme-modern-dark .bg-blue-700 {
+  background-color: #55D6C2 !important;
+  color: #142321 !important;
+}
+
+[data-theme="modern-dark"] .bg-blue-700:hover,
+.theme-modern-dark .bg-blue-700:hover {
+  background-color: #70E1D2 !important;
+}
+
+[data-theme="modern-dark"] .text-blue-700,
+.theme-modern-dark .text-blue-700,
+[data-theme="modern-dark"] .text-blue-600,
+.theme-modern-dark .text-blue-600 {
+  color: #55D6C2 !important;
+}
+
+[data-theme="modern-dark"] .border-blue-700,
+.theme-modern-dark .border-blue-700,
+[data-theme="modern-dark"] .border-blue-600,
+.theme-modern-dark .border-blue-600 {
+  border-color: #55D6C2 !important;
+}
+
+[data-theme="modern-dark"] .bg-blue-50,
+.theme-modern-dark .bg-blue-50,
+[data-theme="modern-dark"] .bg-blue-100,
+.theme-modern-dark .bg-blue-100 {
+  background-color: rgba(85, 214, 194, 0.15) !important;
+  color: #55D6C2 !important;
+}
+
+/* Modern Dark - Semantic Status Accents */
+[data-theme="modern-dark"] .bg-emerald-50,
+.theme-modern-dark .bg-emerald-50,
+[data-theme="modern-dark"] .bg-emerald-100,
+.theme-modern-dark .bg-emerald-100,
+[data-theme="modern-dark"] .bg-green-50,
+.theme-modern-dark .bg-green-50 {
+  background-color: rgba(111, 224, 181, 0.15) !important;
+  color: #6FE0B5 !important;
+  border-color: rgba(111, 224, 181, 0.35) !important;
+}
+
+[data-theme="modern-dark"] .text-emerald-700,
+.theme-modern-dark .text-emerald-700,
+[data-theme="modern-dark"] .text-emerald-600,
+.theme-modern-dark .text-emerald-600,
+[data-theme="modern-dark"] .text-green-600,
+.theme-modern-dark .text-green-600 {
+  color: #6FE0B5 !important;
+}
+
+[data-theme="modern-dark"] .bg-amber-50,
+.theme-modern-dark .bg-amber-50,
+[data-theme="modern-dark"] .bg-amber-100,
+.theme-modern-dark .bg-amber-100 {
+  background-color: rgba(244, 177, 131, 0.15) !important;
+  color: #F4B183 !important;
+  border-color: rgba(244, 177, 131, 0.35) !important;
+}
+
+[data-theme="modern-dark"] .text-amber-700,
+.theme-modern-dark .text-amber-700,
+[data-theme="modern-dark"] .text-amber-800,
+.theme-modern-dark .text-amber-800,
+[data-theme="modern-dark"] .text-amber-600,
+.theme-modern-dark .text-amber-600 {
+  color: #F4B183 !important;
+}
+
+[data-theme="modern-dark"] .bg-rose-50,
+.theme-modern-dark .bg-rose-50,
+[data-theme="modern-dark"] .bg-rose-100,
+.theme-modern-dark .bg-rose-100,
+[data-theme="modern-dark"] .bg-red-50,
+.theme-modern-dark .bg-red-50 {
+  background-color: rgba(255, 133, 133, 0.15) !important;
+  color: #FF8585 !important;
+  border-color: rgba(255, 133, 133, 0.35) !important;
+}
+
+[data-theme="modern-dark"] .text-rose-700,
+.theme-modern-dark .text-rose-700,
+[data-theme="modern-dark"] .text-rose-600,
+.theme-modern-dark .text-rose-600,
+[data-theme="modern-dark"] .text-red-600,
+.theme-modern-dark .text-red-600 {
+  color: #FF8585 !important;
+}
+
+/* Modern Dark - Form Controls */
+[data-theme="modern-dark"] input:not([type="checkbox"]):not([type="radio"]),
+.theme-modern-dark input:not([type="checkbox"]):not([type="radio"]),
+[data-theme="modern-dark"] select,
+.theme-modern-dark select,
+[data-theme="modern-dark"] textarea,
+.theme-modern-dark textarea {
+  background-color: #202629 !important;
+  color: #F8FAFC !important;
+  border-color: #414B4F !important;
+}
+
+[data-theme="modern-dark"] input:focus,
+.theme-modern-dark input:focus,
+[data-theme="modern-dark"] select:focus,
+.theme-modern-dark select:focus,
+[data-theme="modern-dark"] textarea:focus,
+.theme-modern-dark textarea:focus {
+  border-color: #55D6C2 !important;
+  box-shadow: 0 0 0 2px rgba(85, 214, 194, 0.25) !important;
+}
+
+[data-theme="modern-dark"] input::placeholder,
+.theme-modern-dark input::placeholder,
+[data-theme="modern-dark"] textarea::placeholder,
+.theme-modern-dark textarea::placeholder {
+  color: #AAB6BE !important;
+}
+
+[data-theme="modern-dark"] select option,
+.theme-modern-dark select option,
+[data-theme="modern-dark"] option,
+.theme-modern-dark option,
+[data-theme="modern-dark"] optgroup,
+.theme-modern-dark optgroup {
+  background-color: #202629 !important;
+  color: #F8FAFC !important;
+}
+
+[data-theme="modern-dark"] select option:checked,
+.theme-modern-dark select option:checked,
+[data-theme="modern-dark"] option:checked,
+.theme-modern-dark option:checked {
+  background-color: #323A3D !important;
+  color: #55D6C2 !important;
+}
+
+/* Modern Dark - Table Rows & Headers */
+[data-theme="modern-dark"] table thead,
+.theme-modern-dark table thead,
+[data-theme="modern-dark"] table th,
+.theme-modern-dark table th {
+  background-color: #202629 !important;
+  color: #CBD5E1 !important;
+  border-color: #414B4F !important;
+}
+
+[data-theme="modern-dark"] table td,
+.theme-modern-dark table td {
+  border-color: #414B4F !important;
+  color: #F8FAFC;
+}
+
+[data-theme="modern-dark"] table tbody tr:hover,
+.theme-modern-dark table tbody tr:hover {
+  background-color: rgba(50, 58, 61, 0.50) !important;
+}
+
+/* Modern Dark - Scrollbars */
+[data-theme="modern-dark"] ::-webkit-scrollbar-track,
+.theme-modern-dark ::-webkit-scrollbar-track {
+  background: #171C1F !important;
+}
+
+[data-theme="modern-dark"] ::-webkit-scrollbar-thumb,
+.theme-modern-dark ::-webkit-scrollbar-thumb {
+  background: #414B4F !important;
+}
+
+[data-theme="modern-dark"] ::-webkit-scrollbar-thumb:hover,
+.theme-modern-dark ::-webkit-scrollbar-thumb:hover {
+  background: #55D6C2 !important;
+}
+
 /* Printable Jewellery Voucher styles */
 @media print {
   body {

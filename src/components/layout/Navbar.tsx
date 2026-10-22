@@ -37,6 +37,8 @@ import {
   Building,
   UserCog,
   RefreshCw,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { useTheme, THEMES } from '../../context/ThemeContext';
 
@@ -148,6 +150,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     customConfig,
     computedTokens,
     isDark,
+    themeMode,
+    setThemeMode,
     setIsCustomizerOpen,
   } = useTheme();
 
@@ -253,6 +257,36 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="hidden md:inline">Analytics</span>
             <span className="text-[9.5px] bg-blue-900/50 text-white px-1 py-0.2 rounded font-mono">F1</span>
           </button>
+
+          {/* Dual Theme Selector: Existing Theme vs Modern Dark */}
+          <div className="flex items-center rounded-lg border border-slate-300 bg-slate-50 p-0.5 text-xs shadow-xs">
+            <button
+              type="button"
+              onClick={() => setThemeMode('existing')}
+              className={`flex items-center space-x-1 px-2 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+                themeMode === 'existing'
+                  ? 'bg-white text-slate-900 shadow-xs border border-slate-200'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`}
+              title="Switch to Existing Theme (Light Enterprise)"
+            >
+              <Sun className="w-3.5 h-3.5 text-amber-500" />
+              <span className="hidden sm:inline">Existing</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setThemeMode('modern-dark')}
+              className={`flex items-center space-x-1 px-2 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+                themeMode === 'modern-dark'
+                  ? 'bg-[#55D6C2] text-[#142321] shadow-xs font-bold'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`}
+              title="Switch to Modern Dark Theme (Charcoal & Teal)"
+            >
+              <Moon className="w-3.5 h-3.5 text-[#55D6C2]" />
+              <span className="hidden sm:inline">Modern Dark</span>
+            </button>
+          </div>
 
           {/* Dynamic Role Switcher & User Profile */}
           {currentUser && (
@@ -376,7 +410,40 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </div>
                   )}
 
-                  <div className="pt-2 mt-1 border-t border-slate-200 flex justify-between items-center px-1">
+                  {/* Theme Selector inside User Menu */}
+                  <div className="pt-2 mt-2 border-t border-slate-200">
+                    <div className="px-1 mb-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                      Interface Theme:
+                    </div>
+                    <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-50 rounded-lg border border-slate-200">
+                      <button
+                        type="button"
+                        onClick={() => setThemeMode('existing')}
+                        className={`flex items-center justify-center space-x-1.5 py-1.5 px-2 rounded-md text-xs font-semibold cursor-pointer transition-all ${
+                          themeMode === 'existing'
+                            ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-bold'
+                            : 'text-slate-600 hover:text-slate-900'
+                        }`}
+                      >
+                        <Sun className="w-3.5 h-3.5 text-amber-500" />
+                        <span>Existing</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setThemeMode('modern-dark')}
+                        className={`flex items-center justify-center space-x-1.5 py-1.5 px-2 rounded-md text-xs font-semibold cursor-pointer transition-all ${
+                          themeMode === 'modern-dark'
+                            ? 'bg-[#55D6C2] text-[#142321] shadow-xs font-bold'
+                            : 'text-slate-600 hover:text-slate-900'
+                        }`}
+                      >
+                        <Moon className="w-3.5 h-3.5 text-[#55D6C2]" />
+                        <span>Modern Dark</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 mt-2 border-t border-slate-200 flex justify-between items-center px-1">
                     <button
                       onClick={onLogout}
                       className="text-[11px] font-bold text-rose-600 hover:text-rose-800 hover:underline flex items-center space-x-1 cursor-pointer"

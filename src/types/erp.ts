@@ -23,6 +23,7 @@ export type StockSubView = 'stock_report' | 'stock_refill' | 'audit';
 // ----------------------------------------------------
 export type ThemeId =
   | 'apple-glass'
+  | 'modern-dark'
   | 'royal-gold'
   | 'sapphire-glass'
   | 'obsidian-velvet'

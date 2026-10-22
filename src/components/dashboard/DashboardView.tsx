@@ -780,7 +780,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           onClick={() => onQuickAction('day_book')}
           className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[128px] ${
             isDark
-              ? 'bg-[#0f172a]/95 hover:bg-[#0f172a] border-emerald-500/40 hover:border-emerald-400 text-white shadow-md'
+              ? 'bg-[#292F32] hover:bg-[#323A3D] border-[#414B4F] hover:border-[#6FE0B5] text-[#F8FAFC] shadow-sm'
               : 'bg-white hover:bg-slate-50 border-slate-300 hover:border-emerald-500 text-slate-950 shadow-sm'
           }`}
         >
@@ -823,7 +823,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           onClick={() => onQuickAction('day_book')}
           className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[128px] ${
             isDark
-              ? 'bg-[#0f172a]/95 hover:bg-[#0f172a] border-sky-500/40 hover:border-sky-400 text-white shadow-md'
+              ? 'bg-[#292F32] hover:bg-[#323A3D] border-[#414B4F] hover:border-[#55D6C2] text-[#F8FAFC] shadow-sm'
               : 'bg-white hover:bg-slate-50 border-slate-300 hover:border-sky-500 text-slate-950 shadow-sm'
           }`}
         >
@@ -866,7 +866,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           onClick={() => onQuickAction('sales_invoice')}
           className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[128px] ${
             isDark
-              ? 'bg-[#0f172a]/95 hover:bg-[#0f172a] border-amber-500/40 hover:border-amber-400 text-white shadow-md'
+              ? 'bg-[#292F32] hover:bg-[#323A3D] border-[#414B4F] hover:border-[#F4B183] text-[#F8FAFC] shadow-sm'
               : 'bg-white hover:bg-slate-50 border-slate-300 hover:border-amber-500 text-slate-950 shadow-sm'
           }`}
         >
@@ -909,7 +909,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           onClick={() => onQuickAction('purchase')}
           className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[128px] ${
             isDark
-              ? 'bg-[#0f172a]/95 hover:bg-[#0f172a] border-rose-500/40 hover:border-rose-400 text-white shadow-md'
+              ? 'bg-[#292F32] hover:bg-[#323A3D] border-[#414B4F] hover:border-[#FF8585] text-[#F8FAFC] shadow-sm'
               : 'bg-white hover:bg-slate-50 border-slate-300 hover:border-rose-500 text-slate-950 shadow-sm'
           }`}
         >
@@ -952,7 +952,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           onClick={() => onQuickAction('new_order')}
           className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[128px] ${
             isDark
-              ? 'bg-[#0f172a]/95 hover:bg-[#0f172a] border-indigo-500/40 hover:border-indigo-400 text-white shadow-md'
+              ? 'bg-[#292F32] hover:bg-[#323A3D] border-[#414B4F] hover:border-[#55D6C2] text-[#F8FAFC] shadow-sm'
               : 'bg-white hover:bg-slate-50 border-slate-300 hover:border-indigo-500 text-slate-950 shadow-sm'
           }`}
         >
@@ -994,7 +994,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div
           className={`p-3.5 rounded-2xl border transition-all duration-200 flex flex-col justify-between min-h-[128px] ${
             isDark
-              ? 'bg-[#0f172a]/95 border-teal-500/40 text-white shadow-md'
+              ? 'bg-[#292F32] border-[#414B4F] text-[#F8FAFC] shadow-sm'
               : 'bg-white border-slate-300 text-slate-950 shadow-sm'
           }`}
         >
@@ -1035,7 +1035,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div
           className={`p-3.5 rounded-2xl border transition-all duration-200 flex flex-col justify-between min-h-[128px] ${
             isDark
-              ? 'bg-[#0f172a]/95 border-violet-500/40 text-white shadow-md'
+              ? 'bg-[#292F32] border-[#414B4F] text-[#F8FAFC] shadow-sm'
               : 'bg-white border-slate-300 text-slate-950 shadow-sm'
           }`}
         >
@@ -1079,8 +1079,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div
           className={`lg:col-span-7 rounded-3xl border p-4 sm:p-5 backdrop-blur-2xl space-y-3.5 ${
             isDark
-              ? 'bg-[#0f172a]/90 border-white/15 text-white'
-              : 'bg-white/96 border-slate-200/90 text-slate-950 shadow-xs'
+              ? 'bg-[#292F32] border-[#414B4F] text-[#F8FAFC]'
+              : 'bg-white border-slate-300 text-slate-950 shadow-xs'
           }`}
         >
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-black/5  pb-3">
@@ -1262,7 +1262,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div
           className={`lg:col-span-5 rounded-3xl border p-4 sm:p-5 backdrop-blur-2xl space-y-3.5 ${
             isDark
-              ? 'bg-[#0f172a]/95 border-white/15 text-white shadow-md'
+              ? 'bg-[#292F32] border-[#414B4F] text-[#F8FAFC] shadow-sm'
               : 'bg-white/98 border-slate-300 text-slate-950 shadow-sm'
           }`}
         >
@@ -1371,7 +1371,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div
           className={`rounded-3xl border p-4 sm:p-5 backdrop-blur-2xl space-y-4 ${
             isDark
-              ? 'bg-[#0f172a]/95 border-white/15 text-white shadow-md'
+              ? 'bg-[#292F32] border-[#414B4F] text-[#F8FAFC] shadow-sm'
               : 'bg-white/98 border-slate-300 text-slate-950 shadow-sm'
           }`}
         >
@@ -1551,7 +1551,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div
           className={`rounded-3xl border p-4 sm:p-5 backdrop-blur-2xl space-y-4 ${
             isDark
-              ? 'bg-[#0f172a]/95 border-white/15 text-white shadow-md'
+              ? 'bg-[#292F32] border-[#414B4F] text-[#F8FAFC] shadow-sm'
               : 'bg-white/98 border-slate-300 text-slate-950 shadow-sm'
           }`}
         >
@@ -1636,7 +1636,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 dashboardPerspective === 'banking' ? 'lg:col-span-12' : 'lg:col-span-7'
               } rounded-3xl border p-4 sm:p-5 backdrop-blur-2xl space-y-4 ${
                 isDark
-                  ? 'bg-[#0f172a]/95 border-white/15 text-white shadow-md'
+                  ? 'bg-[#292F32] border-[#414B4F] text-[#F8FAFC] shadow-sm'
                   : 'bg-white/98 border-slate-300 text-slate-950 shadow-sm'
               }`}
             >
@@ -1773,7 +1773,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 dashboardPerspective === 'crm' ? 'lg:col-span-12' : 'lg:col-span-5'
               } rounded-3xl border p-4 sm:p-5 backdrop-blur-2xl space-y-3.5 ${
                 isDark
-                  ? 'bg-[#0f172a]/90 border-white/15 text-white'
+                  ? 'bg-[#292F32] border-[#414B4F] text-[#F8FAFC]'
                   : 'bg-white/96 border-slate-200/90 text-slate-950 shadow-xs'
               }`}
             >

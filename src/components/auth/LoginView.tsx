@@ -12,7 +12,9 @@ import {
   KeyRound,
   CheckCircle2,
   Palette,
-  ChevronDown
+  ChevronDown,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { useTheme, THEMES } from '../../context/ThemeContext';
 import { ThemeId, UserRole, BranchId, AuthUser } from '../../types/erp';
@@ -84,7 +86,7 @@ export const DEMO_USERS: {
 ];
 
 export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
-  const { currentTheme, isDark, setTheme } = useTheme();
+  const { currentTheme, isDark, themeMode, setThemeMode } = useTheme();
   const [employeeCode, setEmployeeCode] = useState('OWNER-01');
   const [branch, setBranch] = useState(BRANCHES_LIST[0].label);
   const [branchId, setBranchId] = useState<BranchId>('all');
@@ -136,7 +138,37 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-center items-center p-4 sm:p-6 text-[#1E293B] relative">
+    <div className={`min-h-screen ${isDark ? 'bg-[#171C1F] text-[#F8FAFC]' : 'bg-[#F8FAFC] text-[#1E293B]'} flex flex-col justify-center items-center p-4 sm:p-6 relative transition-colors duration-150`}>
+      {/* Top Right Theme Selector */}
+      <div className="absolute top-4 right-4 z-10 flex items-center rounded-lg border border-slate-300 bg-slate-50 p-0.5 text-xs shadow-xs">
+        <button
+          type="button"
+          onClick={() => setThemeMode('existing')}
+          className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+            themeMode === 'existing'
+              ? 'bg-white text-slate-900 shadow-xs border border-slate-200'
+              : 'text-slate-500 hover:text-slate-800'
+          }`}
+          title="Existing Theme (Light Enterprise)"
+        >
+          <Sun className="w-3.5 h-3.5 text-amber-500" />
+          <span>Existing Theme</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setThemeMode('modern-dark')}
+          className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+            themeMode === 'modern-dark'
+              ? 'bg-[#55D6C2] text-[#142321] shadow-xs font-bold'
+              : 'text-slate-500 hover:text-slate-800'
+          }`}
+          title="Modern Dark Theme (Charcoal & Teal)"
+        >
+          <Moon className="w-3.5 h-3.5 text-[#55D6C2]" />
+          <span>Modern Dark</span>
+        </button>
+      </div>
+
       {/* Container Card */}
       <div className="w-full max-w-md bg-white border border-slate-300 shadow-sm rounded-xl overflow-hidden transition-all">
         {/* Header Branding */}

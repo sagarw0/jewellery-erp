@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, Save, Building, Scale, Percent, Users, ShieldCheck } from 'lucide-react';
+import { Settings, Save, Building, Scale, Percent, Users, ShieldCheck, Palette, Sun, Moon, Check } from 'lucide-react';
 import { bullionRatesService } from '../../services/bullionRatesService';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -18,7 +18,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   onUpdateRates,
   onOpenUserRoleManagement,
 }) => {
-  const { isDark } = useTheme();
+  const { isDark, themeMode, setThemeMode } = useTheme();
   const [showroomName, setShowroomName] = useState('SWARNA JEWELLERS & BULLION');
   const [gstin, setGstin] = useState('27AAACS1234F1Z8');
   const [bisLicense, setBisLicense] = useState('HM-916-MH-4421');
@@ -167,6 +167,78 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
         {/* Rates & Taxes */}
         <div className="space-y-4">
+          {/* Appearance & Interface Theme Selector */}
+          <div className="border rounded-xl p-5 shadow-xs space-y-3 text-xs bg-white border-slate-300 text-slate-800">
+            <div className="flex items-center space-x-2 border-b border-slate-100 pb-2 text-blue-700">
+              <Palette className="w-4 h-4" />
+              <h3 className="font-bold uppercase tracking-wider">Application Interface Theme</h3>
+            </div>
+            <p className="text-[11px] text-slate-500">
+              Select your preferred visual style. The theme applies instantly across all forms, tables, modals, and reports without interrupting active workflows.
+            </p>
+
+            <div className="grid grid-cols-2 gap-3 pt-1">
+              {/* Existing Theme Card */}
+              <button
+                type="button"
+                onClick={() => setThemeMode('existing')}
+                className={`p-3 rounded-xl border text-left transition-all cursor-pointer relative ${
+                  themeMode === 'existing'
+                    ? 'border-blue-700 bg-blue-50/50 shadow-xs ring-2 ring-blue-700/20'
+                    : 'border-slate-300 hover:border-slate-400 bg-white'
+                }`}
+              >
+                {themeMode === 'existing' && (
+                  <span className="absolute top-2 right-2 flex items-center justify-center w-4 h-4 rounded-full bg-blue-700 text-white text-[9px]">
+                    <Check className="w-3 h-3" />
+                  </span>
+                )}
+                <div className="flex items-center space-x-2 mb-1.5">
+                  <Sun className="w-4 h-4 text-amber-500" />
+                  <span className="font-bold text-xs text-slate-900">Existing Theme</span>
+                </div>
+                <p className="text-[10.5px] text-slate-500 leading-snug mb-2">
+                  Standardized clean enterprise light theme with pure white cards and royal blue accents.
+                </p>
+                <div className="flex items-center space-x-1.5 pt-1">
+                  <span className="w-4 h-4 rounded-full bg-[#F8FAFC] border border-slate-300 inline-block" title="Background #F8FAFC" />
+                  <span className="w-4 h-4 rounded-full bg-[#FFFFFF] border border-slate-300 inline-block" title="Card Surface #FFFFFF" />
+                  <span className="w-4 h-4 rounded-full bg-[#1D4ED8] inline-block" title="Brand #1D4ED8" />
+                  <span className="w-4 h-4 rounded-full bg-[#1E293B] inline-block" title="Text #1E293B" />
+                </div>
+              </button>
+
+              {/* Modern Dark Theme Card */}
+              <button
+                type="button"
+                onClick={() => setThemeMode('modern-dark')}
+                className={`p-3 rounded-xl border text-left transition-all cursor-pointer relative ${
+                  themeMode === 'modern-dark'
+                    ? 'border-[#55D6C2] bg-[#292F32] shadow-xs ring-2 ring-[#55D6C2]/30'
+                    : 'border-slate-300 hover:border-slate-400 bg-white'
+                }`}
+              >
+                {themeMode === 'modern-dark' && (
+                  <span className="absolute top-2 right-2 flex items-center justify-center w-4 h-4 rounded-full bg-[#55D6C2] text-[#142321] text-[9px] font-bold">
+                    <Check className="w-3 h-3" />
+                  </span>
+                )}
+                <div className="flex items-center space-x-2 mb-1.5">
+                  <Moon className="w-4 h-4 text-[#55D6C2]" />
+                  <span className="font-bold text-xs text-slate-900">Modern Dark</span>
+                </div>
+                <p className="text-[10.5px] text-slate-500 leading-snug mb-2">
+                  Premium charcoal dashboard with dark slate cards, turquoise & teal accents, and coral highlights.
+                </p>
+                <div className="flex items-center space-x-1.5 pt-1">
+                  <span className="w-4 h-4 rounded-full bg-[#171C1F] border border-[#414B4F] inline-block" title="App Background #171C1F" />
+                  <span className="w-4 h-4 rounded-full bg-[#292F32] border border-[#414B4F] inline-block" title="Card #292F32" />
+                  <span className="w-4 h-4 rounded-full bg-[#55D6C2] inline-block" title="Teal Accent #55D6C2" />
+                  <span className="w-4 h-4 rounded-full bg-[#F4B183] inline-block" title="Coral Warning #F4B183" />
+                </div>
+              </button>
+            </div>
+          </div>
           <div className={`border rounded-xl p-5 shadow-sm space-y-3 text-xs transition-all ${
             'bg-white border-slate-300 text-slate-800 shadow-xs'
           }`}>

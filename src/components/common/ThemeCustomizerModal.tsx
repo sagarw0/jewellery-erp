@@ -8,6 +8,8 @@ import {
   Sparkles,
   Layers,
   RotateCcw,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { UiDensity } from '../../types/erp';
@@ -18,7 +20,7 @@ interface ThemeCustomizerModalProps {
 }
 
 export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({ isOpen, onClose }) => {
-  const { density, setDensity, resetToDefault } = useTheme();
+  const { density, setDensity, resetToDefault, themeMode, setThemeMode } = useTheme();
 
   if (!isOpen) return null;
 
@@ -34,7 +36,7 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({ isOp
             <div>
               <h2 className="text-sm font-bold tracking-wide">Enterprise Design System</h2>
               <p className="text-[11px] text-blue-100 font-medium">
-                Standardized Enterprise Theme & Display Density
+                Switch Theme & Adjust Display Density
               </p>
             </div>
           </div>
@@ -48,41 +50,73 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({ isOp
 
         {/* Modal Content */}
         <div className="p-5 space-y-5 text-xs">
-          {/* Active Palette Summary */}
-          <div className="p-3.5 rounded-lg border border-slate-200 bg-slate-50 space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-slate-900 flex items-center space-x-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-700" />
-                <span>Unified Enterprise Theme</span>
-              </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                ACTIVE
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-600 leading-relaxed">
-              The application uses a centralized design system with high-contrast typography, solid white cards, and accessible colors across all screens.
-            </p>
-            <div className="grid grid-cols-4 gap-2 pt-2 border-t border-slate-200 font-mono text-[10px] text-center">
-              <div className="p-1.5 rounded bg-white border border-slate-200">
-                <div className="w-3.5 h-3.5 mx-auto rounded-full bg-[#1D4ED8] mb-1" />
-                <span className="text-slate-600 block">Primary</span>
-                <span className="font-bold text-slate-900">#1D4ED8</span>
-              </div>
-              <div className="p-1.5 rounded bg-white border border-slate-200">
-                <div className="w-3.5 h-3.5 mx-auto rounded-full bg-[#F8FAFC] border border-slate-300 mb-1" />
-                <span className="text-slate-600 block">Page Bg</span>
-                <span className="font-bold text-slate-900">#F8FAFC</span>
-              </div>
-              <div className="p-1.5 rounded bg-white border border-slate-200">
-                <div className="w-3.5 h-3.5 mx-auto rounded-full bg-[#1E293B] mb-1" />
-                <span className="text-slate-600 block">Text</span>
-                <span className="font-bold text-slate-900">#1E293B</span>
-              </div>
-              <div className="p-1.5 rounded bg-white border border-slate-200">
-                <div className="w-3.5 h-3.5 mx-auto rounded-full bg-[#CBD5E1] mb-1" />
-                <span className="text-slate-600 block">Border</span>
-                <span className="font-bold text-slate-900">#CBD5E1</span>
-              </div>
+          {/* Theme Selector Section */}
+          <div className="space-y-2">
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              Select Interface Theme
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              {/* Existing Theme Card */}
+              <button
+                type="button"
+                onClick={() => setThemeMode('existing')}
+                className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer relative ${
+                  themeMode === 'existing'
+                    ? 'border-blue-700 bg-blue-50/50 shadow-xs ring-2 ring-blue-700/20'
+                    : 'border-slate-200 bg-white hover:bg-slate-50'
+                }`}
+              >
+                {themeMode === 'existing' && (
+                  <span className="absolute top-2.5 right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-blue-700 text-white text-[9px]">
+                    <Check className="w-3 h-3" />
+                  </span>
+                )}
+                <div className="flex items-center space-x-2 mb-1.5">
+                  <Sun className="w-4 h-4 text-amber-500" />
+                  <span className="font-bold text-xs text-slate-900">Existing Theme</span>
+                </div>
+                <p className="text-[10.5px] text-slate-500 leading-snug mb-2.5">
+                  Standard enterprise light theme with solid pure white cards and royal blue brand accents.
+                </p>
+                <div className="flex items-center space-x-1.5">
+                  <span className="w-4 h-4 rounded-full bg-[#F8FAFC] border border-slate-300" title="#F8FAFC" />
+                  <span className="w-4 h-4 rounded-full bg-[#FFFFFF] border border-slate-300" title="#FFFFFF" />
+                  <span className="w-4 h-4 rounded-full bg-[#1D4ED8]" title="#1D4ED8" />
+                  <span className="w-4 h-4 rounded-full bg-[#1E293B]" title="#1E293B" />
+                </div>
+              </button>
+
+              {/* Modern Dark Theme Card */}
+              <button
+                type="button"
+                onClick={() => setThemeMode('modern-dark')}
+                className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer relative ${
+                  themeMode === 'modern-dark'
+                    ? 'border-[#55D6C2] bg-[#292F32] shadow-xs ring-2 ring-[#55D6C2]/30 text-white'
+                    : 'border-slate-200 bg-white hover:bg-slate-50'
+                }`}
+              >
+                {themeMode === 'modern-dark' && (
+                  <span className="absolute top-2.5 right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#55D6C2] text-[#142321] text-[9px] font-bold">
+                    <Check className="w-3 h-3" />
+                  </span>
+                )}
+                <div className="flex items-center space-x-2 mb-1.5">
+                  <Moon className="w-4 h-4 text-[#55D6C2]" />
+                  <span className={`font-bold text-xs ${themeMode === 'modern-dark' ? 'text-white' : 'text-slate-900'}`}>
+                    Modern Dark
+                  </span>
+                </div>
+                <p className={`text-[10.5px] leading-snug mb-2.5 ${themeMode === 'modern-dark' ? 'text-slate-300' : 'text-slate-500'}`}>
+                  Charcoal & dark slate surfaces with turquoise accents and restrained coral status tags.
+                </p>
+                <div className="flex items-center space-x-1.5">
+                  <span className="w-4 h-4 rounded-full bg-[#171C1F] border border-[#414B4F]" title="#171C1F" />
+                  <span className="w-4 h-4 rounded-full bg-[#292F32] border border-[#414B4F]" title="#292F32" />
+                  <span className="w-4 h-4 rounded-full bg-[#55D6C2]" title="#55D6C2" />
+                  <span className="w-4 h-4 rounded-full bg-[#F4B183]" title="#F4B183" />
+                </div>
+              </button>
             </div>
           </div>
 

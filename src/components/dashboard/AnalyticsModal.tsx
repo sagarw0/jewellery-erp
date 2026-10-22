@@ -62,7 +62,7 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
       <div
         className={`rounded-3xl w-full max-w-5xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh] border ${
           isDark
-            ? 'bg-[#0b1324] border-white/15 text-white'
+            ? 'bg-[#292F32] border-[#414B4F] text-[#F8FAFC]'
             : 'bg-white border-slate-300 text-slate-950'
         }`}
       >

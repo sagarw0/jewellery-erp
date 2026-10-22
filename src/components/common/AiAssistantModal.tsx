@@ -623,7 +623,7 @@ Ask any full-sentence query or command:
         <div
           className={`px-3 sm:px-4 py-2.5 sm:py-3 border-b flex items-center justify-between shrink-0 ${
             isDark
-              ? 'bg-[#0b1120] border-white/10'
+              ? 'bg-[#202629] border-[#414B4F] text-[#F8FAFC]'
               : 'bg-gradient-to-r from-blue-700 via-indigo-700 to-indigo-900 text-white border-blue-900'
           }`}
         >
@@ -1060,7 +1060,7 @@ Ask any full-sentence query or command:
         {/* Bottom Input Area */}
         <div
           className={`p-3 border-t shrink-0 ${
-            isDark ? 'bg-[#0b1120] border-white/10' : 'bg-white border-slate-200'
+            isDark ? 'bg-[#202629] border-[#414B4F]' : 'bg-white border-slate-200'
           }`}
         >
           <form onSubmit={handleSendMessage} className="flex items-center space-x-2">

@@ -208,13 +208,44 @@ export function generateBgGradient(baseHex: string, brightnessDelta: number): {
  * Compute the complete design token set dynamically based on user selections
  */
 export function computeThemeTokens(
-  _bgBaseHex?: string,
+  bgBaseHex?: string,
   _accentHex?: string,
   _brightnessDelta?: number,
   _glassBlur?: GlassBlurIntensity,
   _cornerRadius?: CardCornerRadius,
   _shadowDepth?: ShadowGlowDepth
 ): ThemeTokens {
+  const isDarkTheme = bgBaseHex === '#171C1F';
+
+  if (isDarkTheme) {
+    return {
+      appBg: '#171C1F',
+      appBgGradient: 'none',
+      appSurface: '#292F32',
+      appSurfaceGlass: '#292F32',
+      appHeaderBg: '#202629',
+      appPrimary: '#55D6C2',
+      appPrimaryHover: '#70E1D2',
+      appPrimaryText: '#142321',
+      appPrimaryGlow: 'rgba(85, 214, 194, 0.20)',
+      appAccent: '#55D6C2',
+      appAccentBg: 'rgba(85, 214, 194, 0.15)',
+      appTextPrimary: '#F8FAFC',
+      appTextSecondary: '#CBD5E1',
+      appTextMuted: '#AAB6BE',
+      appBorder: '#414B4F',
+      appCardBorder: '#414B4F',
+      appCardShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.35)',
+      appInputBg: '#202629',
+      appInputBorder: '#414B4F',
+      appTableHeaderBg: '#202629',
+      appBlur: '0px',
+      appRadius: '0.5rem',
+      isDark: true,
+    };
+  }
+
+  // Existing Theme - 100% preserved
   return {
     appBg: '#F8FAFC',
     appBgGradient: 'none',
@@ -274,12 +305,14 @@ export function applyCssTokensToDocument(tokens: ThemeTokens): void {
   // Set browser native color-scheme
   root.style.colorScheme = tokens.isDark ? 'dark' : 'light';
 
-  // Toggle dark class
+  // Toggle dark class & data-theme attribute
   if (tokens.isDark) {
-    root.classList.add('dark');
-    document.body.classList.add('dark');
+    root.setAttribute('data-theme', 'modern-dark');
+    root.classList.add('dark', 'theme-modern-dark');
+    document.body.classList.add('dark', 'theme-modern-dark');
   } else {
-    root.classList.remove('dark');
-    document.body.classList.remove('dark');
+    root.removeAttribute('data-theme');
+    root.classList.remove('dark', 'theme-modern-dark');
+    document.body.classList.remove('dark', 'theme-modern-dark');
   }
 }
