@@ -136,18 +136,20 @@ In the bullion and jewellery industry, accounts with suppliers, refineries, and 
 
 ### 2.1 Net Weight Engine
 The net weight represents the chargeable precious metal content after subtracting non-metallic additions:
-$$\text{Net Weight} = \max\Big(0, \text{Gross Weight} - \text{Black Beads Weight} - \text{Stone Weight} - \text{Bag Weight}\Big)$$
+> **WORKING ENGLISH FORMULA:**  
+> **Net Weight (g) = Maximum of [ 0, Gross Weight − Black Beads Weight − Stone Weight − Bag Weight ]**
 - **Inputs**:
   - `gross_wt` (Decimal, 3 decimals, mandatory)
   - `black_beats` (Decimal, 3 decimals, optional, default 0) — used specifically for Mangalsutras
   - `stone_wt` (Decimal, 3 decimals, optional, default 0) — cz, semi-precious, synthetic stones
   - `bag_wt` (Decimal, 3 decimals, optional, default 0) — packaging or tag wire deduction
 - **Output**: `net_wt` (Decimal, 3 decimals)
-- **Constraint**: Must be $\le \text{gross\_wt}$. If negative, triggers validation error: `ERR_INVALID_NET_WEIGHT`.
+- **Constraint**: Must be less than or equal to Gross Weight. If negative, triggers validation error: `ERR_INVALID_NET_WEIGHT`.
 
 ### 2.2 Fine Bullion Weight Engine
 The pure 24K equivalent weight contained within an alloyed piece:
-$$\text{Fine Weight} = \frac{\text{Net Weight} \times \text{Purity}}{100}$$
+> **WORKING ENGLISH FORMULA:**  
+> **Fine Bullion Weight (g) = (Net Weight × Purity Percentage) ÷ 100**
 - **Inputs**:
   - `net_wt` (Decimal, 3 decimals)
   - `purity` (Decimal, 2 decimals, e.g. 91.60)
@@ -155,8 +157,9 @@ $$\text{Fine Weight} = \frac{\text{Net Weight} \times \text{Purity}}{100}$$
 
 ### 2.3 Wastage & Fine+Wastage Allowance
 Artisans and manufacturers incur metal loss during casting, filing, soldering, and polishing. In wholesale purchasing, wastage is credited to the supplier:
-$$\text{Wastage Allowance (g)} = \frac{\text{Net Weight} \times \text{Wastage}\%}{100}$$
-$$\text{Fine + Wastage (g)} = \text{Fine Weight} + \text{Wastage Allowance (g)}$$
+> **WORKING ENGLISH FORMULAS:**  
+> **1. Wastage Allowance (g) = (Net Weight × Wastage Percentage) ÷ 100**  
+> **2. Fine + Wastage Metal Total (g) = Fine Bullion Weight + Wastage Allowance**
 - **Inputs**:
   - `net_wt`, `purity`, `wastage_pct`
 - **Output**: `fin_plus_wastage` (Decimal, 3 decimals)
@@ -165,16 +168,18 @@ $$\text{Fine + Wastage (g)} = \text{Fine Weight} + \text{Wastage Allowance (g)}$
 ### 2.4 Making Charges Engine (Per Gram vs Percentage of Value)
 Making charges represent the fabrication fee. The system supports three computational modes:
 1. **Per Gram Basis**:
-   $$\text{Making Amount} = \text{Net Weight} \times \text{Making Rate per Gram}$$
+   > **Per-Gram Making Charge = Net Weight × Making Rate per Gram**
 2. **Percentage of Metal Value**:
-   $$\text{Metal Value} = \text{Net Weight} \times \text{Gold Rate per Gram}$$
-   $$\text{Making Amount} = \frac{\text{Metal Value} \times \text{Making}\%}{100}$$
+   > **Percentage Making Charge:**  
+> • Metal Value = Net Weight × Gold Rate per Gram  
+> • Making Amount = (Metal Value × Making Percentage) ÷ 100
 3. **Hybrid Mode**:
-   $$\text{Making Amount} = (\text{Net Weight} \times \text{Making Rate per Gram}) + \left(\frac{\text{Metal Value} \times \text{Making}\%}{100}\right)$$
+   > **Hybrid Making Charge = (Net Weight × Making Rate per Gram) + ((Metal Value × Making Percentage) ÷ 100)**
 - **Output**: `mkg_amt` (Decimal, 2 decimals)
 
 ### 2.5 Line Item Total & Hallmarking (HUID) Fees
-$$\text{Line Item Amount} = (\text{Net Weight} \times \text{Rate}) + \text{Stone Amount} + \text{Making Amount} + \text{Hallmark Charges}$$
+> **WORKING ENGLISH FORMULA:**  
+> **Line Item Total Amount = (Net Weight × Gold Rate) + Stone Amount + Making Amount + Hallmark (HUID) Fee**
 - **Inputs**:
   - `net_wt` (Decimal, 3 decimals)
   - `rate` (Decimal, 2 decimals)
@@ -188,57 +193,58 @@ $$\text{Line Item Amount} = (\text{Net Weight} \times \text{Rate}) + \text{Stone
   - **Intra-State Transaction** (Showroom State = Customer/Vendor State):
     - **CGST (Central GST / MGST)** = 1.50%
     - **SGST (State GST / HGST)** = 1.50%
-  - **Inter-State Transaction** (Showroom State $\ne$ Customer/Vendor State):
+  - **Inter-State Transaction** (Showroom State ≠ Customer/Vendor State):
     - **IGST (Integrated GST)** = 3.00%
 - **Income Tax TDS (Section 194Q)**: 0.10% on purchases exceeding ₹50 Lakhs.
 - **Income Tax TCS (Section 206C(1H))**: 0.10% (or 0.075%) on sales receipts exceeding ₹50 Lakhs in a financial year.
 - **Formulas**:
-  $$\text{CGST Amount} = \frac{\text{Taxable Subtotal} \times 1.5}{100}$$
-  $$\text{SGST Amount} = \frac{\text{Taxable Subtotal} \times 1.5}{100}$$
-  $$\text{GST Total} = \text{CGST Amount} + \text{SGST Amount}$$
-  $$\text{TDS Amount} = \frac{\text{Taxable Subtotal} \times \text{TDS}\%}{100}$$
-  $$\text{TCS Amount} = \frac{(\text{Taxable Subtotal} + \text{GST Total}) \times \text{TCS}\%}{100}$$
-  $$\text{Final Invoice Bill Amount} = \text{Taxable Subtotal} + \text{GST Total} + \text{TCS Amount} - \text{Discount}$$
+  > **WORKING ENGLISH FORMULAS (STATUTORY TAX SPLIT):**  
+> • **CGST (1.5%)** = (Taxable Subtotal × 1.5) ÷ 100  
+> • **SGST (1.5%)** = (Taxable Subtotal × 1.5) ÷ 100  
+> • **Total GST (3.0%)** = CGST Amount + SGST Amount  
+> • **TDS (0.1% under Section 194Q)** = (Taxable Subtotal × TDS %) ÷ 100  
+> • **TCS (0.1% under Section 206C)** = ((Taxable Subtotal + Total GST) × TCS %) ÷ 100  
+> • **Final Bill Grand Total** = Taxable Subtotal + Total GST + TCS Amount − Discount
 
 ### 2.7 Old Gold (URD) Valuation, Touch Deduction & Exchange Netting
 When a customer trades in old jewellery (Unregistered Dealer / URD purchase):
-$$\text{Old Gold Net Wt} = \text{Gross Wt} - \text{Dust/Enamel/Stone Loss}$$
-$$\text{Assayed Fine Wt} = \frac{\text{Old Gold Net Wt} \times \text{Tested Touch/Purity}}{100}$$
-$$\text{Old Gold Valuation Amount} = \text{Assayed Fine Wt} \times \text{Current 24K Bullion Buyback Rate}$$
-$$\text{Net Payable by Customer} = \text{New Jewellery Invoice Total} - \text{Old Gold Valuation Amount} - \text{Advance Payments}$$
+> **WORKING ENGLISH FORMULAS (OLD GOLD URD EXCHANGE):**  
+> • **Old Gold Net Weight** = Gross Weight − Dust / Stone / Enamel Loss  
+> • **Assayed Fine Pure Weight** = (Old Gold Net Weight × Tested Touch Purity %) ÷ 100  
+> • **Old Gold Valuation Credit** = Assayed Fine Pure Weight × Current 24K Bullion Buyback Rate  
+> • **Net Balance Payable by Customer** = New Jewellery Invoice Total − Old Gold Valuation Credit − Advance Payments
 
 ### 2.8 Refinery Inward Yield, Melting Loss/Profit & Assayed vs Recovered Fine
 When scrap lots are sent to a refinery:
-$$\text{Theoretical Fine Weight} = \frac{\text{Inward Net Weight} \times \text{Assayed Touch}}{100}$$
-$$\text{Variance} = \text{Actual Pure 24K Bar Recovered} - \text{Theoretical Fine Weight}$$
-- If $\text{Variance} < 0$:
-  $$\text{Refinery Melting Loss} = |\text{Variance}|$$
-  $$\text{Refinery Profit} = 0$$
-- If $\text{Variance} > 0$:
-  $$\text{Refinery Profit} = \text{Variance}$$
-  $$\text{Refinery Melting Loss} = 0$$
-$$\text{Refining Charges} = \text{Gross Weight Melted} \times \text{Refinery Melting Fee per Gram}$$
+> **WORKING ENGLISH FORMULAS (REFINERY YIELD):**  
+> • **Theoretical Fine Gold** = (Inward Net Weight × Assayed Touch Purity %) ÷ 100  
+> • **Variance** = Actual Pure 24K Bar Recovered from Refiner − Theoretical Fine Gold
+- If Variance is negative (less than 0):
+  > • **Refinery Melting Loss** = Absolute Value of Variance (Refinery Profit = 0)
+- If Variance is positive (greater than 0):
+  > • **Refinery Yield Profit** = Variance (Refinery Melting Loss = 0)
+> • **Refining Melting Fee (₹)** = Gross Weight Melted × Refiner Fee per Gram
 
 ### 2.9 Multi-Karat Real-Time Bullion Pricing Engine
 From the baseline 24K Gold Spot Rate and Silver 999 Rate:
-- **Gold 24K (999.0)**: $\text{Base 24K} + \text{Showroom Markup}$
-- **Gold 22K (916.0)**: $\text{Gold 24K} \times 0.916$
-- **Gold 18K (750.0)**: $\text{Gold 24K} \times 0.750$
-- **Gold 14K (585.0)**: $\text{Gold 24K} \times 0.585$
-- **Gold 24K Tola (10g)**: $\text{Gold 24K} \times 10$
-- **Gold 22K Tola (10g)**: $\text{Gold 22K} \times 10$
-- **Silver 999 (Pure)**: $\text{Base Silver} + \text{Showroom Markup}$
-- **Silver 925 (Sterling)**: $\text{Silver 999} \times 0.925$
-- **Silver Bar (1 Kg)**: $\text{Silver 999} \times 1000$
+- **Gold 24K (999.0)**: Base 24K Spot Rate + Showroom Markup
+- **Gold 22K (916.0)**: Gold 24K Rate × 0.916
+- **Gold 18K (750.0)**: Gold 24K Rate × 0.750
+- **Gold 14K (585.0)**: Gold 24K Rate × 0.585
+- **Gold 24K Tola (10g)**: Gold 24K Rate × 10
+- **Gold 22K Tola (10g)**: Gold 22K Rate × 10
+- **Silver 999 (Pure)**: Base Silver Spot Rate + Showroom Markup
+- **Silver 925 (Sterling)**: Silver 999 Rate × 0.925
+- **Silver Bar (1 Kg)**: Silver 999 Rate × 1,000
 
 ### 2.10 Inventory Valuation Engine
 The system supports three dynamic inventory valuation models for the stock vault:
 1. **Market Spot Valuation**:
-   $$\text{Vault Valuation} = \sum (\text{Item Fine Weight} \times \text{Live 24K Spot Rate})$$
+   > **Market Spot Valuation = Sum of all (Item Fine Weight × Live 24K Spot Rate)**
 2. **Acquisition Cost Valuation**:
-   $$\text{Vault Valuation} = \sum (\text{Item Inward Purchase Cost})$$
+   > **Acquisition Cost Valuation = Sum of all (Item Inward Purchase Cost)**
 3. **Weighted Average Cost (WAC)**:
-   $$\text{WAC Rate} = \frac{\text{Total Valuation of Current Stock} + \text{Valuation of New Inward Lot}}{\text{Total Fine Weight in Vault}}$$
+   > **Weighted Average Cost (WAC) Rate = (Total Value of Current Stock + Inward Lot Value) ÷ Total Fine Weight in Vault**
 
 ---
 
@@ -270,19 +276,20 @@ The system supports three dynamic inventory valuation models for the stock vault
      - Controls for Branch Filter (`all`, `mumbai`, `pune`, `thane`).
      - Action buttons: Quick Sales Invoice, New Order Booking, New Purchase Inward, Stock Refill Hub, Bullion Rates Center, AI Copilot, Full Analytics.
   2. **Top 7 KPI Metric Cards**:
-     - `Cash in Hand`: Current physical counter cash = $\text{Opening Cash} + \text{Cash Received} - \text{Cash Paid}$.
+     - `Cash in Hand`: Current physical counter cash = Opening Cash + Cash Received − Cash Paid.
      - `Bank Balances`: Sum of all active bank account ledger balances minus OD/CC credit line drawdowns.
      - `Gross Sales Today`: Total invoice value generated on current date + total gold grams sold.
      - `Gross Purchases Today`: Inward metal value + purchase grams.
      - `Active In-flight Orders`: Total pending customer custom orders in workshop pipeline.
-     - `Walk-in Clients & Footfall`: Showroom visitor counter and counter conversion rate ($\frac{\text{Invoices Generated}}{\text{Total Visitors}} \times 100$).
+     - `Walk-in Clients & Footfall`: Showroom visitor counter and counter conversion rate ((Invoices Generated ÷ Total Visitors) × 100).
      - `Total Vault Stock Valuation`: Current monetary value of inventory at live spot rate.
   3. **Bullion Valuation Simulator**:
      - Inputs: User adjusts a dynamic slider or input box for `Simulated 24K Rate`.
-     - Derives `Simulated 22K Rate` $= \text{Simulated 24K Rate} \times 0.916$.
+     - Derives `Simulated 22K Rate` = Simulated 24K Rate × 0.916.
      - Computes:
-       $$\text{Projected Vault Value} = \text{Total Vault Pure Gold (g)} \times \text{Simulated 24K Rate}$$
-       $$\text{Simulated Valuation Delta} = \text{Projected Vault Value} - \text{Base Valuation at Acquisition}$$
+       > **BULLION SIMULATOR FORMULAS:**  
+> • **Projected Vault Value** = Total Vault Pure Gold (Grams) × Simulated 24K Rate  
+> • **Simulated Valuation Delta** = Projected Vault Value − Base Valuation at Acquisition
   4. **Multi-Branch Velocity Comparison**:
      - Renders comparative performance metrics across Mumbai Flagship, Pune Camp, and Thane West branches:
        - Revenue (₹)
@@ -409,11 +416,11 @@ The system supports three dynamic inventory valuation models for the stock vault
        - `size` (String, e.g. `14`, `2-4`, `18 inches`)
        - `tag_no` (Auto-generated unique serial, e.g. `OPN-88201`)
      - **Calculations & Validations**:
-       - Automatically calculates $\text{Net Wt}$ and $\text{Fine Wt}$.
+       - Automatically calculates Net Weight and Fine Weight.
        - Enforces **Conservation of Mass**:
-         $$\sum (\text{Individual Piece Gross Weights}) \le \text{Master Item Total Stock Weight}$$
+         > **Mass Conservation Rule: Sum of all Individual Piece Gross Weights ≤ Master Item Total Stock Weight**
        - Decrements `remaining_weight` of master item in real time:
-         $$\text{Remaining Weight} = \text{Total Stock Weight} - \sum (\text{Piece Gross Weights})$$
+         > **Remaining Stock Weight = Master Item Total Stock Weight − Sum of Piece Gross Weights**
        - Upon clicking "Save & Convert to Barcode Tags", generated items are automatically committed to the inventory store and forwarded to the Barcode Tagging Studio.
 
 ---
@@ -444,7 +451,7 @@ The system supports three dynamic inventory valuation models for the stock vault
   1. **Batch Tag Print Spooler**: Multi-select tags, preview printable thermal sheet, spool to connected thermal printer (TSC, Zebra, Citizen) via raw ESC/POS, TSPL, or browser print.
   2. **Tag Loose Stock**: Convert loose raw purchases or un-tagged stock into individual barcoded items with serial tracking.
   3. **Split Piece Draft Engine**: Divide a multi-quantity or multi-part jewellery set into separate barcodes while ensuring:
-     $$\sum (\text{Split Pieces Net Wt}) = \text{Original Set Net Wt}$$
+     > **Mass Conservation Rule: Sum of all Split Pieces Net Weight = Original Set Net Weight**
   4. **Tag Re-Printing & History**: Track how many times a tag was printed to prevent counterfeit tag duplication.
 
 ---
@@ -482,16 +489,17 @@ The system supports three dynamic inventory valuation models for the stock vault
     - Customer pays advance to lock gold rate on booking day:
       - `rate_cut_gold_wt` (Grams booked)
       - `rate_cut_gold_rate` (₹/g locked)
-      - `rate_cut_gold_amount` $= \text{rate\_cut\_gold\_wt} \times \text{rate\_cut\_gold\_rate}$
+      - `rate_cut_gold_amount` = Rate Cut Gold Weight × Rate Cut Gold Rate
   - **Old Gold / Scrap Metal Advance**:
     - Customer deposits old gold toward order:
       - `old_gold_gross_wt`, `old_gold_dust`, `old_gold_net_wt`, `old_gold_purity`, `old_gold_fin_wt`, `old_gold_rate`, `old_gold_amt`.
   - **Financial Summary Calculations**:
-    $$\text{Total Order Value} = \sum (\text{Line Item Amounts})$$
-    $$\text{Taxes} = \text{CalculateTaxes}(\text{Total Order Value}, \text{gst\_not\_required})$$
-    $$\text{Gross Order Total} = \text{Total Order Value} + \text{GST Amount} - \text{Discount}$$
-    $$\text{Total Advance Credited} = \text{Cash Advance} + \text{Bank Advance} + \text{Rate Cut Amount} + \text{Old Gold Amount}$$
-    $$\text{Balance Due at Delivery} = \text{Gross Order Total} - \text{Total Advance Credited}$$
+    > **ORDER FINANCIAL SUMMARY FORMULAS:**  
+> • **Total Order Value** = Sum of all Line Item Amounts  
+> • **Taxes** = CalculateTaxes(Total Order Value, GST Exemption Flag)  
+> • **Gross Order Total** = Total Order Value + GST Amount − Discount  
+> • **Total Advance Credited** = Cash Advance + Bank Advance + Rate Cut Gold Amount + Old Gold Credit  
+> • **Balance Due at Delivery** = Gross Order Total − Total Advance Credited
 
 #### 3.8.2 Submit Order to Karagir (Sub-Tab 2)
 - Assigns order to a specialist artisan (`karagir_id`).
@@ -507,7 +515,7 @@ The system supports three dynamic inventory valuation models for the stock vault
 
 #### 3.8.3 Issue Raw Material to Karagir (Sub-Tab 3)
 - Ledger interface debiting pure metal fine weight to the Karagir's account:
-  $$\text{Karagir Metal Balance} \leftarrow \text{Karagir Metal Balance} + \text{Issued Fine Weight}$$
+  > **New Karagir Metal Balance = Current Karagir Metal Balance + Issued Fine Gold Weight**
 - Deducts raw bullion bars/granules from the showroom vault.
 
 #### 3.8.4 Receive Order & Metal Return from Karagir (Sub-Tab 4)
@@ -517,11 +525,13 @@ The system supports three dynamic inventory valuation models for the stock vault
   - `return_scrap_wt` (Unused scrap, filings, bench sweepings returned)
   - `received_date`
 - **Reconciliation Formulas**:
-  $$\text{Total Metal Accounted} = \text{Received Gross Wt} + \text{Return Scrap Wt}$$
-  $$\text{Actual Working Loss} = \text{Issued Gross Wt} - \text{Total Metal Accounted}$$
-  $$\text{Allowed Wastage} = \frac{\text{Received Net Wt} \times \text{Agreed Wastage}\%}{100}$$
-  $$\text{Net Variance} = \text{Actual Working Loss} - \text{Allowed Wastage}$$
-  - If $\text{Net Variance} > 0$: Artisan exceeded wastage limit; excess loss is debited to artisan's cash ledger.
+  > **ARTISAN METAL RECONCILIATION FORMULAS:**  
+> • **Total Metal Accounted** = Received Gross Weight + Return Scrap Weight  
+> • **Actual Working Loss** = Issued Gross Weight − Total Metal Accounted  
+> • **Allowed Wastage Allowance** = (Received Net Weight × Agreed Wastage %) ÷ 100  
+> • **Net Variance** = Actual Working Loss − Allowed Wastage Allowance  
+> *(If Net Variance > 0, the artisan exceeded allowed wastage; excess metal loss is penalized and debited to artisan's cash ledger)*
+  - If Net Variance > 0: Artisan exceeded wastage limit; excess loss is debited to artisan's cash ledger.
   - If Quality Check passes, item status moves to `Ready for Delivery`.
 
 #### 3.8.5 Convert Order to Final Sales Invoice (Sub-Tab 5)
@@ -559,10 +569,11 @@ The system supports three dynamic inventory valuation models for the stock vault
 - **Invoice Item Table**:
   - Columns: `#`, `Item Description`, `Gross Wt`, `Net Wt`, `Purity`, `Rate/Gm`, `Making Charges`, `Hallmark (HUID)`, `Total Amount`, `Action`.
 - **Financial Settlement Calculations**:
-  $$\text{Subtotal} = \sum (\text{Item Total Amounts})$$
-  $$\text{GST (3%)} = \text{Round}(\text{Subtotal} \times 0.03, 2) \quad \text{[If Tax Invoice]}$$
-  $$\text{Total Invoice Bill} = \text{Subtotal} + \text{GST} - \text{Discount}$$
-  $$\text{Net Due} = \text{Total Invoice Bill} - \text{Old Gold (URD) Credit} - \text{Cash Tendered} - \text{Bank/UPI/Card Tendered}$$
+  > **SALES INVOICE SETTLEMENT FORMULAS:**  
+> • **Subtotal** = Sum of all Item Total Amounts  
+> • **GST (3%)** = Round(Subtotal × 0.03, 2)  [If Tax Invoice Mode]  
+> • **Total Invoice Bill** = Subtotal + GST Amount − Discount  
+> • **Net Balance Due** = Total Invoice Bill − Old Gold (URD) Credit − Cash Tendered − Bank/UPI/Card Tendered
 - **Actions**:
   - **Save & Settle**: Deducts items from inventory vault, creates Day Book entries, updates customer ledger.
   - **Print Bill**: Triggers 3-inch thermal POS slip or full A4/A5 GST Tax Invoice format.
@@ -583,7 +594,7 @@ The system supports three dynamic inventory valuation models for the stock vault
   - `trans_type` (Enum: `Gold Ornaments`, `Bullion 24K Bar`, `Silver 999`, `Raw Castings`)
   - `item_name`, `qty`, `gross_wt`, `black_b`, `stone_wt`, `net_wt`, `purity`, `rate`, `amount`
   - `wastage_pct`
-  - `fin_plus_wastage` $= \text{CalculateFinePlusWastage}(\text{net\_wt}, \text{purity}, \text{wastage\_pct})$
+  - `fin_plus_wastage` = CalculateFinePlusWastage(Net Weight, Purity, Wastage %)
   - `total_amt`
   - `huid` (6-digit hallmarking ID received from supplier)
 
@@ -626,7 +637,7 @@ The system supports three dynamic inventory valuation models for the stock vault
 - Line items:
   - `trans_type` (e.g. `Old Gold Scrap 22K`, `Melting Bits 18K`, `Bench Filings`)
   - `gross_wt`, `net_wt`, `purity` (Assayed touch)
-  - `fin_wt` $= \text{net\_wt} \times \frac{\text{purity}}{100}$
+  - `fin_wt` = (Net Weight × Purity) ÷ 100
   - `rate`, `amount`
   - `actual_fine_recovered` (Pure metal bar received from refiner)
   - Computes `refinery_loss` and `refinery_profit`.
@@ -665,8 +676,9 @@ The system supports three dynamic inventory valuation models for the stock vault
   11. `Details` (Narration, customer/supplier name)
   12. `Total Amt without Disc` (Pre-discount subtotal)
 - **Reconciliation Engine**:
-  $$\text{Cash Closing Balance} = \text{Cash Opening} + \sum (\text{Cash Received}) - \sum (\text{Cash Payment})$$
-  $$\text{Bank Closing Balance} = \text{Bank Opening} + \sum (\text{Bank Received}) - \sum (\text{Bank Payment})$$
+  > **DAILY EOD RECONCILIATION FORMULAS:**  
+> • **Cash Closing Balance** = Cash Opening + Sum of Cash Received − Sum of Cash Payments  
+> • **Bank Closing Balance** = Bank Opening + Sum of Bank Received − Sum of Bank Payments
 - **Export**: Full CSV export of daily audit data.
 
 ---
@@ -721,14 +733,15 @@ The system supports three dynamic inventory valuation models for the stock vault
 - **Screen ID**: `STOCK_REFILL_MANAGER`
 - **Purpose**: Predictive inventory replenishment hub preventing showroom stockouts in fast-moving jewellery SKUs.
 - **Core Formula**:
-  $$\text{Deficit Pieces} = \max\Big(0, \text{Desired Min Stock} - \text{Current Stock}\Big)$$
+  > **Deficit Pieces = Maximum of [ 0, Desired Min Stock − Current Available Stock ]**
 - **Urgency Classification**:
-  - `CRITICAL` (Red): Current stock $\le 20\%$ of Desired Stock.
-  - `LOW` (Amber): Current stock $\le 50\%$ of Desired Stock.
-  - `ADEQUATE` (Green): Current stock $\ge$ Desired Stock.
+  - `CRITICAL` (Red): Current stock ≤ 20% of Desired Stock.
+  - `LOW` (Amber): Current stock ≤ 50% of Desired Stock.
+  - `ADEQUATE` (Green): Current stock ≥ Desired Stock.
 - **Replenishment Calculation**:
-  $$\text{Estimated Refill Metal Weight (g)} = \text{Deficit Pieces} \times \text{Average Gross Wt per Piece}$$
-  $$\text{Estimated Procurement Value (₹)} = \text{Estimated Refill Metal Weight} \times \text{Current Gold Rate}$$
+  > **ESTIMATED REPLENISHMENT REQUIREMENT:**  
+> • **Estimated Refill Metal Weight (g)** = Deficit Pieces × Average Gross Weight per Piece  
+> • **Estimated Procurement Value (₹)** = Estimated Refill Metal Weight × Current Gold Rate
 - **Automated Workflow**:
   - System automatically maps each SKU to its preferred Vendor or Karagir.
   - **1st Login Daily Popup**: Triggers on first manager login, listing all critical deficits.
@@ -742,7 +755,7 @@ The system supports three dynamic inventory valuation models for the stock vault
 - **Rules & Logic**:
   - Customer commits to fixed monthly installment (e.g. ₹5,000 / month) for 11 months.
   - Each monthly installment is converted into pure gold grams based on the spot rate on deposit date:
-    $$\text{Gold Accrued (g)} = \frac{\text{Installment Amount}}{\text{Spot 22K Rate on Deposit Day}}$$
+    > **Accrued Pure Gold (g) = Monthly Installment Amount (₹) ÷ Spot 22K Gold Rate on Deposit Day (₹/g)**
   - **Showroom Bonus Contribution**: Upon completing 11 installments, the showroom contributes the 12th installment free as a loyalty bonus.
   - **Redemption**: Upon maturity, customer redeems total accumulated gold weight towards jewellery purchase with making charge discounts.
 
@@ -834,7 +847,8 @@ CREATE TABLE staff_users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     employee_code VARCHAR(50) UNIQUE NOT NULL,
     name VARCHAR(200) NOT NULL,
-    role VARCHAR(50) NOT NULL CHECK (role IN ('Owner', 'Manager', 'Cashier', 'Accountant', 'Karagir')),
+    role VARCHAR(50) NOT NULL 
+        CHECK (role IN ('Owner', 'Manager', 'Cashier', 'Accountant', 'Karagir')),
     branch_id VARCHAR(50) REFERENCES branches(id),
     email VARCHAR(150),
     phone VARCHAR(20),
@@ -847,7 +861,8 @@ CREATE TABLE staff_users (
 CREATE TABLE erp_accounts (
     account_code VARCHAR(50) PRIMARY KEY,
     account_name VARCHAR(200) NOT NULL,
-    account_type VARCHAR(50) NOT NULL CHECK (account_type IN ('Assets', 'Liabilities', 'Income', 'Expense')),
+    account_type VARCHAR(50) NOT NULL 
+        CHECK (account_type IN ('Assets', 'Liabilities', 'Income', 'Expense')),
     account_group VARCHAR(100) NOT NULL,
     opening_balance DECIMAL(15,2) DEFAULT 0.00,
     balance_type VARCHAR(2) NOT NULL CHECK (balance_type IN ('Dr', 'Cr')),
@@ -958,7 +973,8 @@ CREATE TABLE stock_items (
     is_urd BOOLEAN DEFAULT FALSE,
     is_loose BOOLEAN DEFAULT FALSE,
     is_printed BOOLEAN DEFAULT FALSE,
-    status VARCHAR(30) DEFAULT 'In Stock' CHECK (status IN ('In Stock', 'Sold', 'In Workshop', 'Refining', 'Consignment')),
+    status VARCHAR(30) DEFAULT 'In Stock' 
+        CHECK (status IN ('In Stock', 'Sold', 'In Workshop', 'Refining', 'Consignment')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -983,7 +999,8 @@ CREATE TABLE orders_header (
     close_order BOOLEAN DEFAULT FALSE,
     design_photo TEXT,
     remark TEXT,
-    status VARCHAR(50) DEFAULT 'Booked' CHECK (status IN ('Booked', 'Assigned', 'In Progress', 'Received', 'Ready', 'Delivered', 'Cancelled')),
+    status VARCHAR(50) DEFAULT 'Booked' 
+        CHECK (status IN ('Booked', 'Assigned', 'In Progress', 'Received', 'Ready', 'Delivered', 'Cancelled')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -1051,7 +1068,8 @@ CREATE TABLE karagir_assignments (
     agreed_making_charges DECIMAL(12,2) NOT NULL,
     wastage_pct DECIMAL(5,2) NOT NULL,
     special_instructions TEXT,
-    status VARCHAR(50) DEFAULT 'Assigned' CHECK (status IN ('Assigned', 'In Progress', 'Received', 'Cancelled')),
+    status VARCHAR(50) DEFAULT 'Assigned' 
+        CHECK (status IN ('Assigned', 'In Progress', 'Received', 'Cancelled')),
     received_gross_wt DECIMAL(12,3),
     received_net_wt DECIMAL(12,3),
     received_date DATE,
@@ -1064,7 +1082,8 @@ CREATE TABLE sales_invoices (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     invoice_no VARCHAR(50) UNIQUE NOT NULL,
     branch_id VARCHAR(50) REFERENCES branches(id),
-    bill_mode VARCHAR(20) NOT NULL CHECK (bill_mode IN ('Tax Invoice', 'Estimate')),
+    bill_mode VARCHAR(20) NOT NULL 
+        CHECK (bill_mode IN ('Tax Invoice', 'Estimate')),
     salesman_name VARCHAR(150) NOT NULL,
     customer_name VARCHAR(200) NOT NULL,
     phone VARCHAR(20) NOT NULL,
@@ -1128,8 +1147,10 @@ CREATE TABLE stock_refill_targets (
     vendor_name VARCHAR(200) NOT NULL,
     vendor_phone VARCHAR(20) NOT NULL,
     last_refill_date DATE,
-    status VARCHAR(20) DEFAULT 'adequate' CHECK (status IN ('critical', 'low', 'adequate', 'surplus')),
-    urgency VARCHAR(20) DEFAULT 'NORMAL' CHECK (urgency IN ('HIGH', 'MEDIUM', 'NORMAL')),
+    status VARCHAR(20) DEFAULT 'adequate' 
+        CHECK (status IN ('critical', 'low', 'adequate', 'surplus')),
+    urgency VARCHAR(20) DEFAULT 'NORMAL' 
+        CHECK (urgency IN ('HIGH', 'MEDIUM', 'NORMAL')),
     is_ordered BOOLEAN DEFAULT FALSE,
     last_order_timestamp TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -1148,7 +1169,8 @@ CREATE TABLE gold_scheme_members (
     accumulated_amt DECIMAL(15,2) DEFAULT 0.00,
     gold_wt_accrued DECIMAL(12,3) DEFAULT 0.000,
     bonus_contribution DECIMAL(15,2) DEFAULT 0.00,
-    status VARCHAR(50) DEFAULT 'Active' CHECK (status IN ('Active', 'Matured - Ready for Jewellery Redemption', 'Redeemed', 'Defaulted')),
+    status VARCHAR(50) DEFAULT 'Active' 
+        CHECK (status IN ('Active', 'Matured - Ready for Jewellery Redemption', 'Redeemed', 'Defaulted')),
     enrollment_date DATE NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

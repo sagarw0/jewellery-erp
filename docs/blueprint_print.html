@@ -2,15 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Swarna Jewellery ERP - Functional Blueprint</title>
+  <title>Swarna Jewellery ERP - Complete Functional Blueprint</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;600&display=swap');
-
     @page {
       size: A4;
       margin: 18mm 16mm 20mm 16mm;
       @bottom-right {
-        content: counter(page);
+        content: "Page " counter(page);
+        font-family: Arial, sans-serif;
+        font-size: 9pt;
+        color: #475569;
+        font-weight: bold;
+      }
+      @bottom-left {
+        content: "SWARNA JEWELLERY ERP — FUNCTIONAL BLUEPRINT";
+        font-family: Arial, sans-serif;
+        font-size: 8pt;
+        color: #64748b;
+        letter-spacing: 0.05em;
       }
     }
 
@@ -21,41 +30,40 @@
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
       font-size: 11pt;
       line-height: 1.6;
-      color: #0f172a;
+      color: #09090b;
       background-color: #ffffff;
       margin: 0;
       padding: 0;
     }
 
-    /* Cover / Header Banner */
-    .blueprint-header {
+    /* Document Header Banner */
+    .doc-banner {
       border-bottom: 3px solid #b45309;
-      padding-bottom: 18px;
-      margin-bottom: 28px;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
     }
 
     h1 {
-      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 22pt;
       font-weight: 800;
-      color: #0f172a;
-      letter-spacing: -0.02em;
+      color: #09090b;
+      letter-spacing: -0.01em;
       margin-top: 0;
-      margin-bottom: 8px;
-      line-height: 1.25;
+      margin-bottom: 6px;
+      line-height: 1.2;
       border-left: 6px solid #b45309;
-      padding-left: 14px;
+      padding-left: 12px;
     }
 
     h2 {
       font-size: 15pt;
       font-weight: 700;
       color: #1e3a8a;
-      border-bottom: 1.5px solid #cbd5e1;
-      padding-bottom: 6px;
+      border-bottom: 2px solid #cbd5e1;
+      padding-bottom: 5px;
       margin-top: 32px;
       margin-bottom: 14px;
       page-break-after: avoid;
@@ -65,7 +73,7 @@
       font-size: 12.5pt;
       font-weight: 700;
       color: #0f172a;
-      margin-top: 24px;
+      margin-top: 22px;
       margin-bottom: 10px;
       page-break-after: avoid;
     }
@@ -74,14 +82,15 @@
       font-size: 11.5pt;
       font-weight: 700;
       color: #334155;
-      margin-top: 18px;
+      margin-top: 16px;
       margin-bottom: 8px;
       page-break-after: avoid;
     }
 
     p {
       margin-top: 0;
-      margin-bottom: 12px;
+      margin-bottom: 11px;
+      color: #09090b;
     }
 
     ul, ol {
@@ -92,41 +101,42 @@
 
     li {
       margin-bottom: 4px;
+      color: #09090b;
     }
 
     strong {
-      color: #020617;
+      color: #000000;
       font-weight: 700;
     }
 
     hr {
       border: 0;
-      border-top: 1px solid #e2e8f0;
-      margin: 28px 0;
+      border-top: 1.5px solid #e2e8f0;
+      margin: 26px 0;
     }
 
-    /* Tables */
+    /* High-Contrast Tables */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 16px 0 24px 0;
-      font-size: 9.5pt;
+      margin: 16px 0 22px 0;
+      font-size: 10pt;
       page-break-inside: avoid;
     }
 
     th {
-      background-color: #f1f5f9;
-      color: #0f172a;
+      background-color: #1e293b;
+      color: #ffffff;
       font-weight: 700;
       text-align: left;
-      padding: 8px 10px;
-      border: 1px solid #cbd5e1;
-      border-bottom: 2px solid #94a3b8;
+      padding: 9px 12px;
+      border: 1px solid #334155;
     }
 
     td {
-      padding: 7px 10px;
-      border: 1px solid #e2e8f0;
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      color: #09090b;
       vertical-align: top;
     }
 
@@ -134,29 +144,55 @@
       background-color: #f8fafc;
     }
 
-    /* Code Blocks and Pre */
-    pre {
-      background-color: #090d16;
-      color: #f1f5f9;
-      padding: 14px 16px;
-      border-radius: 8px;
-      font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
-      font-size: 8.5pt;
-      line-height: 1.45;
-      overflow-x: auto;
-      border: 1px solid #1e293b;
-      margin: 14px 0;
+    /* Working Formula Cards (Blockquotes) */
+    blockquote {
+      margin: 14px 0 18px 0;
+      padding: 12px 18px;
+      background-color: #f8fafc;
+      border: 1.5px solid #94a3b8;
+      border-left: 6px solid #2563eb;
+      border-radius: 6px;
+      color: #09090b;
+      font-size: 10.5pt;
+      line-height: 1.55;
       page-break-inside: avoid;
     }
 
+    blockquote p {
+      margin: 0;
+      color: #09090b;
+    }
+
+    blockquote strong {
+      color: #000000;
+    }
+
+    /* Code Blocks & DDL - Technical Light Paper Theme */
+    pre {
+      background-color: #f8fafc;
+      color: #0f172a;
+      padding: 14px 16px;
+      border-radius: 6px;
+      font-family: Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 9pt;
+      font-weight: 500;
+      line-height: 1.45;
+      border: 1.5px solid #94a3b8;
+      margin: 14px 0;
+      page-break-inside: avoid;
+      white-space: pre-wrap !important;
+      word-break: break-word !important;
+    }
+
     code {
-      font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
-      font-size: 8.5pt;
+      font-family: Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 9.5pt;
       background-color: #f1f5f9;
       color: #0f172a;
-      padding: 1.5px 5px;
+      padding: 2px 5px;
       border-radius: 4px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #cbd5e1;
+      font-weight: 600;
     }
 
     pre code {
@@ -164,59 +200,7 @@
       color: inherit;
       border: none;
       padding: 0;
-    }
-
-    /* Math Formula Blocks */
-    .math-block {
-      background-color: #fffdf5;
-      border-left: 4px solid #d97706;
-      border-top: 1px solid #fef3c7;
-      border-right: 1px solid #fef3c7;
-      border-bottom: 1px solid #fef3c7;
-      border-radius: 6px;
-      padding: 9px 15px;
-      margin: 12px 0 16px 0;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      font-size: 9.5pt;
-      color: #78350f;
-      page-break-inside: avoid;
-    }
-
-    .math-tag {
-      font-size: 7pt;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      color: #b45309;
-      margin-bottom: 3px;
-    }
-
-    .math-inline {
-      background-color: #fef3c7;
-      color: #92400e;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      font-size: 9pt;
-      padding: 1px 4px;
-      border-radius: 3px;
-    }
-
-    /* Badges & Tags */
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 8pt;
-      font-weight: 700;
-      text-transform: uppercase;
-      background: #e0f2fe;
-      color: #0369a1;
-      border: 1px solid #bae6fd;
-    }
-
-    /* Section Page Break rules */
-    h2 {
-      break-before: auto;
+      font-weight: 500;
     }
   </style>
 </head>
@@ -522,46 +506,86 @@
 <h2>2. MATHEMATICAL &amp; BUSINESS CALCULATION ENGINES</h2>
 <h3>2.1 Net Weight Engine</h3>
 <p>The net weight represents the chargeable precious metal content after subtracting non-metallic additions:</p>
-<div class="math-block"><div class="math-tag">FORMULA</div>Net Weight = max(0, Gross Weight - Black Beads Weight - Stone Weight - Bag Weight)</div>
-- **Inputs**:
-  - `gross_wt` (Decimal, 3 decimals, mandatory)
-  - `black_beats` (Decimal, 3 decimals, optional, default 0) — used specifically for Mangalsutras
-  - `stone_wt` (Decimal, 3 decimals, optional, default 0) — cz, semi-precious, synthetic stones
-  - `bag_wt` (Decimal, 3 decimals, optional, default 0) — packaging or tag wire deduction
-- **Output**: `net_wt` (Decimal, 3 decimals)
-- **Constraint**: Must be <span class="math-inline"> ≤  gross_wt</span>. If negative, triggers validation error: `ERR_INVALID_NET_WEIGHT`.<h3>2.2 Fine Bullion Weight Engine</h3>
+<blockquote>
+<p><strong>WORKING ENGLISH FORMULA:</strong><br><strong>Net Weight (g) = Maximum of [ 0, Gross Weight − Black Beads Weight − Stone Weight − Bag Weight ]</strong></p>
+</blockquote>
+<ul>
+<li><strong>Inputs</strong>:<ul>
+<li><code>gross_wt</code> (Decimal, 3 decimals, mandatory)</li>
+<li><code>black_beats</code> (Decimal, 3 decimals, optional, default 0) — used specifically for Mangalsutras</li>
+<li><code>stone_wt</code> (Decimal, 3 decimals, optional, default 0) — cz, semi-precious, synthetic stones</li>
+<li><code>bag_wt</code> (Decimal, 3 decimals, optional, default 0) — packaging or tag wire deduction</li>
+</ul>
+</li>
+<li><strong>Output</strong>: <code>net_wt</code> (Decimal, 3 decimals)</li>
+<li><strong>Constraint</strong>: Must be less than or equal to Gross Weight. If negative, triggers validation error: <code>ERR_INVALID_NET_WEIGHT</code>.</li>
+</ul>
+<h3>2.2 Fine Bullion Weight Engine</h3>
 <p>The pure 24K equivalent weight contained within an alloyed piece:</p>
-<div class="math-block"><div class="math-tag">FORMULA</div>Fine Weight = (Net Weight  ×  Purity ÷ 100)</div>
-- **Inputs**:
-  - `net_wt` (Decimal, 3 decimals)
-  - `purity` (Decimal, 2 decimals, e.g. 91.60)
-- **Output**: `fine_wt` (Decimal, 3 decimals)<h3>2.3 Wastage &amp; Fine+Wastage Allowance</h3>
+<blockquote>
+<p><strong>WORKING ENGLISH FORMULA:</strong><br><strong>Fine Bullion Weight (g) = (Net Weight × Purity Percentage) ÷ 100</strong></p>
+</blockquote>
+<ul>
+<li><strong>Inputs</strong>:<ul>
+<li><code>net_wt</code> (Decimal, 3 decimals)</li>
+<li><code>purity</code> (Decimal, 2 decimals, e.g. 91.60)</li>
+</ul>
+</li>
+<li><strong>Output</strong>: <code>fine_wt</code> (Decimal, 3 decimals)</li>
+</ul>
+<h3>2.3 Wastage &amp; Fine+Wastage Allowance</h3>
 <p>Artisans and manufacturers incur metal loss during casting, filing, soldering, and polishing. In wholesale purchasing, wastage is credited to the supplier:</p>
-<div class="math-block"><div class="math-tag">FORMULA</div>Wastage Allowance (g) = (Net Weight  ×  Wastage% ÷ 100)</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Fine + Wastage (g) = Fine Weight + Wastage Allowance (g)</div>
-- **Inputs**:
-  - `net_wt`, `purity`, `wastage_pct`
-- **Output**: `fin_plus_wastage` (Decimal, 3 decimals)
-- **Usage**: Used to debit the showroom's metal ledger when purchasing from manufacturers.<h3>2.4 Making Charges Engine (Per Gram vs Percentage of Value)</h3>
+<blockquote>
+<p><strong>WORKING ENGLISH FORMULAS:</strong><br><strong>1. Wastage Allowance (g) = (Net Weight × Wastage Percentage) ÷ 100</strong><br><strong>2. Fine + Wastage Metal Total (g) = Fine Bullion Weight + Wastage Allowance</strong></p>
+</blockquote>
+<ul>
+<li><strong>Inputs</strong>:<ul>
+<li><code>net_wt</code>, <code>purity</code>, <code>wastage_pct</code></li>
+</ul>
+</li>
+<li><strong>Output</strong>: <code>fin_plus_wastage</code> (Decimal, 3 decimals)</li>
+<li><strong>Usage</strong>: Used to debit the showroom&#39;s metal ledger when purchasing from manufacturers.</li>
+</ul>
+<h3>2.4 Making Charges Engine (Per Gram vs Percentage of Value)</h3>
 <p>Making charges represent the fabrication fee. The system supports three computational modes:</p>
 <ol>
-<li><strong>Per Gram Basis</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Making Amount = Net Weight  ×  Making Rate per Gram</div></li>
-<li><strong>Percentage of Metal Value</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Metal Value = Net Weight  ×  Gold Rate per Gram</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Making Amount = (Metal Value  ×  Making% ÷ 100)</div></li>
-<li><strong>Hybrid Mode</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Making Amount = (Net Weight  ×  Making Rate per Gram) + ((Metal Value  ×  Making% ÷ 100))</div></li>
+<li><strong>Per Gram Basis</strong>:<blockquote>
+<p><strong>Per-Gram Making Charge = Net Weight × Making Rate per Gram</strong></p>
+</blockquote>
+</li>
+<li><strong>Percentage of Metal Value</strong>:<blockquote>
+<p><strong>Percentage Making Charge:</strong></p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>• Metal Value = Net Weight × Gold Rate per Gram<br>• Making Amount = (Metal Value × Making Percentage) ÷ 100</p>
+</blockquote>
+<ol start="3">
+<li><strong>Hybrid Mode</strong>:<blockquote>
+<p><strong>Hybrid Making Charge = (Net Weight × Making Rate per Gram) + ((Metal Value × Making Percentage) ÷ 100)</strong></p>
+</blockquote>
+</li>
 </ol>
 <ul>
 <li><strong>Output</strong>: <code>mkg_amt</code> (Decimal, 2 decimals)</li>
 </ul>
 <h3>2.5 Line Item Total &amp; Hallmarking (HUID) Fees</h3>
-<div class="math-block"><div class="math-tag">FORMULA</div>Line Item Amount = (Net Weight  ×  Rate) + Stone Amount + Making Amount + Hallmark Charges</div>
-- **Inputs**:
-  - `net_wt` (Decimal, 3 decimals)
-  - `rate` (Decimal, 2 decimals)
-  - `stone_amt` (Decimal, 2 decimals)
-  - `mkg_amt` (Decimal, 2 decimals)
-  - `hallmark_charges` (Decimal, 2 decimals, standard ₹45 per BIS HUID article)
-- **Output**: `item_amt` / `total_amt` (Decimal, 2 decimals)<h3>2.6 Indian GST &amp; Statutory Tax Split (CGST/SGST/TDS/TCS)</h3>
+<blockquote>
+<p><strong>WORKING ENGLISH FORMULA:</strong><br><strong>Line Item Total Amount = (Net Weight × Gold Rate) + Stone Amount + Making Amount + Hallmark (HUID) Fee</strong></p>
+</blockquote>
+<ul>
+<li><strong>Inputs</strong>:<ul>
+<li><code>net_wt</code> (Decimal, 3 decimals)</li>
+<li><code>rate</code> (Decimal, 2 decimals)</li>
+<li><code>stone_amt</code> (Decimal, 2 decimals)</li>
+<li><code>mkg_amt</code> (Decimal, 2 decimals)</li>
+<li><code>hallmark_charges</code> (Decimal, 2 decimals, standard ₹45 per BIS HUID article)</li>
+</ul>
+</li>
+<li><strong>Output</strong>: <code>item_amt</code> / <code>total_amt</code> (Decimal, 2 decimals)</li>
+</ul>
+<h3>2.6 Indian GST &amp; Statutory Tax Split (CGST/SGST/TDS/TCS)</h3>
 <ul>
 <li><strong>Standard Jewellery GST Rate</strong>: 3.00%<ul>
 <li><strong>Intra-State Transaction</strong> (Showroom State = Customer/Vendor State):<ul>
@@ -569,7 +593,7 @@
 <li><strong>SGST (State GST / HGST)</strong> = 1.50%</li>
 </ul>
 </li>
-<li><strong>Inter-State Transaction</strong> (Showroom State <span class="math-inline"> ≠ </span> Customer/Vendor State):<ul>
+<li><strong>Inter-State Transaction</strong> (Showroom State ≠ Customer/Vendor State):<ul>
 <li><strong>IGST (Integrated GST)</strong> = 3.00%</li>
 </ul>
 </li>
@@ -577,47 +601,65 @@
 </li>
 <li><strong>Income Tax TDS (Section 194Q)</strong>: 0.10% on purchases exceeding ₹50 Lakhs.</li>
 <li><strong>Income Tax TCS (Section 206C(1H))</strong>: 0.10% (or 0.075%) on sales receipts exceeding ₹50 Lakhs in a financial year.</li>
-<li><strong>Formulas</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>CGST Amount = (Taxable Subtotal  ×  1.5 ÷ 100)</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>SGST Amount = (Taxable Subtotal  ×  1.5 ÷ 100)</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>GST Total = CGST Amount + SGST Amount</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>TDS Amount = (Taxable Subtotal  ×  TDS% ÷ 100)</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>TCS Amount = ((Taxable Subtotal + GST Total)  ×  TCS% ÷ 100)</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Final Invoice Bill Amount = Taxable Subtotal + GST Total + TCS Amount - Discount</div></li>
+<li><strong>Formulas</strong>:<blockquote>
+<p><strong>WORKING ENGLISH FORMULAS (STATUTORY TAX SPLIT):</strong></p>
+</blockquote>
+</li>
 </ul>
+<blockquote>
+<p>• <strong>CGST (1.5%)</strong> = (Taxable Subtotal × 1.5) ÷ 100<br>• <strong>SGST (1.5%)</strong> = (Taxable Subtotal × 1.5) ÷ 100<br>• <strong>Total GST (3.0%)</strong> = CGST Amount + SGST Amount<br>• <strong>TDS (0.1% under Section 194Q)</strong> = (Taxable Subtotal × TDS %) ÷ 100<br>• <strong>TCS (0.1% under Section 206C)</strong> = ((Taxable Subtotal + Total GST) × TCS %) ÷ 100<br>• <strong>Final Bill Grand Total</strong> = Taxable Subtotal + Total GST + TCS Amount − Discount</p>
+</blockquote>
 <h3>2.7 Old Gold (URD) Valuation, Touch Deduction &amp; Exchange Netting</h3>
 <p>When a customer trades in old jewellery (Unregistered Dealer / URD purchase):</p>
-<div class="math-block"><div class="math-tag">FORMULA</div>Old Gold Net Wt = Gross Wt - Dust/Enamel/Stone Loss</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Assayed Fine Wt = (Old Gold Net Wt  ×  Tested Touch/Purity ÷ 100)</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Old Gold Valuation Amount = Assayed Fine Wt  ×  Current 24K Bullion Buyback Rate</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Net Payable by Customer = New Jewellery Invoice Total - Old Gold Valuation Amount - Advance Payments</div><h3>2.8 Refinery Inward Yield, Melting Loss/Profit &amp; Assayed vs Recovered Fine</h3>
+<blockquote>
+<p><strong>WORKING ENGLISH FORMULAS (OLD GOLD URD EXCHANGE):</strong><br>• <strong>Old Gold Net Weight</strong> = Gross Weight − Dust / Stone / Enamel Loss<br>• <strong>Assayed Fine Pure Weight</strong> = (Old Gold Net Weight × Tested Touch Purity %) ÷ 100<br>• <strong>Old Gold Valuation Credit</strong> = Assayed Fine Pure Weight × Current 24K Bullion Buyback Rate<br>• <strong>Net Balance Payable by Customer</strong> = New Jewellery Invoice Total − Old Gold Valuation Credit − Advance Payments</p>
+</blockquote>
+<h3>2.8 Refinery Inward Yield, Melting Loss/Profit &amp; Assayed vs Recovered Fine</h3>
 <p>When scrap lots are sent to a refinery:</p>
-<div class="math-block"><div class="math-tag">FORMULA</div>Theoretical Fine Weight = (Inward Net Weight  ×  Assayed Touch ÷ 100)</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Variance = Actual Pure 24K Bar Recovered - Theoretical Fine Weight</div>
-- If <span class="math-inline">Variance < 0</span>:
-  <div class="math-block"><div class="math-tag">FORMULA</div>Refinery Melting Loss = |Variance|</div>
-  <div class="math-block"><div class="math-tag">FORMULA</div>Refinery Profit = 0</div>
-- If <span class="math-inline">Variance > 0</span>:
-  <div class="math-block"><div class="math-tag">FORMULA</div>Refinery Profit = Variance</div>
-  <div class="math-block"><div class="math-tag">FORMULA</div>Refinery Melting Loss = 0</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Refining Charges = Gross Weight Melted  ×  Refinery Melting Fee per Gram</div><h3>2.9 Multi-Karat Real-Time Bullion Pricing Engine</h3>
+<blockquote>
+<p><strong>WORKING ENGLISH FORMULAS (REFINERY YIELD):</strong><br>• <strong>Theoretical Fine Gold</strong> = (Inward Net Weight × Assayed Touch Purity %) ÷ 100<br>• <strong>Variance</strong> = Actual Pure 24K Bar Recovered from Refiner − Theoretical Fine Gold</p>
+</blockquote>
+<ul>
+<li>If Variance is negative (less than 0):<blockquote>
+<p>• <strong>Refinery Melting Loss</strong> = Absolute Value of Variance (Refinery Profit = 0)</p>
+</blockquote>
+</li>
+<li>If Variance is positive (greater than 0):<blockquote>
+<p>• <strong>Refinery Yield Profit</strong> = Variance (Refinery Melting Loss = 0)</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>• <strong>Refining Melting Fee (₹)</strong> = Gross Weight Melted × Refiner Fee per Gram</p>
+</blockquote>
+<h3>2.9 Multi-Karat Real-Time Bullion Pricing Engine</h3>
 <p>From the baseline 24K Gold Spot Rate and Silver 999 Rate:</p>
 <ul>
-<li><strong>Gold 24K (999.0)</strong>: <span class="math-inline">Base 24K + Showroom Markup</span></li>
-<li><strong>Gold 22K (916.0)</strong>: <span class="math-inline">Gold 24K  ×  0.916</span></li>
-<li><strong>Gold 18K (750.0)</strong>: <span class="math-inline">Gold 24K  ×  0.750</span></li>
-<li><strong>Gold 14K (585.0)</strong>: <span class="math-inline">Gold 24K  ×  0.585</span></li>
-<li><strong>Gold 24K Tola (10g)</strong>: <span class="math-inline">Gold 24K  ×  10</span></li>
-<li><strong>Gold 22K Tola (10g)</strong>: <span class="math-inline">Gold 22K  ×  10</span></li>
-<li><strong>Silver 999 (Pure)</strong>: <span class="math-inline">Base Silver + Showroom Markup</span></li>
-<li><strong>Silver 925 (Sterling)</strong>: <span class="math-inline">Silver 999  ×  0.925</span></li>
-<li><strong>Silver Bar (1 Kg)</strong>: <span class="math-inline">Silver 999  ×  1000</span></li>
+<li><strong>Gold 24K (999.0)</strong>: Base 24K Spot Rate + Showroom Markup</li>
+<li><strong>Gold 22K (916.0)</strong>: Gold 24K Rate × 0.916</li>
+<li><strong>Gold 18K (750.0)</strong>: Gold 24K Rate × 0.750</li>
+<li><strong>Gold 14K (585.0)</strong>: Gold 24K Rate × 0.585</li>
+<li><strong>Gold 24K Tola (10g)</strong>: Gold 24K Rate × 10</li>
+<li><strong>Gold 22K Tola (10g)</strong>: Gold 22K Rate × 10</li>
+<li><strong>Silver 999 (Pure)</strong>: Base Silver Spot Rate + Showroom Markup</li>
+<li><strong>Silver 925 (Sterling)</strong>: Silver 999 Rate × 0.925</li>
+<li><strong>Silver Bar (1 Kg)</strong>: Silver 999 Rate × 1,000</li>
 </ul>
 <h3>2.10 Inventory Valuation Engine</h3>
 <p>The system supports three dynamic inventory valuation models for the stock vault:</p>
 <ol>
-<li><strong>Market Spot Valuation</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Vault Valuation = ∑ (Item Fine Weight  ×  Live 24K Spot Rate)</div></li>
-<li><strong>Acquisition Cost Valuation</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Vault Valuation = ∑ (Item Inward Purchase Cost)</div></li>
-<li><strong>Weighted Average Cost (WAC)</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>WAC Rate = (Total Valuation of Current Stock + Valuation of New Inward Lot ÷ Total Fine Weight in Vault)</div></li>
+<li><strong>Market Spot Valuation</strong>:<blockquote>
+<p><strong>Market Spot Valuation = Sum of all (Item Fine Weight × Live 24K Spot Rate)</strong></p>
+</blockquote>
+</li>
+<li><strong>Acquisition Cost Valuation</strong>:<blockquote>
+<p><strong>Acquisition Cost Valuation = Sum of all (Item Inward Purchase Cost)</strong></p>
+</blockquote>
+</li>
+<li><strong>Weighted Average Cost (WAC)</strong>:<blockquote>
+<p><strong>Weighted Average Cost (WAC) Rate = (Total Value of Current Stock + Inward Lot Value) ÷ Total Fine Weight in Vault</strong></p>
+</blockquote>
+</li>
 </ol>
 <hr>
 <h2>3. EXHAUSTIVE SCREEN-BY-SCREEN FUNCTIONAL SPECIFICATIONS</h2>
@@ -656,22 +698,31 @@
 </ul>
 </li>
 <li><strong>Top 7 KPI Metric Cards</strong>:<ul>
-<li><code>Cash in Hand</code>: Current physical counter cash = <span class="math-inline">Opening Cash + Cash Received - Cash Paid</span>.</li>
+<li><code>Cash in Hand</code>: Current physical counter cash = Opening Cash + Cash Received − Cash Paid.</li>
 <li><code>Bank Balances</code>: Sum of all active bank account ledger balances minus OD/CC credit line drawdowns.</li>
 <li><code>Gross Sales Today</code>: Total invoice value generated on current date + total gold grams sold.</li>
 <li><code>Gross Purchases Today</code>: Inward metal value + purchase grams.</li>
 <li><code>Active In-flight Orders</code>: Total pending customer custom orders in workshop pipeline.</li>
-<li><code>Walk-in Clients &amp; Footfall</code>: Showroom visitor counter and counter conversion rate (<span class="math-inline">(Invoices Generated ÷ Total Visitors)  ×  100</span>).</li>
+<li><code>Walk-in Clients &amp; Footfall</code>: Showroom visitor counter and counter conversion rate ((Invoices Generated ÷ Total Visitors) × 100).</li>
 <li><code>Total Vault Stock Valuation</code>: Current monetary value of inventory at live spot rate.</li>
 </ul>
 </li>
 <li><strong>Bullion Valuation Simulator</strong>:<ul>
 <li>Inputs: User adjusts a dynamic slider or input box for <code>Simulated 24K Rate</code>.</li>
-<li>Derives <code>Simulated 22K Rate</code> <span class="math-inline">= Simulated 24K Rate  ×  0.916</span>.</li>
-<li>Computes:<div class="math-block"><div class="math-tag">FORMULA</div>Projected Vault Value = Total Vault Pure Gold (g)  ×  Simulated 24K Rate</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Simulated Valuation Delta = Projected Vault Value - Base Valuation at Acquisition</div></li>
+<li>Derives <code>Simulated 22K Rate</code> = Simulated 24K Rate × 0.916.</li>
+<li>Computes:<blockquote>
+<p><strong>BULLION SIMULATOR FORMULAS:</strong></p>
+</blockquote>
+</li>
 </ul>
 </li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>• <strong>Projected Vault Value</strong> = Total Vault Pure Gold (Grams) × Simulated 24K Rate<br>• <strong>Simulated Valuation Delta</strong> = Projected Vault Value − Base Valuation at Acquisition</p>
+</blockquote>
+<ol start="4">
 <li><strong>Multi-Branch Velocity Comparison</strong>:<ul>
 <li>Renders comparative performance metrics across Mumbai Flagship, Pune Camp, and Thane West branches:<ul>
 <li>Revenue (₹)</li>
@@ -713,8 +764,6 @@
 </ul>
 </li>
 </ol>
-</li>
-</ul>
 <hr>
 <h3>3.3 Account Master (Chart of Accounts &amp; POS Surcharges)</h3>
 <ul>
@@ -834,9 +883,15 @@
 </ul>
 </li>
 <li><strong>Calculations &amp; Validations</strong>:<ul>
-<li>Automatically calculates <span class="math-inline">Net Wt</span> and <span class="math-inline">Fine Wt</span>.</li>
-<li>Enforces <strong>Conservation of Mass</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>∑ (Individual Piece Gross Weights)  ≤  Master Item Total Stock Weight</div></li>
-<li>Decrements <code>remaining_weight</code> of master item in real time:<div class="math-block"><div class="math-tag">FORMULA</div>Remaining Weight = Total Stock Weight - ∑ (Piece Gross Weights)</div></li>
+<li>Automatically calculates Net Weight and Fine Weight.</li>
+<li>Enforces <strong>Conservation of Mass</strong>:<blockquote>
+<p><strong>Mass Conservation Rule: Sum of all Individual Piece Gross Weights ≤ Master Item Total Stock Weight</strong></p>
+</blockquote>
+</li>
+<li>Decrements <code>remaining_weight</code> of master item in real time:<blockquote>
+<p><strong>Remaining Stock Weight = Master Item Total Stock Weight − Sum of Piece Gross Weights</strong></p>
+</blockquote>
+</li>
 <li>Upon clicking &quot;Save &amp; Convert to Barcode Tags&quot;, generated items are automatically committed to the inventory store and forwarded to the Barcode Tagging Studio.</li>
 </ul>
 </li>
@@ -878,7 +933,10 @@
 <li><strong>Core Operations</strong>:<ol>
 <li><strong>Batch Tag Print Spooler</strong>: Multi-select tags, preview printable thermal sheet, spool to connected thermal printer (TSC, Zebra, Citizen) via raw ESC/POS, TSPL, or browser print.</li>
 <li><strong>Tag Loose Stock</strong>: Convert loose raw purchases or un-tagged stock into individual barcoded items with serial tracking.</li>
-<li><strong>Split Piece Draft Engine</strong>: Divide a multi-quantity or multi-part jewellery set into separate barcodes while ensuring:<div class="math-block"><div class="math-tag">FORMULA</div>∑ (Split Pieces Net Wt) = Original Set Net Wt</div></li>
+<li><strong>Split Piece Draft Engine</strong>: Divide a multi-quantity or multi-part jewellery set into separate barcodes while ensuring:<blockquote>
+<p><strong>Mass Conservation Rule: Sum of all Split Pieces Net Weight = Original Set Net Weight</strong></p>
+</blockquote>
+</li>
 <li><strong>Tag Re-Printing &amp; History</strong>: Track how many times a tag was printed to prevent counterfeit tag duplication.</li>
 </ol>
 </li>
@@ -925,7 +983,7 @@
 <li>Customer pays advance to lock gold rate on booking day:<ul>
 <li><code>rate_cut_gold_wt</code> (Grams booked)</li>
 <li><code>rate_cut_gold_rate</code> (₹/g locked)</li>
-<li><code>rate_cut_gold_amount</code> <span class="math-inline">= rate_cut_gold_wt  ×  rate_cut_gold_rate</span></li>
+<li><code>rate_cut_gold_amount</code> = Rate Cut Gold Weight × Rate Cut Gold Rate</li>
 </ul>
 </li>
 </ul>
@@ -937,14 +995,16 @@
 </li>
 </ul>
 </li>
-<li><strong>Financial Summary Calculations</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Total Order Value = ∑ (Line Item Amounts)</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Taxes = CalculateTaxes(Total Order Value, gst_not_required)</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Gross Order Total = Total Order Value + GST Amount - Discount</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Total Advance Credited = Cash Advance + Bank Advance + Rate Cut Amount + Old Gold Amount</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Balance Due at Delivery = Gross Order Total - Total Advance Credited</div></li>
+<li><strong>Financial Summary Calculations</strong>:<blockquote>
+<p><strong>ORDER FINANCIAL SUMMARY FORMULAS:</strong></p>
+</blockquote>
+</li>
 </ul>
 </li>
 </ul>
+<blockquote>
+<p>• <strong>Total Order Value</strong> = Sum of all Line Item Amounts<br>• <strong>Taxes</strong> = CalculateTaxes(Total Order Value, GST Exemption Flag)<br>• <strong>Gross Order Total</strong> = Total Order Value + GST Amount − Discount<br>• <strong>Total Advance Credited</strong> = Cash Advance + Bank Advance + Rate Cut Gold Amount + Old Gold Credit<br>• <strong>Balance Due at Delivery</strong> = Gross Order Total − Total Advance Credited</p>
+</blockquote>
 <h4>3.8.2 Submit Order to Karagir (Sub-Tab 2)</h4>
 <ul>
 <li>Assigns order to a specialist artisan (<code>karagir_id</code>).</li>
@@ -962,7 +1022,10 @@
 </ul>
 <h4>3.8.3 Issue Raw Material to Karagir (Sub-Tab 3)</h4>
 <ul>
-<li>Ledger interface debiting pure metal fine weight to the Karagir&#39;s account:<div class="math-block"><div class="math-tag">FORMULA</div>Karagir Metal Balance  ≤ ftarrow Karagir Metal Balance + Issued Fine Weight</div></li>
+<li>Ledger interface debiting pure metal fine weight to the Karagir&#39;s account:<blockquote>
+<p><strong>New Karagir Metal Balance = Current Karagir Metal Balance + Issued Fine Gold Weight</strong></p>
+</blockquote>
+</li>
 <li>Deducts raw bullion bars/granules from the showroom vault.</li>
 </ul>
 <h4>3.8.4 Receive Order &amp; Metal Return from Karagir (Sub-Tab 4)</h4>
@@ -974,12 +1037,17 @@
 <li><code>received_date</code></li>
 </ul>
 </li>
-<li><strong>Reconciliation Formulas</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Total Metal Accounted = Received Gross Wt + Return Scrap Wt</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Actual Working Loss = Issued Gross Wt - Total Metal Accounted</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Allowed Wastage = (Received Net Wt  ×  Agreed Wastage% ÷ 100)</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Net Variance = Actual Working Loss - Allowed Wastage</div>
-- If <span class="math-inline">Net Variance > 0</span>: Artisan exceeded wastage limit; excess loss is debited to artisan's cash ledger.
-- If Quality Check passes, item status moves to `Ready for Delivery`.</li>
+<li><strong>Reconciliation Formulas</strong>:<blockquote>
+<p><strong>ARTISAN METAL RECONCILIATION FORMULAS:</strong></p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>• <strong>Total Metal Accounted</strong> = Received Gross Weight + Return Scrap Weight<br>• <strong>Actual Working Loss</strong> = Issued Gross Weight − Total Metal Accounted<br>• <strong>Allowed Wastage Allowance</strong> = (Received Net Weight × Agreed Wastage %) ÷ 100<br>• <strong>Net Variance</strong> = Actual Working Loss − Allowed Wastage Allowance<br><em>(If Net Variance &gt; 0, the artisan exceeded allowed wastage; excess metal loss is penalized and debited to artisan&#39;s cash ledger)</em></p>
+</blockquote>
+<ul>
+<li>If Net Variance &gt; 0: Artisan exceeded wastage limit; excess loss is debited to artisan&#39;s cash ledger.</li>
+<li>If Quality Check passes, item status moves to <code>Ready for Delivery</code>.</li>
 </ul>
 <h4>3.8.5 Convert Order to Final Sales Invoice (Sub-Tab 5)</h4>
 <ul>
@@ -1028,10 +1096,15 @@
 <li>Columns: <code>#</code>, <code>Item Description</code>, <code>Gross Wt</code>, <code>Net Wt</code>, <code>Purity</code>, <code>Rate/Gm</code>, <code>Making Charges</code>, <code>Hallmark (HUID)</code>, <code>Total Amount</code>, <code>Action</code>.</li>
 </ul>
 </li>
-<li><strong>Financial Settlement Calculations</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Subtotal = ∑ (Item Total Amounts)</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>GST (3%) = Round(Subtotal  ×  0.03, 2)     [If Tax Invoice]</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Total Invoice Bill = Subtotal + GST - Discount</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Net Due = Total Invoice Bill - Old Gold (URD) Credit - Cash Tendered - Bank/UPI/Card Tendered</div></li>
+<li><strong>Financial Settlement Calculations</strong>:<blockquote>
+<p><strong>SALES INVOICE SETTLEMENT FORMULAS:</strong></p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>• <strong>Subtotal</strong> = Sum of all Item Total Amounts<br>• <strong>GST (3%)</strong> = Round(Subtotal × 0.03, 2)  [If Tax Invoice Mode]<br>• <strong>Total Invoice Bill</strong> = Subtotal + GST Amount − Discount<br>• <strong>Net Balance Due</strong> = Total Invoice Bill − Old Gold (URD) Credit − Cash Tendered − Bank/UPI/Card Tendered</p>
+</blockquote>
+<ul>
 <li><strong>Actions</strong>:<ul>
 <li><strong>Save &amp; Settle</strong>: Deducts items from inventory vault, creates Day Book entries, updates customer ledger.</li>
 <li><strong>Print Bill</strong>: Triggers 3-inch thermal POS slip or full A4/A5 GST Tax Invoice format.</li>
@@ -1056,7 +1129,7 @@
 <li><code>trans_type</code> (Enum: <code>Gold Ornaments</code>, <code>Bullion 24K Bar</code>, <code>Silver 999</code>, <code>Raw Castings</code>)</li>
 <li><code>item_name</code>, <code>qty</code>, <code>gross_wt</code>, <code>black_b</code>, <code>stone_wt</code>, <code>net_wt</code>, <code>purity</code>, <code>rate</code>, <code>amount</code></li>
 <li><code>wastage_pct</code></li>
-<li><code>fin_plus_wastage</code> <span class="math-inline">= CalculateFinePlusWastage(net_wt, purity, wastage_pct)</span></li>
+<li><code>fin_plus_wastage</code> = CalculateFinePlusWastage(Net Weight, Purity, Wastage %)</li>
 <li><code>total_amt</code></li>
 <li><code>huid</code> (6-digit hallmarking ID received from supplier)</li>
 </ul>
@@ -1116,7 +1189,7 @@
 <li>Line items:<ul>
 <li><code>trans_type</code> (e.g. <code>Old Gold Scrap 22K</code>, <code>Melting Bits 18K</code>, <code>Bench Filings</code>)</li>
 <li><code>gross_wt</code>, <code>net_wt</code>, <code>purity</code> (Assayed touch)</li>
-<li><code>fin_wt</code> <span class="math-inline">= net_wt  ×  (purity ÷ 100)</span></li>
+<li><code>fin_wt</code> = (Net Weight × Purity) ÷ 100</li>
 <li><code>rate</code>, <code>amount</code></li>
 <li><code>actual_fine_recovered</code> (Pure metal bar received from refiner)</li>
 <li>Computes <code>refinery_loss</code> and <code>refinery_profit</code>.</li>
@@ -1163,8 +1236,15 @@
 <li><code>Total Amt without Disc</code> (Pre-discount subtotal)</li>
 </ol>
 </li>
-<li><strong>Reconciliation Engine</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Cash Closing Balance = Cash Opening + ∑ (Cash Received) - ∑ (Cash Payment)</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Bank Closing Balance = Bank Opening + ∑ (Bank Received) - ∑ (Bank Payment)</div></li>
+<li><strong>Reconciliation Engine</strong>:<blockquote>
+<p><strong>DAILY EOD RECONCILIATION FORMULAS:</strong></p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>• <strong>Cash Closing Balance</strong> = Cash Opening + Sum of Cash Received − Sum of Cash Payments<br>• <strong>Bank Closing Balance</strong> = Bank Opening + Sum of Bank Received − Sum of Bank Payments</p>
+</blockquote>
+<ul>
 <li><strong>Export</strong>: Full CSV export of daily audit data.</li>
 </ul>
 <hr>
@@ -1228,15 +1308,25 @@
 <ul>
 <li><strong>Screen ID</strong>: <code>STOCK_REFILL_MANAGER</code></li>
 <li><strong>Purpose</strong>: Predictive inventory replenishment hub preventing showroom stockouts in fast-moving jewellery SKUs.</li>
-<li><strong>Core Formula</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Deficit Pieces = max(0, Desired Min Stock - Current Stock)</div></li>
+<li><strong>Core Formula</strong>:<blockquote>
+<p><strong>Deficit Pieces = Maximum of [ 0, Desired Min Stock − Current Available Stock ]</strong></p>
+</blockquote>
+</li>
 <li><strong>Urgency Classification</strong>:<ul>
-<li><code>CRITICAL</code> (Red): Current stock <span class="math-inline"> ≤  20%</span> of Desired Stock.</li>
-<li><code>LOW</code> (Amber): Current stock <span class="math-inline"> ≤  50%</span> of Desired Stock.</li>
-<li><code>ADEQUATE</code> (Green): Current stock <span class="math-inline"> ≥ </span> Desired Stock.</li>
+<li><code>CRITICAL</code> (Red): Current stock ≤ 20% of Desired Stock.</li>
+<li><code>LOW</code> (Amber): Current stock ≤ 50% of Desired Stock.</li>
+<li><code>ADEQUATE</code> (Green): Current stock ≥ Desired Stock.</li>
 </ul>
 </li>
-<li><strong>Replenishment Calculation</strong>:<div class="math-block"><div class="math-tag">FORMULA</div>Estimated Refill Metal Weight (g) = Deficit Pieces  ×  Average Gross Wt per Piece</div>
-<div class="math-block"><div class="math-tag">FORMULA</div>Estimated Procurement Value (₹) = Estimated Refill Metal Weight  ×  Current Gold Rate</div></li>
+<li><strong>Replenishment Calculation</strong>:<blockquote>
+<p><strong>ESTIMATED REPLENISHMENT REQUIREMENT:</strong></p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>• <strong>Estimated Refill Metal Weight (g)</strong> = Deficit Pieces × Average Gross Weight per Piece<br>• <strong>Estimated Procurement Value (₹)</strong> = Estimated Refill Metal Weight × Current Gold Rate</p>
+</blockquote>
+<ul>
 <li><strong>Automated Workflow</strong>:<ul>
 <li>System automatically maps each SKU to its preferred Vendor or Karagir.</li>
 <li><strong>1st Login Daily Popup</strong>: Triggers on first manager login, listing all critical deficits.</li>
@@ -1251,7 +1341,10 @@
 <li><strong>Purpose</strong>: Manages customer monthly deposit schemes (commonly structured as 11+1 Bonus Plan in India).</li>
 <li><strong>Rules &amp; Logic</strong>:<ul>
 <li>Customer commits to fixed monthly installment (e.g. ₹5,000 / month) for 11 months.</li>
-<li>Each monthly installment is converted into pure gold grams based on the spot rate on deposit date:<div class="math-block"><div class="math-tag">FORMULA</div>Gold Accrued (g) = (Installment Amount ÷ Spot 22K Rate on Deposit Day)</div></li>
+<li>Each monthly installment is converted into pure gold grams based on the spot rate on deposit date:<blockquote>
+<p><strong>Accrued Pure Gold (g) = Monthly Installment Amount (₹) ÷ Spot 22K Gold Rate on Deposit Day (₹/g)</strong></p>
+</blockquote>
+</li>
 <li><strong>Showroom Bonus Contribution</strong>: Upon completing 11 installments, the showroom contributes the 12th installment free as a loyalty bonus.</li>
 <li><strong>Redemption</strong>: Upon maturity, customer redeems total accumulated gold weight towards jewellery purchase with making charge discounts.</li>
 </ul>
@@ -1351,7 +1444,8 @@ CREATE TABLE staff_users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     employee_code VARCHAR(50) UNIQUE NOT NULL,
     name VARCHAR(200) NOT NULL,
-    role VARCHAR(50) NOT NULL CHECK (role IN (&#39;Owner&#39;, &#39;Manager&#39;, &#39;Cashier&#39;, &#39;Accountant&#39;, &#39;Karagir&#39;)),
+    role VARCHAR(50) NOT NULL 
+        CHECK (role IN (&#39;Owner&#39;, &#39;Manager&#39;, &#39;Cashier&#39;, &#39;Accountant&#39;, &#39;Karagir&#39;)),
     branch_id VARCHAR(50) REFERENCES branches(id),
     email VARCHAR(150),
     phone VARCHAR(20),
@@ -1364,7 +1458,8 @@ CREATE TABLE staff_users (
 CREATE TABLE erp_accounts (
     account_code VARCHAR(50) PRIMARY KEY,
     account_name VARCHAR(200) NOT NULL,
-    account_type VARCHAR(50) NOT NULL CHECK (account_type IN (&#39;Assets&#39;, &#39;Liabilities&#39;, &#39;Income&#39;, &#39;Expense&#39;)),
+    account_type VARCHAR(50) NOT NULL 
+        CHECK (account_type IN (&#39;Assets&#39;, &#39;Liabilities&#39;, &#39;Income&#39;, &#39;Expense&#39;)),
     account_group VARCHAR(100) NOT NULL,
     opening_balance DECIMAL(15,2) DEFAULT 0.00,
     balance_type VARCHAR(2) NOT NULL CHECK (balance_type IN (&#39;Dr&#39;, &#39;Cr&#39;)),
@@ -1475,7 +1570,8 @@ CREATE TABLE stock_items (
     is_urd BOOLEAN DEFAULT FALSE,
     is_loose BOOLEAN DEFAULT FALSE,
     is_printed BOOLEAN DEFAULT FALSE,
-    status VARCHAR(30) DEFAULT &#39;In Stock&#39; CHECK (status IN (&#39;In Stock&#39;, &#39;Sold&#39;, &#39;In Workshop&#39;, &#39;Refining&#39;, &#39;Consignment&#39;)),
+    status VARCHAR(30) DEFAULT &#39;In Stock&#39; 
+        CHECK (status IN (&#39;In Stock&#39;, &#39;Sold&#39;, &#39;In Workshop&#39;, &#39;Refining&#39;, &#39;Consignment&#39;)),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -1500,7 +1596,8 @@ CREATE TABLE orders_header (
     close_order BOOLEAN DEFAULT FALSE,
     design_photo TEXT,
     remark TEXT,
-    status VARCHAR(50) DEFAULT &#39;Booked&#39; CHECK (status IN (&#39;Booked&#39;, &#39;Assigned&#39;, &#39;In Progress&#39;, &#39;Received&#39;, &#39;Ready&#39;, &#39;Delivered&#39;, &#39;Cancelled&#39;)),
+    status VARCHAR(50) DEFAULT &#39;Booked&#39; 
+        CHECK (status IN (&#39;Booked&#39;, &#39;Assigned&#39;, &#39;In Progress&#39;, &#39;Received&#39;, &#39;Ready&#39;, &#39;Delivered&#39;, &#39;Cancelled&#39;)),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -1568,7 +1665,8 @@ CREATE TABLE karagir_assignments (
     agreed_making_charges DECIMAL(12,2) NOT NULL,
     wastage_pct DECIMAL(5,2) NOT NULL,
     special_instructions TEXT,
-    status VARCHAR(50) DEFAULT &#39;Assigned&#39; CHECK (status IN (&#39;Assigned&#39;, &#39;In Progress&#39;, &#39;Received&#39;, &#39;Cancelled&#39;)),
+    status VARCHAR(50) DEFAULT &#39;Assigned&#39; 
+        CHECK (status IN (&#39;Assigned&#39;, &#39;In Progress&#39;, &#39;Received&#39;, &#39;Cancelled&#39;)),
     received_gross_wt DECIMAL(12,3),
     received_net_wt DECIMAL(12,3),
     received_date DATE,
@@ -1581,7 +1679,8 @@ CREATE TABLE sales_invoices (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     invoice_no VARCHAR(50) UNIQUE NOT NULL,
     branch_id VARCHAR(50) REFERENCES branches(id),
-    bill_mode VARCHAR(20) NOT NULL CHECK (bill_mode IN (&#39;Tax Invoice&#39;, &#39;Estimate&#39;)),
+    bill_mode VARCHAR(20) NOT NULL 
+        CHECK (bill_mode IN (&#39;Tax Invoice&#39;, &#39;Estimate&#39;)),
     salesman_name VARCHAR(150) NOT NULL,
     customer_name VARCHAR(200) NOT NULL,
     phone VARCHAR(20) NOT NULL,
@@ -1645,8 +1744,10 @@ CREATE TABLE stock_refill_targets (
     vendor_name VARCHAR(200) NOT NULL,
     vendor_phone VARCHAR(20) NOT NULL,
     last_refill_date DATE,
-    status VARCHAR(20) DEFAULT &#39;adequate&#39; CHECK (status IN (&#39;critical&#39;, &#39;low&#39;, &#39;adequate&#39;, &#39;surplus&#39;)),
-    urgency VARCHAR(20) DEFAULT &#39;NORMAL&#39; CHECK (urgency IN (&#39;HIGH&#39;, &#39;MEDIUM&#39;, &#39;NORMAL&#39;)),
+    status VARCHAR(20) DEFAULT &#39;adequate&#39; 
+        CHECK (status IN (&#39;critical&#39;, &#39;low&#39;, &#39;adequate&#39;, &#39;surplus&#39;)),
+    urgency VARCHAR(20) DEFAULT &#39;NORMAL&#39; 
+        CHECK (urgency IN (&#39;HIGH&#39;, &#39;MEDIUM&#39;, &#39;NORMAL&#39;)),
     is_ordered BOOLEAN DEFAULT FALSE,
     last_order_timestamp TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -1665,7 +1766,8 @@ CREATE TABLE gold_scheme_members (
     accumulated_amt DECIMAL(15,2) DEFAULT 0.00,
     gold_wt_accrued DECIMAL(12,3) DEFAULT 0.000,
     bonus_contribution DECIMAL(15,2) DEFAULT 0.00,
-    status VARCHAR(50) DEFAULT &#39;Active&#39; CHECK (status IN (&#39;Active&#39;, &#39;Matured - Ready for Jewellery Redemption&#39;, &#39;Redeemed&#39;, &#39;Defaulted&#39;)),
+    status VARCHAR(50) DEFAULT &#39;Active&#39; 
+        CHECK (status IN (&#39;Active&#39;, &#39;Matured - Ready for Jewellery Redemption&#39;, &#39;Redeemed&#39;, &#39;Defaulted&#39;)),
     enrollment_date DATE NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
