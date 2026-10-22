@@ -111,9 +111,6 @@ input:focus, select:focus, textarea:focus {
 [data-theme="modern-dark"],
 .theme-modern-dark {
   color-scheme: dark;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  text-rendering: optimizeLegibility !important;
   --color-bg: #14171A;
   --color-bg-secondary: #1A1F24;
   --color-surface: #22272C;
@@ -137,27 +134,6 @@ input:focus, select:focus, textarea:focus {
   --color-status-success: #6FE0B5;
   --color-status-warning: #F4B183;
   --color-status-error: #FF8585;
-}
-
-/* Antialiasing & Optical Weight Moderation on Modern Dark */
-/* Prevents Windows ClearType chromatic fringing and bright white text blooming/spreading */
-[data-theme="modern-dark"] *,
-.theme-modern-dark * {
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  text-rendering: optimizeLegibility !important;
-}
-
-[data-theme="modern-dark"] .font-bold,
-.theme-modern-dark .font-bold {
-  font-weight: 600 !important;
-}
-
-[data-theme="modern-dark"] .font-extrabold,
-.theme-modern-dark .font-extrabold,
-[data-theme="modern-dark"] .font-black,
-.theme-modern-dark .font-black {
-  font-weight: 700 !important;
 }
 
 /* Modern Dark - Surfaces & Backgrounds */
@@ -222,32 +198,25 @@ input:focus, select:focus, textarea:focus {
   border-color: #2E363D !important;
 }
 
-/* Modern Dark - High-Contrast Typography Hierarchy */
-/* 1. Primary Page Headers, Large Financial Metrics, and Pure Brand Focus */
+/* Modern Dark - High-Contrast Typography */
 [data-theme="modern-dark"] .text-slate-950,
 .theme-modern-dark .text-slate-950,
 [data-theme="modern-dark"] .text-slate-900,
 .theme-modern-dark .text-slate-900,
+[data-theme="modern-dark"] .text-slate-800,
+.theme-modern-dark .text-slate-800,
 [data-theme="modern-dark"] .text-\[\#1E293B\],
 .theme-modern-dark .text-\[\#1E293B\] {
   color: #F8FAFC !important;
 }
 
-/* 2. Secondary Headers, Section Titles, and Card Labels (Soft Slate-300 to eliminate optical blooming and spreading) */
-[data-theme="modern-dark"] .text-slate-800,
-.theme-modern-dark .text-slate-800 {
-  color: #CBD5E1 !important;
-}
-
-/* 3. Regular Body Text, Table Cells, and Field Labels (Slate-350 for balanced contrast) */
 [data-theme="modern-dark"] .text-slate-700,
 .theme-modern-dark .text-slate-700,
 [data-theme="modern-dark"] .text-slate-600,
 .theme-modern-dark .text-slate-600 {
-  color: #B2BFCB !important;
+  color: #CBD5E1 !important;
 }
 
-/* 4. Muted Labels, Captions, and Supporting Timestamps (Slate-400, WCAG AA compliant) */
 [data-theme="modern-dark"] .text-slate-500,
 .theme-modern-dark .text-slate-500,
 [data-theme="modern-dark"] .text-slate-400,
