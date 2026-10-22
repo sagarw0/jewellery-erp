@@ -111,6 +111,9 @@ input:focus, select:focus, textarea:focus {
 [data-theme="modern-dark"],
 .theme-modern-dark {
   color-scheme: dark;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
   --color-bg: #14171A;
   --color-bg-secondary: #1A1F24;
   --color-surface: #22272C;
@@ -134,6 +137,27 @@ input:focus, select:focus, textarea:focus {
   --color-status-success: #6FE0B5;
   --color-status-warning: #F4B183;
   --color-status-error: #FF8585;
+}
+
+/* Antialiasing & Optical Weight Moderation on Modern Dark */
+/* Prevents Windows ClearType chromatic fringing and bright white text blooming/spreading */
+[data-theme="modern-dark"] *,
+.theme-modern-dark * {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+[data-theme="modern-dark"] .font-bold,
+.theme-modern-dark .font-bold {
+  font-weight: 600 !important;
+}
+
+[data-theme="modern-dark"] .font-extrabold,
+.theme-modern-dark .font-extrabold,
+[data-theme="modern-dark"] .font-black,
+.theme-modern-dark .font-black {
+  font-weight: 700 !important;
 }
 
 /* Modern Dark - Surfaces & Backgrounds */
@@ -198,25 +222,32 @@ input:focus, select:focus, textarea:focus {
   border-color: #2E363D !important;
 }
 
-/* Modern Dark - High-Contrast Typography */
+/* Modern Dark - High-Contrast Typography Hierarchy */
+/* 1. Primary Page Headers, Large Financial Metrics, and Pure Brand Focus */
 [data-theme="modern-dark"] .text-slate-950,
 .theme-modern-dark .text-slate-950,
 [data-theme="modern-dark"] .text-slate-900,
 .theme-modern-dark .text-slate-900,
-[data-theme="modern-dark"] .text-slate-800,
-.theme-modern-dark .text-slate-800,
 [data-theme="modern-dark"] .text-\[\#1E293B\],
 .theme-modern-dark .text-\[\#1E293B\] {
   color: #F8FAFC !important;
 }
 
+/* 2. Secondary Headers, Section Titles, and Card Labels (Soft Slate-300 to eliminate optical blooming and spreading) */
+[data-theme="modern-dark"] .text-slate-800,
+.theme-modern-dark .text-slate-800 {
+  color: #CBD5E1 !important;
+}
+
+/* 3. Regular Body Text, Table Cells, and Field Labels (Slate-350 for balanced contrast) */
 [data-theme="modern-dark"] .text-slate-700,
 .theme-modern-dark .text-slate-700,
 [data-theme="modern-dark"] .text-slate-600,
 .theme-modern-dark .text-slate-600 {
-  color: #CBD5E1 !important;
+  color: #B2BFCB !important;
 }
 
+/* 4. Muted Labels, Captions, and Supporting Timestamps (Slate-400, WCAG AA compliant) */
 [data-theme="modern-dark"] .text-slate-500,
 .theme-modern-dark .text-slate-500,
 [data-theme="modern-dark"] .text-slate-400,
@@ -314,19 +345,32 @@ input:focus, select:focus, textarea:focus {
   color: var(--modern-dark-accent, #62DBCA) !important;
 }
 
-/* Modern Dark - Status Accents & Financial Ledger Numbers */
-/* 1. Emerald / Green Status (Success, Advances, Paid) */
+/* Modern Dark - Status Accents & Financial Ledger Badges (All Opacities & Child Elements) */
+/* 1. Emerald / Green Status (Success, Advances, Paid, Vault Projections) */
+[data-theme="modern-dark"] [class*="bg-emerald-100"],
+.theme-modern-dark [class*="bg-emerald-100"],
+[data-theme="modern-dark"] [class*="bg-green-100"],
+.theme-modern-dark [class*="bg-green-100"],
+[data-theme="modern-dark"] [class*="bg-teal-100"],
+.theme-modern-dark [class*="bg-teal-100"],
 [data-theme="modern-dark"] .bg-emerald-50,
 .theme-modern-dark .bg-emerald-50,
-[data-theme="modern-dark"] .bg-emerald-100,
-.theme-modern-dark .bg-emerald-100,
 [data-theme="modern-dark"] .bg-green-50,
 .theme-modern-dark .bg-green-50,
-[data-theme="modern-dark"] .bg-green-100,
-.theme-modern-dark .bg-green-100 {
+[data-theme="modern-dark"] .bg-teal-50,
+.theme-modern-dark .bg-teal-50 {
   background-color: rgba(111, 224, 181, 0.15) !important;
   color: #6FE0B5 !important;
   border-color: rgba(111, 224, 181, 0.35) !important;
+}
+
+[data-theme="modern-dark"] [class*="bg-emerald-100"] *,
+.theme-modern-dark [class*="bg-emerald-100"] *,
+[data-theme="modern-dark"] [class*="bg-green-100"] *,
+.theme-modern-dark [class*="bg-green-100"] *,
+[data-theme="modern-dark"] [class*="bg-teal-100"] *,
+.theme-modern-dark [class*="bg-teal-100"] * {
+  color: #6FE0B5 !important;
 }
 
 [data-theme="modern-dark"] .text-emerald-950,
@@ -344,18 +388,31 @@ input:focus, select:focus, textarea:focus {
   color: #6FE0B5 !important;
 }
 
-/* 2. Amber / Coral Status (Payables, Gold Dues, Warnings) */
+/* 2. Amber / Coral / Yellow Status (Payables, Gold Dues, Rates, Warnings) */
+[data-theme="modern-dark"] [class*="bg-amber-100"],
+.theme-modern-dark [class*="bg-amber-100"],
+[data-theme="modern-dark"] [class*="bg-yellow-100"],
+.theme-modern-dark [class*="bg-yellow-100"],
+[data-theme="modern-dark"] [class*="bg-orange-100"],
+.theme-modern-dark [class*="bg-orange-100"],
 [data-theme="modern-dark"] .bg-amber-50,
 .theme-modern-dark .bg-amber-50,
-[data-theme="modern-dark"] .bg-amber-100,
-.theme-modern-dark .bg-amber-100,
 [data-theme="modern-dark"] .bg-yellow-50,
 .theme-modern-dark .bg-yellow-50,
-[data-theme="modern-dark"] .bg-yellow-100,
-.theme-modern-dark .bg-yellow-100 {
+[data-theme="modern-dark"] .bg-orange-50,
+.theme-modern-dark .bg-orange-50 {
   background-color: rgba(244, 177, 131, 0.15) !important;
   color: #F4B183 !important;
   border-color: rgba(244, 177, 131, 0.35) !important;
+}
+
+[data-theme="modern-dark"] [class*="bg-amber-100"] *,
+.theme-modern-dark [class*="bg-amber-100"] *,
+[data-theme="modern-dark"] [class*="bg-yellow-100"] *,
+.theme-modern-dark [class*="bg-yellow-100"] *,
+[data-theme="modern-dark"] [class*="bg-orange-100"] *,
+.theme-modern-dark [class*="bg-orange-100"] * {
+  color: #F4B183 !important;
 }
 
 [data-theme="modern-dark"] .text-amber-950,
@@ -373,18 +430,25 @@ input:focus, select:focus, textarea:focus {
   color: #F4B183 !important;
 }
 
-/* 3. Rose / Red Status (Errors, Danger, Scrap Loss, Overdue) */
+/* 3. Rose / Red Status (Errors, Danger, Scrap Loss, Overdue, Negative Delta) */
+[data-theme="modern-dark"] [class*="bg-rose-100"],
+.theme-modern-dark [class*="bg-rose-100"],
+[data-theme="modern-dark"] [class*="bg-red-100"],
+.theme-modern-dark [class*="bg-red-100"],
 [data-theme="modern-dark"] .bg-rose-50,
 .theme-modern-dark .bg-rose-50,
-[data-theme="modern-dark"] .bg-rose-100,
-.theme-modern-dark .bg-rose-100,
 [data-theme="modern-dark"] .bg-red-50,
-.theme-modern-dark .bg-red-50,
-[data-theme="modern-dark"] .bg-red-100,
-.theme-modern-dark .bg-red-100 {
+.theme-modern-dark .bg-red-50 {
   background-color: rgba(255, 133, 133, 0.15) !important;
   color: #FF8585 !important;
   border-color: rgba(255, 133, 133, 0.35) !important;
+}
+
+[data-theme="modern-dark"] [class*="bg-rose-100"] *,
+.theme-modern-dark [class*="bg-rose-100"] *,
+[data-theme="modern-dark"] [class*="bg-red-100"] *,
+.theme-modern-dark [class*="bg-red-100"] * {
+  color: #FF8585 !important;
 }
 
 [data-theme="modern-dark"] .text-rose-950,
@@ -402,18 +466,41 @@ input:focus, select:focus, textarea:focus {
   color: #FF8585 !important;
 }
 
-/* 4. Indigo / Sky / Teal Status (Pills, Categories, Orders) */
+/* 4. Indigo / Sky / Blue / Purple / Violet Status (Pills, Categories, Orders) */
+[data-theme="modern-dark"] [class*="bg-indigo-100"],
+.theme-modern-dark [class*="bg-indigo-100"],
+[data-theme="modern-dark"] [class*="bg-sky-100"],
+.theme-modern-dark [class*="bg-sky-100"],
+[data-theme="modern-dark"] [class*="bg-blue-100"],
+.theme-modern-dark [class*="bg-blue-100"],
+[data-theme="modern-dark"] [class*="bg-purple-100"],
+.theme-modern-dark [class*="bg-purple-100"],
+[data-theme="modern-dark"] [class*="bg-violet-100"],
+.theme-modern-dark [class*="bg-violet-100"],
 [data-theme="modern-dark"] .bg-indigo-50,
 .theme-modern-dark .bg-indigo-50,
-[data-theme="modern-dark"] .bg-indigo-100,
-.theme-modern-dark .bg-indigo-100,
 [data-theme="modern-dark"] .bg-sky-50,
 .theme-modern-dark .bg-sky-50,
-[data-theme="modern-dark"] .bg-sky-100,
-.theme-modern-dark .bg-sky-100 {
+[data-theme="modern-dark"] .bg-purple-50,
+.theme-modern-dark .bg-purple-50,
+[data-theme="modern-dark"] .bg-violet-50,
+.theme-modern-dark .bg-violet-50 {
   background-color: rgba(85, 214, 194, 0.15) !important;
   color: #70E1D2 !important;
   border-color: rgba(85, 214, 194, 0.35) !important;
+}
+
+[data-theme="modern-dark"] [class*="bg-indigo-100"] *,
+.theme-modern-dark [class*="bg-indigo-100"] *,
+[data-theme="modern-dark"] [class*="bg-sky-100"] *,
+.theme-modern-dark [class*="bg-sky-100"] *,
+[data-theme="modern-dark"] [class*="bg-blue-100"] *,
+.theme-modern-dark [class*="bg-blue-100"] *,
+[data-theme="modern-dark"] [class*="bg-purple-100"] *,
+.theme-modern-dark [class*="bg-purple-100"] *,
+[data-theme="modern-dark"] [class*="bg-violet-100"] *,
+.theme-modern-dark [class*="bg-violet-100"] * {
+  color: #70E1D2 !important;
 }
 
 [data-theme="modern-dark"] .text-indigo-950,
@@ -429,7 +516,13 @@ input:focus, select:focus, textarea:focus {
 [data-theme="modern-dark"] .text-sky-900,
 .theme-modern-dark .text-sky-900,
 [data-theme="modern-dark"] .text-sky-800,
-.theme-modern-dark .text-sky-800 {
+.theme-modern-dark .text-sky-800,
+[data-theme="modern-dark"] .text-blue-950,
+.theme-modern-dark .text-blue-950,
+[data-theme="modern-dark"] .text-blue-900,
+.theme-modern-dark .text-blue-900,
+[data-theme="modern-dark"] .text-blue-800,
+.theme-modern-dark .text-blue-800 {
   color: #70E1D2 !important;
 }
 

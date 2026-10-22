@@ -386,19 +386,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   const getCardTitleStyle = (fallbackColor?: string) => ({
     color: isDark && (!cardTypography?.titleColorHex || cardTypography?.titleColorHex === '#1E293B')
-      ? '#F8FAFC'
+      ? '#CBD5E1'
       : cardTypography?.titleColorHex || fallbackColor || undefined,
   });
 
   const getCardValueStyle = (fallbackColor?: string) => ({
     color: isDark && (!cardTypography?.valueColorHex || cardTypography?.valueColorHex === '#1E293B')
-      ? '#FFFFFF'
+      ? fallbackColor || '#F8FAFC'
       : cardTypography?.valueColorHex || fallbackColor || undefined,
   });
 
   const getCardLabelStyle = (fallbackColor?: string) => ({
     color: isDark && (!cardTypography?.labelColorHex || cardTypography?.labelColorHex === '#475569')
-      ? '#CBD5E1'
+      ? fallbackColor || undefined
       : cardTypography?.labelColorHex || fallbackColor || undefined,
   });
 
@@ -1177,26 +1177,27 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div
             className={`p-3.5 sm:p-4 rounded-2xl border grid grid-cols-2 sm:grid-cols-4 gap-3 text-center ${
               isDark
-                ? 'bg-[#0b1324] border-white/15 shadow-md'
+                ? 'bg-[#202629] border-[#414B4F] shadow-md'
                 : 'bg-white border-slate-300 shadow-sm'
             }`}
           >
             <div>
               <div
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-800`}
-                style={getCardTitleStyle()}
+                className={`${titleSizeClass} font-semibold uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-700'}`}
               >
                 Simulated 24K Rate
               </div>
               <div
-                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 text-amber-950 text-amber-800 bg-amber-100/90  px-2.5 py-1 rounded-xl border border-amber-300  inline-block shadow-2xs`}
-                style={getCardValueStyle()}
+                className={`${subValueSizeClass} font-semibold font-mono mt-1.5 px-3 py-1 rounded-xl border inline-block shadow-2xs ${
+                  isDark
+                    ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                    : 'bg-amber-100 text-amber-900 border-amber-300'
+                }`}
               >
                 ₹{simulatedGold24k.toLocaleString('en-IN')}/g
               </div>
               <div
-                className={`${labelSizeClass} font-bold text-slate-800 text-slate-700 mt-1`}
-                style={getCardLabelStyle()}
+                className={`${labelSizeClass} font-medium mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}
               >
                 Base: ₹{gold24kRate.toLocaleString('en-IN')}
               </div>
@@ -1204,20 +1205,21 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             <div>
               <div
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-800`}
-                style={getCardTitleStyle()}
+                className={`${titleSizeClass} font-semibold uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-700'}`}
               >
                 Simulated 22K (916)
               </div>
               <div
-                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 text-amber-950 text-amber-800 bg-amber-100/90  px-2.5 py-1 rounded-xl border border-amber-300  inline-block shadow-2xs`}
-                style={getCardValueStyle()}
+                className={`${subValueSizeClass} font-semibold font-mono mt-1.5 px-3 py-1 rounded-xl border inline-block shadow-2xs ${
+                  isDark
+                    ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                    : 'bg-amber-100 text-amber-900 border-amber-300'
+                }`}
               >
                 ₹{simulatedGold22k.toLocaleString('en-IN')}/g
               </div>
               <div
-                className={`${labelSizeClass} font-bold text-slate-800 text-slate-700 mt-1`}
-                style={getCardLabelStyle()}
+                className={`${labelSizeClass} font-medium mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}
               >
                 Base: ₹{gold22kRate.toLocaleString('en-IN')}
               </div>
@@ -1225,20 +1227,21 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             <div>
               <div
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-800`}
-                style={getCardTitleStyle()}
+                className={`${titleSizeClass} font-semibold uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-700'}`}
               >
                 Projected Vault Total
               </div>
               <div
-                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 text-emerald-950 text-emerald-800 bg-emerald-100/90  px-2.5 py-1 rounded-xl border border-emerald-300  inline-block shadow-2xs`}
-                style={getCardValueStyle()}
+                className={`${subValueSizeClass} font-semibold font-mono mt-1.5 px-3 py-1 rounded-xl border inline-block shadow-2xs ${
+                  isDark
+                    ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                    : 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                }`}
               >
                 {formatCurrency(simulatedVaultTotal)}
               </div>
               <div
-                className={`${labelSizeClass} font-bold text-slate-800 text-slate-700 mt-1`}
-                style={getCardLabelStyle()}
+                className={`${labelSizeClass} font-medium mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}
               >
                 Fine Wt: {formatWeight(branchData.goldFineWt)}
               </div>
@@ -1246,29 +1249,34 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             <div>
               <div
-                className={`${titleSizeClass} ${cardWeightClass} ${cardItalicClass} uppercase tracking-wide text-slate-800`}
-                style={getCardTitleStyle()}
+                className={`${titleSizeClass} font-semibold uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-700'}`}
               >
                 Simulated Valuation Delta
               </div>
               <div
-                className={`${subValueSizeClass} ${cardWeightClass} font-mono mt-1 inline-flex items-center justify-center space-x-1 px-2.5 py-1 rounded-xl border shadow-2xs ${
+                className={`${subValueSizeClass} font-semibold font-mono mt-1.5 inline-flex items-center justify-center space-x-1 px-3 py-1 rounded-xl border shadow-2xs ${
                   valuationDelta >= 0
-                    ? 'bg-emerald-100 text-emerald-950  text-emerald-800 border border-emerald-300 '
-                    : 'bg-rose-100 text-rose-950  text-rose-800 border border-rose-300 '
+                    ? isDark
+                      ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                      : 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                    : isDark
+                      ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+                      : 'bg-rose-100 text-rose-900 border-rose-300'
                 }`}
-                style={getCardValueStyle()}
               >
                 {valuationDelta >= 0 ? (
-                  <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-emerald-700 text-emerald-800" />
+                  <ArrowUpRight className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-emerald-300' : 'text-emerald-700'}`} />
                 ) : (
-                  <ArrowDownRight className="w-3.5 h-3.5 shrink-0 text-rose-700 text-rose-800" />
+                  <ArrowDownRight className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-rose-300' : 'text-rose-700'}`} />
                 )}
                 <span>{formatCurrency(Math.abs(valuationDelta))}</span>
               </div>
               <div
-                className={`${labelSizeClass} font-bold font-mono mt-1 text-slate-900 text-slate-800`}
-                style={getCardLabelStyle()}
+                className={`${labelSizeClass} font-semibold font-mono mt-1 ${
+                  valuationDelta >= 0
+                    ? isDark ? 'text-emerald-400' : 'text-emerald-700'
+                    : isDark ? 'text-rose-400' : 'text-rose-700'
+                }`}
               >
                 {valuationDelta >= 0 ? `+${valuationDeltaPct.toFixed(2)}%` : `${valuationDeltaPct.toFixed(2)}%`}
               </div>
@@ -1320,7 +1328,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       ? 'bg-amber-400/20 border-amber-400/60 shadow-md'
                       : 'bg-blue-50 border-blue-400 shadow-xs'
                     : isDark
-                    ? 'bg-slate-900/90 hover:bg-slate-800 border-white/15 shadow-xs'
+                    ? 'bg-[#202629] hover:bg-[#2A3138] border-[#414B4F] shadow-xs'
                     : 'bg-white hover:bg-slate-50 border-slate-300 shadow-2xs'
                 }`}
               >
@@ -1354,8 +1362,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     {formatCurrency(b.sales)}
                   </div>
                   <div
-                    className={`${labelSizeClass} text-emerald-900 text-emerald-700 font-bold`}
-                    style={getCardLabelStyle()}
+                    className={`${labelSizeClass} font-semibold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}
                   >
                     Today's Inflow
                   </div>
