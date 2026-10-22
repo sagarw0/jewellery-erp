@@ -586,7 +586,7 @@ export function App() {
   return (
     <div
       className={`min-h-screen ${
-        isDark ? 'bg-[#14171A] text-[#F8FAFC]' : 'bg-[#F8FAFC] text-[#1E293B]'
+        isDark ? 'bg-[#0D1013] text-[#FFFFFF]' : 'bg-[#F8FAFC] text-[#1E293B]'
       } flex flex-col font-sans selection:bg-blue-100 selection:text-blue-900 transition-colors duration-150`}
     >
       {/* Top Navbar */}
@@ -849,20 +849,20 @@ export function App() {
       {/* Enterprise Status Footer */}
       <footer className={`px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2 no-print border-t ${
         isDark
-          ? 'bg-[#1A1F24] border-[#2E363D] text-[#94A3B8]'
+          ? 'bg-[#13171A] border-[#23282D] text-[#8492A6]'
           : 'bg-white border-slate-300 text-slate-600'
       }`}>
         <div className="flex items-center space-x-3">
-          <span className={`flex items-center space-x-1.5 font-medium ${isDark ? 'text-[#6FE0B5]' : 'text-emerald-700'}`}>
-            <span className={`w-2 h-2 rounded-full inline-block ${isDark ? 'bg-[#6FE0B5]' : 'bg-emerald-500'}`}></span>
+          <span className={`flex items-center space-x-1.5 font-medium ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-700'}`}>
+            <span className={`w-2 h-2 rounded-full inline-block ${isDark ? 'bg-[#4EF2D2]' : 'bg-emerald-500'}`}></span>
             <span>Cloud Database: Connected (fbmbvnvnfypkkrpslnag.supabase.co)</span>
           </span>
-          <span className={isDark ? 'text-[#414B4F]' : 'text-slate-300'}>|</span>
+          <span className={isDark ? 'text-[#23282D]' : 'text-slate-300'}>|</span>
           <span className={`font-mono font-medium ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'}`}>
             Branch: {currentUser.branch}
           </span>
-          <span className={`${isDark ? 'text-[#414B4F]' : 'text-slate-300'} hidden sm:inline`}>|</span>
-          <span className={`font-mono ${isDark ? 'text-[#94A3B8]' : 'text-slate-600'} hidden sm:inline`}>
+          <span className={`${isDark ? 'text-[#23282D]' : 'text-slate-300'} hidden sm:inline`}>|</span>
+          <span className={`font-mono ${isDark ? 'text-[#8492A6]' : 'text-slate-600'} hidden sm:inline`}>
             HM-916-MH-4421
           </span>
         </div>
@@ -870,12 +870,12 @@ export function App() {
         <div className="flex items-center space-x-3 text-[11px] font-mono">
           <button
             onClick={() => setCurrentSection('field_dictionary')}
-            className={`${isDark ? 'text-[#55D6C2] hover:text-[#70E1D2]' : 'text-blue-700 hover:text-blue-900'} underline font-medium cursor-pointer`}
+            className={`${isDark ? 'text-[#4EF2D2] hover:text-[#6BFFDE]' : 'text-blue-700 hover:text-blue-900'} underline font-medium cursor-pointer`}
           >
             Field Preservation Audit (Spec #40-41)
           </button>
           <span>•</span>
-          <span className={isDark ? 'text-[#94A3B8]' : 'text-slate-500'}>Domain: ogaworld.in</span>
+          <span className={isDark ? 'text-[#8492A6]' : 'text-slate-500'}>Domain: ogaworld.in</span>
         </div>
       </footer>
 
@@ -888,16 +888,16 @@ export function App() {
           onClick={() => setShowAiAssistant(true)}
           className={`fixed bottom-4 right-4 z-30 px-3.5 py-2.5 rounded-full font-semibold shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center space-x-2 border group no-print ${
             isDark
-              ? 'bg-[#55D6C2] hover:bg-[#70E1D2] text-[#142321] border-[#55D6C2]/60 shadow-[0_4px_20px_rgba(85,214,194,0.35)]'
+              ? 'bg-[#4EF2D2] hover:bg-[#6BFFDE] text-[#08211B] border-[#4EF2D2]/60 shadow-[0_4px_20px_rgba(78,242,210,0.35)]'
               : 'bg-blue-700 hover:bg-blue-800 text-white border-blue-600 shadow-lg'
           }`}
           title="Swarna AI ERP Copilot (Ctrl+Space)"
         >
           <span className="relative flex h-2.5 w-2.5">
-            <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isDark ? 'bg-[#142321] opacity-60' : 'bg-emerald-400 opacity-75'}`}></span>
-            <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isDark ? 'bg-[#142321]' : 'bg-emerald-400'}`}></span>
+            <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isDark ? 'bg-[#08211B] opacity-60' : 'bg-emerald-400 opacity-75'}`}></span>
+            <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isDark ? 'bg-[#08211B]' : 'bg-emerald-400'}`}></span>
           </span>
-          <Sparkles className={`w-4 h-4 ${isDark ? 'text-[#142321]' : 'text-white'} group-hover:rotate-12 transition-transform`} />
+          <Sparkles className={`w-4 h-4 ${isDark ? 'text-[#08211B]' : 'text-white'} group-hover:rotate-12 transition-transform`} />
           <div className="text-left hidden sm:block">
             <span className={`text-xs font-bold tracking-wider block leading-tight ${isDark ? 'text-[#142321]' : 'text-white'}`}>AI Copilot</span>
             <span className={`text-[9px] font-mono font-medium leading-tight ${isDark ? 'text-[#142321]/80' : 'text-blue-100'}`}>Ctrl+Space</span>

@@ -410,7 +410,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
             onClick={handleOpenAdd}
             className={`px-4 py-2 rounded-xl font-bold text-xs shadow-md flex items-center space-x-2 transition-all cursor-pointer active:scale-95 ${
               isDark
-                ? 'bg-[#55D6C2] hover:bg-[#70E1D2] text-[#142321] font-bold shadow-sm'
+                ? 'bg-[#4EF2D2] hover:bg-[#6BFFDE] text-[#08211B] font-bold shadow-sm'
                 : 'bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white'
             }`}
           >
@@ -764,7 +764,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 className={`pb-2.5 px-2 border-b-2 transition-all cursor-pointer flex items-center space-x-1.5 ${
                   activeFormTab === 'basic'
                     ? isDark
-                      ? 'border-[#55D6C2] text-[#55D6C2]'
+                      ? 'border-[#4EF2D2] text-[#4EF2D2]'
                       : 'border-blue-600 text-blue-600 font-bold'
                     : isDark
                     ? 'border-transparent text-slate-400 hover:text-white'
@@ -780,7 +780,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 className={`pb-2.5 px-2 border-b-2 transition-all cursor-pointer flex items-center space-x-1.5 ${
                   activeFormTab === 'gst'
                     ? isDark
-                      ? 'border-[#55D6C2] text-[#55D6C2]'
+                      ? 'border-[#4EF2D2] text-[#4EF2D2]'
                       : 'border-blue-600 text-blue-600 font-bold'
                     : isDark
                     ? 'border-transparent text-slate-400 hover:text-white'
@@ -796,7 +796,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 className={`pb-2.5 px-2 border-b-2 transition-all cursor-pointer flex items-center space-x-1.5 ${
                   activeFormTab === 'bank'
                     ? isDark
-                      ? 'border-[#55D6C2] text-[#55D6C2]'
+                      ? 'border-[#4EF2D2] text-[#4EF2D2]'
                       : 'border-blue-600 text-blue-600 font-bold'
                     : isDark
                     ? 'border-transparent text-slate-400 hover:text-white'
@@ -812,7 +812,7 @@ export const VendorMasterView: React.FC<VendorMasterViewProps> = ({
                 className={`pb-2.5 px-2 border-b-2 transition-all cursor-pointer flex items-center space-x-1.5 ${
                   activeFormTab === 'balance'
                     ? isDark
-                      ? 'border-[#55D6C2] text-[#55D6C2]'
+                      ? 'border-[#4EF2D2] text-[#4EF2D2]'
                       : 'border-blue-600 text-blue-600 font-bold'
                     : isDark
                     ? 'border-transparent text-slate-400 hover:text-white'

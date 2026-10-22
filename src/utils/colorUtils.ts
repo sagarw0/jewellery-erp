@@ -215,32 +215,32 @@ export function computeThemeTokens(
   _cornerRadius?: CardCornerRadius,
   _shadowDepth?: ShadowGlowDepth
 ): ThemeTokens {
-  const isDarkTheme = bgBaseHex === '#14171A' || bgBaseHex === '#171C1F';
+  const isDarkTheme = bgBaseHex === '#14171A' || bgBaseHex === '#171C1F' || bgBaseHex === '#0D1013';
 
   if (isDarkTheme) {
     return {
-      appBg: '#14171A',
+      appBg: '#0D1013',
       appBgGradient: 'none',
-      appSurface: '#22272C',
-      appSurfaceGlass: '#22272C',
-      appHeaderBg: '#1A1F24',
-      appPrimary: '#55D6C2',
-      appPrimaryHover: '#70E1D2',
-      appPrimaryText: '#142321',
-      appPrimaryGlow: 'rgba(85, 214, 194, 0.20)',
-      appAccent: '#55D6C2',
-      appAccentBg: 'rgba(85, 214, 194, 0.15)',
-      appTextPrimary: '#F8FAFC',
+      appSurface: '#181C20',
+      appSurfaceGlass: '#181C20',
+      appHeaderBg: '#13171A',
+      appPrimary: '#4EF2D2',
+      appPrimaryHover: '#6BFFDE',
+      appPrimaryText: '#08211B',
+      appPrimaryGlow: 'rgba(78, 242, 210, 0.25)',
+      appAccent: '#4EF2D2',
+      appAccentBg: 'rgba(78, 242, 210, 0.12)',
+      appTextPrimary: '#FFFFFF',
       appTextSecondary: '#CBD5E1',
-      appTextMuted: '#94A3B8',
-      appBorder: '#2E363D',
-      appCardBorder: '#2E363D',
-      appCardShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.45)',
-      appInputBg: '#1A1F24',
-      appInputBorder: '#2E363D',
-      appTableHeaderBg: '#1A1F24',
+      appTextMuted: '#8492A6',
+      appBorder: '#23282D',
+      appCardBorder: '#23282D',
+      appCardShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(255, 255, 255, 0.04)',
+      appInputBg: '#13171A',
+      appInputBorder: '#23282D',
+      appTableHeaderBg: '#13171A',
       appBlur: '0px',
-      appRadius: '0.75rem',
+      appRadius: '1rem',
       isDark: true,
     };
   }

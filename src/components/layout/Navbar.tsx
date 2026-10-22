@@ -481,11 +481,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                         onClick={() => setThemeMode('modern-dark')}
                         className={`flex items-center justify-center space-x-1.5 py-1.5 px-2 rounded-md text-xs font-semibold cursor-pointer transition-all ${
                           themeMode === 'modern-dark'
-                            ? 'bg-[#55D6C2] text-[#142321] shadow-xs font-bold'
+                            ? 'bg-[#4EF2D2] text-[#08211B] shadow-xs font-bold'
                             : 'text-slate-600 hover:text-slate-900'
                         }`}
                       >
-                        <Moon className="w-3.5 h-3.5 text-[#55D6C2]" />
+                        <Moon className="w-3.5 h-3.5 text-[#4EF2D2]" />
                         <span>Modern Dark</span>
                       </button>
                     </div>

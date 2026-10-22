@@ -138,13 +138,13 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-[#171C1F] text-[#F8FAFC]' : 'bg-[#F8FAFC] text-[#1E293B]'} flex flex-col justify-center items-center p-4 sm:p-6 relative transition-colors duration-150`}>
+    <div className={`min-h-screen ${isDark ? 'bg-[#0D1013] text-[#F8FAFC]' : 'bg-[#F8FAFC] text-[#1E293B]'} flex flex-col justify-center items-center p-4 sm:p-6 relative transition-colors duration-150`}>
       {/* Top Right Theme Selector */}
-      <div className="absolute top-4 right-4 z-10 flex items-center rounded-lg border border-slate-300 bg-slate-50 p-0.5 text-xs shadow-xs">
+      <div className={`absolute top-4 right-4 z-10 flex items-center rounded-xl border p-1 text-xs shadow-xs ${isDark ? 'bg-[#181C20] border-[#23282D]' : 'bg-slate-50 border-slate-300'}`}>
         <button
           type="button"
           onClick={() => setThemeMode('existing')}
-          className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+          className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
             themeMode === 'existing'
               ? 'bg-white text-slate-900 shadow-xs border border-slate-200'
               : 'text-slate-500 hover:text-slate-800'
@@ -157,14 +157,14 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
         <button
           type="button"
           onClick={() => setThemeMode('modern-dark')}
-          className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+          className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
             themeMode === 'modern-dark'
-              ? 'bg-[#55D6C2] text-[#142321] shadow-xs font-bold'
+              ? 'bg-[#4EF2D2] text-[#08211B] shadow-xs font-bold'
               : 'text-slate-500 hover:text-slate-800'
           }`}
-          title="Modern Dark Theme (Charcoal & Teal)"
+          title="Modern Dark Theme (Obsidian & Electric Mint)"
         >
-          <Moon className="w-3.5 h-3.5 text-[#55D6C2]" />
+          <Moon className="w-3.5 h-3.5 text-[#4EF2D2]" />
           <span>Modern Dark</span>
         </button>
       </div>

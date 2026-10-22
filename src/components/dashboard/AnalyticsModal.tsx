@@ -62,7 +62,7 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
       <div
         className={`rounded-3xl w-full max-w-5xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh] border ${
           isDark
-            ? 'bg-[#292F32] border-[#414B4F] text-[#F8FAFC]'
+            ? 'bg-[#181C20] border-[#23282D] text-[#F8FAFC]'
             : 'bg-white border-slate-300 text-slate-950'
         }`}
       >
@@ -117,58 +117,58 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
           {/* Top Performance Strip */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
             <div className={`p-4 rounded-2xl border ${
-              isDark ? 'bg-slate-900/90 border-sky-500/40 text-white' : 'bg-sky-50 border-sky-300 text-slate-950 shadow-xs'
+              isDark ? 'bg-[#13171A] border-[#23282D] text-white shadow-xl' : 'bg-sky-50 border-sky-300 text-slate-950 shadow-xs'
             }`}>
-              <div className="text-slate-600 text-slate-700 font-semibold text-[11px] uppercase tracking-wider">
+              <div className={`font-semibold text-[11px] uppercase tracking-wider ${isDark ? 'text-[#8492A6]' : 'text-slate-700'}`}>
                 Total Sales Revenue ({selectedPeriod})
               </div>
-              <div className="text-xl font-bold font-mono text-slate-950 text-blue-800 mt-1.5">
+              <div className={`text-xl italic font-bold font-mono tracking-tight mt-1.5 ${isDark ? 'text-white' : 'text-blue-800'}`}>
                 {formatCurrency(currentSold.revenue)}
               </div>
-              <div className="text-[10.5px] text-emerald-800 text-emerald-700 font-semibold mt-1 flex items-center">
+              <div className={`text-[10.5px] font-semibold mt-1 flex items-center ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-700'}`}>
                 <TrendingUp className="w-3.5 h-3.5 mr-1 inline shrink-0" />
                 <span>+18.4% growth vs previous {selectedPeriod.toLowerCase()}</span>
               </div>
             </div>
 
             <div className={`p-4 rounded-2xl border ${
-              isDark ? 'bg-slate-900/90 border-amber-500/40 text-white' : 'bg-amber-50 border-amber-300 text-slate-950 shadow-xs'
+              isDark ? 'bg-[#13171A] border-[#23282D] text-white shadow-xl' : 'bg-amber-50 border-amber-300 text-slate-950 shadow-xs'
             }`}>
-              <div className="text-slate-600 text-slate-700 font-semibold text-[11px] uppercase tracking-wider">
+              <div className={`font-semibold text-[11px] uppercase tracking-wider ${isDark ? 'text-[#8492A6]' : 'text-slate-700'}`}>
                 Total Gold Sold ({selectedPeriod})
               </div>
-              <div className="text-xl font-bold font-mono text-slate-950 text-amber-800 mt-1.5">
+              <div className={`text-xl italic font-bold font-mono tracking-tight mt-1.5 ${isDark ? 'text-white' : 'text-amber-800'}`}>
                 {formatWeight(currentSold.gold_wt)}
               </div>
-              <div className="text-[10.5px] text-amber-800 dark:text-amber-400 font-semibold mt-1">
+              <div className={`text-[10.5px] font-semibold mt-1 ${isDark ? 'text-[#4EF2D2]' : 'text-amber-800'}`}>
                 Avg realization: ₹7,285/g
               </div>
             </div>
 
             <div className={`p-4 rounded-2xl border ${
-              isDark ? 'bg-slate-900/90 border-slate-500/40 text-white' : 'bg-slate-100 border-slate-300 text-slate-950 shadow-xs'
+              isDark ? 'bg-[#13171A] border-[#23282D] text-white shadow-xl' : 'bg-slate-100 border-slate-300 text-slate-950 shadow-xs'
             }`}>
-              <div className="text-slate-600 text-slate-700 font-semibold text-[11px] uppercase tracking-wider">
+              <div className={`font-semibold text-[11px] uppercase tracking-wider ${isDark ? 'text-[#8492A6]' : 'text-slate-700'}`}>
                 Total Silver Sold ({selectedPeriod})
               </div>
-              <div className="text-xl font-bold font-mono text-slate-950 text-slate-900 mt-1.5">
+              <div className={`text-xl italic font-bold font-mono tracking-tight mt-1.5 ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {formatWeight(currentSold.silver_wt)}
               </div>
-              <div className="text-[10.5px] text-slate-600 text-slate-600 font-semibold mt-1">
+              <div className={`text-[10.5px] font-semibold mt-1 ${isDark ? 'text-[#8492A6]' : 'text-slate-600'}`}>
                 Avg rate: ₹86.50/g
               </div>
             </div>
 
             <div className={`p-4 rounded-2xl border ${
-              isDark ? 'bg-slate-900/90 border-rose-500/40 text-white' : 'bg-rose-50 border-rose-300 text-slate-950 shadow-xs'
+              isDark ? 'bg-[#13171A] border-[#23282D] text-white shadow-xl' : 'bg-rose-50 border-rose-300 text-slate-950 shadow-xs'
             }`}>
-              <div className="text-slate-600 text-slate-700 font-semibold text-[11px] uppercase tracking-wider">
+              <div className={`font-semibold text-[11px] uppercase tracking-wider ${isDark ? 'text-[#8492A6]' : 'text-slate-700'}`}>
                 1gm Imitation Sold
               </div>
-              <div className="text-xl font-bold font-mono text-slate-950 text-rose-800 mt-1.5">
+              <div className={`text-xl italic font-bold font-mono tracking-tight mt-1.5 ${isDark ? 'text-white' : 'text-rose-800'}`}>
                 {currentSold.imitation_qty} Pcs
               </div>
-              <div className="text-[10.5px] text-rose-800 dark:text-rose-400 font-semibold mt-1">
+              <div className={`text-[10.5px] font-semibold mt-1 ${isDark ? 'text-[#F78154]' : 'text-rose-800'}`}>
                 Fast-moving counter category
               </div>
             </div>
@@ -176,7 +176,7 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
 
           {/* Section 1: Most Demanded & Top Sold Ornaments */}
           <div className={`border rounded-2xl p-4 sm:p-5 shadow-sm space-y-3.5 ${
-            isDark ? 'bg-slate-900/90 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-950'
+            isDark ? 'bg-[#13171A] border-[#23282D] text-white' : 'bg-white border-slate-300 text-slate-950'
           }`}>
             <div className="flex justify-between items-center border-b border-black/10  pb-2.5">
               <div className="flex items-center space-x-2">

@@ -92,29 +92,29 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({ isOp
                 onClick={() => setThemeMode('modern-dark')}
                 className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer relative ${
                   themeMode === 'modern-dark'
-                    ? 'border-[#55D6C2] bg-[#292F32] shadow-xs ring-2 ring-[#55D6C2]/30 text-white'
+                    ? 'border-[#4EF2D2] bg-[#181C20] shadow-xs ring-2 ring-[#4EF2D2]/30 text-white'
                     : 'border-slate-200 bg-white hover:bg-slate-50'
                 }`}
               >
                 {themeMode === 'modern-dark' && (
-                  <span className="absolute top-2.5 right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#55D6C2] text-[#142321] text-[9px] font-bold">
+                  <span className="absolute top-2.5 right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#4EF2D2] text-[#08211B] text-[9px] font-bold">
                     <Check className="w-3 h-3" />
                   </span>
                 )}
                 <div className="flex items-center space-x-2 mb-1.5">
-                  <Moon className="w-4 h-4 text-[#55D6C2]" />
+                  <Moon className="w-4 h-4 text-[#4EF2D2]" />
                   <span className={`font-bold text-xs ${themeMode === 'modern-dark' ? 'text-white' : 'text-slate-900'}`}>
                     Modern Dark
                   </span>
                 </div>
                 <p className={`text-[10.5px] leading-snug mb-2.5 ${themeMode === 'modern-dark' ? 'text-slate-300' : 'text-slate-500'}`}>
-                  Charcoal & dark slate surfaces with turquoise accents and restrained coral status tags.
+                  Obsidian charcoal surfaces with electric mint accents and warm coral status tags.
                 </p>
                 <div className="flex items-center space-x-1.5">
-                  <span className="w-4 h-4 rounded-full bg-[#14171A] border border-[#2E363D]" title="#14171A" />
-                  <span className="w-4 h-4 rounded-full bg-[#22272C] border border-[#2E363D]" title="#22272C" />
-                  <span className="w-4 h-4 rounded-full" style={{ backgroundColor: MODERN_DARK_ACCENTS[modernDarkAccent]?.hex || '#62DBCA' }} title="Selected Accent" />
-                  <span className="w-4 h-4 rounded-full bg-[#F4B183]" title="#F4B183" />
+                  <span className="w-4 h-4 rounded-full bg-[#0D1013] border border-[#23282D]" title="#0D1013" />
+                  <span className="w-4 h-4 rounded-full bg-[#181C20] border border-[#23282D]" title="#181C20" />
+                  <span className="w-4 h-4 rounded-full" style={{ backgroundColor: MODERN_DARK_ACCENTS[modernDarkAccent]?.hex || '#4EF2D2' }} title="Selected Accent" />
+                  <span className="w-4 h-4 rounded-full bg-[#F78154]" title="#F78154" />
                 </div>
               </button>
             </div>

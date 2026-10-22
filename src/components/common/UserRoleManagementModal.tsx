@@ -257,14 +257,14 @@ export const UserRoleManagementModal: React.FC<UserRoleManagementModalProps> = (
       <div
         className={`w-full max-w-5xl rounded-3xl border shadow-2xl flex flex-col max-h-[92vh] overflow-hidden ${
           isDark
-            ? 'bg-[#292F32] border-[#414B4F] text-[#F8FAFC]'
+            ? 'bg-[#181C20] border-[#23282D] text-[#F8FAFC]'
             : 'bg-white border-slate-300 text-slate-900 shadow-sm'
         }`}
       >
         {/* Header Strip */}
         <div
           className={`p-5 sm:p-6 border-b flex items-start justify-between gap-4 ${
-            isDark ? 'border-[#414B4F] bg-[#202629]' : 'border-slate-200 bg-slate-50'
+            isDark ? 'border-[#23282D] bg-[#13171A]' : 'border-slate-200 bg-slate-50'
           }`}
         >
           <div className="flex items-center space-x-3.5">

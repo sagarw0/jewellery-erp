@@ -112,7 +112,7 @@ export const BullionRateModal: React.FC<BullionRateModalProps> = ({
       <div
         className={`w-full max-w-4xl rounded-3xl border shadow-lg overflow-hidden flex flex-col max-h-[92vh] transition-all ${
           isDark
-            ? 'bg-[#292F32] border-[#414B4F] text-[#F8FAFC]'
+            ? 'bg-[#181C20] border-[#23282D] text-[#F8FAFC]'
             : 'bg-white border-slate-200 text-slate-900'
         }`}
       >
