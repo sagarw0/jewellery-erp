@@ -11,7 +11,7 @@ import {
   Sun,
   Moon,
 } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme, MODERN_DARK_ACCENTS, ModernDarkAccentId } from '../../context/ThemeContext';
 import { UiDensity } from '../../types/erp';
 
 interface ThemeCustomizerModalProps {
@@ -20,7 +20,7 @@ interface ThemeCustomizerModalProps {
 }
 
 export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({ isOpen, onClose }) => {
-  const { density, setDensity, resetToDefault, themeMode, setThemeMode } = useTheme();
+  const { density, setDensity, resetToDefault, themeMode, setThemeMode, modernDarkAccent, setModernDarkAccent } = useTheme();
 
   if (!isOpen) return null;
 
@@ -111,14 +111,56 @@ export const ThemeCustomizerModal: React.FC<ThemeCustomizerModalProps> = ({ isOp
                   Charcoal & dark slate surfaces with turquoise accents and restrained coral status tags.
                 </p>
                 <div className="flex items-center space-x-1.5">
-                  <span className="w-4 h-4 rounded-full bg-[#171C1F] border border-[#414B4F]" title="#171C1F" />
-                  <span className="w-4 h-4 rounded-full bg-[#292F32] border border-[#414B4F]" title="#292F32" />
-                  <span className="w-4 h-4 rounded-full bg-[#55D6C2]" title="#55D6C2" />
+                  <span className="w-4 h-4 rounded-full bg-[#14171A] border border-[#2E363D]" title="#14171A" />
+                  <span className="w-4 h-4 rounded-full bg-[#22272C] border border-[#2E363D]" title="#22272C" />
+                  <span className="w-4 h-4 rounded-full" style={{ backgroundColor: MODERN_DARK_ACCENTS[modernDarkAccent]?.hex || '#62DBCA' }} title="Selected Accent" />
                   <span className="w-4 h-4 rounded-full bg-[#F4B183]" title="#F4B183" />
                 </div>
               </button>
             </div>
           </div>
+
+          {/* Accent Color Section (for Modern Dark) */}
+          {themeMode === 'modern-dark' && (
+            <div className="space-y-2 p-3.5 rounded-xl border border-slate-200 bg-slate-50/50">
+              <div className="flex items-center justify-between">
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                  Modern Dark Accent Color
+                </label>
+                <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-slate-200 text-slate-700">
+                  {MODERN_DARK_ACCENTS[modernDarkAccent]?.name} ({MODERN_DARK_ACCENTS[modernDarkAccent]?.hex})
+                </span>
+              </div>
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 pt-1">
+                {(Object.keys(MODERN_DARK_ACCENTS) as ModernDarkAccentId[]).map((accId) => {
+                  const acc = MODERN_DARK_ACCENTS[accId];
+                  const isSelected = modernDarkAccent === accId;
+                  return (
+                    <button
+                      key={accId}
+                      type="button"
+                      onClick={() => setModernDarkAccent(accId)}
+                      className={`p-2.5 rounded-xl border flex flex-col items-center space-y-1.5 transition-all cursor-pointer ${
+                        isSelected
+                          ? 'border-slate-800 bg-white shadow-xs ring-2 ring-slate-400'
+                          : 'border-slate-200 bg-white hover:bg-slate-50'
+                      }`}
+                    >
+                      <span
+                        className="w-5 h-5 rounded-full shadow-2xs flex items-center justify-center relative"
+                        style={{ backgroundColor: acc.hex }}
+                      >
+                        {isSelected && <Check className="w-3 h-3 text-black/80 font-bold" />}
+                      </span>
+                      <span className="text-[10px] font-semibold text-slate-800 text-center leading-tight">
+                        {acc.name.split(' ')[0]}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Display Density Switcher */}
           <div className="space-y-2">

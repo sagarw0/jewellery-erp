@@ -20,6 +20,82 @@ import {
 
 export type CustomizerTab = 'presets' | 'surface' | 'fine_tune' | 'colors' | 'card_typography';
 
+export type ModernDarkAccentId = 'turquoise' | 'blue' | 'violet' | 'emerald' | 'coral' | 'amber';
+
+export interface ModernDarkAccentConfig {
+  id: ModernDarkAccentId;
+  name: string;
+  hex: string;
+  hoverHex: string;
+  textColor: string;
+  ringRgba: string;
+  bgSubtle: string;
+  borderSubtle: string;
+}
+
+export const MODERN_DARK_ACCENTS: Record<ModernDarkAccentId, ModernDarkAccentConfig> = {
+  turquoise: {
+    id: 'turquoise',
+    name: 'Turquoise Teal',
+    hex: '#62DBCA',
+    hoverHex: '#7AE7D7',
+    textColor: '#0E2320',
+    ringRgba: 'rgba(98, 219, 202, 0.3)',
+    bgSubtle: 'rgba(98, 219, 202, 0.15)',
+    borderSubtle: 'rgba(98, 219, 202, 0.35)',
+  },
+  blue: {
+    id: 'blue',
+    name: 'Ocean Blue',
+    hex: '#3B82F6',
+    hoverHex: '#60A5FA',
+    textColor: '#FFFFFF',
+    ringRgba: 'rgba(59, 130, 246, 0.3)',
+    bgSubtle: 'rgba(59, 130, 246, 0.15)',
+    borderSubtle: 'rgba(59, 130, 246, 0.35)',
+  },
+  violet: {
+    id: 'violet',
+    name: 'Royal Violet',
+    hex: '#8B5CF6',
+    hoverHex: '#A78BFA',
+    textColor: '#FFFFFF',
+    ringRgba: 'rgba(139, 92, 246, 0.3)',
+    bgSubtle: 'rgba(139, 92, 246, 0.15)',
+    borderSubtle: 'rgba(139, 92, 246, 0.35)',
+  },
+  emerald: {
+    id: 'emerald',
+    name: 'Emerald Green',
+    hex: '#10B981',
+    hoverHex: '#34D399',
+    textColor: '#062E22',
+    ringRgba: 'rgba(16, 185, 129, 0.3)',
+    bgSubtle: 'rgba(16, 185, 129, 0.15)',
+    borderSubtle: 'rgba(16, 185, 129, 0.35)',
+  },
+  coral: {
+    id: 'coral',
+    name: 'Warm Coral',
+    hex: '#FB7185',
+    hoverHex: '#FDA4AF',
+    textColor: '#2A0810',
+    ringRgba: 'rgba(251, 113, 133, 0.3)',
+    bgSubtle: 'rgba(251, 113, 133, 0.15)',
+    borderSubtle: 'rgba(251, 113, 133, 0.35)',
+  },
+  amber: {
+    id: 'amber',
+    name: 'Golden Amber',
+    hex: '#F59E0B',
+    hoverHex: '#FBBF24',
+    textColor: '#261601',
+    ringRgba: 'rgba(245, 158, 11, 0.3)',
+    bgSubtle: 'rgba(245, 158, 11, 0.15)',
+    borderSubtle: 'rgba(245, 158, 11, 0.35)',
+  },
+};
+
 export const DEFAULT_CARD_TYPOGRAPHY: DashboardCardTypographyConfig = {
   textSize: 'medium',
   fontWeight: 'bold',
@@ -101,8 +177,13 @@ export const THEME_PRESETS: Record<ThemeId, {
   },
 };
 
-export function buildThemeConfig(presetId: ThemeId, tokens: ThemeTokens): ThemeConfig {
+export function buildThemeConfig(
+  presetId: ThemeId,
+  tokens: ThemeTokens,
+  accentId: ModernDarkAccentId = 'turquoise'
+): ThemeConfig {
   const preset = THEME_PRESETS[presetId] || THEME_PRESETS['apple-glass'];
+  const darkAccent = MODERN_DARK_ACCENTS[accentId] || MODERN_DARK_ACCENTS.turquoise;
 
   if (tokens.isDark || presetId === 'modern-dark') {
     return {
@@ -110,25 +191,25 @@ export function buildThemeConfig(presetId: ThemeId, tokens: ThemeTokens): ThemeC
       name: 'Modern Dark',
       subtitle: 'Charcoal, dark slate, teal & turquoise enterprise dark theme',
       isDark: true,
-      swatchPrimary: '#55D6C2',
-      swatchSecondary: '#43B8B5',
+      swatchPrimary: darkAccent.hex,
+      swatchSecondary: darkAccent.hoverHex,
       bgBaseHex: '#14171A',
       bgGradient: 'bg-[#14171A] text-[#F8FAFC]',
       cardBg: 'bg-[#22272C] border border-[#2E363D] text-[#F8FAFC] shadow-md',
       cardBorder: 'border-[#2E363D]',
-      cardHover: 'hover:border-[#55D6C2] transition-colors',
-      primaryBtn: 'bg-[#55D6C2] hover:bg-[#70E1D2] text-[#142321] font-semibold shadow-xs active:scale-[0.99] transition-all',
+      cardHover: 'hover:border-[#2E363D] transition-colors',
+      primaryBtn: `bg-[var(--modern-dark-accent)] hover:bg-[var(--modern-dark-accent-hover)] text-[var(--modern-dark-accent-text)] font-semibold shadow-xs active:scale-[0.99] transition-all`,
       secondaryBtn: 'bg-[#1A1F24] hover:bg-[#2A3138] text-[#CBD5E1] border border-[#2E363D] font-medium transition-all',
-      accentText: 'text-[#55D6C2] font-bold',
-      badgeBg: 'bg-[#55D6C2]/15 text-[#55D6C2] border border-[#55D6C2]/30 font-medium',
+      accentText: `text-[var(--modern-dark-accent)] font-bold`,
+      badgeBg: `bg-[var(--modern-dark-accent-subtle)] text-[var(--modern-dark-accent)] border border-[var(--modern-dark-accent-border)] font-medium`,
       headerBg: 'bg-[#1A1F24] border-b border-[#2E363D] text-[#F8FAFC]',
       appBg: '#14171A',
       textPrimary: 'text-[#F8FAFC]',
       textSecondary: 'text-[#CBD5E1]',
       textMuted: 'text-[#94A3B8]',
       subnavBg: 'bg-[#1A1F24] border-b border-[#2E363D] text-[#CBD5E1]',
-      activePill: 'bg-[#55D6C2] text-[#142321] font-semibold shadow-xs',
-      inputBorder: 'border-[#2E363D] focus:border-[#55D6C2] focus:ring-1 focus:ring-[#55D6C2]',
+      activePill: `bg-[var(--modern-dark-accent)] text-[var(--modern-dark-accent-text)] font-semibold shadow-xs`,
+      inputBorder: `border-[#2E363D] focus:border-[var(--modern-dark-accent)] focus:ring-1 focus:ring-[var(--modern-dark-accent)]`,
       inputBg: 'bg-[#1A1F24] text-[#F8FAFC] placeholder-[#8B97A2]',
       tableHeaderBg: 'bg-[#1A1F24] text-[#CBD5E1] font-semibold border-b border-[#2E363D]',
       tableRowHover: 'hover:bg-[#2A3138]',
@@ -201,6 +282,9 @@ interface ThemeContextType {
   updateCornerRadius: (radius: CardCornerRadius) => void;
   updateShadowDepth: (shadow: ShadowGlowDepth) => void;
   resetToDefault: () => void;
+  // Modern Dark Accent Selection
+  modernDarkAccent: ModernDarkAccentId;
+  setModernDarkAccent: (accent: ModernDarkAccentId) => void;
   // Card Typography Customization
   cardTypography: DashboardCardTypographyConfig;
   updateCardTextSize: (size: CardTextSize) => void;
@@ -249,6 +333,8 @@ const ThemeContext = createContext<ThemeContextType>({
   updateCornerRadius: () => {},
   updateShadowDepth: () => {},
   resetToDefault: () => {},
+  modernDarkAccent: 'turquoise',
+  setModernDarkAccent: () => {},
   cardTypography: DEFAULT_CARD_TYPOGRAPHY,
   updateCardTextSize: () => {},
   updateCardFontWeight: () => {},
@@ -329,6 +415,24 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setIsCustomizerOpen(true);
   };
 
+  // Modern Dark Accent state from localStorage
+  const [modernDarkAccent, setModernDarkAccentState] = useState<ModernDarkAccentId>(() => {
+    try {
+      const saved = localStorage.getItem('swarna_modern_dark_accent') as ModernDarkAccentId;
+      if (saved && MODERN_DARK_ACCENTS[saved]) {
+        return saved;
+      }
+    } catch {}
+    return 'turquoise';
+  });
+
+  const setModernDarkAccent = (accent: ModernDarkAccentId) => {
+    setModernDarkAccentState(accent);
+    try {
+      localStorage.setItem('swarna_modern_dark_accent', accent);
+    } catch {}
+  };
+
   // 2. Dynamically calculate design tokens based on current config
   const computedTokens = computeThemeTokens(
     customConfig.bgBaseHex,
@@ -340,7 +444,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   );
 
   const isDark = computedTokens.isDark;
-  const currentTheme = buildThemeConfig(customConfig.presetId, computedTokens);
+  const currentTheme = buildThemeConfig(customConfig.presetId, computedTokens, modernDarkAccent);
 
   // 3. Inject CSS Variables and update DOM attributes on state changes
   useEffect(() => {
@@ -355,6 +459,16 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     document.documentElement.classList.add(activeThemeClass);
     document.body.classList.add(activeThemeClass);
 
+    // Inject Modern Dark accent CSS custom properties
+    const accentCfg = MODERN_DARK_ACCENTS[modernDarkAccent] || MODERN_DARK_ACCENTS.turquoise;
+    document.documentElement.style.setProperty('--modern-dark-accent', accentCfg.hex);
+    document.documentElement.style.setProperty('--modern-dark-accent-hover', accentCfg.hoverHex);
+    document.documentElement.style.setProperty('--modern-dark-accent-text', accentCfg.textColor);
+    document.documentElement.style.setProperty('--modern-dark-accent-ring', accentCfg.ringRgba);
+    document.documentElement.style.setProperty('--modern-dark-accent-subtle', accentCfg.bgSubtle);
+    document.documentElement.style.setProperty('--modern-dark-accent-border', accentCfg.borderSubtle);
+    document.documentElement.setAttribute('data-dark-accent', modernDarkAccent);
+
     // Save to localStorage
     localStorage.setItem('swarna_erp_theme', customConfig.presetId);
     localStorage.setItem(
@@ -365,7 +479,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       })
     );
     localStorage.setItem('swarna_erp_card_typography', JSON.stringify(cardTypography));
-  }, [customConfig, computedTokens, cardTypography]);
+  }, [customConfig, computedTokens, cardTypography, modernDarkAccent]);
 
   const setDensity = (d: UiDensity) => {
     setDensityState(d);
@@ -543,6 +657,8 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         updateCornerRadius,
         updateShadowDepth,
         resetToDefault,
+        modernDarkAccent,
+        setModernDarkAccent,
         cardTypography,
         updateCardTextSize,
         updateCardFontWeight,

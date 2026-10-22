@@ -1302,15 +1302,23 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
               <strong className="text-base text-amber-700 font-semibold">{formatWeight(stats.totalFine)}</strong>
               <span className="text-[10px] text-slate-400 block font-sans">24K / 99.9% Equivalent</span>
             </div>
-            <div className="p-3 rounded-xl bg-emerald-50/60 border border-emerald-200 shadow-2xs font-mono">
-              <span className="text-[10px] text-emerald-800 font-bold uppercase block">Printed Tags</span>
-              <strong className="text-base text-emerald-900 font-semibold">{stats.printedCount}</strong>
-              <span className="text-[10px] text-emerald-700 block font-sans">Labels Generated</span>
+            <div className={`p-3 rounded-xl shadow-2xs font-mono border ${
+              isDark
+                ? 'bg-[#22272C] border-[#2E363D]'
+                : 'bg-emerald-50/60 border-emerald-200'
+            }`}>
+              <span className={`text-[10px] font-bold uppercase block ${isDark ? 'text-[#6FE0B5]' : 'text-emerald-800'}`}>Printed Tags</span>
+              <strong className={`text-base font-semibold ${isDark ? 'text-[#6FE0B5]' : 'text-emerald-900'}`}>{stats.printedCount}</strong>
+              <span className={`text-[10px] block font-sans ${isDark ? 'text-slate-400' : 'text-emerald-700'}`}>Labels Generated</span>
             </div>
-            <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200 shadow-2xs font-mono">
-              <span className="text-[10px] text-amber-800 font-bold uppercase block">Not Printed Yet</span>
-              <strong className="text-base text-amber-900 font-semibold">{stats.unprintedCount}</strong>
-              <span className="text-[10px] text-amber-700 block font-sans">Ready to Print</span>
+            <div className={`p-3 rounded-xl shadow-2xs font-mono border ${
+              isDark
+                ? 'bg-[#22272C] border-[#2E363D]'
+                : 'bg-amber-50/60 border-amber-200'
+            }`}>
+              <span className={`text-[10px] font-bold uppercase block ${isDark ? 'text-[#F4B183]' : 'text-amber-800'}`}>Not Printed Yet</span>
+              <strong className={`text-base font-semibold ${isDark ? 'text-[#F4B183]' : 'text-amber-900'}`}>{stats.unprintedCount}</strong>
+              <span className={`text-[10px] block font-sans ${isDark ? 'text-slate-400' : 'text-amber-700'}`}>Ready to Print</span>
             </div>
           </div>
 
@@ -2059,15 +2067,23 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
               <strong className="text-base text-amber-700 font-semibold">{formatWeight(looseStats.totalFine)}</strong>
               <span className="text-[10px] text-slate-400 block font-sans">24K / 99.9% Equivalent</span>
             </div>
-            <div className="p-3 rounded-xl bg-blue-50/70 border border-slate-300 shadow-2xs font-mono">
-              <span className="text-[10px] text-blue-800 font-bold uppercase block">Selected Lots</span>
-              <strong className="text-base text-blue-900 font-semibold">{selectedLooseIds.length}</strong>
-              <span className="text-[10px] text-blue-700 block font-sans">For Batch Transfer</span>
+            <div className={`p-3 rounded-xl shadow-2xs font-mono border ${
+              isDark
+                ? 'bg-[#22272C] border-[#2E363D]'
+                : 'bg-blue-50/70 border-slate-300'
+            }`}>
+              <span className={`text-[10px] font-bold uppercase block ${isDark ? 'text-[#70E1D2]' : 'text-blue-800'}`}>Selected Lots</span>
+              <strong className={`text-base font-semibold ${isDark ? 'text-[#70E1D2]' : 'text-blue-900'}`}>{selectedLooseIds.length}</strong>
+              <span className={`text-[10px] block font-sans ${isDark ? 'text-slate-400' : 'text-blue-700'}`}>For Batch Transfer</span>
             </div>
-            <div className="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 shadow-2xs font-mono">
-              <span className="text-[10px] text-emerald-800 font-bold uppercase block">Transfer History</span>
-              <strong className="text-base text-emerald-900 font-semibold">{transferHistory.length}</strong>
-              <span className="text-[10px] text-emerald-700 block font-sans">Completed Transfers</span>
+            <div className={`p-3 rounded-xl shadow-2xs font-mono border ${
+              isDark
+                ? 'bg-[#22272C] border-[#2E363D]'
+                : 'bg-emerald-50/70 border-emerald-200'
+            }`}>
+              <span className={`text-[10px] font-bold uppercase block ${isDark ? 'text-[#6FE0B5]' : 'text-emerald-800'}`}>Transfer History</span>
+              <strong className={`text-base font-semibold ${isDark ? 'text-[#6FE0B5]' : 'text-emerald-900'}`}>{transferHistory.length}</strong>
+              <span className={`text-[10px] block font-sans ${isDark ? 'text-slate-400' : 'text-emerald-700'}`}>Completed Transfers</span>
             </div>
           </div>
 

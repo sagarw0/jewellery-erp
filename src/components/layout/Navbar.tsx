@@ -40,7 +40,7 @@ import {
   Sun,
   Moon,
 } from 'lucide-react';
-import { useTheme, THEMES } from '../../context/ThemeContext';
+import { useTheme, THEMES, MODERN_DARK_ACCENTS, ModernDarkAccentId } from '../../context/ThemeContext';
 
 export const ROLE_NAV_PERMISSIONS: Record<UserRole, NavSection[]> = {
   Owner: [
@@ -152,6 +152,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     isDark,
     themeMode,
     setThemeMode,
+    modernDarkAccent,
+    setModernDarkAccent,
     setIsCustomizerOpen,
   } = useTheme();
 
@@ -278,15 +280,61 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => setThemeMode('modern-dark')}
               className={`flex items-center space-x-1 px-2 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
                 themeMode === 'modern-dark'
-                  ? 'bg-[#55D6C2] text-[#142321] shadow-xs font-bold'
+                  ? 'shadow-xs font-bold'
                   : 'text-slate-500 hover:text-slate-800'
               }`}
-              title="Switch to Modern Dark Theme (Charcoal & Teal)"
+              style={
+                themeMode === 'modern-dark'
+                  ? {
+                      backgroundColor: MODERN_DARK_ACCENTS[modernDarkAccent]?.hex || '#62DBCA',
+                      color: MODERN_DARK_ACCENTS[modernDarkAccent]?.textColor || '#0E2320',
+                    }
+                  : undefined
+              }
+              title="Switch to Modern Dark Theme"
             >
-              <Moon className="w-3.5 h-3.5 text-[#55D6C2]" />
+              <Moon
+                className="w-3.5 h-3.5"
+                style={{
+                  color:
+                    themeMode === 'modern-dark'
+                      ? MODERN_DARK_ACCENTS[modernDarkAccent]?.textColor || '#0E2320'
+                      : MODERN_DARK_ACCENTS[modernDarkAccent]?.hex || '#62DBCA',
+                }}
+              />
               <span className="hidden sm:inline">Modern Dark</span>
             </button>
           </div>
+
+          {/* Accent Color Selector for Modern Dark */}
+          {themeMode === 'modern-dark' && (
+            <div
+              className="flex items-center space-x-1 px-2 py-1 rounded-lg border border-[#2E363D] bg-[#1A1F24] shadow-xs"
+              title="Select Modern Dark Accent Color"
+            >
+              <span className="text-[10px] font-bold text-slate-400 mr-0.5 hidden xl:inline">Accent:</span>
+              {(Object.keys(MODERN_DARK_ACCENTS) as ModernDarkAccentId[]).map((accId) => {
+                const acc = MODERN_DARK_ACCENTS[accId];
+                const isSelected = modernDarkAccent === accId;
+                return (
+                  <button
+                    key={accId}
+                    type="button"
+                    onClick={() => setModernDarkAccent(accId)}
+                    className={`w-3.5 h-3.5 rounded-full transition-transform cursor-pointer relative flex items-center justify-center ${
+                      isSelected
+                        ? 'scale-125 ring-2 ring-white/80 shadow-xs'
+                        : 'hover:scale-110 opacity-75 hover:opacity-100'
+                    }`}
+                    style={{ backgroundColor: acc.hex }}
+                    title={`${acc.name} (${acc.hex})`}
+                  >
+                    {isSelected && <span className="w-1 h-1 rounded-full bg-black/70" />}
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
           {/* Dynamic Role Switcher & User Profile */}
           {currentUser && (

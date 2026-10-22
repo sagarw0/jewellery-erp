@@ -1301,21 +1301,31 @@ export const NewOrderBookingView: React.FC<NewOrderBookingViewProps> = ({
             </div>
 
             {/* Final Balance Due Card */}
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50/50 border-2 border-amber-300 rounded-xl p-5 shadow-sm space-y-3 flex flex-col justify-between">
+            <div className={`rounded-xl p-5 shadow-sm space-y-3 flex flex-col justify-between border ${
+              isDark
+                ? 'bg-[#22272C] border-[#2E363D] text-[#F8FAFC]'
+                : 'bg-gradient-to-br from-amber-50 to-orange-50/50 border-2 border-amber-300'
+            }`}>
               <div>
-                <span className="text-[11px] font-bold text-amber-900 uppercase tracking-wider block mb-1">
+                <span className={`text-[11px] font-bold uppercase tracking-wider block mb-1 ${
+                  isDark ? 'text-[#F4B183]' : 'text-amber-900'
+                }`}>
                   Remaining Balance Payable
                 </span>
-                <p className="text-xs text-amber-800/80">
+                <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-amber-800/80'}`}>
                   Amount due from customer upon pickup & hallmark delivery.
                 </p>
               </div>
 
               <div>
-                <div className="text-2xl font-mono font-semibold text-amber-900">
+                <div className={`text-2xl font-mono font-semibold ${
+                  isDark ? 'text-[#F4B183]' : 'text-amber-900'
+                }`}>
                   {formatCurrency(payment.balance_amount)}
                 </div>
-                <div className="text-[11px] text-amber-800 mt-1 flex items-center space-x-1 font-mono">
+                <div className={`text-[11px] mt-1 flex items-center space-x-1 font-mono ${
+                  isDark ? 'text-slate-400' : 'text-amber-800'
+                }`}>
                   <span>Total Bill: {formatCurrency(payment.amount + payment.gst_amt - payment.bill_discount)}</span>
                 </div>
               </div>

@@ -385,15 +385,21 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const cardItalicClass = cardTypography?.isItalic ? 'italic' : '';
 
   const getCardTitleStyle = (fallbackColor?: string) => ({
-    color: cardTypography?.titleColorHex || fallbackColor || undefined,
+    color: isDark && (!cardTypography?.titleColorHex || cardTypography?.titleColorHex === '#1E293B')
+      ? '#F8FAFC'
+      : cardTypography?.titleColorHex || fallbackColor || undefined,
   });
 
   const getCardValueStyle = (fallbackColor?: string) => ({
-    color: cardTypography?.valueColorHex || fallbackColor || undefined,
+    color: isDark && (!cardTypography?.valueColorHex || cardTypography?.valueColorHex === '#1E293B')
+      ? '#FFFFFF'
+      : cardTypography?.valueColorHex || fallbackColor || undefined,
   });
 
   const getCardLabelStyle = (fallbackColor?: string) => ({
-    color: cardTypography?.labelColorHex || fallbackColor || undefined,
+    color: isDark && (!cardTypography?.labelColorHex || cardTypography?.labelColorHex === '#475569')
+      ? '#CBD5E1'
+      : cardTypography?.labelColorHex || fallbackColor || undefined,
   });
 
   // Perspective tab navigation state
@@ -1014,7 +1020,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="my-auto pt-1">
             <div
-              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-teal-800 font-bold`}
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal font-bold ${
+                isDark ? 'text-[#55D6C2]' : 'text-teal-800'
+              }`}
               style={getCardValueStyle()}
             >
               {branchData.visitors} Visitors
@@ -1023,7 +1031,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="flex items-center space-x-1">
             <span
-              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-teal-100 text-teal-950  text-teal-800 border border-teal-300 `}
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} ${
+                isDark
+                  ? 'bg-teal-500/20 text-[#55D6C2] border border-teal-500/40'
+                  : 'bg-teal-100 text-teal-950 text-teal-800 border border-teal-300'
+              }`}
               style={getCardLabelStyle()}
             >
               New Profiles
@@ -1055,7 +1067,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="my-auto pt-1">
             <div
-              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal text-purple-800 font-bold`}
+              className={`${valueSizeClass} ${cardWeightClass} font-mono tracking-normal font-bold ${
+                isDark ? 'text-[#C4B5FD]' : 'text-purple-800'
+              }`}
               style={getCardValueStyle()}
             >
               {branchData.footfall} Guests
@@ -1064,7 +1078,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="flex items-center space-x-1">
             <span
-              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} bg-violet-100 text-violet-950  text-purple-800 border border-violet-300 `}
+              className={`px-2 py-0.5 rounded font-semibold ${labelSizeClass} ${
+                isDark
+                  ? 'bg-violet-500/20 text-[#C4B5FD] border border-violet-500/40'
+                  : 'bg-violet-100 text-violet-950 text-purple-800 border border-violet-300'
+              }`}
               style={getCardLabelStyle()}
             >
               Showroom Total

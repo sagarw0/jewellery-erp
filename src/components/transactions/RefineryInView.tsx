@@ -303,23 +303,29 @@ export const RefineryInView: React.FC<RefineryInViewProps> = ({
       </div>
 
       {/* Weight Summary Banner */}
-      <div className="bg-gradient-to-r from-amber-50 via-sky-50 to-blue-50 border border-amber-300 rounded-xl p-4 shadow-xs flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center space-x-2 text-amber-900 font-bold text-xs uppercase tracking-wider">
-          <Scale className="w-4 h-4 text-amber-700" />
+      <div className={`rounded-xl p-4 shadow-xs flex flex-wrap items-center justify-between gap-4 border ${
+        isDark
+          ? 'bg-[#1A1F24] border-[#2E363D]'
+          : 'bg-gradient-to-r from-amber-50 via-sky-50 to-blue-50 border-amber-300'
+      }`}>
+        <div className={`flex items-center space-x-2 font-bold text-xs uppercase tracking-wider ${
+          isDark ? 'text-[#F4B183]' : 'text-amber-900'
+        }`}>
+          <Scale className={`w-4 h-4 ${isDark ? 'text-[#F4B183]' : 'text-amber-700'}`} />
           <span>Refinery Weight Summary (Spec #29)</span>
         </div>
         <div className="flex items-center space-x-6 text-xs font-mono">
           <div>
-            <span className="text-slate-500">Gross Wt:</span>{' '}
-            <strong className="text-slate-800">{formatWeight(weightSummary.balance_wgt_grswt)}</strong>
+            <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Gross Wt:</span>{' '}
+            <strong className={isDark ? 'text-[#F8FAFC]' : 'text-slate-800'}>{formatWeight(weightSummary.balance_wgt_grswt)}</strong>
           </div>
           <div>
-            <span className="text-slate-500">Net Wt:</span>{' '}
-            <strong className="text-slate-800">{formatWeight(weightSummary.net_wgt)}</strong>
+            <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Net Wt:</span>{' '}
+            <strong className={isDark ? 'text-[#F8FAFC]' : 'text-slate-800'}>{formatWeight(weightSummary.net_wgt)}</strong>
           </div>
           <div>
-            <span className="text-amber-800 font-bold">Pure Fin Wt:</span>{' '}
-            <strong className="text-amber-900 font-semibold text-sm">{formatWeight(weightSummary.fin_wgt)}</strong>
+            <span className={`font-bold ${isDark ? 'text-[#F4B183]' : 'text-amber-800'}`}>Pure Fin Wt:</span>{' '}
+            <strong className={`font-semibold text-sm ${isDark ? 'text-[#F4B183]' : 'text-amber-900'}`}>{formatWeight(weightSummary.fin_wgt)}</strong>
           </div>
         </div>
       </div>
