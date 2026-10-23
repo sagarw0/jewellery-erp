@@ -125,7 +125,7 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
               <div className={`text-xl italic font-bold font-mono tracking-tight mt-1.5 ${isDark ? 'text-white' : 'text-blue-800'}`}>
                 {formatCurrency(currentSold.revenue)}
               </div>
-              <div className={`text-[10.5px] font-semibold mt-1 flex items-center ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-700'}`}>
+              <div className={`text-[10.5px] font-semibold mt-1 flex items-center ${isDark ? 'text-[#34D399]' : 'text-emerald-700'}`}>
                 <TrendingUp className="w-3.5 h-3.5 mr-1 inline shrink-0" />
                 <span>+18.4% growth vs previous {selectedPeriod.toLowerCase()}</span>
               </div>
@@ -140,7 +140,7 @@ export const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose 
               <div className={`text-xl italic font-bold font-mono tracking-tight mt-1.5 ${isDark ? 'text-white' : 'text-amber-800'}`}>
                 {formatWeight(currentSold.gold_wt)}
               </div>
-              <div className={`text-[10.5px] font-semibold mt-1 ${isDark ? 'text-[#4EF2D2]' : 'text-amber-800'}`}>
+              <div className={`text-[10.5px] font-semibold mt-1 ${isDark ? 'text-[#E879F9]' : 'text-amber-800'}`}>
                 Avg realization: ₹7,285/g
               </div>
             </div>

@@ -257,6 +257,7 @@ export const SubNavbar: React.FC<SubNavbarProps> = ({
             return (
               <button
                 key={tab.id}
+                data-subnav-id={tab.id}
                 onClick={tab.onClick}
                 className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-lg font-semibold text-xs transition-colors cursor-pointer select-none border ${
                   active

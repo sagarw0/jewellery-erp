@@ -159,33 +159,33 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
           onClick={() => setThemeMode('modern-dark')}
           className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
             themeMode === 'modern-dark'
-              ? 'bg-[#4EF2D2] text-[#08211B] shadow-xs font-bold'
+              ? 'bg-[#E879F9] text-[#15031E] shadow-xs font-bold'
               : 'text-slate-500 hover:text-slate-800'
           }`}
-          title="Modern Dark Theme (Obsidian & Electric Mint)"
+          title="Modern Dark Theme (Obsidian & Pinkish Violet)"
         >
-          <Moon className="w-3.5 h-3.5 text-[#4EF2D2]" />
+          <Moon className={`w-3.5 h-3.5 ${themeMode === 'modern-dark' ? 'text-[#15031E]' : 'text-[#E879F9]'}`} />
           <span>Modern Dark</span>
         </button>
       </div>
 
       {/* Container Card */}
-      <div className="w-full max-w-md bg-white border border-slate-300 shadow-sm rounded-xl overflow-hidden transition-all">
+      <div className={`w-full max-w-md ${isDark ? 'bg-[#181C20] border-[#23282D]' : 'bg-white border-slate-300'} border shadow-sm rounded-xl overflow-hidden transition-all`}>
         {/* Header Branding */}
-        <div className="px-6 py-6 text-white text-center bg-blue-700 relative overflow-hidden">
+        <div className={`px-6 py-6 text-center relative overflow-hidden ${isDark ? 'bg-[#13171A] text-white border-b border-[#23282D]' : 'bg-blue-700 text-white'}`}>
           <div className="flex justify-center mb-2">
-            <div className="p-2.5 rounded-lg bg-white/20 border border-white/30 shadow-inner">
-              <Gem className="w-8 h-8 text-white" />
+            <div className={`p-2.5 rounded-lg border shadow-inner ${isDark ? 'bg-[#252B30] border-white/10 text-[#E879F9]' : 'bg-white/20 border-white/30 text-white'}`}>
+              <Gem className="w-8 h-8" />
             </div>
           </div>
           <h1 className="text-xl font-bold tracking-wider uppercase font-sans">
             SWARNA ERP
           </h1>
-          <p className="text-xs text-blue-100 mt-1 font-medium">
+          <p className={`text-xs mt-1 font-medium ${isDark ? 'text-[#8492A6]' : 'text-blue-100'}`}>
             Jewellery Enterprise Management Platform
           </p>
-          <div className="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-0.5 rounded-full bg-white/15 text-[11px] text-white border border-white/20">
-            <ShieldCheck className="w-3.5 h-3.5 text-blue-200" />
+          <div className={`mt-2.5 inline-flex items-center space-x-1.5 px-3 py-0.5 rounded-full text-[11px] border ${isDark ? 'bg-[#E879F9]/10 text-[#E879F9] border-[#E879F9]/25' : 'bg-white/15 text-white border-white/20'}`}>
+            <ShieldCheck className={`w-3.5 h-3.5 ${isDark ? 'text-[#E879F9]' : 'text-blue-200'}`} />
             <span>Staff Secure Authentication</span>
           </div>
         </div>
@@ -273,7 +273,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
               className="w-full py-2.5 px-4 bg-blue-700 hover:bg-blue-800 text-white text-xs font-semibold rounded-lg flex items-center justify-center space-x-2 transition-colors cursor-pointer disabled:opacity-70 mt-2 shadow-xs"
             >
               {isLoading ? (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className={`w-4 h-4 border-2 ${isDark ? 'border-[#15031E]' : 'border-white'} border-t-transparent rounded-full animate-spin`}></div>
               ) : (
                 <>
                   <span>Authenticate & Launch ERP</span>

@@ -2072,8 +2072,8 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                 ? 'bg-[#13171A] border-[#23282D]'
                 : 'bg-blue-50/70 border-slate-300'
             }`}>
-              <span className={`text-[10px] font-bold uppercase block ${isDark ? 'text-[#4EF2D2]' : 'text-blue-800'}`}>Selected Lots</span>
-              <strong className={`text-base font-semibold ${isDark ? 'text-[#4EF2D2]' : 'text-blue-900'}`}>{selectedLooseIds.length}</strong>
+              <span className={`text-[10px] font-bold uppercase block ${isDark ? 'text-[#E879F9]' : 'text-blue-800'}`}>Selected Lots</span>
+              <strong className={`text-base font-semibold ${isDark ? 'text-[#E879F9]' : 'text-blue-900'}`}>{selectedLooseIds.length}</strong>
               <span className={`text-[10px] block font-sans ${isDark ? 'text-slate-400' : 'text-blue-700'}`}>For Batch Transfer</span>
             </div>
             <div className={`p-3 rounded-xl shadow-2xs font-mono border ${
@@ -2081,8 +2081,8 @@ export const BarcodeView: React.FC<BarcodeViewProps> = ({ stockItems, onClose })
                 ? 'bg-[#13171A] border-[#23282D]'
                 : 'bg-emerald-50/70 border-emerald-200'
             }`}>
-              <span className={`text-[10px] font-bold uppercase block ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-800'}`}>Transfer History</span>
-              <strong className={`text-base font-semibold ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-900'}`}>{transferHistory.length}</strong>
+              <span className={`text-[10px] font-bold uppercase block ${isDark ? 'text-[#E879F9]' : 'text-emerald-800'}`}>Transfer History</span>
+              <strong className={`text-base font-semibold ${isDark ? 'text-[#E879F9]' : 'text-emerald-900'}`}>{transferHistory.length}</strong>
               <span className={`text-[10px] block font-sans ${isDark ? 'text-slate-400' : 'text-emerald-700'}`}>Completed Transfers</span>
             </div>
           </div>

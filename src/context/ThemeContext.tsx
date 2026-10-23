@@ -56,13 +56,13 @@ export const MODERN_DARK_ACCENTS: Record<ModernDarkAccentId, ModernDarkAccentCon
   },
   violet: {
     id: 'violet',
-    name: 'Royal Violet',
-    hex: '#8B5CF6',
-    hoverHex: '#A78BFA',
-    textColor: '#FFFFFF',
-    ringRgba: 'rgba(139, 92, 246, 0.3)',
-    bgSubtle: 'rgba(139, 92, 246, 0.15)',
-    borderSubtle: 'rgba(139, 92, 246, 0.35)',
+    name: 'Pinkish Violet',
+    hex: '#E879F9',
+    hoverHex: '#F0ABFC',
+    textColor: '#15031E',
+    ringRgba: 'rgba(232, 121, 249, 0.35)',
+    bgSubtle: 'rgba(232, 121, 249, 0.12)',
+    borderSubtle: 'rgba(232, 121, 249, 0.28)',
   },
   emerald: {
     id: 'emerald',
@@ -128,11 +128,11 @@ export const THEME_PRESETS: Record<ThemeId, {
   'modern-dark': {
     id: 'modern-dark',
     name: 'Modern Dark',
-    subtitle: 'Obsidian charcoal surfaces, electric mint & warm coral dashboard theme',
+    subtitle: 'Obsidian charcoal surfaces, vibrant pinkish violet & warm coral dashboard theme',
     isDark: true,
     bgBaseHex: '#0D1013',
-    accentHex: '#4EF2D2',
-    swatchPrimary: '#4EF2D2',
+    accentHex: '#E879F9',
+    swatchPrimary: '#E879F9',
     swatchSecondary: '#F78154',
   },
   'royal-gold': {
@@ -180,16 +180,16 @@ export const THEME_PRESETS: Record<ThemeId, {
 export function buildThemeConfig(
   presetId: ThemeId,
   tokens: ThemeTokens,
-  accentId: ModernDarkAccentId = 'turquoise'
+  accentId: ModernDarkAccentId = 'violet'
 ): ThemeConfig {
   const preset = THEME_PRESETS[presetId] || THEME_PRESETS['apple-glass'];
-  const darkAccent = MODERN_DARK_ACCENTS[accentId] || MODERN_DARK_ACCENTS.turquoise;
+  const darkAccent = MODERN_DARK_ACCENTS[accentId] || MODERN_DARK_ACCENTS.violet;
 
   if (tokens.isDark || presetId === 'modern-dark') {
     return {
       id: presetId,
       name: 'Modern Dark',
-      subtitle: 'Obsidian charcoal surfaces, electric mint & warm coral dashboard theme',
+      subtitle: 'Obsidian charcoal surfaces, vibrant pinkish violet & warm coral dashboard theme',
       isDark: true,
       swatchPrimary: darkAccent.hex,
       swatchSecondary: darkAccent.hoverHex,
@@ -333,7 +333,7 @@ const ThemeContext = createContext<ThemeContextType>({
   updateCornerRadius: () => {},
   updateShadowDepth: () => {},
   resetToDefault: () => {},
-  modernDarkAccent: 'turquoise',
+  modernDarkAccent: 'violet',
   setModernDarkAccent: () => {},
   cardTypography: DEFAULT_CARD_TYPOGRAPHY,
   updateCardTextSize: () => {},
@@ -423,7 +423,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         return saved;
       }
     } catch {}
-    return 'turquoise';
+    return 'violet';
   });
 
   const setModernDarkAccent = (accent: ModernDarkAccentId) => {
@@ -672,7 +672,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     >
       <div
         className={`density-${density} min-h-screen ${
-          isDark ? 'bg-[#14171A] text-[#F8FAFC]' : 'bg-[#F8FAFC] text-[#1E293B]'
+          isDark ? 'bg-[#0D1013] text-white' : 'bg-[#F8FAFC] text-[#1E293B]'
         } antialiased transition-colors duration-150`}
       >
         {children}

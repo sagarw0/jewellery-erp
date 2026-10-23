@@ -286,8 +286,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               style={
                 themeMode === 'modern-dark'
                   ? {
-                      backgroundColor: MODERN_DARK_ACCENTS[modernDarkAccent]?.hex || '#62DBCA',
-                      color: MODERN_DARK_ACCENTS[modernDarkAccent]?.textColor || '#0E2320',
+                      backgroundColor: MODERN_DARK_ACCENTS[modernDarkAccent]?.hex || '#E879F9',
+                      color: MODERN_DARK_ACCENTS[modernDarkAccent]?.textColor || '#15031E',
                     }
                   : undefined
               }
@@ -298,8 +298,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 style={{
                   color:
                     themeMode === 'modern-dark'
-                      ? MODERN_DARK_ACCENTS[modernDarkAccent]?.textColor || '#0E2320'
-                      : MODERN_DARK_ACCENTS[modernDarkAccent]?.hex || '#62DBCA',
+                      ? MODERN_DARK_ACCENTS[modernDarkAccent]?.textColor || '#15031E'
+                      : MODERN_DARK_ACCENTS[modernDarkAccent]?.hex || '#E879F9',
                 }}
               />
               <span className="hidden sm:inline">Modern Dark</span>
@@ -333,7 +333,26 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </button>
                 );
               })}
+              <button
+                type="button"
+                onClick={() => setIsCustomizerOpen(true)}
+                className="ml-1 pl-1 border-l border-[#2E363D] text-slate-400 hover:text-[#E879F9] transition-colors cursor-pointer flex items-center"
+                title="Theme Customizer (Colors & Density)"
+              >
+                <Palette className="w-3.5 h-3.5" />
+              </button>
             </div>
+          )}
+
+          {themeMode === 'existing' && (
+            <button
+              type="button"
+              onClick={() => setIsCustomizerOpen(true)}
+              className="p-1.5 rounded-lg border border-slate-300 text-slate-700 hover:text-blue-700 hover:bg-slate-100 transition-colors shadow-xs cursor-pointer"
+              title="Theme Customizer (Colors & Density)"
+            >
+              <Palette className="w-3.5 h-3.5 text-blue-700" />
+            </button>
           )}
 
           {/* Dynamic Role Switcher & User Profile */}
@@ -481,11 +500,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                         onClick={() => setThemeMode('modern-dark')}
                         className={`flex items-center justify-center space-x-1.5 py-1.5 px-2 rounded-md text-xs font-semibold cursor-pointer transition-all ${
                           themeMode === 'modern-dark'
-                            ? 'bg-[#4EF2D2] text-[#08211B] shadow-xs font-bold'
+                            ? 'bg-[#E879F9] text-[#15031E] shadow-xs font-bold'
                             : 'text-slate-600 hover:text-slate-900'
                         }`}
                       >
-                        <Moon className="w-3.5 h-3.5 text-[#4EF2D2]" />
+                        <Moon className={`w-3.5 h-3.5 ${themeMode === 'modern-dark' ? 'text-[#15031E]' : 'text-[#E879F9]'}`} />
                         <span>Modern Dark</span>
                       </button>
                     </div>
@@ -525,6 +544,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             return (
               <button
                 key={item.id}
+                data-nav-id={item.id}
                 onClick={() => onSelectSection(item.id)}
                 className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer select-none border ${
                   isActive

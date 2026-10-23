@@ -214,26 +214,26 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 onClick={() => setThemeMode('modern-dark')}
                 className={`p-3 rounded-xl border text-left transition-all cursor-pointer relative ${
                   themeMode === 'modern-dark'
-                    ? 'border-[#4EF2D2] bg-[#181C20] shadow-xs ring-2 ring-[#4EF2D2]/30'
+                    ? 'border-[#E879F9] bg-[#181C20] shadow-xs ring-2 ring-[#E879F9]/30'
                     : 'border-slate-300 hover:border-slate-400 bg-white'
                 }`}
               >
                 {themeMode === 'modern-dark' && (
-                  <span className="absolute top-2 right-2 flex items-center justify-center w-4 h-4 rounded-full bg-[#4EF2D2] text-[#08211B] text-[9px] font-bold">
+                  <span className="absolute top-2 right-2 flex items-center justify-center w-4 h-4 rounded-full bg-[#E879F9] text-[#15031E] text-[9px] font-bold">
                     <Check className="w-3 h-3" />
                   </span>
                 )}
                 <div className="flex items-center space-x-2 mb-1.5">
-                  <Moon className="w-4 h-4 text-[#4EF2D2]" />
+                  <Moon className="w-4 h-4 text-[#E879F9]" />
                   <span className="font-bold text-xs text-slate-900">Modern Dark</span>
                 </div>
                 <p className="text-[10.5px] text-slate-500 leading-snug mb-2">
-                  Obsidian charcoal surfaces, subtle borders, electric mint cyan & warm coral trends.
+                  Obsidian charcoal surfaces, subtle borders, pinkish violet accent & crisp high contrast.
                 </p>
                 <div className="flex items-center space-x-1.5 pt-1">
                   <span className="w-4 h-4 rounded-full bg-[#0D1013] border border-[#23282D] inline-block" title="App Background #0D1013" />
                   <span className="w-4 h-4 rounded-full bg-[#181C20] border border-[#23282D] inline-block" title="Card #181C20" />
-                  <span className="w-4 h-4 rounded-full bg-[#4EF2D2] inline-block" title="Electric Mint #4EF2D2" />
+                  <span className="w-4 h-4 rounded-full bg-[#E879F9] inline-block" title="Pinkish Violet #E879F9" />
                   <span className="w-4 h-4 rounded-full bg-[#F78154] inline-block" title="Warm Coral #F78154" />
                 </div>
               </button>

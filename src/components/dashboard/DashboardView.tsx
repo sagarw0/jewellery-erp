@@ -749,7 +749,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg font-semibold text-xs transition-colors cursor-pointer ${
                   isTabActive
                     ? isDark
-                      ? 'bg-[#4EF2D2] text-[#08211B] font-bold shadow-xs'
+                      ? 'bg-[#E879F9] text-[#15031E] font-bold shadow-xs'
                       : 'bg-blue-700 text-white font-bold shadow-xs'
                     : isDark
                     ? 'text-[#8492A6] hover:text-white hover:bg-[#252B30]'
@@ -775,7 +775,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               }`}
               title="Manage Desired Stock Refill Targets & Auto Reorder"
             >
-              <Package className={`w-3.5 h-3.5 ${isDark ? 'text-[#4EF2D2]' : 'text-blue-700'}`} />
+              <Package className={`w-3.5 h-3.5 ${isDark ? 'text-[#E879F9]' : 'text-blue-700'}`} />
               <span>Stock Refill Hub</span>
             </button>
           )}
@@ -790,7 +790,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               }`}
               title="Open Live Showroom Bullion Rates Board"
             >
-              <TrendingUp className={`w-3.5 h-3.5 ${isDark ? 'text-[#4EF2D2]' : 'text-amber-700'}`} />
+              <TrendingUp className={`w-3.5 h-3.5 ${isDark ? 'text-[#E879F9]' : 'text-amber-700'}`} />
               <span>Live Bullion Board</span>
             </button>
           )}
@@ -809,11 +809,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           }`}
         >
           {isDark && (
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#4EF2D2]/10 to-transparent rounded-bl-full pointer-events-none" />
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#E879F9]/12 to-transparent rounded-bl-full pointer-events-none" />
           )}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-emerald-600 text-white shadow-xs'}`}>
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isDark ? 'bg-[#252B30] text-[#E879F9] border border-white/5' : 'bg-emerald-600 text-white shadow-xs'}`}>
                 <Wallet className="w-4 h-4" />
               </div>
               <span
@@ -822,7 +822,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 Today's Cash
               </span>
             </div>
-            <span className={`text-[11px] font-semibold flex items-center space-x-0.5 ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-700'}`}>
+            <span className={`text-[11px] font-semibold flex items-center space-x-0.5 ${isDark ? 'text-[#34D399]' : 'text-emerald-700'}`}>
               <ArrowUpRight className="w-3.5 h-3.5" />
               <span>↑ 0.7%</span>
             </span>
@@ -859,11 +859,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           }`}
         >
           {isDark && (
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#4EF2D2]/10 to-transparent rounded-bl-full pointer-events-none" />
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#C084FC]/12 to-transparent rounded-bl-full pointer-events-none" />
           )}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-sky-600 text-white shadow-xs'}`}>
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isDark ? 'bg-[#252B30] text-[#C084FC] border border-white/5' : 'bg-sky-600 text-white shadow-xs'}`}>
                 <Building className="w-4 h-4" />
               </div>
               <span
@@ -872,7 +872,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 Bank Balances
               </span>
             </div>
-            <span className={`text-[11px] font-semibold flex items-center space-x-0.5 ${isDark ? 'text-[#4EF2D2]' : 'text-blue-700'}`}>
+            <span className={`text-[11px] font-semibold flex items-center space-x-0.5 ${isDark ? 'text-[#34D399]' : 'text-blue-700'}`}>
               <ArrowUpRight className="w-3.5 h-3.5" />
               <span>↑ 1.2%</span>
             </span>
@@ -909,11 +909,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           }`}
         >
           {isDark && (
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#4EF2D2]/12 to-transparent rounded-bl-full pointer-events-none" />
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#E879F9]/15 to-transparent rounded-bl-full pointer-events-none" />
           )}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-amber-600 text-white shadow-xs'}`}>
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isDark ? 'bg-[#252B30] text-[#E879F9] border border-white/5' : 'bg-amber-600 text-white shadow-xs'}`}>
                 <TrendingUp className="w-4 h-4" />
               </div>
               <span
@@ -922,7 +922,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 Today's Sales
               </span>
             </div>
-            <span className={`text-[11px] font-semibold flex items-center space-x-0.5 ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-700'}`}>
+            <span className={`text-[11px] font-semibold flex items-center space-x-0.5 ${isDark ? 'text-[#34D399]' : 'text-emerald-700'}`}>
               <ArrowUpRight className="w-3.5 h-3.5" />
               <span>↑ 0.7%</span>
             </span>
@@ -1010,7 +1010,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-indigo-600 text-white shadow-xs'}`}>
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isDark ? 'bg-[#252B30] text-[#E879F9] border border-white/5' : 'bg-indigo-600 text-white shadow-xs'}`}>
                 <Package className="w-4 h-4" />
               </div>
               <span
@@ -1019,7 +1019,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 Pending Orders
               </span>
             </div>
-            <ArrowUpRight className={`w-3.5 h-3.5 ${isDark ? 'text-[#4EF2D2]' : 'text-indigo-600'}`} />
+            <ArrowUpRight className={`w-3.5 h-3.5 ${isDark ? 'text-[#E879F9]' : 'text-indigo-600'}`} />
           </div>
 
           <div className="my-auto pt-1.5">
@@ -1053,7 +1053,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-teal-600 text-white shadow-xs'}`}>
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isDark ? 'bg-[#252B30] text-[#E879F9] border border-white/5' : 'bg-teal-600 text-white shadow-xs'}`}>
                 <UserPlus className="w-4 h-4" />
               </div>
               <span
@@ -1097,7 +1097,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-violet-600 text-white shadow-xs'}`}>
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isDark ? 'bg-[#252B30] text-[#C084FC] border border-white/5' : 'bg-violet-600 text-white shadow-xs'}`}>
                 <Users className="w-4 h-4" />
               </div>
               <span
@@ -1144,13 +1144,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         >
           <div className={`flex flex-wrap items-center justify-between gap-2 border-b pb-3 ${isDark ? 'border-[#23282D]' : 'border-black/5'}`}>
             <div className="flex items-center space-x-2.5">
-              <div className={`p-2 rounded-xl text-white shadow-xs ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-gradient-to-br from-amber-500 to-yellow-600'}`}>
+              <div className={`p-2 rounded-xl text-white shadow-xs ${isDark ? 'bg-[#252B30] text-[#E879F9] border border-white/5' : 'bg-gradient-to-br from-amber-500 to-yellow-600'}`}>
                 <SlidersHorizontal className="w-4 h-4" />
               </div>
               <div>
                 <h3 className={`text-xs sm:text-sm font-bold uppercase tracking-wide flex items-center space-x-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
                   <span>Interactive Bullion Valuation Simulator</span>
-                  <span className={`text-[10px] font-mono px-2 py-0.2 rounded-full font-semibold border ${isDark ? 'bg-[#4EF2D2]/10 text-[#4EF2D2] border-[#4EF2D2]/25' : 'bg-amber-100 text-amber-950 border-amber-300'}`}>
+                  <span className={`text-[10px] font-mono px-2 py-0.2 rounded-full font-semibold border ${isDark ? 'bg-[#E879F9]/10 text-[#E879F9] border-[#E879F9]/25' : 'bg-amber-100 text-amber-950 border-amber-300'}`}>
                     Live MCX Delta
                   </span>
                 </h3>
@@ -1165,7 +1165,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 onClick={() => setRateSimulatorDelta(0)}
                 className={`flex items-center space-x-1 px-2.5 py-1 rounded-xl text-xs font-semibold transition cursor-pointer ${
                   isDark
-                    ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5 hover:bg-[#2F363D]'
+                    ? 'bg-[#252B30] text-[#E879F9] border border-white/5 hover:bg-[#2F363D]'
                     : 'bg-slate-200 text-slate-800 hover:opacity-80'
                 }`}
               >
@@ -1187,7 +1187,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     className={`px-2.5 py-1 rounded-lg font-mono text-[11px] font-semibold border transition-all cursor-pointer shadow-2xs ${
                       rateSimulatorDelta === delta
                         ? isDark
-                          ? 'bg-[#4EF2D2] text-[#08211B] border-[#4EF2D2] font-bold shadow-xs'
+                          ? 'bg-[#E879F9] text-[#15031E] border-[#E879F9] font-bold shadow-xs'
                           : 'bg-blue-600 text-white border-blue-600 font-bold shadow-xs'
                         : delta === 0
                         ? isDark
@@ -1195,7 +1195,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                           : 'bg-slate-200 text-slate-800 border-slate-300 '
                         : delta > 0
                         ? isDark
-                          ? 'bg-[#4EF2D2]/10 text-[#4EF2D2] border-[#4EF2D2]/25 hover:bg-[#4EF2D2]/20'
+                          ? 'bg-[#E879F9]/10 text-[#E879F9] border-[#E879F9]/25 hover:bg-[#E879F9]/20'
                           : 'bg-emerald-100 text-emerald-950 text-emerald-800 border-emerald-300 '
                         : isDark
                           ? 'bg-[#F78154]/10 text-[#F78154] border-[#F78154]/25 hover:bg-[#F78154]/20'
@@ -1218,9 +1218,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 step="25"
                 value={rateSimulatorDelta}
                 onChange={(e) => setRateSimulatorDelta(Number(e.target.value))}
-                className={`flex-1 cursor-pointer h-2 rounded-lg appearance-none ${isDark ? 'accent-[#4EF2D2] bg-[#252B30]' : 'accent-amber-500 bg-slate-200'}`}
+                className={`flex-1 cursor-pointer h-2 rounded-lg appearance-none ${isDark ? 'accent-[#E879F9] bg-[#252B30]' : 'accent-amber-500 bg-slate-200'}`}
               />
-              <span className={`text-[11px] font-mono font-bold ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-700'}`}>+₹1,000</span>
+              <span className={`text-[11px] font-mono font-bold ${isDark ? 'text-[#E879F9]' : 'text-emerald-700'}`}>+₹1,000</span>
             </div>
           </div>
 
@@ -1242,7 +1242,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div
                 className={`${subValueSizeClass} italic font-bold font-mono tracking-tight mt-1.5 px-3 py-1 rounded-xl border inline-block shadow-2xs ${
                   isDark
-                    ? 'bg-[#252B30] text-[#4EF2D2] border-white/5'
+                    ? 'bg-[#252B30] text-[#E879F9] border-white/5'
                     : 'bg-amber-100 text-amber-900 border-amber-300'
                 }`}
               >
@@ -1266,7 +1266,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div
                 className={`${subValueSizeClass} italic font-bold font-mono tracking-tight mt-1.5 px-3 py-1 rounded-xl border inline-block shadow-2xs ${
                   isDark
-                    ? 'bg-[#252B30] text-[#4EF2D2] border-white/5'
+                    ? 'bg-[#252B30] text-[#E879F9] border-white/5'
                     : 'bg-amber-100 text-amber-900 border-amber-300'
                 }`}
               >
@@ -1315,7 +1315,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 className={`${subValueSizeClass} italic font-bold font-mono tracking-tight mt-1.5 inline-flex items-center justify-center space-x-1 px-3 py-1 rounded-xl border shadow-2xs ${
                   valuationDelta >= 0
                     ? isDark
-                      ? 'bg-[#4EF2D2]/10 text-[#4EF2D2] border-[#4EF2D2]/25'
+                      ? 'bg-[#E879F9]/10 text-[#E879F9] border-[#E879F9]/25'
                       : 'bg-emerald-100 text-emerald-900 border-emerald-300'
                     : isDark
                       ? 'bg-[#F78154]/10 text-[#F78154] border-[#F78154]/25'
@@ -1323,14 +1323,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 }`}
               >
                 {valuationDelta >= 0 ? (
-                  <ArrowUpRight className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-700'}`} />
+                  <ArrowUpRight className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-[#E879F9]' : 'text-emerald-700'}`} />
                 ) : (
                   <ArrowDownRight className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-[#F78154]' : 'text-rose-700'}`} />
                 )}
                 <span>{formatCurrency(Math.abs(valuationDelta))}</span>
               </div>
               <div
-                className={`${labelSizeClass} font-bold font-mono mt-1 ${isDark ? (valuationDelta >= 0 ? 'text-[#4EF2D2]' : 'text-[#F78154]') : 'text-slate-900'}`}
+                className={`${labelSizeClass} font-bold font-mono mt-1 ${isDark ? (valuationDelta >= 0 ? 'text-[#E879F9]' : 'text-[#F78154]') : 'text-slate-900'}`}
               >
                 {valuationDelta >= 0 ? `+${valuationDeltaPct.toFixed(2)}%` : `${valuationDeltaPct.toFixed(2)}%`}
               </div>
@@ -1348,7 +1348,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         >
           <div className={`flex justify-between items-center border-b pb-3 ${isDark ? 'border-[#23282D]' : 'border-black/5'}`}>
             <div className="flex items-center space-x-2.5">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-blue-500/20 text-blue-600'}`}>
+              <div className={`p-2 rounded-xl ${isDark ? 'bg-[#252B30] text-[#E879F9] border border-white/5' : 'bg-blue-500/20 text-blue-600'}`}>
                 <Building className="w-4 h-4" />
               </div>
               <h3
@@ -1378,7 +1378,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
                   selectedBranch === b.id
                     ? isDark
-                      ? 'bg-[#4EF2D2]/15 border-[#4EF2D2]/50 shadow-md'
+                      ? 'bg-[#E879F9]/15 border-[#E879F9]/50 shadow-md'
                       : 'bg-blue-50 border-blue-400 shadow-xs'
                     : isDark
                     ? 'bg-[#13171A] hover:bg-[#1E2328] border-[#23282D] shadow-xs'
@@ -1393,7 +1393,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       {b.name}
                     </span>
                     {selectedBranch === b.id && (
-                      <span className={`text-[9.5px] font-bold px-2 py-0.5 rounded-full font-mono shadow-2xs ${isDark ? 'bg-[#4EF2D2] text-[#08211B]' : 'bg-emerald-600 text-white'}`}>
+                      <span className={`text-[9.5px] font-bold px-2 py-0.5 rounded-full font-mono shadow-2xs ${isDark ? 'bg-[#E879F9] text-[#15031E]' : 'bg-emerald-600 text-white'}`}>
                         Active
                       </span>
                     )}
@@ -1412,7 +1412,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     {formatCurrency(b.sales)}
                   </div>
                   <div
-                    className={`${labelSizeClass} font-semibold ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-700'}`}
+                    className={`${labelSizeClass} font-semibold ${isDark ? 'text-[#E879F9]' : 'text-emerald-700'}`}
                   >
                     Today's Inflow
                   </div>
@@ -1431,7 +1431,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
             <div className={`w-full rounded-full h-2.5 overflow-hidden ${isDark ? 'bg-[#252B30]' : 'bg-slate-200'}`}>
               <div
-                className={`h-full transition-all duration-500 rounded-full ${isDark ? 'bg-gradient-to-r from-[#4EF2D2] to-[#6BFFDE]' : 'bg-gradient-to-r from-blue-500 via-amber-400 to-emerald-500'}`}
+                className={`h-full transition-all duration-500 rounded-full ${isDark ? 'bg-gradient-to-r from-[#E879F9] to-[#C084FC]' : 'bg-gradient-to-r from-blue-500 via-amber-400 to-emerald-500'}`}
                 style={{ width: `${targetAchievedPct}%` }}
               />
             </div>
@@ -1453,7 +1453,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {/* Header Bar */}
           <div className={`flex flex-wrap justify-between items-center border-b pb-3 gap-3 ${isDark ? 'border-[#23282D]' : 'border-black/5'}`}>
             <div className="flex items-center space-x-3">
-              <div className={`p-2.5 rounded-2xl text-white shadow-sm ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-gradient-to-br from-amber-500 to-yellow-600'}`}>
+              <div className={`p-2.5 rounded-2xl text-white shadow-sm ${isDark ? 'bg-[#252B30] text-[#E879F9] border border-white/5' : 'bg-gradient-to-br from-amber-500 to-yellow-600'}`}>
                 <Coins className="w-5 h-5" />
               </div>
               <div>
@@ -1465,11 +1465,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     onClick={onOpenBullionRates}
                     className={`px-2.5 py-0.5 rounded-full text-xs font-bold flex items-center space-x-1.5 cursor-pointer border ${
                       isDark
-                        ? 'bg-[#4EF2D2]/10 text-[#4EF2D2] border-[#4EF2D2]/25'
+                        ? 'bg-[#E879F9]/10 text-[#E879F9] border-[#E879F9]/25'
                         : 'bg-emerald-100 text-emerald-950 border-emerald-300'
                     }`}
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#4EF2D2]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E879F9]" />
                     <span>Live Bullion Market</span>
                   </button>
                 </div>
@@ -1499,7 +1499,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div
                 className={`px-3.5 py-1.5 rounded-full text-xs font-mono font-bold border ${
                   isDark
-                    ? 'bg-[#4EF2D2]/10 text-[#4EF2D2] border-[#4EF2D2]/25'
+                    ? 'bg-[#E879F9]/10 text-[#E879F9] border-[#E879F9]/25'
                     : 'bg-emerald-100 text-emerald-950 border-emerald-300'
                 }`}
               >
@@ -1632,7 +1632,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         >
           <div className={`flex justify-between items-center border-b pb-3 ${isDark ? 'border-[#23282D]' : 'border-black/5'}`}>
             <div className="flex items-center space-x-2.5">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-amber-500/20 text-amber-700'}`}>
+              <div className={`p-2 rounded-xl ${isDark ? 'bg-[#252B30] text-[#E879F9] border border-white/5' : 'bg-amber-500/20 text-amber-700'}`}>
                 <ShoppingBag className="w-4 h-4" />
               </div>
               <h3
@@ -1646,7 +1646,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <button
                 onClick={() => onQuickAction('sales_invoice')}
                 className={`px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer ${
-                  isDark ? 'bg-[#4EF2D2] text-[#08211B] hover:bg-[#6BFFDE]' : 'bg-amber-500 text-slate-950 hover:bg-amber-400'
+                  isDark ? 'bg-[#E879F9] text-[#15031E] hover:bg-[#F0ABFC]' : 'bg-amber-500 text-slate-950 hover:bg-amber-400'
                 }`}
               >
                 + New Sales Invoice (F4)
@@ -1675,7 +1675,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <span
                     className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full border ${
                       t.label.includes('UPI')
-                        ? isDark ? 'bg-[#4EF2D2]/10 text-[#4EF2D2] border-[#4EF2D2]/25' : 'bg-emerald-100 text-emerald-950 text-emerald-800 border-emerald-300'
+                        ? isDark ? 'bg-[#E879F9]/10 text-[#E879F9] border-[#E879F9]/25' : 'bg-emerald-100 text-emerald-950 text-emerald-800 border-emerald-300'
                         : t.label.includes('Card')
                         ? isDark ? 'bg-sky-500/15 text-sky-300 border-sky-400/30' : 'bg-blue-100 text-blue-950 border-blue-300'
                         : t.label.includes('Cash')
@@ -1719,7 +1719,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             >
               <div className={`flex justify-between items-center border-b pb-3 ${isDark ? 'border-[#23282D]' : 'border-black/5'}`}>
                 <div className="flex items-center space-x-2.5">
-                  <div className={`p-2 rounded-xl ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-blue-500/20 text-blue-600'}`}>
+                  <div className={`p-2 rounded-xl ${isDark ? 'bg-[#252B30] text-[#E879F9] border border-white/5' : 'bg-blue-500/20 text-blue-600'}`}>
                     <CreditCard className="w-4 h-4" />
                   </div>
                   <h2 className={`text-xs sm:text-sm font-bold uppercase tracking-wide ${isDark ? 'text-white' : 'text-slate-900'}`}>
@@ -1729,7 +1729,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <span
                   className={`text-xs font-mono font-bold px-3 py-1 rounded-full border ${
                     isDark
-                      ? 'bg-[#4EF2D2]/10 text-[#4EF2D2] border-[#4EF2D2]/25'
+                      ? 'bg-[#E879F9]/10 text-[#E879F9] border-[#E879F9]/25'
                       : 'bg-emerald-50 text-emerald-950 border-emerald-300'
                   }`}
                 >
@@ -1741,12 +1741,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div
                 className={`p-3.5 rounded-2xl flex justify-between items-center border shadow-2xs ${
                   isDark
-                    ? 'bg-[#13171A] border-[#4EF2D2]/30 text-white'
+                    ? 'bg-[#13171A] border-[#E879F9]/30 text-white'
                     : 'bg-emerald-50 border-emerald-300 text-emerald-950'
                 }`}
               >
                 <div className="flex items-center space-x-2.5">
-                  <div className={`p-2 rounded-xl text-white shadow-2xs ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-emerald-600'}`}>
+                  <div className={`p-2 rounded-xl text-white shadow-2xs ${isDark ? 'bg-[#252B30] text-[#E879F9] border border-white/5' : 'bg-emerald-600'}`}>
                     <Wallet className="w-4 h-4" />
                   </div>
                   <div>
@@ -1758,7 +1758,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     </div>
                   </div>
                 </div>
-                <div className={`text-lg sm:text-xl italic font-bold font-mono tracking-tight ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-800'}`}>
+                <div className={`text-lg sm:text-xl italic font-bold font-mono tracking-tight ${isDark ? 'text-[#E879F9]' : 'text-emerald-800'}`}>
                   {formatCurrency(branchData.cashInHand)}
                 </div>
               </div>
@@ -1804,7 +1804,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                             >
                               <span>{b.mask}</span>
                               {copiedAccount === b.account_no ? (
-                                <Check className="w-3 h-3 text-[#4EF2D2]" />
+                                <Check className="w-3 h-3 text-[#E879F9]" />
                               ) : (
                                 <Copy className="w-3 h-3 opacity-50" />
                               )}
@@ -1832,7 +1832,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         <td colSpan={3} className={`p-3 font-sans uppercase text-right font-bold ${isDark ? 'text-[#8492A6]' : ''}`}>
                           Total Cash in Bank:
                         </td>
-                        <td className={`p-3 text-right italic font-bold text-sm ${isDark ? 'text-[#4EF2D2]' : 'text-slate-900'}`}>
+                        <td className={`p-3 text-right italic font-bold text-sm ${isDark ? 'text-[#E879F9]' : 'text-slate-900'}`}>
                           {formatCurrency(branchData.bankTotal)}
                         </td>
                       </tr>
@@ -1856,7 +1856,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             >
               <div className={`flex justify-between items-center border-b pb-3 ${isDark ? 'border-[#23282D]' : 'border-black/5'}`}>
                 <div className="flex items-center space-x-2.5">
-                  <div className={`p-2 rounded-xl ${isDark ? 'bg-[#252B30] text-[#4EF2D2] border border-white/5' : 'bg-amber-500/20 text-amber-700'}`}>
+                  <div className={`p-2 rounded-xl ${isDark ? 'bg-[#252B30] text-[#E879F9] border border-white/5' : 'bg-amber-500/20 text-amber-700'}`}>
                     <Bell className="w-4 h-4" />
                   </div>
                   <h2 className={`text-xs sm:text-sm font-bold uppercase tracking-wide ${isDark ? 'text-white' : 'text-slate-900'}`}>
@@ -1884,7 +1884,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   onChange={(e) => setNoticeSearchTerm(e.target.value)}
                   className={`w-full pl-9 pr-3 py-1.5 rounded-xl text-xs border transition-all ${
                     isDark
-                      ? 'bg-[#13171A] border-[#23282D] text-white placeholder:text-[#8492A6] focus:border-[#4EF2D2]'
+                      ? 'bg-[#13171A] border-[#23282D] text-white placeholder:text-[#8492A6] focus:border-[#E879F9]'
                       : 'bg-white border-slate-300 text-slate-950 placeholder:text-slate-500 focus:border-blue-600'
                   }`}
                 />
@@ -1905,7 +1905,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     className={`px-3 py-1 rounded-xl whitespace-nowrap font-semibold text-xs transition-all cursor-pointer ${
                       activeNoticeTab === tab.id
                         ? isDark
-                          ? 'bg-[#4EF2D2] text-[#08211B] font-bold shadow-xs'
+                          ? 'bg-[#E879F9] text-[#15031E] font-bold shadow-xs'
                           : 'bg-blue-600 text-white font-bold shadow-xs'
                         : isDark
                         ? 'text-[#8492A6] hover:text-white bg-[#13171A] border border-[#23282D]'
@@ -1954,7 +1954,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       <div className={`flex items-center justify-between pt-1 border-t ${isDark ? 'border-[#23282D]' : 'border-black/5'}`}>
                         {n.amount ? (
                           <div
-                            className={`${subValueSizeClass} italic font-mono font-bold ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-800'}`}
+                            className={`${subValueSizeClass} italic font-mono font-bold ${isDark ? 'text-[#E879F9]' : 'text-emerald-800'}`}
                             style={getCardValueStyle()}
                           >
                             Amount: {formatCurrency(n.amount)}
@@ -1972,14 +1972,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                           onClick={() => handleAlertAction(n)}
                           className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer border shadow-2xs ${
                             isDark
-                              ? 'bg-[#252B30] hover:bg-[#2F363D] text-[#4EF2D2] border-white/5'
+                              ? 'bg-[#252B30] hover:bg-[#2F363D] text-[#E879F9] border-white/5'
                               : 'bg-white hover:bg-slate-100 text-slate-950 border-slate-300'
                           }`}
                         >
                           {n.type === 'birthday' || n.type === 'anniversary' || n.type === 'receivable' ? (
-                            <MessageCircle className={`w-3.5 h-3.5 ${isDark ? 'text-[#4EF2D2]' : 'text-emerald-700'}`} />
+                            <MessageCircle className={`w-3.5 h-3.5 ${isDark ? 'text-[#E879F9]' : 'text-emerald-700'}`} />
                           ) : (
-                            <ExternalLink className={`w-3.5 h-3.5 ${isDark ? 'text-[#4EF2D2]' : 'text-blue-700'}`} />
+                            <ExternalLink className={`w-3.5 h-3.5 ${isDark ? 'text-[#E879F9]' : 'text-blue-700'}`} />
                           )}
                           <span>{n.actionLabel}</span>
                         </button>
